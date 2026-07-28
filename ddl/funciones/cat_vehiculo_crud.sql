@@ -57,7 +57,7 @@ begin
 	reemplaza := coalesce((xpath('//document/k_reemplaza/text()', dataxml))[1],'');
 	regla3 := coalesce((xpath('//document/k_regla3/text()', dataxml))[1],'');
 	codsat := coalesce((xpath('//document/k_codsat/text()', dataxml))[1],'');
-	unidad_medida := (xpath('//document/k_unidad_medida/text()', dataxml))[1];
+	unidad_medida :='XVN'; -- := (xpath('//document/k_unidad_medida/text()', dataxml))[1];
 	crud := (xpath('//document/input_crud/text()', dataxml))[1];
 
 	if crud <> 'ELIMINAR' then

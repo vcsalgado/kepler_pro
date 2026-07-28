@@ -2,7 +2,7 @@ CREATE OR REPLACE FUNCTION keplersc.alta_cont_cheque_rollback(dataxml xml, xmlkd
  RETURNS TABLE(resultado text, mensaje text, adicionales text)
  LANGUAGE plpgsql
 AS $function$
---Descripcion: Realiza inserci�n de movimientos contables ... Gastos ( Compras )
+--Descripcion: Realiza insercion de movimientos contables ... Gastos ( Compras )
 --             Opcion Exclusiva para Cheques Rollbacks 
 --Autor: Jose Mendoza 
 --Fecha: 2024-05-16

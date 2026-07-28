@@ -59,19 +59,19 @@ CREATE  TABLE keplersc.kdud (
   c58 character varying(20) NULL,
   c59 character varying(100) NULL,
   c60 character varying(100) NULL,
-  c61 numeric NOT NULL DEFAULT 0,
+  c61 numeric NOT NULL DEFAULT 10,
   estatus numeric NOT NULL DEFAULT 0,
   subestatus numeric NOT NULL DEFAULT 0,
   nombre_referencia character varying(90) NOT NULL DEFAULT ''::character varying,
   parentesco_refer_cte character varying(20) NOT NULL DEFAULT ''::character varying
 ) TABLESPACE pg_default;
 CREATE UNIQUE INDEX IF NOT EXISTS pk_kdud ON keplersc.kdud USING btree (c2) TABLESPACE pg_default;
-CREATE INDEX IF NOT EXISTS sindkdud02 ON keplersc.kdud USING btree (c3, c2) TABLESPACE pg_default;
 CREATE INDEX IF NOT EXISTS sindkdud03 ON keplersc.kdud USING btree (c12, c2) TABLESPACE pg_default;
 CREATE INDEX IF NOT EXISTS sindkdud04 ON keplersc.kdud USING btree (c13, c2) TABLESPACE pg_default;
 CREATE INDEX IF NOT EXISTS sindkdud05 ON keplersc.kdud USING btree (c14, c2) TABLESPACE pg_default;
 CREATE INDEX IF NOT EXISTS sindkdud06 ON keplersc.kdud USING btree (c40, c2) TABLESPACE pg_default;
 CREATE INDEX IF NOT EXISTS sindkdud07 ON keplersc.kdud USING btree (c10) TABLESPACE pg_default;
+CREATE INDEX IF NOT EXISTS sindkdud02 ON keplersc.kdud USING btree (c3, c2) TABLESPACE pg_default;
 COMMENT ON TABLE keplersc.kdud IS 'Catalogo de clientes';
 COMMENT ON COLUMN keplersc.kdud.subestatus IS 'Subestatus del cliente';
 COMMENT ON COLUMN keplersc.kdud.parentesco_refer_cte IS 'Parentesco de la referencia con el cliente';

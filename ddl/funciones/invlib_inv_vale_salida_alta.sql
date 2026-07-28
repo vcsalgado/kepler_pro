@@ -81,6 +81,7 @@ begin
     v_asesor_cc:= upper((xpath('//document/k_asesor_cc/text()', dataxml))[1]::text);
    	v_fecha_movto:= upper((xpath('//document/k_fecha/text()', dataxml))[1]::text);
    
+
    --Validar que no se tenga un vale activo
    
    	--LGLG 13/06/24 codigo obsoleto
@@ -150,12 +151,13 @@ begin
 					v_gastos_administrativos,v_seguro_del_automovil,v_suma_accesorios,v_suma_pedidos,v_ISAN,
 					v_IVA, v_Importe,v_costo,v_fecha_compra::timestamp,v_anio_modelo,
 					v_coach);
-		select c41,c42 into v_asesor_comprador,v_valuador from keplersc.KDICOM where  c1 = v_sucursal_id and c2 = v_inventario and c3 = (select count(*) from keplersc.KDICOM  where  c1 = v_sucursal_id and c2 = v_inventario);
-			
+		select c41 , c42 into v_asesor_comprador,v_valuador from keplersc.KDICOM where  c1 = v_sucursal_id and c2 = v_inventario and c3 = (select count(*) from keplersc.KDICOM  where  c1 = v_sucursal_id and c2 = v_inventario);
+		
+		--LGLG 21/12/24, agregar coalesce
 		insert into keplersc.KDCOMISMOV2 (c1,c2,c3,c4,c5,c6,c7,c8,c9,c10,c11,c12,c13,c15,c16)
 		values (v_sucursal_id,genero,naturaleza,grupo::numeric,tipo::numeric,
 				folio_operacion,v_fecha_movto::timestamp,v_inventario,v_asesor_cc,0,
-				v_clave_de_operacion,v_asesor_comprador,v_valuador,v_vendedor,'');
+				v_clave_de_operacion, coalesce(v_asesor_comprador, '')::text ,coalesce(v_valuador, '')::text ,v_vendedor,'');
 			
 	end if;
 	

@@ -1,180 +1,1 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<pag xmlns='www.kepler.com.mx/2003/KSchema' tit="Impresi&#243;n de p&#243;lizas">
-	<grp id="grpMain" brdr="0,0" clr="0,58,112" fnt="Arial,16" dim='1,-1,10,20'  bclr="192,205,213" clrBrdr="0,97,181" unfont="0" OnF1="Ventana(conrepupoayu)" tit="Reportes contables"><br/><tab/>
-		<grp bclr="236,240,243" fntClrBrdr="255,206,0" fntBrdr="Arial,18" hSpace="4" clrBrdr="0,58,112" brdr="0,5" dim="25,18,7,12" tit="Imprime una poliza"  fnt="Arial,16" unfont="0" clr="0,58,112"><br/>
-		<tab/><txt>Mes</txt><tab n="5"/><inp id="mes" clr="64,64,64" clrBrdr="255,255,255"  dim="3,1" bclr="255,255,255" brdr="2,0" fnt="Arial,16" type="number" min="1" max="12" nc="2" OnChange="Recalcula()"/><br/>
-		<tab/><txt>Tipo poliz</txt><txt fnt="Arial,16" clr="0,52,200" bclr="255,255,255">a</txt><tab n="3"/><inp id="tp" clr="64,64,64" clrBrdr="255,255,255"  dim="3,1" bclr="255,255,255" brdr="2,0" fnt="Arial,16" type="capital" nc="1" OnChange="Recalcula()"/><br/><br/><tab/><txt>Impresi&#243;n por hoja</txt><tab/>
-		<chck id="imp" clr="64,64,64"  dim="3,16" bclr="255,255,255" brdr="2,0" YN="10" clrBrdr="255,255,255"/><br/><br/>
-		<tab/><txt>No. de poliza inicial</txt><tab/><inp id="pol_ini" clr="64,64,64" clrBrdr="255,255,255"  dim="10,1" bclr="255,255,255" brdr="2,0" fnt="Arial,16" type="number" fmt="DD/MM/YY" nc="8"/>
-		<tab/><br/><tab/><txt>No. de poliza final</txt><tab/><inp id="pol_fin" clr="64,64,64" clrBrdr="255,255,255"  dim="10,1" bclr="255,255,255" brdr="2,0" fnt="Arial,16" type="number" fmt="DD/MM/YY" nc="8"/>
-		<tab/><br/>
-		</grp><br/><tab/><br/><tab n="7"/>
-<img id="btnEjecutar" dim="60,60" brdr="0,1" bPx="1" tooltip="Ejecutar reporte" OnEnter="Reporte()" img="_60_ExecuteReport.png" available="Y"/>
-	</grp>
-	<script>
-		InstallDriver("KDB75");
-		class Main {
-			var frn,kdb,rep,sys;
-			var year,polIni,polFin,salIni,salFin,nivel,longIni,long;
-			var totCar,totAbo;
-			var nocta,nomcta,sIni,mesIni,mesFin,tCargos,tAbonos;
-			var totIni,totFin,totCargos,totAbonos;
-			var tabla_ana;
-			fun Main() {
-				frn=new FRNT;
-				kdb=new KDB;
-				rep=new REP;
-				sys=new SYS;
-				kdb.connect();
-				Inicializa();
-			}	
-			fun Ventana(arch,cmp) { frn.dialog(arch,cmp);}//Abre la pagina indicada como dialogo.						
-			fun Inicializa(){//Inicializa los valores en Pantalla
-				//Revisa si hay año definido por la session
-				if(frn.config("temp","k_workDate")){
-					year=mid(frn.config("temp","k_workYear"),2,2);
-				}else {
-					kdb.kde("yr");kdb.exec();
-					year=kdb.get("yr",14);
-				}
-				frn.set("mes",sys.date("month"));
-				frn.set("tp","D");
-				//Obtiene la poliza Final e Inicial
-				var mesA=frn.get("mes");
-				var tpA=frn.get("tp");
-				tabla_ana="kdc2&" & year & "&" & mesA;
-				kdb.open("p," & tabla_ana);
-				kdb.lim("p8=" & tpA); kdb.search("datpolizas,p,2,8,&,p1"); kdb.exec();
-				frn.set("pol_ini","1");
-				frn.set("pol_fin",kdb.get("datpolizas","p1"));
-				IniParams();
-				kdb.open("c,kdc1" & year);
-				kdb.open("m,kdmm");
-			}
-			fun Recalcula(){
-				//Obtiene la poliza Final e Inicial
-				var mesA=frn.get("mes");
-				var tpA=frn.get("tp");
-				tabla_ana="kdc2&" & year & "&" & mesA;
-				kdb.open("p," & tabla_ana);
-				kdb.lim("p8=" & tpA); kdb.search("datpolizas,p,2,8,&,p1"); kdb.exec();
-				frn.set("pol_ini","1");
-				frn.set("pol_fin",kdb.get("datpolizas","p1"));
-			}
-			fun IniParams(){//Inicializa parámetros de impresión, que pueden ser cambiados por el usuario final mediante: Archivo / Configurar Página
-				frn.set("param_paper","letter");//	"paper=letter|legal|size"
-				frn.set("param_sizeX","21.59","param_sizeY","27.94");//	"size=18,14cm"
-				frn.set("param_borderL","1.5","param_borderT","1.5","param_borderR","1.5","param_borderB","1.5");//	"border=1.5,1.5,1.5,1.5cm"
-				frn.set("param_Fx","1.0","param_Fy","1.0");//			"F=1,1"
-				frn.set("param_landscape","Y");//	"landscape=N|Y"
-				frn.set("param_emp","L");//			"@emp=L|R|C"
-			}
-			fun Reporte(){//Ejecuta el Reporte
-				// Se define el formato a usar y se imprime el encabezado
-				kdb.readPage("datos","conrepupofto");//se define el formato a usar
-				kdb.exec();
-				rep.source(kdb.get("datos")); 
-				rep.rst(); 
-				setRepPage();//Establece los parámetros finales de impresión.(rep.page(...);)
-				rep.exe("encabezadoP");
-				//Genera el reporte para las cuentas solicitadas
-				ImprimePolizas();				
-				rep.win(); 
-			}
-			
-			fun ImprimePolizas(){
-				var mesA=frn.get("mes");
-				var tpA=frn.get("tp");
-				var polIniA=frn.get("pol_ini");
-				var polFinA=frn.get("pol_fin");
-				tabla_ana="kdc2&" & year & "&" & mesA;
-				kdb.open("p," & tabla_ana);
-				if (tpA &! "") {kdb.lim("p8=" & tpA);}
-				if (polIniA>0 && polFinA>0){
-					kdb.lim("p1>=" & polIniA);
-					kdb.lim("p1<=" & polFinA);
-				}
-				kdb.rel("m1=p15");kdb.rel("m2=p16");kdb.rel("m3=p17");kdb.rel("m4=p18");
-				kdb.rel("c1=p3");
-				kdb.table("polizas,p,2,&,p1...p22,m5,c2");
-				kdb.exec();
-				var nReg=kdb.N("polizas");
-				var numPolAnt=0;
-				totCar=0; totAbo=0;
-				for(var j=0;j<nReg;j++){
-					var numPolAct=kdb.get("polizas","r" & j,"p1");
-					if (numPolAct &! numPolAnt){
-						//Imprime los totales de la poliza
-						if (totCar>0 && totAbo>0){
-							rep.set("total_cargos",totCar);
-							rep.set("total_abonos",totAbo);
-							rep.exe("totales");
-							rep.exe("vacio");
-							if(frn.get("imp")&="1"){
-								rep.newPag();
-							}	
-							totCar=0; totAbo=0;
-						}
-						numPolAnt=kdb.get("polizas","r" & j,"p1");
-							
-						//Imprime Encabezado de la siguiente poliza
-						rep.set("fechaP",kdb.get("polizas","r" & j,"p2"));
-						rep.set("tipoP",kdb.get("polizas","r" & j,"p8"));
-						rep.set("numeroP",kdb.get("polizas","r" & j,"p1"));
-						rep.set("sucP",kdb.get("polizas","r" & j,"p14"));
-						rep.set("gdocP",kdb.get("polizas","r" & j,"p15"));
-						rep.set("ndocP",kdb.get("polizas","r" & j,"p16"));
-						rep.set("gpodocP",kdb.get("polizas","r" & j,"p17"));
-						rep.set("tdocP",kdb.get("polizas","r" & j,"p18"));
-						rep.set("fdocP",kdb.get("polizas","r" & j,"p19"));
-						rep.set("descdocP",kdb.get("polizas","r" & j,"m5"));
-						rep.exe("vacio");
-						rep.exe("encabezado");
-					}
-						
-					rep.set("numero_cuenta",kdb.get("polizas","r" & j,"p3"));
-					rep.set("nombre_cuenta",kdb.get("polizas","r" & j,"c2"));
-					rep.set("descripcionP",kdb.get("polizas","r" & j,"p6"));
-					rep.set("referenciaP",kdb.get("polizas","r" & j,"p7"));
-					rep.set("deptoP",kdb.get("polizas","r" & j,"p13"));
-					rep.set("proyP",kdb.get("polizas","r" & j,"p21"));
-					rep.set("conceptoP",kdb.get("polizas","r" & j,"p20"));
-					rep.setAtt("abonoP","visible","S"); rep.setAtt("cargoP","visible","S");
-					if (strcmp(kdb.get("polizas","r" & j,"p4"),"C")==0){
-						rep.set("cargoP",kdb.get("polizas","r" & j,"p5"));
-						rep.setAtt("abonoP","visible","N");
-						totCar=totCar+kdb.get("polizas","r" & j,"p5");
-					}else{
-						rep.set("abonoP",kdb.get("polizas","r" & j,"p5"));
-						rep.setAtt("cargoP","visible","N");
-						totAbo=totAbo+kdb.get("polizas","r" & j,"p5");
-					}
-					rep.exe("detalle");
-				}			
-				rep.set("total_cargos",totCar);
-				rep.set("total_abonos",totAbo);
-				rep.exe("totales");
-				rep.exe("vacio");
-				totCar=0; totAbo=0;	
-				
-			}
-			fun setRepPage() {//Establece los parámetros finales de impresión.
-				//Tipo de hoja, ancho, alto,margen iz, margen derecho, margen arriba, margen abajo, factor de escala en x, factor de escala en y,orientacion, color, ventana de ajuste, etc
-				//rep.page("paper=letter|legal|size","size=18,14cm","border=1.5,1.5,1.5,1.5cm","F=1,1","landscape=N|Y","color=Y|N","prompt=N|Y","@emp=L|R|C");
-				var paper="paper=" & frn.get("param_paper");var size="size=" & frn.get("param_sizeX") & "," & frn.get("param_sizeY") & "cm";
-				var brdr="border=" & frn.get("param_borderL") & "," & frn.get("param_borderT") & "," & frn.get("param_borderR") & "," & frn.get("param_borderB") & "cm";
-				var fact="F=" & frn.get("param_Fx") & "," & frn.get("param_Fy");
-				var lndsp="landscape=" & frn.get("param_landscape");
-				var emp="@emp=" & frn.get("param_emp");
-				rep.page(paper,size,brdr,fact,lndsp,"color=Y","collate=Y","copies=1","pages=1,999","prompt=N",emp);
-			}
-		}
-		
-		
-		/*
-		Autor					Fecha			Cambio
-		------------------------------------------------------------------
-		Fran Tapia		23/12/2015  Se agregan campos Departamento, Concepto, Proyecto en funcion imprimepolizas para que se impriman en el reporte.
-		*/
-	</script>
-</pag>
+<?xml version="1.0" encoding="UTF-8"?><pag xmlns='www.kepler.com.mx/2003/KSchema' tit="Impresi&#243;n de p&#243;lizas">	<grp id="grpMain" brdr="0,0" clr="0,58,112" fnt="Arial,16" dim='1,-1,10,20'  bclr="192,205,213" clrBrdr="0,97,181" unfont="0" OnF1="Ventana(conrepupoayu)" tit="Reportes contables"><br/><tab/>		<grp bclr="236,240,243" fntClrBrdr="255,206,0" fntBrdr="Arial,18" hSpace="4" clrBrdr="0,58,112" brdr="0,5" dim="25,18,7,12" tit="Imprime una poliza"  fnt="Arial,16" unfont="0" clr="0,58,112"><br/>		<tab/><txt>Mes</txt><tab n="5"/><inp id="mes" clr="64,64,64" clrBrdr="255,255,255"  dim="3,1" bclr="255,255,255" brdr="2,0" fnt="Arial,16" type="number" min="1" max="12" nc="2" OnChange="Recalcula()"/><br/>		<tab/><txt>Tipo poliz</txt><txt fnt="Arial,16" clr="0,52,200" bclr="255,255,255">a</txt><tab n="3"/><inp id="tp" clr="64,64,64" clrBrdr="255,255,255"  dim="3,1" bclr="255,255,255" brdr="2,0" fnt="Arial,16" type="capital" nc="1" OnChange="Recalcula()"/><br/><br/><tab/><txt>Impresi&#243;n por hoja</txt><tab/>		<chck id="imp" clr="64,64,64"  dim="3,16" bclr="255,255,255" brdr="2,0" YN="10" clrBrdr="255,255,255"/><br/><br/>		<tab/><txt>No. de poliza inicial</txt><tab/><inp id="pol_ini" clr="64,64,64" clrBrdr="255,255,255"  dim="10,1" bclr="255,255,255" brdr="2,0" fnt="Arial,16" type="number" fmt="DD/MM/YY" nc="8"/>		<tab/><br/><tab/><txt>No. de poliza final</txt><tab/><inp id="pol_fin" clr="64,64,64" clrBrdr="255,255,255"  dim="10,1" bclr="255,255,255" brdr="2,0" fnt="Arial,16" type="number" fmt="DD/MM/YY" nc="8"/>		<tab/><br/>		</grp><br/><tab/><br/><tab n="7"/><img id="btnEjecutar" dim="60,60" brdr="0,1" bPx="1" tooltip="Ejecutar reporte" OnEnter="Reporte()" img="_60_ExecuteReport.png" available="Y"/>	</grp>	<tools>		<tool name="ejecuta" OnMouseL="Reporte()" tooltip="Ejecutar(Ctrl+T)" scut="Ctrl+T" img="_TL_Execute.png"/>	</tools>	<script>		InstallDriver("KDB75");		class Main {			var frn,kdb,rep,sys;			var year,polIni,polFin,salIni,salFin,nivel,longIni,long;			var totCar,totAbo;			var nocta,nomcta,sIni,mesIni,mesFin,tCargos,tAbonos;			var totIni,totFin,totCargos,totAbonos;			var tabla_ana;			fun Main() {				frn=new FRNT;				kdb=new KDB;				rep=new REP;				sys=new SYS;				kdb.connect();				Inicializa();			}				fun Ventana(arch,cmp) { frn.dialog(arch,cmp);}//Abre la pagina indicada como dialogo.									fun Inicializa(){//Inicializa los valores en Pantalla				//Revisa si hay año definido por la session				if(frn.config("temp","k_workDate")){					year=mid(frn.config("temp","k_workYear"),2,2);				}else {					kdb.kde("yr");kdb.exec();					year=kdb.get("yr",14);				}				frn.set("mes",sys.date("month"));				frn.set("tp","D");				//Obtiene la poliza Final e Inicial				var mesA=frn.get("mes");				var tpA=frn.get("tp");				tabla_ana="kdc2&" & year & "&" & mesA;				kdb.open("p," & tabla_ana);				kdb.lim("p8=" & tpA); kdb.search("datpolizas,p,2,8,&,p1"); kdb.exec();				frn.set("pol_ini","1");				frn.set("pol_fin",kdb.get("datpolizas","p1"));				IniParams();				kdb.open("c,kdc1" & year);				kdb.open("m,kdmm");			}			fun Recalcula(){				//Obtiene la poliza Final e Inicial				var mesA=frn.get("mes");				var tpA=frn.get("tp");				tabla_ana="kdc2&" & year & "&" & mesA;				kdb.open("p," & tabla_ana);				kdb.lim("p8=" & tpA); kdb.search("datpolizas,p,2,8,&,p1"); kdb.exec();				frn.set("pol_ini","1");				frn.set("pol_fin",kdb.get("datpolizas","p1"));			}			fun IniParams(){//Inicializa parámetros de impresión, que pueden ser cambiados por el usuario final mediante: Archivo / Configurar Página				frn.set("param_paper","letter");//	"paper=letter|legal|size"				frn.set("param_sizeX","21.59","param_sizeY","27.94");//	"size=18,14cm"				frn.set("param_borderL","1.5","param_borderT","1.5","param_borderR","1.5","param_borderB","1.5");//	"border=1.5,1.5,1.5,1.5cm"				frn.set("param_Fx","1.0","param_Fy","1.0");//			"F=1,1"				frn.set("param_landscape","Y");//	"landscape=N|Y"				frn.set("param_emp","L");//			"@emp=L|R|C"			}			fun Reporte(){//Ejecuta el Reporte				// Se define el formato a usar y se imprime el encabezado				kdb.readPage("datos","conrepupofto");//se define el formato a usar				kdb.exec();				rep.source(kdb.get("datos")); 				rep.rst(); 				setRepPage();//Establece los parámetros finales de impresión.(rep.page(...);)				rep.exe("encabezadoP");				//Genera el reporte para las cuentas solicitadas				ImprimePolizas();								rep.win(); 			}						fun ImprimePolizas(){				var mesA=frn.get("mes");				var tpA=frn.get("tp");				var polIniA=frn.get("pol_ini");				var polFinA=frn.get("pol_fin");				tabla_ana="kdc2&" & year & "&" & mesA;				kdb.open("p," & tabla_ana);				if (tpA &! "") {kdb.lim("p8=" & tpA);}				if (polIniA>0 && polFinA>0){					kdb.lim("p1>=" & polIniA);					kdb.lim("p1<=" & polFinA);				}				kdb.rel("m1=p15");kdb.rel("m2=p16");kdb.rel("m3=p17");kdb.rel("m4=p18");				kdb.rel("c1=p3");				kdb.table("polizas,p,2,&,p1...p22,m5,c2");				kdb.exec();				var nReg=kdb.N("polizas");				var numPolAnt=0;				totCar=0; totAbo=0;				for(var j=0;j<nReg;j++){					var numPolAct=kdb.get("polizas","r" & j,"p1");					if (numPolAct &! numPolAnt){						//Imprime los totales de la poliza						if (totCar>0 && totAbo>0){							rep.set("total_cargos",totCar);							rep.set("total_abonos",totAbo);							rep.exe("totales");							rep.exe("vacio");							if(frn.get("imp")&="1"){								rep.newPag();							}								totCar=0; totAbo=0;						}						numPolAnt=kdb.get("polizas","r" & j,"p1");													//Imprime Encabezado de la siguiente poliza						rep.set("fechaP",kdb.get("polizas","r" & j,"p2"));						rep.set("tipoP",kdb.get("polizas","r" & j,"p8"));						rep.set("numeroP",kdb.get("polizas","r" & j,"p1"));						rep.set("sucP",kdb.get("polizas","r" & j,"p14"));						rep.set("gdocP",kdb.get("polizas","r" & j,"p15"));						rep.set("ndocP",kdb.get("polizas","r" & j,"p16"));						rep.set("gpodocP",kdb.get("polizas","r" & j,"p17"));						rep.set("tdocP",kdb.get("polizas","r" & j,"p18"));						rep.set("fdocP",kdb.get("polizas","r" & j,"p19"));						rep.set("descdocP",kdb.get("polizas","r" & j,"m5"));						rep.exe("vacio");						rep.exe("encabezado");					}											rep.set("numero_cuenta",kdb.get("polizas","r" & j,"p3"));					rep.set("nombre_cuenta",kdb.get("polizas","r" & j,"c2"));					rep.set("descripcionP",kdb.get("polizas","r" & j,"p6"));					rep.set("referenciaP",kdb.get("polizas","r" & j,"p7"));					rep.set("deptoP",kdb.get("polizas","r" & j,"p13"));					rep.set("proyP",kdb.get("polizas","r" & j,"p21"));					rep.set("conceptoP",kdb.get("polizas","r" & j,"p20"));					rep.setAtt("abonoP","visible","S"); rep.setAtt("cargoP","visible","S");					if (strcmp(kdb.get("polizas","r" & j,"p4"),"C")==0){						rep.set("cargoP",kdb.get("polizas","r" & j,"p5"));						rep.setAtt("abonoP","visible","N");						totCar=totCar+kdb.get("polizas","r" & j,"p5");					}else{						rep.set("abonoP",kdb.get("polizas","r" & j,"p5"));						rep.setAtt("cargoP","visible","N");						totAbo=totAbo+kdb.get("polizas","r" & j,"p5");					}					rep.exe("detalle");				}							rep.set("total_cargos",totCar);				rep.set("total_abonos",totAbo);				rep.exe("totales");				rep.exe("vacio");				totCar=0; totAbo=0;								}			fun setRepPage() {//Establece los parámetros finales de impresión.				//Tipo de hoja, ancho, alto,margen iz, margen derecho, margen arriba, margen abajo, factor de escala en x, factor de escala en y,orientacion, color, ventana de ajuste, etc				//rep.page("paper=letter|legal|size","size=18,14cm","border=1.5,1.5,1.5,1.5cm","F=1,1","landscape=N|Y","color=Y|N","prompt=N|Y","@emp=L|R|C");				var paper="paper=" & frn.get("param_paper");var size="size=" & frn.get("param_sizeX") & "," & frn.get("param_sizeY") & "cm";				var brdr="border=" & frn.get("param_borderL") & "," & frn.get("param_borderT") & "," & frn.get("param_borderR") & "," & frn.get("param_borderB") & "cm";				var fact="F=" & frn.get("param_Fx") & "," & frn.get("param_Fy");				var lndsp="landscape=" & frn.get("param_landscape");				var emp="@emp=" & frn.get("param_emp");				rep.page(paper,size,brdr,fact,lndsp,"color=Y","collate=Y","copies=1","pages=1,999","prompt=N",emp);			}		}						/*		Autor					Fecha			Cambio		------------------------------------------------------------------		Fran Tapia		23/12/2015  Se agregan campos Departamento, Concepto, Proyecto en funcion imprimepolizas para que se impriman en el reporte.		*/	</script></pag>

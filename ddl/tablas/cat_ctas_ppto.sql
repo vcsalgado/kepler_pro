@@ -8,5 +8,5 @@ COMMENT ON TABLE keplersc.cat_ctas_ppto IS 'Catalogo de rangos de cuentas de pre
 COMMENT ON COLUMN keplersc.cat_ctas_ppto.sucursal IS 'Sucursal';
 COMMENT ON COLUMN keplersc.cat_ctas_ppto.rango_ini IS 'Rango inicial de las cuentas de presupuesto';
 COMMENT ON COLUMN keplersc.cat_ctas_ppto.rango_fin IS 'Rango final de las cuentas de presupuesto';
-COMMENT ON COLUMN keplersc.cat_ctas_ppto.anio IS 'A�o de rangos de presupuesto';
+COMMENT ON COLUMN keplersc.cat_ctas_ppto.anio IS 'Anio de rangos de presupuesto';
 

@@ -9,9 +9,7 @@ DECLARE
 	--Esta Funcion solo es Accesible en el Modulo de Gastos 
 	--Autor: Jose Mendoza 
 	--Fecha: 2 Abril 2024
-	--Bitacora de cambios
-	--01 Diciembre 2025 Victor Salgado Integracion de ipuestos
-
+	
 	--Variables para xml
 	sucursal_id text;
 	tipo_desc text;
@@ -40,17 +38,6 @@ DECLARE
 	total_uuid text = '';
 	fechatimbrado_uuid text = '';
 	impuesto_uuid text = '';
-
-	--VCSS 002 Dic  2025, variables complemento de impuestos
-	isrret_uuid text = '';
-	ivaret_uuid text = '';
-	iepstras_uuid text = '';
-	totalimptoret_uuid text ='';
-	totalimptotras_uuid text ='';
-	subtotal_uuid text = '';
-	otroimptoa_uuid text = '';
-	otroimptob_uuid text = '';
-	concepto_factura_uuid text = '';
 
 	rec1 record;
 	recg record;
@@ -162,7 +149,7 @@ begin
 	strValor := (xpath('//row/c90/text()', xmlKDMM))[1];
 	if strValor is not null then
 		if strValor = 'S' then
-			mensajeError := 'Documento no valido ...';
+			mensajeError := 'Documento no v�lido ...';
 			raise exception '%',mensajeError;			
 		end if;
 	end if;
@@ -206,17 +193,6 @@ begin
 	total_uuid := coalesce((xpath('//document/uuid/total/text()',dataxml))[1]::text,'')::text;
 	fechatimbrado_uuid := coalesce((xpath('//document/uuid/fechatimbrado/text()',dataxml))[1]::text,'')::text;
 	impuesto_uuid := coalesce((xpath('//document/uuid/impuesto/text()',dataxml))[1]::text,'')::text;
-
-	--VCSS 06 Jul 2025 Complemento de impuestos
-	isrret_uuid := coalesce((xpath('//document/uuid/retisr/text()',dataxml))[1]::text,'0');
-	ivaret_uuid := coalesce((xpath('//document/uuid/retiva/text()',dataxml))[1]::text,'0');
-	iepstras_uuid := coalesce((xpath('//document/uuid/iepstras/text()',dataxml))[1]::text,'0');
-	totalimptoret_uuid := coalesce((xpath('//document/uuid/totalimptoret/text()',dataxml))[1]::text,'0');
-	totalimptotras_uuid := coalesce((xpath('//document/uuid/totalimptotras/text()',dataxml))[1]::text,'0');
-	subtotal_uuid := coalesce((xpath('//document/uuid/subtotal/text()',dataxml))[1]::text,'0');
-	otroimptoa_uuid := coalesce((xpath('//document/uuid/otroimptoa/text()',dataxml))[1]::text,'0');
-	otroimptob_uuid := coalesce((xpath('//document/uuid/otroimptob/text()',dataxml))[1]::text,'0');
-	concepto_factura_uuid := coalesce((xpath('//document/uuid/concepto_factura/text()',dataxml))[1]::text,'0');
 
 	if length(total_uuid) = 0 or length(fechatimbrado_uuid) = 0 then 
 		mensajeError := 'Los Datos Mandatorios del XML (UUID) No estan Completos ...';
@@ -278,16 +254,7 @@ begin
 		uuid_folio = folio_uuid, 
 		uuid_fecha = fechatimbrado_uuid, 
 		uuid_total = total_uuid, 
-		uuid_impuesto = impuesto_uuid,
-		uuid_retisr=isrret_uuid,
-		uuid_retiva=ivaret_uuid,
-		uuid_trasieps=iepstras_uuid,
-		uuid_totalimptotras=totalimptotras_uuid,
-		uuid_totalimptoret=totalimptoret_uuid,
-		uuid_subtotal=subtotal_uuid,
-		uuid_otroimptoa=otroimptoa_uuid,
-		uuid_otroimptob=otroimptob_uuid,
-		concepto_factura=concepto_factura_uuid
+		uuid_impuesto = impuesto_uuid
 	where c1 = sucursal_id and c2 = genero and c3 = naturaleza and c4 = grupo::int and c5 = tipo::int
 		and c6 = folio_operacion and c10 = proveedor and c11 = refanterior and upper(st_x_comprobar) = 'S';
 	
@@ -334,13 +301,26 @@ begin
 			mensajeError := 'Se presentaron inconsistencias en KDM1 en los siguientes campos : ' || mensajeError; 
 			raise exception '%', mensajeError;
 		end if;
+		-- For Testing, It Continuing ...
+		/*
+		raise exception '%''%''%''%''%''%''%''%''%',
+			rec1.c1,rec1.c2,rec1.c3,rec1.c4,rec1.c5,rec1.c6,rec1.c9,rec1.c10,rec1.c11;
+		*/
 	end if;
-
+	
+	-- TO TEST 	
+	/*raise exception '%', 'KMD1 Actualizada ...';*/
+	
 	--Obtener xml de KDM1 del Documento a Comprobar ya Actualizado
 	paso:= 'doc_gastos_comprobar.actualizar_DOC';
 	expSql = format('select * from keplersc.kdm1 where c1=%1$L and c2=%2$L and c3=%3$L and c4=%4$s and c5=%5$L and c6=%6$L',
 		sucursal_id,genero,naturaleza,grupo,tipo,folio_operacion);
 	select query_to_xml(expSql, true, false, '') into xmlKDM1;
+
+	--raise notice '%',xmlKDM1;
+
+
+	------- Start : Section Added by JMM 20240429 ... ADD OPER IN TBL USERACCESS 
 
 	--Block Added by JMM 20240805 ... For Extended Data 
 	if length( coalesce(referencia,'') ) > 0 then
@@ -352,6 +332,8 @@ begin
 
 	if length( ref_compl ) > 0 then
 		ref_compl := '[D] ' || rec1.c2 || rec1.c3 || rec1.c4 || rec1.c5 || rec1.c6 || ' | ' || ref_compl;
+		-- For Testing, It Continuing ...
+		-- raise exception 'ref_compl %', ref_compl;
 	else
 		raise exception '%', 'No se pudo determinar la Referencia de seguimiento para la Cuenta : ' || referencia;
 	end if;
@@ -396,19 +378,15 @@ begin
 		/*raise exception '%', 'Se Eliminaran las CxP en Ceros de la Referencia Asociada ...';*/
 	end if;
 
+
 	-- ACTUALIZACION KDUXG 
 	update keplersc.kduxg 
 	set st_x_comprobar = 'X', 
 		doc_refer_compl = refanterior,
 		fecha_comprobacion = to_date(fecha_operacion,'YYYY-MM-DD'),
 		c4 = referencia,
-		c9 = iva, --IVA trasladado
-		c8 = case when c6 <= 0 then 0 else round( (c6 * iva_factor) / (100 + iva_factor) , 2) end,
-		cargos_ivaret=ivaret_uuid,
-		abonos_isrret=isrret_uuid,
-		abonos_iepstras=iepstras_uuid,
-		abonos_otroimptoa=otroimptoa_uuid,
-		cargo_otroimptob=otroimptob_uuid
+		c9 = iva,
+		c8 = case when c6 <= 0 then 0 else round( (c6 * iva_factor) / (100 + iva_factor) , 2) end
 	where c1 = sucursal_id and c2 = genero and c3 = proveedor and c4 = refanterior and upper(st_x_comprobar) = 'S';
 	
 
@@ -497,12 +475,7 @@ begin
 	set doc_refer_compl = refanterior,
 		fecha_comprobacion = to_date(fecha_operacion,'YYYY-MM-DD'),
 		c3 = referencia, 
-		c14 = case when (c5 || c6) = 'XA' then iva else case when (c5 || c6) = 'XD' then round( (c13 * iva_factor) / (100 + iva_factor) , 2) else c14 end end,
-		ivaret=ivaret_uuid,
-		isrret=isrret_uuid,
-		iepstras=iepstras_uuid,
-		otroimptoa=otroimptoa_uuid,
-		otroimptob=otroimptob_uuid
+		c14 = case when (c5 || c6) = 'XA' then iva else case when (c5 || c6) = 'XD' then round( (c13 * iva_factor) / (100 + iva_factor) , 2) else c14 end end
 	where c1 = sucursal_id and c5 = genero and c2 = proveedor and c3 = refanterior /*Added by JMM 20240725*/ and c13 > 0;
 
 	-- COMPROBACION ACTUALIZACION KDUXE 

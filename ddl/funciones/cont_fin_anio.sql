@@ -103,11 +103,17 @@ begin
 	--Se tiene una tabla previa al anio base, se tomaran de saldos iniciales
 	--Agregar cuentas faltantes que finalizaron con saldo, solo agregar la cuenta con 0 en los campos
 	--numericos
+/*
 	expSql=format('insert into keplersc.%1$s select c1, c2 from (select * from keplersc.%2$s a 
 	where a.c1 not in (select b.c1 from keplersc.%1$s b where b.c1=a.c1)) as fl
 	where fl.c14+fl.c27+fl.c28+fl.c29+fl.c30+fl.c31+fl.c32+fl.c33+fl.c34+fl.c35+fl.c36+fl.c37+fl.c38 -
 	(fl.c63+fl.c64+fl.c65+fl.c66+fl.c67+fl.c68+fl.c69+fl.c70+fl.c71+fl.c72+fl.c73+fl.c74)<>0',
 			tabla_kdc1,tabla_ctas_anterior);
+*/
+	expSql=format('insert into keplersc.%1$s select c1, c2 from (select * from keplersc.%2$s a 
+		where a.c1 not in (select b.c1 from keplersc.%1$s b where b.c1=a.c1)) as fl',
+		tabla_kdc1,tabla_ctas_anterior);
+
 raise notice 'Insertando cuentas faltantes con saldo %',expSql;			
 	execute expSql;
 
@@ -281,7 +287,7 @@ exception
 	when others then
 		--Habilitar trigger
 		if tabla_kdc1 <> '' then
-			expSql:=concat('ALTER TABLE keplersc.', tabla_kdc1, ' ENABLE TRIGGER kdc1_upd_nivel_after_crud');
+			expSql := concat('create trigger kdc1_upd_nivel_after_crud after insert or delete or update on keplersc.', tabla_kdc1 ,' for each row execute function keplersc.cont_upd_nivel()');
 			execute expSql;
 		end if;
 		resultado := 0;

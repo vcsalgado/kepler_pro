@@ -98,7 +98,6 @@ DECLARE
 	get_adicionales text = '';
 	operacion_desc text = '';
 	xmlUsr xml;	
-	concepto_factura text = '';
 	
 begin
 	-- Inicializacion de variables
@@ -114,7 +113,6 @@ begin
 	tipo := (xpath('//document/k_tipon/r4/text()', dataxml))[1];
 	tipo_clave := (xpath('//document/k_tipon/r5/text()', dataxml))[1];	
 	uen := coalesce((xpath('//document/ambiente/uen/text()',dataxml))[1],'');
-	concepto_factura:= coalesce((xpath('//document/uuid/concepto_factura/text()',dataxml))[1]::text,'')::text;
 
 	operacion_desc := coalesce((xpath('//document/operacion/text()', dataxml))[1],''); /*Added by JMM 20240426*/
 
@@ -168,7 +166,7 @@ begin
 	strValor := (xpath('//row/c90/text()', xmlKDMM))[1];
 	if strValor is not null then
 		if strValor = 'S' then
-			mensajeError := 'Documento no valido ...';
+			mensajeError := 'Documento no v�lido ...';
 			raise exception '%',mensajeError;			
 		end if;
 	end if;
@@ -556,26 +554,10 @@ begin
 	---------------------------------------------------------------
 	--CONTABILIDAD. ALTA_CONT_TRANSFER_ROLLBACK
 	---------------------------------------------------------------
-	if 	concepto_factura = '' then
---raise exception 'transfer_rollback 01';
-		paso:= 'doc_gastos_comprobar.alta_cont_transfer_rollback';
-		select * into resultado, mensaje, adicionales from keplersc.alta_cont_transfer_rollback(dataxml,xmlKDM1,xmlKDMM,folio_operacion);
-		if resultado = '0' then
-			raise exception '%', mensaje;
-		end if;
-	else
---raise exception 'transfer_rollback 02';
-		--registrar poliza en kdm6
-		paso:= 'docdis.alta_cont_sec';
-		select * into get_resultado, get_mensaje, get_adicionales from keplersc.alta_cont_sec(dataxml, folio_operacion);
-		if get_resultado = '0' then
-			raise exception '%',get_mensaje;
-		end if;
-		paso:= 'docdis.alta_cont_concepto_factura';
-		select * into get_resultado, get_mensaje, get_adicionales from keplersc.alta_cont_concepto_factura(dataxml,xmlKDM1,xmlKDMM,folio_operacion);
-		if get_resultado = '0' then
-			raise exception '%',get_mensaje;
-		end if;
+	paso:= 'doc_gastos_comprobar.alta_cont_transfer_rollback';
+	select * into resultado, mensaje, adicionales from keplersc.alta_cont_transfer_rollback(dataxml,xmlKDM1,xmlKDMM,folio_operacion);
+	if resultado = '0' then
+		raise exception '%', mensaje;
 	end if;
 	---------------------------------------------------------------
 	--FIN CONTABILIDAD.

@@ -12,8 +12,7 @@ DECLARE
 	--12/03/2024 (JMM) :
 	---- Se incluyen validaciones en Contabilidad para el Nuevo Esquema de Gastos ( CxP ) 
 	--13/03/2025 Victor Salgado: Se elimina validacions para obetncion de folio
-	--26/09/2025 Víctor Salgado: Se integar impuestos Impuestos ISR, IEPS y Cedulares
-
+	
 	--Variables para xml
 	sucursal_id text;
 	tipo_desc text;
@@ -22,9 +21,6 @@ DECLARE
 	grupo text;
 	tipo text;
 	tipo_clave text;
-
-	--VCSS 26/09/2025 
-	concepto_factura text ='';
 
 	--xml Movimiento
 	xmlKDM1 xml;
@@ -70,7 +66,6 @@ begin
 	grupo := (xpath('//document/k_tipon/r3/text()', dataxml))[1];
 	tipo := (xpath('//document/k_tipon/r4/text()', dataxml))[1];
 	tipo_clave := (xpath('//document/k_tipon/r5/text()', dataxml))[1];	
-	concepto_factura:= coalesce((xpath('//document/uuid/concepto_factura/text()',dataxml))[1]::text,'')::text;
 
 /*
  * CUENTAS POR PAGAR Genero 'X'
@@ -80,83 +75,59 @@ begin
 
 	if genero = 'X' and naturaleza = 'D' then --Cuentas por pagar, Acredora	
 	
-	
-		--Moved here by JMM 20241011 
-		flag_gastos = '';
-		if xpath_exists('//document/ambiente/schema/text()', dataxml) = true /*false*/ then 
-			flag_gastos := coalesce((xpath('//document/ambiente/schema/text()',dataxml))[1]::text,'')::text;
+		if grupo = '40' and tipo = '1' then
+			valida_devoluciones = 1;
 		end if;
 
-		-- Added by JMM 20241011 
-		-- * * *  VALIDACION DE GPOS DE GASTO ... PARA USO DE DOCUMENTOS INTERNOS 
-		if upper(flag_gastos) in ('CXP_CONTR_REC_INTERNO','CXP_DEPOSITO_INTERNO','CXP_DEPOSITO_INTERNO_BAJA','CXP_CONTR_REC_INTERNO_BAJA') then
-		
-			paso:= 'docdis_xd.gpogasto_validacion';
-			select * into get_resultado, get_mensaje, get_adicionales from keplersc.gpogasto_validacion(dataxml);
+		-- UPD by JMM 20221118 (UPD condition to control entry)  
+		if grupo <> '31' and grupo <> '33' and grupo <> '36'  --Cheques y  VCSS Transferencias  
+			and (upper((xpath('//document/ambiente/uen/text()', dataxml))[1]::text) = 'VEN' and grupo <> '6' and grupo <> '7')
+		then
+			-- VALIDAR TOTALES Y DATOS GENERALES DE DOCTOS  ... PARA CUALQUIER X_D 
+			paso:= 'docdis_xd.valida_operacion_documentos';
+			select * into get_resultado, get_mensaje, get_adicionales from keplersc.valida_operacion_documentos(dataxml);
 			if get_resultado = '0' then
 				raise exception '%',get_mensaje;
 			end if;	
-		
+		end if;
+	
+		-- NEW  by JMM 20221118 (UPD condition to control entry) 
+		if ( (grupo = '6' or grupo = '7') and upper((xpath('//document/ambiente/uen/text()', dataxml))[1]::text) = 'VEN' ) then
+			-- Para UEN = AUT & GPO = 6 No debe entrar a la validacion 
+			
 		else 
-		
-			--  * * *  EJECUTA TODAS LAS VALIDACIONES ORIGINALES PREVIOS A ESTA DOCUMENTACION , ADAPTED BY JMM 20241011
-	
-	
-			if grupo = '40' and tipo = '1' then
-				valida_devoluciones = 1;
-			end if;
-	
-			-- UPD by JMM 20221118 (UPD condition to control entry)  
-			if grupo <> '31' and grupo <> '33' and grupo <> '36'  --Cheques y  VCSS Transferencias  
-				and (upper((xpath('//document/ambiente/uen/text()', dataxml))[1]::text) = 'VEN' and grupo <> '6' and grupo <> '7')
-			then
-				-- VALIDAR TOTALES Y DATOS GENERALES DE DOCTOS  ... PARA CUALQUIER X_D 
-				paso:= 'docdis_xd.valida_operacion_documentos';
-				select * into get_resultado, get_mensaje, get_adicionales from keplersc.valida_operacion_documentos(dataxml);
+			-- Original code 
+			if (xpath('//row/c8/text()', xmlKDMM))[1]::text = 'S' then
+				-- VALIDAR INVENTARIO ... PARA CUALQUIER X_D 
+				paso:= 'docdis_xd.valida_operacion_inventarios';
+				select * into get_resultado, get_mensaje, get_adicionales from keplersc.valida_operacion_inventarios(dataxml);
 				if get_resultado = '0' then
 					raise exception '%',get_mensaje;
 				end if;	
 			end if;
-		
-			-- NEW  by JMM 20221118 (UPD condition to control entry) 
-			if ( (grupo = '6' or grupo = '7') and upper((xpath('//document/ambiente/uen/text()', dataxml))[1]::text) = 'VEN' ) then
-				-- Para UEN = AUT & GPO = 6 No debe entrar a la validacion 
-				
-			else 
-				-- Original code 
-				if (xpath('//row/c8/text()', xmlKDMM))[1]::text = 'S' then
-					-- VALIDAR INVENTARIO ... PARA CUALQUIER X_D 
-					paso:= 'docdis_xd.valida_operacion_inventarios';
-					select * into get_resultado, get_mensaje, get_adicionales from keplersc.valida_operacion_inventarios(dataxml);
-					if get_resultado = '0' then
-						raise exception '%',get_mensaje;
-					end if;	
-				end if;
-			end if; 
+		end if; 
 	
-			-- VALIDAR DEVOLUCIONES COMPRA ... PARA LOS CASOS QUE APLICA ... 
-			-- Se debe incluir el PARAM del Tipo_Compra que aplique (1..3)
-			-- Actual : if grupo = '40' and tipo = '1'  
-			if valida_devoluciones = 1 then
-				paso:= 'docdis_xd.valida_operacion_devoluciones_compras';
-				select * into get_resultado, get_mensaje, get_adicionales from keplersc.valida_operacion_devoluciones_compras(dataxml, 1/*Tipo_Compra*/);
-				if get_resultado = '0' then
-					raise exception '%',get_mensaje;
-				end if;	
-			end if;
 	
-			---------------------------------------------------------------
-			--Validacion de la Nota de Cr�dito Y Anulacion
-			---------------------------------------------------------------
-			select * into get_resultado, get_mensaje, get_adicionales from keplersc.verify_nota_credito_anulacion(dataxml, xmlkdmm);
+		-- VALIDAR DEVOLUCIONES COMPRA ... PARA LOS CASOS QUE APLICA ... 
+		-- Se debe incluir el PARAM del Tipo_Compra que aplique (1..3)
+		-- Actual : if grupo = '40' and tipo = '1'  
+		if valida_devoluciones = 1 then
+			paso:= 'docdis_xd.valida_operacion_devoluciones_compras';
+			select * into get_resultado, get_mensaje, get_adicionales from keplersc.valida_operacion_devoluciones_compras(dataxml, 1/*Tipo_Compra*/);
 			if get_resultado = '0' then
 				raise exception '%',get_mensaje;
 			end if;	
+		end if;
 	
-		
-		end if;  --  * * *  IF .. ELSE / FOR INTERNAL DOCUMENTs by JMM 20241011
-		
-		
+	
+		---------------------------------------------------------------
+		--Validacion de la Nota de Crédito Y Anulacion
+		---------------------------------------------------------------
+		select * into get_resultado, get_mensaje, get_adicionales from keplersc.verify_nota_credito_anulacion(dataxml, xmlkdmm);
+		if get_resultado = '0' then
+			raise exception '%',get_mensaje;
+		end if;	
+	
 		---------------------------------------------------------------
 		--Obtencion de consecutivo
 		---------------------------------------------------------------
@@ -179,10 +150,6 @@ begin
 
 --		end if;
 	
-	
-		--For Testing by JMM 20241008
-		/*raise exception '%', 'Folio Operacion : ' || folio_operacion;*/
-	
 		
 		---------------------------------------------------------------
 		--INVENTARIOS. Registro de movimiento en kdm1.
@@ -193,7 +160,6 @@ begin
 		if get_resultado = '0' then
 			raise exception '%',get_mensaje;
 		end if;
-raise notice '%',paso; 	
 		---------------------------------------------------------------
 		--FIN INVENTARIOS. Registro de movimiento en kdm1
 		---------------------------------------------------------------	
@@ -212,14 +178,6 @@ raise notice '%',paso;
 			and (grupo <> '6' and grupo <> '7') 
 			
 		then
-			if upper(flag_gastos) in ('CXP_CONTR_REC_INTERNO','CXP_DEPOSITO_INTERNO','CXP_DEPOSITO_INTERNO_BAJA','CXP_CONTR_REC_INTERNO_BAJA') then
-				paso:= 'docdis_xd.gpogasto_validacion';
-				select * into get_resultado, get_mensaje, get_adicionales from keplersc.gpogasto_validacion(dataxml);
-				if get_resultado = '0' then
-					raise exception '%',get_mensaje;
-				end if;	
-			end if;
-
 			paso:= 'docdis_xd.mov_sec_alta';
 			select * into get_resultado, get_mensaje, get_adicionales from keplersc.mov_sec_alta(dataxml, folio_operacion);
 			if get_resultado = '0' then
@@ -229,7 +187,7 @@ raise notice '%',paso;
 		else
 		
 			---------------------------------------------------------------
-			--MOVIMIENTOS. Registro de movimientos en kdm6.
+			--MOVIMIENTOS. Registro de movimientos en kdm5.
 			--Resuelve: ALTA_DOC_SEC 
 			---------------------------------------------------------------
 			if (xpath('//row/c47/text()', xmlKDMM))[1]::text = 'S'  then
@@ -238,21 +196,7 @@ raise notice '%',paso;
 				if get_resultado = '0' then
 					raise exception '%',get_mensaje;
 				end if;
-
-				---------------------------------------------------------------
-				--MOVIMIENTOS. Registro de movimientos contables en kdm6.
-				--Resuelve: ALTA_CONT_SEC 
-				--Victor Salgado. Se agrega validacion concepto_factura para impuestos
-				---------------------------------------------------------------
-				if  (xpath('//row/c6/text()', xmlKDMM))[1]::text = 'S' and
-					((xpath('//row/c71/text()', xmlKDMM))[1]::text = 'S' or concepto_factura <> '' ) then
-					paso:= 'docdis.alta_cont_sec';
---raise exception '%',paso;
-					select * into get_resultado, get_mensaje, get_adicionales from keplersc.alta_cont_sec(dataxml, folio_operacion);
-					if get_resultado = '0' then
-						raise exception '%',get_mensaje;
-					end if;
-				end if;			
+			
 			else
 			
 				--MOVIMIENTOS. Registro de movimientos contables en kdm6.
@@ -265,7 +209,7 @@ raise notice '%',paso;
 					if get_resultado = '0' then
 						raise exception '%',get_mensaje;
 					end if;
---raise notice '%',paso;			
+			
 				end if;
 		
 			end if;
@@ -376,54 +320,37 @@ raise notice '%',paso;
 		--    k75:CXCPLIB.ALTA_CXCP.CXCP_ALTA_CONMOV		
 		---------------------------------------------------------------
 		if (xpath('//row/c7/text()', xmlKDMM))[1]::text  = 'S' then --Afecta Cuentas por Cobrar o Pagar
-		
-			-- Added by JMM 20241011 
-			-- * * *  GESTION DE MONTOS DE GPOS DE GASTO ... PARA USO DE DOCUMENTOS INTERNOS 
-			if upper(flag_gastos) in ('CXP_CONTR_REC_INTERNO','CXP_DEPOSITO_INTERNO','CXP_DEPOSITO_INTERNO_BAJA','CXP_CONTR_REC_INTERNO_BAJA') then
-		
-				paso:= 'docdis_xd.gpogasto_actualiza_montos';
-				select * into get_resultado, get_mensaje, get_adicionales from keplersc.gpogasto_actualiza_montos(dataxml);
+			--CXCP_SUSTITUCION			
+			if (xpath('//row/c80/text()', xmlKDMM))[1]::text = 'S'  --Gen CFD
+				and (xpath('//row/c86/text()', xmlKDMM))[1]::text = 'S' then --Abrir campo Importe
+				--TO DO: Desarrollar CXPLIB.CXCP_SUSTITUCION				
+			end if; --FIN CXCP_SUSTITUCION
+			
+			if (xpath('//row/c47/text()', xmlKDMM))[1]::text = 'S' then --Pantalla movimientos CXP
+				--CXCP_ALTA_CONMOV
+				paso:= 'docdis_xd.cxcp_alta_conmov';
+				select * into get_resultado, get_mensaje, get_adicionales from keplersc.cxcp_alta_conmov(dataxml, xmlKDMM, folio_operacion);
 				if get_resultado = '0' then
 					raise exception '%',get_mensaje;
 				end if;	
 			
-			else 
+			else
 			
-				--  * * *  EJECUTA TODAS LAS FUNCIONES ORIGINALES PREVIOS A ESTA DOCUMENTACION , ADAPTED BY JMM 20241011
+				--CXCP_ALTA_SINMOV
+				paso:= 'docdis_xd.cxcp_sinmov_kduxe_alta';
+				select * into get_resultado, get_mensaje, get_adicionales from keplersc.cxcp_sinmov_kduxe_alta(dataxml, xmlKDMM, folio_operacion);
+				if get_resultado = '0' then
+					raise exception '%',get_mensaje;
+				end if;					
 			
-				--CXCP_SUSTITUCION			
-				if (xpath('//row/c80/text()', xmlKDMM))[1]::text = 'S'  --Gen CFD
-					and (xpath('//row/c86/text()', xmlKDMM))[1]::text = 'S' then --Abrir campo Importe
-					--TO DO: Desarrollar CXPLIB.CXCP_SUSTITUCION				
-				end if; --FIN CXCP_SUSTITUCION
-				
-				if (xpath('//row/c47/text()', xmlKDMM))[1]::text = 'S' then --Pantalla movimientos CXP
-					--CXCP_ALTA_CONMOV
-					paso:= 'docdis_xd.cxcp_alta_conmov';
-					select * into get_resultado, get_mensaje, get_adicionales from keplersc.cxcp_alta_conmov(dataxml, xmlKDMM, folio_operacion);
-					if get_resultado = '0' then
-						raise exception '%',get_mensaje;
-					end if;	
-raise notice '%',paso;				
-				else				
-					--CXCP_ALTA_SINMOV
-					paso:= 'docdis_xd.cxcp_sinmov_kduxe_alta';
-					select * into get_resultado, get_mensaje, get_adicionales from keplersc.cxcp_sinmov_kduxe_alta(dataxml, xmlKDMM, folio_operacion);
-					if get_resultado = '0' then
-						raise exception '%',get_mensaje;
-					end if;					
-				
-					paso:= 'docdis_xd.cxcp_sinmov_kduxg_alta';
-					select * into get_resultado, get_mensaje, get_adicionales from keplersc.cxcp_sinmov_kduxg_alta(dataxml, get_adicionales::xml, folio_operacion);
-					if get_resultado = '0' then
-						raise exception '%',get_mensaje;
-					end if;	
-	
-				end if;
-				--FIN CXCP_ALTA_CONMOV
-			
-			end if; --  * * *  IF .. ELSE / FOR INTERNAL DOCUMENTs by JMM 20241011
-		
+				paso:= 'docdis_xd.cxcp_sinmov_kduxg_alta';
+				select * into get_resultado, get_mensaje, get_adicionales from keplersc.cxcp_sinmov_kduxg_alta(dataxml, get_adicionales::xml, folio_operacion);
+				if get_resultado = '0' then
+					raise exception '%',get_mensaje;
+				end if;	
+
+			end if;
+		--FIN CXCP_ALTA_CONMOV
 		end if;
 		---------------------------------------------------------------		
 		--FIN CxCP
@@ -501,20 +428,24 @@ raise notice '%',paso;
 		--CONTABILIDAD. ALTA_CONT
 		---------------------------------------------------------------
 		if (xpath('//row/c6/text()', xmlKDMM))[1]::text = 'S' then --Afecta contabilidad
+		
+			--Added by JMM 20240305
+			flag_gastos = '';
+			if xpath_exists('//document/ambiente/schema/text()', dataxml) = true /*false*/ then 
+				flag_gastos := coalesce((xpath('//document/ambiente/schema/text()',dataxml))[1]::text,'')::text;
+			end if;
+		
 			if upper(flag_gastos) = 'CXP_PAGO' or upper(flag_gastos) = 'CXP_TRANSFER'/*Added by JMM 20240312*/ then
-				if concepto_factura = '' then
-					paso:= 'docdis_xd.alta_cont_gastos';
-					select * into get_resultado, get_mensaje, get_adicionales from keplersc.alta_cont_gastos(dataxml,xmlKDM1,xmlKDMM,folio_operacion);
-					if get_resultado = '0' then
-						raise exception '%',get_mensaje;
-					end if;
-				else
-					paso:= 'docdis_xd.alta_cont_cont';
-					select * into get_resultado, get_mensaje, get_adicionales from keplersc.alta_cont_transfer(dataxml,xmlKDM1,xmlKDMM,folio_operacion);
-					if get_resultado = '0' then
-						raise exception '%',get_mensaje;
-					end if;	
+			
+				-- For Testing ...
+				/*raise exception '%','Accounting Func on Development ...';*/
+			
+				paso:= 'docdis_xd.alta_cont_gastos';
+				select * into get_resultado, get_mensaje, get_adicionales from keplersc.alta_cont_gastos(dataxml,xmlKDM1,xmlKDMM,folio_operacion);
+				if get_resultado = '0' then
+					raise exception '%',get_mensaje;
 				end if;
+					
 			else 
 		
 				-- Original Code (marked up) by JMM 20240305 
@@ -522,23 +453,11 @@ raise notice '%',paso;
 					-- CONTLIB.ALTA_CONT_CONT
 				else
 					if (xpath('//row/c47/text()', xmlKDMM))[1]::text = 'S' then --Pantalla movimientos CXP
-					
-						-- Added by JMM 20241011 ... As Validation for Internal Docs
-						if upper(flag_gastos) in ('CXP_CONTR_REC_INTERNO','CXP_DEPOSITO_INTERNO','CXP_DEPOSITO_INTERNO_BAJA','CXP_CONTR_REC_INTERNO_BAJA') then
-						
-							raise exception '%','La opcion  [alta_cont_mov]  No esta permitida para los Documentos Internos' || ' | ' || ' ' || ' | ' || 'Parametro C47 en KDMM';
-						
-						else
-					
-							-- Original Code (marked up) by JMM 20241011
-							paso:= 'docdis_xd.alta_cont_mov';
-							select * into get_resultado, get_mensaje, get_adicionales from keplersc.alta_cont_mov(dataxml,xmlKDM1,xmlKDMM,folio_operacion);
-							if get_resultado = '0' then
-								raise exception '%',get_mensaje;
-							end if;
-raise notice '%',paso;						
-						end if; -- IF ... ELSE / INTERNAL DOCs Added by JMM 20241011
-					
+						paso:= 'docdis_xd.alta_cont_mov';
+						select * into get_resultado, get_mensaje, get_adicionales from keplersc.alta_cont_mov(dataxml,xmlKDM1,xmlKDMM,folio_operacion);
+						if get_resultado = '0' then
+							raise exception '%',get_mensaje;
+						end if;
 					else
 						paso:= 'docdis_xd.cont_general_alta';
 						select * into get_resultado, get_mensaje, get_adicionales from keplersc.cont_general_alta(dataxml,xmlKDM1,xmlKDMM,folio_operacion);
@@ -550,6 +469,7 @@ raise notice '%',paso;
 				end if;
 			
 			end if; -- if : upper(flag_gastos)
+		
 		end if;	
 		---------------------------------------------------------------
 		--FIN CONTABILIDAD.
@@ -558,7 +478,10 @@ raise notice '%',paso;
 		
 	end if; ---*** Genero, Naturaleza
 	
---raise exception 'VCSS Error inyectado docdis_xd %',folio_operacion;
+	--For Testing ... by JMM 20240423 
+	/*raise exception '%', 'La Transaccion se Procesara ...';*/
+
+--raise exception '%',folio_operacion;
 	get_resultado:='1';
 	get_mensaje:=folio_operacion;
 	get_adicionales:=strResumen;

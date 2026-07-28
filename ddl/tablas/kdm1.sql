@@ -206,7 +206,7 @@ CREATE  TABLE keplersc.kdm1 (
   uuid_impuesto character varying(50) NOT NULL DEFAULT ''::character varying,
   cve_prov_pago character varying(7) NOT NULL DEFAULT ''::character varying,
   tipo_transfer character varying(1) NOT NULL DEFAULT ''::character varying,
-  st_x_comprobar character varying(3) NOT NULL DEFAULT ''::character varying,
+  st_x_comprobar character varying(1) NOT NULL DEFAULT ''::character varying,
   doc_refer_compl character varying(40) NOT NULL DEFAULT ''::character varying,
   fecha_comprobacion timestamp without time zone NOT NULL DEFAULT '1800-01-01 00:00:00'::timestamp without time zone,
   hora_comprobacion character varying(10) NOT NULL DEFAULT ''::character varying,
@@ -218,21 +218,18 @@ CREATE  TABLE keplersc.kdm1 (
   usr_comprobacion character varying(21) NOT NULL DEFAULT ''::character varying,
   uuid_retisr character varying(50) NOT NULL DEFAULT ''::character varying,
   uuid_retiva character varying(50) NOT NULL DEFAULT ''::character varying,
+  fol_origen character varying(7) NULL,
   grupo_id integer NULL,
   doc_refer_aux character varying(90) NOT NULL DEFAULT ''::character varying,
   tipo_relacion character varying(2) NOT NULL DEFAULT ''::character varying,
   motivo_cancelacion character varying(2) NOT NULL DEFAULT ''::character varying,
-  fol_origen character varying(7) NOT NULL DEFAULT '0'::character varying,
   uuid_trasieps character varying(50) NOT NULL DEFAULT '0'::character varying,
   uuid_totalimptotras character varying(50) NOT NULL DEFAULT '0'::character varying,
   uuid_totalimptoret character varying(50) NOT NULL DEFAULT '0'::character varying,
   uuid_subtotal character varying(50) NOT NULL DEFAULT '0'::character varying,
   uuid_otroimptoa character varying(50) NOT NULL DEFAULT '0'::character varying,
-  uuid_otroimptob character varying(50) NOT NULL DEFAULT '0'::character varying,
-  esquema character varying(30) NULL DEFAULT ''::character varying,
-  concepto_factura character varying(10) NOT NULL DEFAULT ''::character varying
+  uuid_otroimptob character varying(50) NOT NULL DEFAULT '0'::character varying
 ) TABLESPACE pg_default;
-CREATE INDEX IF NOT EXISTS kdm1_c1_idx ON keplersc.kdm1 USING btree (c1, fol_origen, c2) TABLESPACE pg_default;
 CREATE UNIQUE INDEX IF NOT EXISTS pk_kdm1 ON keplersc.kdm1 USING btree (c1, c2, c3, c4, c5, c6) TABLESPACE pg_default;
 CREATE INDEX IF NOT EXISTS sindkdm102 ON keplersc.kdm1 USING btree (c1, c10, c2, c3, c4, c5, c6) TABLESPACE pg_default;
 CREATE INDEX IF NOT EXISTS sindkdm103 ON keplersc.kdm1 USING btree (c1, c10, c7, c9, c2, c3, c4, c5, c6) TABLESPACE pg_default;
@@ -240,6 +237,7 @@ CREATE INDEX IF NOT EXISTS sindkdm104 ON keplersc.kdm1 USING btree (c1, c45, c42
 CREATE INDEX IF NOT EXISTS sindkdm105 ON keplersc.kdm1 USING btree (c1, c45, c9, c2, c3, c4, c5, c6) TABLESPACE pg_default;
 CREATE INDEX IF NOT EXISTS sindkdm106 ON keplersc.kdm1 USING btree (c1, c2, c36, c37, c38, c39, c3, c4, c5, c6) TABLESPACE pg_default;
 CREATE INDEX IF NOT EXISTS sindkdm107 ON keplersc.kdm1 USING btree (c11, c1, c2, c3, c4, c5, c6) TABLESPACE pg_default;
+CREATE INDEX IF NOT EXISTS kdm1_fol_origen_idx ON keplersc.kdm1 USING btree (fol_origen, c1, c2) TABLESPACE pg_default;
 COMMENT ON TABLE keplersc.kdm1 IS 'Encabezado de movimientos';
 COMMENT ON COLUMN keplersc.kdm1.uuid_trasieps IS 'IEPS Trasladado';
 COMMENT ON COLUMN keplersc.kdm1.uuid_totalimptotras IS 'Total de Impuestos trasladados';
@@ -251,7 +249,7 @@ COMMENT ON COLUMN keplersc.kdm1.uuid_retiva IS 'Retencion IVA del UUID - Ref c11
 COMMENT ON COLUMN keplersc.kdm1.uuid_retisr IS 'Retencion ISR del UUID - Ref c11';
 COMMENT ON COLUMN keplersc.kdm1.uuid_otroimptob IS 'Otros impuestos B';
 COMMENT ON COLUMN keplersc.kdm1.uuid_otroimptoa IS 'Otros impuestos adicionales A';
-COMMENT ON COLUMN keplersc.kdm1.uuid_impuesto IS 'Impuesto IVA Trasladado del UUID - Ref C11';
+COMMENT ON COLUMN keplersc.kdm1.uuid_impuesto IS 'Impuesto del UUID - Ref C11';
 COMMENT ON COLUMN keplersc.kdm1.uuid_folio IS 'Folio del UUID - Ref c11';
 COMMENT ON COLUMN keplersc.kdm1.uuid_fecha IS 'Fecha Timbrado del UUID - Ref c11';
 COMMENT ON COLUMN keplersc.kdm1.usr_comprobacion IS 'Usuario Comprobacion / Evaluacion Modulo Gastos';
@@ -266,12 +264,11 @@ COMMENT ON COLUMN keplersc.kdm1.grupo_id IS 'ID Agrupador Gastos - Contra Recibo
 COMMENT ON COLUMN keplersc.kdm1.gpo_aux IS 'Grupo Auxiliar';
 COMMENT ON COLUMN keplersc.kdm1.gen_aux IS 'Genero Auxiliar';
 COMMENT ON COLUMN keplersc.kdm1.folio_aux IS 'Folio Auxiliar';
+COMMENT ON COLUMN keplersc.kdm1.fol_origen IS 'Folio origen migracion';
 COMMENT ON COLUMN keplersc.kdm1.fecha_comprobacion IS 'Fecha Comprobacion CxP ( Modulo Gastos )';
-COMMENT ON COLUMN keplersc.kdm1.esquema IS 'Esquema del proceso';
 COMMENT ON COLUMN keplersc.kdm1.doc_refer_compl IS 'Documento Referencia Complemento ( Modulo Gastos )';
 COMMENT ON COLUMN keplersc.kdm1.doc_refer_aux IS 'Referencia Auxiliar Complementaria ( Modulo Gastos )';
 COMMENT ON COLUMN keplersc.kdm1.cve_prov_pago IS 'Clave Proveedor de Pago ( Modulo Gastos )';
-COMMENT ON COLUMN keplersc.kdm1.concepto_factura IS 'Id del Concepto general de la factura';
 COMMENT ON COLUMN keplersc.kdm1.c99 IS 'Nombre impresion factura';
 COMMENT ON COLUMN keplersc.kdm1.c98 IS 'IVA desglosado';
 COMMENT ON COLUMN keplersc.kdm1.c97 IS 'Tipo operacion';

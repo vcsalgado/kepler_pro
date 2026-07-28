@@ -8,7 +8,6 @@ AS $function$
 ---- para las Operaciones de los Documentos que aplique, dentro del Nvo Esquema de CxP 
 --23/04/2024 (JMM) :
 ---- Se Incluyen Valores para la Operacion del Contrarecibo Tipo DEV CLIENTES 
---09/09/2025 Victor Salgado: Agregar columnas complemento de impuestos
 
 declare
 	--Variables de definicion de documento
@@ -29,33 +28,6 @@ declare
 	monto_total text;
 	retencion_iva text;
 
-	--VCSS 07 Julio 2025 complemento de impuestos
-	monto_ivaret text = '0';
-	monto_isrret text = '0';
-	monto_iepstras text = '0';
-	monto_otroimptoa text = '0';
-	monto_otroimptob text = '0';
-	monto_totalimptoret text = '0';
-	monto_totalimptotras text = '0';
-	monto_subtotal text = '0';
-
-	cargos_ivaret_xg decimal = 0;
-	cargos_isrret_xg decimal = 0;
-	cargos_iepstras_xg decimal = 0;
-	cargos_otroimptoa_xg decimal = 0;
-	cargos_otroimptob_xg decimal = 0;
-	cargos_totalimptoret_xg decimal = 0;
-	cargos_totalimptotras_xg decimal = 0;
-	cargos_subtotal_xg decimal = 0;
-
-	abonos_ivaret_xg decimal = 0;
-	abonos_isrret_xg decimal = 0;
-	abonos_iepstras_xg decimal = 0;
-	abonos_otroimptoa_xg decimal = 0;
-	abonos_otroimptob_xg decimal = 0;
-	abonos_totalimptoret_xg decimal = 0;
-	abonos_totalimptotras_xg decimal = 0;
-	abonos_subtotal_xg decimal = 0;
 
 	--variables kduxg
 	factura_xg text;
@@ -116,18 +88,9 @@ begin
 	fecha_venc_xe := (xpath('//row/c12/text()',xmlKDUXE))[1];
 	monto_iva := (xpath('//row/c14/text()',xmlKDUXE))[1];		
 	monto_total := (xpath('//row/c13/text()',xmlKDUXE))[1];
-raise notice 'cte:% refer:% fec_exp_xe:% fec_venc_xe:% iva:% monto_total:%',clave_cteprov,referencia,fecha_exp_xe,fecha_venc_xe,monto_iva,monto_total;
+--	raise notice 'cte:% refer:% fec_exp_xe:% fec_venc_xe:% iva:% monto_total:%',clave_cteprov,referencia,fecha_exp_xe,fecha_venc_xe,monto_iva,monto_total;
 
-	--VCSS 07 Julio 2025 Complemento impuestos
-	monto_ivaret := coalesce((xpath('//row/ivaret/text()',xmlKDUXE))[1]::text,'0')::text;
-	monto_isrret := coalesce((xpath('//row/isrret/text()',xmlKDUXE))[1]::text,'0')::text;
-	monto_iepstras := coalesce((xpath('//row/iepstras/text()',xmlKDUXE))[1]::text,'0')::text;
-	monto_otroimptoa := coalesce((xpath('//row/otroimptoa/text()',xmlKDUXE))[1]::text,'0')::text;
-	monto_otroimptob := coalesce((xpath('//row/otroimptob/text()',xmlKDUXE))[1]::text,'0')::text;
-	monto_totalimptoret := coalesce((xpath('//row/totalimptoret/text()',xmlKDUXE))[1]::text,'0')::text;
-	monto_totalimptotras := coalesce((xpath('//row/totalimptotras/text()',xmlKDUXE))[1]::text,'0')::text;
-	monto_subtotal := coalesce((xpath('//row/subtotal/text()',xmlKDUXE))[1]::text,'0')::text;
---raise exception 'xmlKDUXE %',xmlKDUXE;
+
 	--  * * * * *  Added 20240229 by JMM, Proveedor de Pago  
 	clave_provpago := '';
 
@@ -207,58 +170,20 @@ raise notice 'cte:% refer:% fec_exp_xe:% fec_venc_xe:% iva:% monto_total:%',clav
 	end if;
 	--  * * * * *  End : Added 20240423 by JMM, Tipo Contra-Recibo DEV CLIENTES
 
-	-- New Code Added by JMM 20221120 
-	cargos_xg := 0;
-	abonos_xg := 0;
-	iva_cargos_xg := 0;
-	iva_abonos_xg := 0;
-
-	-- Codigo Original se incluyo dentro de este IF (UPD By JMM 20221120)
-	docpar_xg := 1;
-	cargos_xg := 0;
-	abonos_xg := 0;
-	iva_cargos_xg := 0;
-	iva_abonos_xg := 0;
-	saldado_xg := 0; --TO DO: Validar que para esta transaccion el saldo es 0 (es el inicial) 
-
-	if naturaleza = 'D' then
-		cargos_xg = monto_total::decimal;
-		iva_cargos_xg = monto_iva::decimal;
-	else
-		abonos_xg = monto_total::decimal;
-		iva_abonos_xg = monto_iva::decimal;
-	end if;
-
-	if naturaleza = 'D' then
-		cargos_xg = monto_total::decimal;
-		iva_cargos_xg = monto_iva::decimal; 
-		--VCSS 7 Julio 2025 Complemento de impuestos
-		cargos_ivaret_xg := monto_ivaret::numeric;
-		cargos_isrret_xg := monto_isrret::numeric;
-		cargos_iepstras_xg := monto_iepstras::numeric;
-		cargos_otroimptoa_xg := monto_otroimptoa::numeric;
-		cargos_otroimptob_xg := monto_otroimptob::numeric;
-		cargos_totalimptoret_xg := monto_totalimptoret::numeric;
-		cargos_totalimptotras_xg := monto_totalimptotras::numeric;
-		cargos_subtotal_xg := monto_subtotal::numeric;
-	else
-		abonos_xg = monto_total::decimal;
-		iva_abonos_xg = monto_iva::decimal;
-		--VCSS 7 Julio 2025 Complemento de impuestos
-		abonos_ivaret_xg := monto_ivaret::numeric;
-		abonos_isrret_xg := monto_isrret::numeric;
-		abonos_iepstras_xg := monto_iepstras::numeric;
-		abonos_otroimptoa_xg := monto_otroimptoa::numeric;
-		abonos_otroimptob_xg := monto_otroimptob::numeric;
-		abonos_totalimptoret_xg := monto_totalimptoret::numeric;
-		abonos_totalimptotras_xg := monto_totalimptotras::numeric;
-		abonos_subtotal_xg := monto_subtotal::numeric;
-	end if;
 
 	select count(*) into totalReg from keplersc.kduxg 	
 		where c1 = sucursal_id and c2= genero and c3 = clave_cteprov 
 			and c4 = referencia and c5 = 1;		
-	if totalReg = 0 then		
+	if totalReg = 0 then	
+	
+		-- Codigo Original se incluyo dentro de este IF (UPD By JMM 20221120)
+		docpar_xg := 1;
+		cargos_xg := 0;
+		abonos_xg := 0;
+		iva_cargos_xg := 0;
+		iva_abonos_xg := 0;
+		saldado_xg := 0; --TO DO: Validar que para esta transaccion el saldo es 0 (es el inicial) 
+	
 		--TODO, ver si aplica
 		/* Opcion 1
 		  if genero ='X' and naturaleza= 'A' and grupo = '12' then
@@ -271,20 +196,40 @@ raise notice 'cte:% refer:% fec_exp_xe:% fec_venc_xe:% iva:% monto_total:%',clav
 		if genero ='X' and naturaleza= 'A' and grupo = '12' then
 			monto_iva := 0 ;
 		end if;*/
+	
+		if naturaleza = 'D' then
+			cargos_xg = monto_total::decimal;
+			iva_cargos_xg = monto_iva::decimal; 
+		else
+			abonos_xg = monto_total::decimal;
+			iva_abonos_xg = monto_iva::decimal;
+		end if;
 
 		insert into keplersc.kduxg (c1,c2,c3,c4,c5,
 			c6,c7,c8,c9,c10,
-			c11,c12 ,cve_prov_pago/*Added 240229*/ ,st_x_comprobar/*Added 20240328*/,doc_refer_compl,/*Added 20240328*/ 
-			cargos_ivaret,cargos_isrret,cargos_iepstras,cargos_otroimptoa,cargos_otroimptob,cargos_totalimptoret,cargos_totalimptotras,
-			abonos_ivaret,abonos_isrret,abonos_iepstras,abonos_otroimptoa,abonos_otroimptob,abonos_totalimptoret,abonos_totalimptotras/* VCSS 07 Julio 2025 */)
+			c11,c12 ,cve_prov_pago/*Added 240229*/ ,st_x_comprobar/*Added 20240328*/,doc_refer_compl/*Added 20240328*/ )
 		values(sucursal_id,genero,clave_cteprov,referencia,docpar_xg,
 			cargos_xg,abonos_xg,iva_cargos_xg,iva_abonos_xg,saldado_xg,
-			fecha_exp_xe,fecha_venc_xe ,clave_provpago/*Added 240229*/ ,cr_st/*Added 20240328*/,ref_compl,/*Added 20240328*/ 
-			cargos_ivaret_xg,cargos_isrret_xg,cargos_iepstras_xg,cargos_otroimptoa_xg,cargos_otroimptob_xg,cargos_totalimptoret_xg,cargos_totalimptotras_xg,
-			abonos_ivaret_xg,abonos_isrret_xg,abonos_iepstras_xg,abonos_otroimptoa_xg,abonos_otroimptob_xg,abonos_totalimptoret_xg,abonos_totalimptotras_xg);
+			fecha_exp_xe,fecha_venc_xe ,clave_provpago/*Added 240229*/ ,cr_st/*Added 20240328*/,ref_compl/*Added 20240328*/ );
 		
 	else
-		
+	
+		-- New Code Added by JMM 20221120 
+		cargos_xg := 0;
+		abonos_xg := 0;
+		iva_cargos_xg := 0;
+		iva_abonos_xg := 0;
+	
+		if naturaleza = 'D' then
+			cargos_xg = monto_total::decimal;
+			iva_cargos_xg = monto_iva::decimal;
+			
+		else
+			abonos_xg = monto_total::decimal;
+			iva_abonos_xg = monto_iva::decimal;
+			
+		end if;
+	
 		select c11, c12 into fecha_exp, fecha_venc from keplersc.kduxg 	
 		where c1 = sucursal_id and c2 = genero and c3 = clave_cteprov 
 			and c4 = referencia and c5 = 1;	
@@ -300,17 +245,9 @@ raise notice 'cte:% refer:% fec_exp_xe:% fec_venc_xe:% iva:% monto_total:%',clav
 	
 		update keplersc.kduxg
 			set c6 = c6 + cargos_xg , c7 = c7 + abonos_xg , c8 = c8 + iva_cargos_xg , c9 = c9 + iva_abonos_xg 
-				, c11 = fecha_exp , c12 = fecha_venc 
-				, cargos_ivaret=cargos_ivaret+cargos_ivaret_xg, cargos_isrret=cargos_isrret+cargos_isrret_xg
-				, cargos_iepstras=cargos_iepstras+cargos_iepstras_xg, cargos_otroimptoa=cargos_otroimptoa+cargos_otroimptoa_xg
-				, cargos_otroimptob=cargos_otroimptob+cargos_otroimptob_xg, cargos_totalimptoret=cargos_totalimptoret+cargos_totalimptoret_xg
-				, cargos_totalimptotras=cargos_totalimptotras+cargos_totalimptotras_xg 
-				, abonos_ivaret=abonos_ivaret+abonos_ivaret_xg, abonos_isrret=abonos_isrret+abonos_isrret_xg 
-				, abonos_iepstras=abonos_iepstras+abonos_iepstras_xg, abonos_otroimptoa=abonos_otroimptoa+abonos_otroimptoa_xg
-				, abonos_otroimptob=abonos_otroimptob+abonos_otroimptob_xg, abonos_totalimptoret=abonos_totalimptoret+abonos_totalimptoret_xg
-				, abonos_totalimptotras=abonos_totalimptotras+abonos_totalimptotras_xg /* VCSS 07 Julio 2025 */  
+				, c11 = fecha_exp , c12 = fecha_venc   
 		where c1 = sucursal_id and c2 = genero and c3 = clave_cteprov and c4 = referencia and c5 = 1;
-
+	
 		select c6, c7 into var_cargos, var_abonos from keplersc.kduxg 	
 		where c1 = sucursal_id and c2 = genero and c3 = clave_cteprov 
 			and c4 = referencia and c5 = 1;

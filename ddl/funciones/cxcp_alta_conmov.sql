@@ -12,7 +12,6 @@ AS $function$
 --Fecha: 12/03/2024
 ---- Adapted Transfer Operations
 --29/10/2024 Miriam Santana: Se incluye validaciones para anulacion de cobro
---30/009/2025 Victor Salgado:  Se incluyen impuestos adicionales
 
 declare
 	--Variables de definicion de documento
@@ -31,13 +30,6 @@ declare
 	monto_total decimal;
 	fecha_operacion text;
 	plazo_vencimiento text;
-
-	monto_ivaret decimal = 0;
-	monto_isrret decimal = 0;
-	monto_iepstras decimal = 0;
-	monto_otroimptoa decimal = 0;
-	monto_otroimptob decimal = 0;
-	monto_subtotal decimal = 0;
 
 	vencimiento_fact text;
 
@@ -91,15 +83,7 @@ begin
 	intereses_moratorios := coalesce((xpath('//document/intereses_moratorios/text()', dataxml))[1]::text,'0.00')::decimal;
 	cobranza := coalesce((xpath('//document/cobranza/text()', dataxml))[1]::text,'0.00')::decimal;
 
-	--VCSS 30/09/2025 Complemento de impuestos
-
-	monto_isrret := coalesce((xpath('//document/uuid/retisr/text()',dataxml))[1]::text,'0')::decimal;
-	monto_ivaret := coalesce((xpath('//document/uuid/retiva/text()',dataxml))[1]::text,'0')::decimal;
-	monto_iepstras := coalesce((xpath('//document/uuid/iepstras/text()',dataxml))[1]::text,'0')::decimal;
-	monto_subtotal := coalesce((xpath('//document/uuid/subtotal/text()',dataxml))[1]::text,'0')::decimal;
-	monto_otroimptoa := coalesce((xpath('//document/uuid/otroimptoa/text()',dataxml))[1]::text,'0')::decimal;
-	monto_otroimptob := coalesce((xpath('//document/uuid/otroimptob/text()',dataxml))[1]::text,'0')::decimal;
-
+raise notice 'entro cxcp_alta_conmov';
 	--  * * * * *  Added 20240229 by JMM, Proveedor de Pago  
 	clave_provpago := '';
 
@@ -179,12 +163,10 @@ begin
 			
 		if totalReg = 0 then	
 					
-			insert into keplersc.kduxe (c1,c2,c3,c4,c5,c6,c7,c8,c9,c10,c11,c12,c13,c14,c15,c16 ,cve_prov_pago
-				,ivaret,isrret,iepstras,otroimptoa,otroimptob,subtotal)
+			insert into keplersc.kduxe (c1,c2,c3,c4,c5,c6,c7,c8,c9,c10,c11,c12,c13,c14,c15,c16 ,cve_prov_pago/*Added 240229*/ )
 			values(sucursal_id,clave_cteprov,referencia,documento,genero,naturaleza,
 			grupo::integer,tipo_clave::integer,folio_operacion,numero_partida,to_date(fecha_operacion,'YYYY-MM-DD'),
-			to_date(vencimiento_fact,'YYYY-MM-DD'),monto_total,monto_iva,intereses_moratorios,cobranza ,clave_provpago
-			,monto_ivaret,monto_isrret,monto_iepstras,monto_otroimptoa,monto_otroimptob,monto_subtotal );
+			to_date(vencimiento_fact,'YYYY-MM-DD'),monto_total,monto_iva,intereses_moratorios,cobranza ,clave_provpago/*Added 240229*/ );
 			
 		end if;
 

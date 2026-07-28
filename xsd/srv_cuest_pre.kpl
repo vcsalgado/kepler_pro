@@ -1,345 +1,1 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<pag xmlns="www.kepler.com.mx/2003/KSchema" roles="" tit="T&#237;tulo">
-	<grp dim="1,-1,10,20" brdr="0,0" clr="0,58,112" bclr="192,205,213" fnt="Arial,16" unfont="0" OnEnter="Exit()"><tab/><txt clr="0,0,0" fnt=",22">Actividades </txt>
-				<inp id="inp_titulo" dim="60,1" clr="0,0,0" clrBrdr="255,255,255" type="string" modify="N" available="N" fnt=",22"/>
-				<inp id="k_tipo_actividad_crud" dim="6,1" clr="0,0,0" clrBrdr="255,255,255" type="string" modify="N" available="N" visible="N" fnt=",22"/>
-			
-			<br/>
-			<tab/><hLine clr="0,0,0"/>
-			<br/><br/>
-			<tab/>
-		
-			<grp dim="80,11,7,12" bclr="236,240,243" fntClrBrdr="236,240,243" fntBrdr="Arial,18" hSpace="4" clrBrdr="0,58,112" brdr="0,5" fnt="Arial,16" tit="Detalle">
-		
-			
-			
-			<tab/><txt>Sucursal:</txt><sp/>
-			<inp id="k_suc_crud" dim="10,1" brdr="2,0" bclr="255,255,255" clr="64,64,64" clrBrdr="255,255,255" type="string" modify="N"/>
-			<txt>Orden: </txt>
-			<inp id="k_orden_crud" dim="15,1" brdr="2,0" bclr="255,255,255" clr="64,64,64" clrBrdr="255,255,255" type="string" modify="N"/><tab/>
-			<txt> Tipo:</txt>
-			<inp id="k_tipo_orden_crud" dim="10,1" brdr="2,0" bclr="255,255,255" clr="64,64,64" clrBrdr="255,255,255" type="string" modify="N"/><tab/>
-			<br/>
-			<tab/>
-			<txt>Clave Cliente: </txt>
-			<inp id="k_cliente_crud" dim="15,1" brdr="2,0" bclr="255,255,255" clr="64,64,64" clrBrdr="255,255,255" type="string" modify="N"/>
-			<txt>Nombre: </txt>
-			<inp id="k_nombre_crud" dim="70,1" brdr="2,0" bclr="255,255,255" clr="64,64,64" clrBrdr="255,255,255" type="string" modify="N"/>
-			<br/>
-			<tab/><txt>Tel Casa: </txt>
-			<inp id="k_tel_casa" dim="15,1" brdr="2,0" bclr="255,255,255" clr="64,64,64" clrBrdr="255,255,255" type="string" modify="N"/>
-			
-			<txt>Tel Oficina: </txt>
-			<inp id="k_tel_oficina" dim="15,1" brdr="2,0" bclr="255,255,255" clr="64,64,64" clrBrdr="255,255,255" type="string" modify="N"/>
-			
-			<txt>Ext: </txt>
-			<inp id="k_ext" dim="10,1" brdr="2,0" bclr="255,255,255" clr="64,64,64" clrBrdr="255,255,255" type="string" modify="N"/>
-			
-			<txt>Movil: </txt>
-			<inp id="k_movil" dim="15,1" brdr="2,0" bclr="255,255,255" clr="64,64,64" clrBrdr="255,255,255" type="string" modify="N"/>
-				
-			<txt>Radio: </txt>
-			<inp id="k_radio" dim="15,1" brdr="2,0" bclr="255,255,255" clr="64,64,64" clrBrdr="255,255,255" type="string" modify="N"/>
-			<tab/><br/>
-			
-				<tab/><txt>Unidad: </txt>
-			<inp id="k_unidad" dim="43,1" brdr="2,0" bclr="255,255,255" clr="64,64,64" clrBrdr="255,255,255" type="string" modify="N"/>
-			<txt>Serie: </txt>
-			<inp id="k_serie_crud" dim="20,1" brdr="2,0" bclr="255,255,255" clr="64,64,64" clrBrdr="255,255,255" type="string" modify="N"/>
-			<tab/><txt>Kilometraje: </txt>
-			<inp id="k_kilometraje" dim="15,1" brdr="2,0" bclr="255,255,255" clr="64,64,64" clrBrdr="255,255,255" type="string" modify="N"/>
-		</grp>	
-		
-		<br/>	<br/>
-		<tab/>
-			<grp dim="80,14,7,12" bclr="236,240,243" fntClrBrdr="236,240,243" fntBrdr="Arial,18" hSpace="4" clrBrdr="0,58,112" brdr="0,5" fnt="Arial,16" tit="Detalles del Trabajo">
-			
-				<tab/><tbl id="tbl_trabajos" dim="108,8" brdr="1,0" clr="64,64,64" bclr="236,240,243" clrCur="255,255,255" clrBrdr="64,64,64" clrHead="0,58,112" bclrHead="236,240,243">
-			<col id="trabajo" name="Trabajo"/>
-			<col id="tecnico" name="Tecnico"/>
-			<col id="resultado" name="Resultado" type="capital"  available="Y" nc="70"/>
-			<col id="comentarios" name="Comentarios" type="string" nc="70"/>
-			<col id="observaciones" name="Observaciones" type="string" nc="70"/>
-			<col id="recomendaciones" name="Recomendaciones" type="string" nc="70"/></tbl>
-		
-			<tab/><br/>
-		</grp>	
-		
-		<br/><br/>	
-		<tab/>
-		<grp dim="80,19,7,12" bclr="236,240,243" fntClrBrdr="236,240,243" fntBrdr="Arial,18" hSpace="4" clrBrdr="0,58,112" brdr="0,5" fnt="Arial,16" tit="Cuestionario">
-			<sp/>
-				<tab/><tbl id="tbl_cuestionario" dim="108,9" brdr="1,0" clr="64,64,64" bclr="236,240,243" clrCur="255,255,255" clrBrdr="64,64,64" clrHead="0,58,112" bclrHead="236,240,243">
-			<col id="clave" name="Clave" modify="N" available="N" visible="N"/>
-			<col id="pregunta" name="Pregunta" modify="N" available="N"/>
-			<col id="respuesta" name="Respuesta" type="capital" modify="N" available="Y" OnMouseD="cambia_n"/>
-			<col id="comentario" name="Comentario" type="string" nc="70"/></tbl>
-			<tab/><br/><br/>
-			<sp/><tab/>
-			<bot id="bot" dim="20,0" brdr="5" text="Guardar" OnEnter="Execute()" default="0"/>
-			<sp/>
-			<bot id="bot_aceptar" dim="20,0" brdr="5" text="Aceptar" OnEnter="salir()" default="0" available="N" modify="N" visible="N"/>
-			<br/>
-			<br/>
-		
-			<br/>
-			<br/>
-		</grp>
-	</grp>
-	<script>
-		InstallDriver("KDB75");
-		class Main {
-			var frn,kdb;
-			var k_modo, usuario;
-			var k_suc, k_orden, k_tipo, k_serie, k_cliente, k_nombre, resVal;
-			var cmd,cubo,ok,mensajeError;
-			fun Main() {
-				frn=new FRNT;
-				kdb=new KDB;
-				kdb.connect();
-				k_modo = frn.param(0);
-				k_suc = frn.param(1);
-				k_tipo = frn.param(2);
-				k_orden = frn.param(3);
-				k_serie = frn.param(4);
-				k_cliente = frn.param(5);
-				k_nombre = frn.param(6);
-				usuario = frn.config("user","name");
-				inicializa();
-
-			}
-
-	
-
-		fun salir(){
-			frn.exit();		
-		}
-
-		fun Execute() {
-			var cmdQuery;
-
-		
-			var resultado_confirmacion = frn.message("¿Desea continuar?","Mensaje de Confirmacion", 2);
-			if (resultado_confirmacion &! 1)  {
-				return;
-			}
-			
-			var xmlRequest = getXml(frn.dataPag());	
-			setXml(xmlRequest ,"k_n_renglon",frn.N("tbl_cuestionario") - 1);
-			setXml(xmlRequest ,"usuario",usuario);
-			
-			frn.lib("libGeneral.kpl","FileSave",xmlRequest ,"C:\Basura\xmlRequest ");
-					cmdQuery="SELECT * FROM keplersc.srv_cuest_pre('<document>" & getXmlStr(xmlRequest ,"EOF:13_10") & "</document>')";
-			cubo = frn.lib("libGeneral.kpl","EjecutarSql",cmdQuery,"srv_cuest_pre.Execute()");	
-			frn.lib("libGeneral.kpl","FileSave",cubo ,"C:\Basura\cuboResultados");					
-			var resultado=getXml(cubo ,"resultado");
-			
-			if(resultado &= "0"){
-				mensajeError = getXml(cubo ,"mensaje");
-				frn.message(mensajeError,"Error","Aceptar");
-				return;
-			}
-				frn.message("Registro Guardado","Mensaje","Aceptar");
-				k_modo = "CONSULTA";
-				ctlrs_opcion();
-
-		}	
-
-
-			fun inicializa(){
-
-				if (k_modo &= "CUESTPRE"){
-					k_modo = "PRE";
-				}
-
-				if (k_modo &= "CUESTENT"){
-					k_modo = "ENT";
-				}
-				
-				if (k_modo &= "CUESTPSFU"){
-					k_modo = "PSFU";
-				}
-				
-				if (k_modo &= "CUESTWLKA"){
-					k_modo = "WLKA";
-				}
-
-				frn.set("k_tipo_actividad_crud",k_modo);
-				carga_dat_tabla();
-				ctlrs_opcion();
-			
-			}
-
-
-		fun ctlrs_opcion(){
-			var estatus_orden;
-			frn.set("k_suc_crud",k_suc);
-			frn.set("k_orden_crud",k_orden);
-			frn.set("k_tipo_orden_crud",k_tipo);
-			frn.set("k_serie_crud",k_serie);
-			frn.set("k_cliente_crud",k_cliente);
-			frn.set("k_nombre_crud",k_nombre);
-			
-			
-			var query_cli = " select c7,c8,c37,c9,c36 from keplersc.kdud " &
-			" where c2='" & k_cliente & "'";
-		
-			frn.lib("libGeneral.kpl","FileSave",query_cli ,"C:\Basura\query_cli ");									
-
-			cubo = frn.lib("libGeneral.kpl","EjecutarSqlSel",query_cli ,"srv_cuest_pre.ctlrs_opcion()");
-			ok=getXmlAtt(cubo,"ok");
-			if(ok &! "" && !ok){
-				mensajeError = getXmlAtt(cubo,"native3");
-				mensajeError = frn.lib("libGeneral.kpl","ErrorBD",mensajeError);
-				frn.message(mensajeError,"Error","Aceptar");
-				return;
-			}
-
-			frn.set("k_tel_casa" , getXmlAtt(cubo,"r0" ,"c7") );
-			frn.set("k_tel_oficina" , getXmlAtt(cubo,"r0" ,"c8") );
-			frn.set("k_ext" , getXmlAtt(cubo,"r0" ,"c37") );
-			frn.set("k_movil" , getXmlAtt(cubo,"r0" ,"c9") );
-			frn.set("k_radio" , getXmlAtt(cubo,"r0" ,"c36") );
-			
-			
-			var query_vin = " select c2 || '/' || c3 || '/' || c10 || '/' || c11  as unidad, c12 from keplersc.kdserie where c1= '"& k_serie & "'";
-		
-			frn.lib("libGeneral.kpl","FileSave",query_vin ,"C:\Basura\query_vin ");									
-
-			cubo = frn.lib("libGeneral.kpl","EjecutarSqlSel",query_vin ,"srv_cuest_pre.ctlrs_opcion()");
-			ok=getXmlAtt(cubo,"ok");
-			if(ok &! "" && !ok){
-				mensajeError = getXmlAtt(cubo,"native3");
-				mensajeError = frn.lib("libGeneral.kpl","ErrorBD",mensajeError);
-				frn.message(mensajeError,"Error","Aceptar");
-				return;
-			}
-
-			frn.set("k_unidad" , getXmlAtt(cubo,"r0" ,"unidad") );
-			frn.set("k_kilometraje" , getXmlAtt(cubo,"r0" ,"c12") );
-			
-	
-			var query_trabajos = " select pun.c8 as trabajo, ope.c1 || ' - ' || ope.c3 as tecnico, res.c11 as resultados,  " &
-			 "  res.c14 as comentarios,  res.c15 as observaciones, res.c16 as recomendaciones from keplersc.kdpun as pun " &
-		    " left join keplersc.kdpunres as res on pun.c1=res.c1 and pun.c2=res.c2 and pun.c3=res.c3 and pun.c4=res.c4 " &
-			 " inner join keplersc.kdoper as ope on pun.c9=ope.c1 where pun.c1= '"& k_suc & "' and pun.c2='" & k_tipo & "' and pun.c3='" & k_orden & "' order by pun.c4 ";
-		
-			frn.lib("libGeneral.kpl","FileSave",query_trabajos ,"C:\Basura\query_trabajos ");									
-
-			var cubo_trabajos  = frn.lib("libGeneral.kpl","EjecutarSqlSel",query_trabajos ,"srv_cuest_pre.ctlrs_opcion()");
-			ok=getXmlAtt(cubo,"ok");
-			if(ok &! "" && !ok){
-				mensajeError = getXmlAtt(cubo,"native3");
-				mensajeError = frn.lib("libGeneral.kpl","ErrorBD",mensajeError);
-				frn.message(mensajeError,"Error","Aceptar");
-				return;
-			}
-
-			frn.setX(cubo_trabajos  ,"tbl_trabajos");
-
-			cmd = " select c7 as estatus from keplersc.kdord where c1= '"& k_suc & "' and c2='" & k_tipo & "' and c3='" & k_orden & "'";				
-			cubo = frn.lib("libGeneral.kpl","EjecutarSqlSel",cmd,"srv_cuest_pre.ctlrs_opcion()");
-			ok=getXmlAtt(cubo,"ok");
-			if(ok &! "" && !ok){
-				mensajeError = getXmlAtt(cubo,"native3");
-				mensajeError = frn.lib("libGeneral.kpl","ErrorBD",mensajeError);
-				frn.message(mensajeError,"Error","Aceptar");
-				return;
-			}
-         estatus_orden = getXmlAtt(cubo,"r0","estatus");
-
-			if (k_modo &= "ENT"){
-
-				frn.setAtt("grupo_dinamico", "available", "Y" );
-				frn.setAtt("grupo_dinamico", "modify", "Y" );
-				frn.setAtt("grupo_dinamico", "visible", "Y" );
-				frn.set("inp_titulo", "Entrega");
-
-			}else { 
-
-				frn.setAtt("grupo_dinamico", "available", "N" );
-				frn.setAtt("grupo_dinamico", "modify", "N" );
-				frn.setAtt("grupo_dinamico", "visible", "N" );
-
-
-				if (k_modo &= "PRE" ){
-					frn.set("inp_titulo", "Pre-entrega");
-				}
-				
-				else if (k_modo &= "PSFU"){
-					frn.set("inp_titulo", "Seguimiento Posventa");
-				}
-				
-				else if (k_modo &= "WLKA"){
-					frn.set("inp_titulo", "Walkaround");
-					if (estatus_orden >= 10){
-						frn.setAtt("bot", "available", "N" );
-						frn.setAtt("bot", "visible", "N" );
-					} else {
-						frn.setAtt("bot", "available", "Y" );
-						frn.setAtt("bot", "visible", "Y" );
-					}
-				}									
-			}
-
-			if (k_modo&="CONSULTA"){
-				frn.setAtt("grupo_dinamico", "available", "N" );
-				frn.setAtt("grupo_dinamico", "modify", "N" );
-				frn.setAtt("bot_aceptar", "available", "Y" );
-				frn.setAtt("bot_aceptar", "modify", "Y" );
-				frn.setAtt("bot_aceptar", "visible", "Y" );
-				frn.setAtt("bot", "available", "N" );
-				frn.setAtt("bot", "visible", "N" );
-
-			}
-
-		}		
-
-			fun cambia_n(){
-				
-				var renglon = frn.getIdJ("tbl_cuestionario");
-				var val = frn.get("tbl_cuestionario", renglon,"respuesta");
-
-				if (val &= "S"){
-					frn.setX("N" ,"tbl_cuestionario",renglon,"respuesta");
-				}else{
-					frn.setX("S" ,"tbl_cuestionario",renglon,"respuesta");
-				}
-
-			}
-
-	      fun carga_dat_tabla(){
-				var cmdQuery = "SELECT k.clave as clave, k.descripcion as pregunta, coalesce(k2.col_resultado,'N') as respuesta, coalesce(k2.col_comentario,'') as comentario " &
-				" FROM  keplersc.kdcatcuest k LEFT JOIN  keplersc.kdordcuest k2 ON k.clave = k2.col_clave_actividad AND k.tipo_actividad = k2.col_tipo_actividad " &
-				" AND k2.col_sucursal = '"& k_suc &"' AND k2.col_tipo_orden = '" & k_tipo & "' AND k2.col_folio_orden = '" & k_orden & "'" &
-				" WHERE k.tipo_actividad = '" & k_modo & "' ORDER BY  k.orden";
-				
-				frn.lib("libGeneral.kpl","FileSave",cmdQuery,"C:\Basura\cmdQuery");									
-
-				cubo = frn.lib("libGeneral.kpl","EjecutarSqlSel",cmdQuery,"srv_cuest_pre.carga_dat_tabla()");
-				frn.lib("libGeneral.kpl","FileSave",cubo,"C:\Basura\cubo");
-				ok=getXmlAtt(cubo,"ok");
-				if(ok &! "" && !ok){
-					mensajeError = getXmlAtt(cubo,"native3");
-					mensajeError = frn.lib("libGeneral.kpl","ErrorBD",mensajeError);
-					frn.message(mensajeError,"Error","Aceptar");
-					return;
-				}
-				
-				frn.setX(cubo,"tbl_cuestionario");
-				/*
-				var lenght_xml = nXml(cubo); 
-
-				if(lenght_xml != 0 ){
-					for (var i=0;i<lenght_xml;i++) {
-						var n ="N";
-						frn.setX(n ,"tbl_cuestionario",i,"respuesta");
-
-					}
-				}
-				*/
-			}
-
-		}
-	</script>
-</pag>
+<?xml version="1.0" encoding="UTF-8"?><pag xmlns="www.kepler.com.mx/2003/KSchema" roles="" tit="T&#237;tulo">	<grp dim="1,-1,10,20" brdr="0,0" clr="0,58,112" bclr="192,205,213" fnt="Arial,16" unfont="0" OnEnter="Exit()"><tab/><txt clr="0,0,0" fnt=",22">Actividades </txt>				<inp id="inp_titulo" dim="60,1" clr="0,0,0" clrBrdr="255,255,255" type="string" modify="N" available="N" fnt=",22"/>				<inp id="k_tipo_actividad_crud" dim="6,1" clr="0,0,0" clrBrdr="255,255,255" type="string" modify="N" available="N" visible="N" fnt=",22"/>						<br/>			<tab/><hLine clr="0,0,0"/>			<br/><br/>			<tab/>					<grp dim="80,11,7,12" bclr="236,240,243" fntClrBrdr="236,240,243" fntBrdr="Arial,18" hSpace="4" clrBrdr="0,58,112" brdr="0,5" fnt="Arial,16" tit="Detalle">											<tab/><txt>Sucursal:</txt><sp/>			<inp id="k_suc_crud" dim="10,1" brdr="2,0" bclr="255,255,255" clr="64,64,64" clrBrdr="255,255,255" type="string" modify="N"/>			<txt>Orden: </txt>			<inp id="k_orden_crud" dim="15,1" brdr="2,0" bclr="255,255,255" clr="64,64,64" clrBrdr="255,255,255" type="string" modify="N"/><tab/>			<txt> Tipo:</txt>			<inp id="k_tipo_orden_crud" dim="10,1" brdr="2,0" bclr="255,255,255" clr="64,64,64" clrBrdr="255,255,255" type="string" modify="N"/><tab/>			<br/>			<tab/>			<txt>Clave Cliente: </txt>			<inp id="k_cliente_crud" dim="15,1" brdr="2,0" bclr="255,255,255" clr="64,64,64" clrBrdr="255,255,255" type="string" modify="N"/>			<txt>Nombre: </txt>			<inp id="k_nombre_crud" dim="70,1" brdr="2,0" bclr="255,255,255" clr="64,64,64" clrBrdr="255,255,255" type="string" modify="N"/>			<br/>			<tab/><txt>Tel Casa: </txt>			<inp id="k_tel_casa" dim="15,1" brdr="2,0" bclr="255,255,255" clr="64,64,64" clrBrdr="255,255,255" type="string" modify="N"/>						<txt>Tel Oficina: </txt>			<inp id="k_tel_oficina" dim="15,1" brdr="2,0" bclr="255,255,255" clr="64,64,64" clrBrdr="255,255,255" type="string" modify="N"/>						<txt>Ext: </txt>			<inp id="k_ext" dim="10,1" brdr="2,0" bclr="255,255,255" clr="64,64,64" clrBrdr="255,255,255" type="string" modify="N"/>						<txt>Movil: </txt>			<inp id="k_movil" dim="15,1" brdr="2,0" bclr="255,255,255" clr="64,64,64" clrBrdr="255,255,255" type="string" modify="N"/>							<txt>Radio: </txt>			<inp id="k_radio" dim="15,1" brdr="2,0" bclr="255,255,255" clr="64,64,64" clrBrdr="255,255,255" type="string" modify="N"/>			<tab/><br/>							<tab/><txt>Unidad: </txt>			<inp id="k_unidad" dim="43,1" brdr="2,0" bclr="255,255,255" clr="64,64,64" clrBrdr="255,255,255" type="string" modify="N"/>			<txt>Serie: </txt>			<inp id="k_serie_crud" dim="20,1" brdr="2,0" bclr="255,255,255" clr="64,64,64" clrBrdr="255,255,255" type="string" modify="N"/>			<tab/><txt>Kilometraje: </txt>			<inp id="k_kilometraje" dim="15,1" brdr="2,0" bclr="255,255,255" clr="64,64,64" clrBrdr="255,255,255" type="string" modify="N"/>		</grp>					<br/>	<br/>		<tab/>			<grp dim="80,14,7,12" bclr="236,240,243" fntClrBrdr="236,240,243" fntBrdr="Arial,18" hSpace="4" clrBrdr="0,58,112" brdr="0,5" fnt="Arial,16" tit="Detalles del Trabajo">							<tab/><tbl id="tbl_trabajos" dim="108,8" brdr="1,0" clr="64,64,64" bclr="236,240,243" clrCur="255,255,255" clrBrdr="64,64,64" clrHead="0,58,112" bclrHead="236,240,243">			<col id="trabajo" name="Trabajo"/>			<col id="tecnico" name="Tecnico"/>			<col id="resultado" name="Resultado" type="capital"  available="Y" nc="70"/>			<col id="comentarios" name="Comentarios" type="string" nc="70"/>			<col id="observaciones" name="Observaciones" type="string" nc="70"/>			<col id="recomendaciones" name="Recomendaciones" type="string" nc="70"/></tbl>					<tab/><br/>		</grp>					<br/><br/>			<tab/>		<grp dim="80,19,7,12" bclr="236,240,243" fntClrBrdr="236,240,243" fntBrdr="Arial,18" hSpace="4" clrBrdr="0,58,112" brdr="0,5" fnt="Arial,16" tit="Cuestionario">			<sp/>				<tab/><tbl id="tbl_cuestionario" dim="108,9" brdr="1,0" clr="64,64,64" bclr="236,240,243" clrCur="255,255,255" clrBrdr="64,64,64" clrHead="0,58,112" bclrHead="236,240,243">			<col id="clave" name="Clave" modify="N" available="N" visible="N"/>			<col id="pregunta" name="Pregunta" modify="N" available="N"/>			<col id="respuesta" name="Respuesta" type="capital" modify="N" available="Y" OnMouseD="cambia_n"/>			<col id="comentario" name="Comentario" type="string" nc="70"/></tbl>			<tab/><br/><br/>			<sp/><tab/>			<bot id="bot" dim="20,0" brdr="5" text="Guardar" OnEnter="Execute()" default="0"/>			<sp/>			<bot id="bot_aceptar" dim="20,0" brdr="5" text="Aceptar" OnEnter="salir()" default="0" available="N" modify="N" visible="N"/>			<br/>			<br/>					<br/>			<br/>		</grp>	</grp>	<script>		InstallDriver("KDB75");		class Main {			var frn,kdb;			var k_modo, usuario;			var k_suc, k_orden, k_tipo, k_serie, k_cliente, k_nombre, resVal;			var cmd,cubo,ok,mensajeError;			fun Main() {				frn=new FRNT;				kdb=new KDB;				kdb.connect();				k_modo = frn.param(0);				k_suc = frn.param(1);				k_tipo = frn.param(2);				k_orden = frn.param(3);				k_serie = frn.param(4);				k_cliente = frn.param(5);				k_nombre = frn.param(6);				usuario = frn.config("user","name");				inicializa();			}			fun salir(){			frn.exit();				}		fun Execute() {			var cmdQuery;					var resultado_confirmacion = frn.message("¿Desea continuar?","Mensaje de Confirmacion", 2);			if (resultado_confirmacion &! 1)  {				return;			}						var xmlRequest = getXml(frn.dataPag());				setXml(xmlRequest ,"k_n_renglon",frn.N("tbl_cuestionario") - 1);			setXml(xmlRequest ,"usuario",usuario);						frn.lib("libGeneral.kpl","FileSave",xmlRequest ,"C:\Basura\xmlRequest ");					cmdQuery="SELECT * FROM keplersc.srv_cuest_pre('<document>" & getXmlStr(xmlRequest ,"EOF:13_10") & "</document>')";			cubo = frn.lib("libGeneral.kpl","EjecutarSql",cmdQuery,"srv_cuest_pre.Execute()");				frn.lib("libGeneral.kpl","FileSave",cubo ,"C:\Basura\cuboResultados");								var resultado=getXml(cubo ,"resultado");						if(resultado &= "0"){				mensajeError = getXml(cubo ,"mensaje");				frn.message(mensajeError,"Error","Aceptar");				return;			}				frn.message("Registro Guardado","Mensaje","Aceptar");				k_modo = "CONSULTA";				ctlrs_opcion();		}				fun inicializa(){				if (k_modo &= "CUESTPRE"){					k_modo = "PRE";				}				if (k_modo &= "CUESTENT"){					k_modo = "ENT";				}								if (k_modo &= "CUESTPSFU"){					k_modo = "PSFU";				}								if (k_modo &= "CUESTWLKA"){					k_modo = "WLKA";				}				frn.set("k_tipo_actividad_crud",k_modo);				carga_dat_tabla();				ctlrs_opcion();						}		fun ctlrs_opcion(){			var estatus_orden;			frn.set("k_suc_crud",k_suc);			frn.set("k_orden_crud",k_orden);			frn.set("k_tipo_orden_crud",k_tipo);			frn.set("k_serie_crud",k_serie);			frn.set("k_cliente_crud",k_cliente);			frn.set("k_nombre_crud",k_nombre);									var query_cli = " select c7,c8,c37,c9,c36 from keplersc.kdud " &			" where c2='" & k_cliente & "'";					frn.lib("libGeneral.kpl","FileSave",query_cli ,"C:\Basura\query_cli ");												cubo = frn.lib("libGeneral.kpl","EjecutarSqlSel",query_cli ,"srv_cuest_pre.ctlrs_opcion()");			ok=getXmlAtt(cubo,"ok");			if(ok &! "" && !ok){				mensajeError = getXmlAtt(cubo,"native3");				mensajeError = frn.lib("libGeneral.kpl","ErrorBD",mensajeError);				frn.message(mensajeError,"Error","Aceptar");				return;			}			frn.set("k_tel_casa" , getXmlAtt(cubo,"r0" ,"c7") );			frn.set("k_tel_oficina" , getXmlAtt(cubo,"r0" ,"c8") );			frn.set("k_ext" , getXmlAtt(cubo,"r0" ,"c37") );			frn.set("k_movil" , getXmlAtt(cubo,"r0" ,"c9") );			frn.set("k_radio" , getXmlAtt(cubo,"r0" ,"c36") );									var query_vin = " select c2 || '/' || c3 || '/' || c10 || '/' || c11  as unidad, c12 from keplersc.kdserie where c1= '"& k_serie & "'";					frn.lib("libGeneral.kpl","FileSave",query_vin ,"C:\Basura\query_vin ");												cubo = frn.lib("libGeneral.kpl","EjecutarSqlSel",query_vin ,"srv_cuest_pre.ctlrs_opcion()");			ok=getXmlAtt(cubo,"ok");			if(ok &! "" && !ok){				mensajeError = getXmlAtt(cubo,"native3");				mensajeError = frn.lib("libGeneral.kpl","ErrorBD",mensajeError);				frn.message(mensajeError,"Error","Aceptar");				return;			}			frn.set("k_unidad" , getXmlAtt(cubo,"r0" ,"unidad") );			frn.set("k_kilometraje" , getXmlAtt(cubo,"r0" ,"c12") );							var query_trabajos = " select pun.c8 as trabajo, ope.c1 || ' - ' || ope.c3 as tecnico, res.c11 as resultados,  " &			 "  res.c14 as comentarios,  res.c15 as observaciones, res.c16 as recomendaciones from keplersc.kdpun as pun " &		    " left join keplersc.kdpunres as res on pun.c1=res.c1 and pun.c2=res.c2 and pun.c3=res.c3 and pun.c4=res.c4 " &			 " inner join keplersc.kdoper as ope on pun.c9=ope.c1 where pun.c1= '"& k_suc & "' and pun.c2='" & k_tipo & "' and pun.c3='" & k_orden & "' order by pun.c4 ";					frn.lib("libGeneral.kpl","FileSave",query_trabajos ,"C:\Basura\query_trabajos ");												var cubo_trabajos  = frn.lib("libGeneral.kpl","EjecutarSqlSel",query_trabajos ,"srv_cuest_pre.ctlrs_opcion()");			ok=getXmlAtt(cubo,"ok");			if(ok &! "" && !ok){				mensajeError = getXmlAtt(cubo,"native3");				mensajeError = frn.lib("libGeneral.kpl","ErrorBD",mensajeError);				frn.message(mensajeError,"Error","Aceptar");				return;			}			frn.setX(cubo_trabajos  ,"tbl_trabajos");			cmd = " select c7 as estatus from keplersc.kdord where c1= '"& k_suc & "' and c2='" & k_tipo & "' and c3='" & k_orden & "'";							cubo = frn.lib("libGeneral.kpl","EjecutarSqlSel",cmd,"srv_cuest_pre.ctlrs_opcion()");			ok=getXmlAtt(cubo,"ok");			if(ok &! "" && !ok){				mensajeError = getXmlAtt(cubo,"native3");				mensajeError = frn.lib("libGeneral.kpl","ErrorBD",mensajeError);				frn.message(mensajeError,"Error","Aceptar");				return;			}         estatus_orden = getXmlAtt(cubo,"r0","estatus");			if (k_modo &= "ENT"){				frn.setAtt("grupo_dinamico", "available", "Y" );				frn.setAtt("grupo_dinamico", "modify", "Y" );				frn.setAtt("grupo_dinamico", "visible", "Y" );				frn.set("inp_titulo", "Entrega");			}else { 				frn.setAtt("grupo_dinamico", "available", "N" );				frn.setAtt("grupo_dinamico", "modify", "N" );				frn.setAtt("grupo_dinamico", "visible", "N" );				if (k_modo &= "PRE" ){					frn.set("inp_titulo", "Pre-entrega");				}								else if (k_modo &= "PSFU"){					frn.set("inp_titulo", "Seguimiento Posventa");				}								else if (k_modo &= "WLKA"){					frn.set("inp_titulo", "Walkaround");					if (estatus_orden >= 10){						frn.setAtt("bot", "available", "N" );						frn.setAtt("bot", "visible", "N" );					} else {						frn.setAtt("bot", "available", "Y" );						frn.setAtt("bot", "visible", "Y" );					}				}												}			if (k_modo&="CONSULTA"){				frn.setAtt("grupo_dinamico", "available", "N" );				frn.setAtt("grupo_dinamico", "modify", "N" );				frn.setAtt("bot_aceptar", "available", "Y" );				frn.setAtt("bot_aceptar", "modify", "Y" );				frn.setAtt("bot_aceptar", "visible", "Y" );				frn.setAtt("bot", "available", "N" );				frn.setAtt("bot", "visible", "N" );			}		}					fun cambia_n(){								var renglon = frn.getIdJ("tbl_cuestionario");				var val = frn.get("tbl_cuestionario", renglon,"respuesta");				if (val &= "S"){					frn.setX("N" ,"tbl_cuestionario",renglon,"respuesta");				}else{					frn.setX("S" ,"tbl_cuestionario",renglon,"respuesta");				}			}	      fun carga_dat_tabla(){				var cmdQuery = "SELECT k.clave as clave, k.descripcion as pregunta, coalesce(k2.col_resultado,'N') as respuesta, coalesce(k2.col_comentario,'') as comentario " &				" FROM  keplersc.kdcatcuest k LEFT JOIN  keplersc.kdordcuest k2 ON k.clave = k2.col_clave_actividad AND k.tipo_actividad = k2.col_tipo_actividad " &				" AND k2.col_sucursal = '"& k_suc &"' AND k2.col_tipo_orden = '" & k_tipo & "' AND k2.col_folio_orden = '" & k_orden & "'" &				" WHERE k.tipo_actividad = '" & k_modo & "' ORDER BY  k.orden";								frn.lib("libGeneral.kpl","FileSave",cmdQuery,"C:\Basura\cmdQuery");													cubo = frn.lib("libGeneral.kpl","EjecutarSqlSel",cmdQuery,"srv_cuest_pre.carga_dat_tabla()");				frn.lib("libGeneral.kpl","FileSave",cubo,"C:\Basura\cubo");				ok=getXmlAtt(cubo,"ok");				if(ok &! "" && !ok){					mensajeError = getXmlAtt(cubo,"native3");					mensajeError = frn.lib("libGeneral.kpl","ErrorBD",mensajeError);					frn.message(mensajeError,"Error","Aceptar");					return;				}								frn.setX(cubo,"tbl_cuestionario");				/*				var lenght_xml = nXml(cubo); 				if(lenght_xml != 0 ){					for (var i=0;i<lenght_xml;i++) {						var n ="N";						frn.setX(n ,"tbl_cuestionario",i,"respuesta");					}				}				*/			}		}	</script></pag>

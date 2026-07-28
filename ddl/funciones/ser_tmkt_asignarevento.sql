@@ -56,7 +56,7 @@ begin
 	select coalesce(c15,'') into inventario from keplersc.kdctasbienvser where c1=sucursal_id and c6=serie;
 	if serie <> '' then	
 		if inventario = '' or inventario is null then		--Normal anterior
-			sqlExp = format('select tmkt.c1 as sucursal_id, ms.c2 as sucursal, tmkt.c2 as folio, tmkt.c3 as asesor, tmkt.c5  as fecha,
+			sqlExp = format('select tmkt.c1 as sucursal_id, ms.c2 as sucursal, tmkt.c2 as folio, tmkt.c3 as asesor, tmkt.c5 as fecha,
 				tmkt.c11 as observacion,coalesce(tmkt.c19,''P'') as tipo_trabajo,
 				ser.c1 as serie, ser.c4 as vin, ser.c2 as marca, ser.c3 as modelo, ser.c11 as anio, ser.c12 as kms, 
 				motivo.descripcion as tipo_contacto,

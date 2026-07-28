@@ -5,7 +5,7 @@ CREATE  TABLE keplersc.sqliov (
   c4 character varying(51) NOT NULL DEFAULT ''::character varying,
   c5 character varying NULL,
   c6 character varying NULL,
-  col_sucursal character varying(2) NOT NULL DEFAULT '00'::character varying
+  col_sucursal character varying(2) NOT NULL
 ) TABLESPACE pg_default;
 ALTER TABLE ONLY keplersc.sqliov ADD CONSTRAINT sqliov_pk PRIMARY KEY (col_sucursal, c1, c2, c3);
 COMMENT ON TABLE keplersc.sqliov IS 'Folios';

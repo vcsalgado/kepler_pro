@@ -57,5 +57,4 @@ COMMENT ON COLUMN keplersc.kdvntall.c12 IS 'Cliente';
 COMMENT ON COLUMN keplersc.kdvntall.c11 IS 'Fecha';
 COMMENT ON COLUMN keplersc.kdvntall.c10 IS 'Folio';
 COMMENT ON COLUMN keplersc.kdvntall.c1 IS 'Sucursal';
-CREATE TRIGGER kdvntall_notif AFTER INSERT OR DELETE OR UPDATE ON keplersc.kdvntall FOR EACH ROW EXECUTE FUNCTION keplersc.notif_registrar_movto();
 

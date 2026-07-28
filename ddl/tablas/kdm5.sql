@@ -24,28 +24,12 @@ CREATE  TABLE keplersc.kdm5 (
   fecha_comprobacion timestamp without time zone NOT NULL DEFAULT '1800-01-01 00:00:00'::timestamp without time zone,
   hora_comprobacion character varying(10) NOT NULL DEFAULT ''::character varying,
   doc_refer_compl character varying(200) NOT NULL DEFAULT ''::character varying,
-  fecha_registro timestamp without time zone NULL DEFAULT now(),
-  subtotal numeric(12,2) NOT NULL DEFAULT 0,
-  total numeric(12,2) NOT NULL DEFAULT 0,
-  trasiva numeric(12,2) NOT NULL DEFAULT 0,
-  trasieps numeric(12,2) NOT NULL DEFAULT 0,
-  retiva numeric(12,2) NOT NULL DEFAULT 0,
-  retisr numeric(12,2) NOT NULL DEFAULT 0,
-  otroimptoa numeric(12,2) NOT NULL DEFAULT 0,
-  otroimptob numeric(12,2) NOT NULL DEFAULT 0
+  fecha_registro timestamp without time zone NULL DEFAULT now()
 ) TABLESPACE pg_default;
 CREATE UNIQUE INDEX IF NOT EXISTS pk_kdm5 ON keplersc.kdm5 USING btree (c1, c2, c3, c4, c5, c6, c7) TABLESPACE pg_default;
 COMMENT ON TABLE keplersc.kdm5 IS 'Documentos a Saldar por documento';
 COMMENT ON COLUMN keplersc.kdm5.usr_comprobacion IS 'Usuario Comprobacion / Evaluacion ( Modulo Gastos )';
-COMMENT ON COLUMN keplersc.kdm5.trasiva IS 'Trasladado IVA';
-COMMENT ON COLUMN keplersc.kdm5.trasieps IS 'Trasladado IEPS';
-COMMENT ON COLUMN keplersc.kdm5.total IS 'Total';
-COMMENT ON COLUMN keplersc.kdm5.subtotal IS 'SubTotal';
 COMMENT ON COLUMN keplersc.kdm5.st_x_comprobar IS '[N] Evaluado Not Passed ( Modulo Gastos )';
-COMMENT ON COLUMN keplersc.kdm5.retiva IS 'Retencion IVA';
-COMMENT ON COLUMN keplersc.kdm5.retisr IS 'Retencion ISR';
-COMMENT ON COLUMN keplersc.kdm5.otroimptob IS 'Impto adicional';
-COMMENT ON COLUMN keplersc.kdm5.otroimptoa IS 'Impto adicional';
 COMMENT ON COLUMN keplersc.kdm5.hora_comprobacion IS 'Hora Auxiliar CxP ( Modulo Gastos ) e.g. Transfer Rollback';
 COMMENT ON COLUMN keplersc.kdm5.fecha_registro IS 'Fecha y hora de registreo de operacion ( Modulo Gastos )';
 COMMENT ON COLUMN keplersc.kdm5.fecha_comprobacion IS 'Fecha Comprobacion / Evaluacion CxP ( Modulo Gastos )';

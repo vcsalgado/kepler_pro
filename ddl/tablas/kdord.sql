@@ -62,6 +62,7 @@ CREATE  TABLE keplersc.kdord (
   c61 numeric(15,6) NOT NULL DEFAULT 0,
   c62 numeric(15,6) NOT NULL DEFAULT 0,
   c63 numeric(15,2) NOT NULL DEFAULT 0,
+  kms_salida numeric(15,2) NULL DEFAULT 0,
   promocion character varying(7) NULL DEFAULT ''::character varying,
   tipo_servicio character varying(1) NULL DEFAULT ''::character varying,
   ubicacion_servicio character varying(7) NULL DEFAULT ''::character varying,
@@ -77,8 +78,7 @@ CREATE  TABLE keplersc.kdord (
   fecha_rec timestamp without time zone NULL DEFAULT '1800-01-01 00:00:00'::timestamp without time zone,
   hora_rec character varying(5) NULL DEFAULT ''::character varying,
   regresa_domicilio character varying(1) NULL DEFAULT ''::character varying,
-  observaciones_rec character varying(300) NULL DEFAULT ''::character varying,
-  kms_salida numeric(15,2) NULL DEFAULT 0
+  observaciones_rec character varying(300) NULL DEFAULT ''::character varying
 ) TABLESPACE pg_default;
 ALTER TABLE ONLY keplersc.kdord ADD CONSTRAINT pk_kdord PRIMARY KEY (c1, c2, c3);
 CREATE INDEX IF NOT EXISTS sindkdord05 ON keplersc.kdord USING btree (c1, c6, c2, c3) TABLESPACE pg_default;
@@ -164,5 +164,4 @@ COMMENT ON COLUMN keplersc.kdord.c12 IS 'Direccion';
 COMMENT ON COLUMN keplersc.kdord.c11 IS 'Nombre';
 COMMENT ON COLUMN keplersc.kdord.c10 IS 'Clave del Cliente';
 COMMENT ON COLUMN keplersc.kdord.c1 IS 'Sucursal';
-CREATE TRIGGER kdord_notif AFTER INSERT OR DELETE OR UPDATE ON keplersc.kdord FOR EACH ROW EXECUTE FUNCTION keplersc.notif_registrar_movto();
 

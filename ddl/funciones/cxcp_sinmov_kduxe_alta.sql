@@ -9,7 +9,6 @@ AS $function$
 --19/09/2024 Miriam Santana: Generar la cxc con la factura original para anulacion de nota de descuento
 --15/01/2025 Miriam Santana: Generar la cxc con la factura original para anulacion de nota de servicio
 --21/03/2025 Miriam Santana: Generar la cxc con la factura original para anulacion de aplicacion de anticipo
---09/09/2025 Victor Salgado: Agregar columnas complemento de impuestos
 
 declare
 	--Variables de definicion de documento
@@ -40,16 +39,6 @@ declare
 	anticipos decimal = 0;
 	conf_iva decimal;
 	ivaValor decimal =0;	--MSS 210824 Decimales cxc iva
-
-	--VCSS 06 Jul  2025, variables complemento de impuestos
-	isrret_uuid text = '';
-	ivaret_uuid text = '';
-	iepstras_uuid text = '';
-	totalimptoret_uuid text ='';
-	totalimptotras_uuid text ='';
-	subtotal_uuid text = '';
-	otroimptoa_uuid text = '';
-	otroimptob_uuid text = '';
 
 	--variables kduxe
 	factura_xe text;
@@ -92,17 +81,7 @@ begin
 	folio_docto_anx := (xpath('//document/k_foliodocto/text()',dataxml))[1];
 	factura_ini := (xpath('//document/k_facturaini/text()',dataxml))[1];	
 	flag_factura_sust:=coalesce((xpath('//document/ambiente/flag_factura_sust/text()',dataxml))[1]::text,'')::text;		--MSS 25022025 Factura por sustitucion
-
-	--VCSS 06 Jul 2025 Complemento de impuestos
-	isrret_uuid := coalesce((xpath('//document/uuid/retisr/text()',dataxml))[1]::text,'0')::text;
-	ivaret_uuid := coalesce((xpath('//document/uuid/retiva/text()',dataxml))[1]::text,'0')::text;
-	iepstras_uuid := coalesce((xpath('//document/uuid/iepstras/text()',dataxml))[1]::text,'0')::text;
-	totalimptoret_uuid := coalesce((xpath('//document/uuid/totalimptoret/text()',dataxml))[1]::text,'0')::text;
-	totalimptotras_uuid := coalesce((xpath('//document/uuid/totalimptotras/text()',dataxml))[1]::text,'0')::text;
-	subtotal_uuid := coalesce((xpath('//document/uuid/subtotal/text()',dataxml))[1]::text,'0')::text;
-	otroimptoa_uuid := coalesce((xpath('//document/uuid/otroimptoa/text()',dataxml))[1]::text,'0')::text;
-	otroimptob_uuid := coalesce((xpath('//document/uuid/otroimptob/text()',dataxml))[1]::text,'0')::text;
-
+	
 	--  * * * * *  Added 20240229 by JMM, Proveedor de Pago  
 	clave_provpago := '';
 
@@ -115,6 +94,7 @@ begin
 		clave_provpago := clave_cteprov; 
 	end if;
 	--  * * * * *  End : Proveedor de Pago
+
 
 	--VARIABLES K75:
 		--W1=sucursal_id
@@ -189,7 +169,6 @@ begin
 	end if;
 
 	if genero = 'U' and naturaleza = 'A' then
-	
 		select count(*) into totalReg from keplersc.kduxe	
 			where c1=sucursal_id and c2=clave_cteprov and c3= folio_docto_anx
 			and c4=1 and c5=genero and c6=naturaleza and c7=grupo::integer 
@@ -205,12 +184,12 @@ begin
 				--Obtener xml de KDUXE de registro generado 		
 				expSql=format('select * from keplersc.kduxe where c1=%1$L and c2=%2$L and c3=%3$L and c4=%4$s and c5=%5$L and c6=%6$L and c7=%7$s and c8=%8$s and c9=%9$L',
 						sucursal_id,clave_cteprov,folio_docto_anx,1,genero,naturaleza,grupo,tipo_clave,folio_operacion);
-				select query_to_xml(expSql, true, false, '') into xmlKDUXE;	
-		
+				select query_to_xml(expSql, true, false, '') into xmlKDUXE;		
 		end if;
 	end if;
 
 	if genero = 'X' then 	
+	
 		--factura_xe :=  lpad(referencia,10,'0'); --TO DO: Valida si se utilizan los 10 primeros o los 10
 											-- ultimos caracteres cuando se exceda el numero de caracteres
 	
@@ -237,7 +216,7 @@ begin
 			and c8=tipo_clave::integer and c9=folio_operacion;		
 		--TO DO:Validar que pasa si esta condicion no se da		
 		if totalReg = 0 then	
-
+		
 			--TODO, ver si aplica
 			/*
 			  Opcion 1
@@ -250,18 +229,18 @@ begin
 			if naturaleza= 'A' and grupo = '12' then
 				monto_iva := 0;
 			end if;*/
+		
 			insert into keplersc.kduxe (c1,c2,c3,c4,c5,c6,
 				c7,c8,c9,c10,c11,
-				c12,c13,c14,c15,c16 ,cve_prov_pago,/*Added 240229*/ 
-				ivaret,isrret,iepstras,otroimptoa,otroimptob,totalimptoret,totalimptotras,subtotal /*VCSS 06 Jul 2025 */
-				)
+				c12,c13,c14,c15,c16 ,cve_prov_pago/*Added 240229*/ )
 			values(sucursal_id,clave_cteprov,factura_xe,1,genero,naturaleza,
 				grupo::integer,tipo_clave::integer,folio_operacion,1,to_date(fecha_operacion,'YYYY-MM-DD'),
-				to_date(plazo_vencimiento,'YYYY-MM-DD'),monto_total::decimal,monto_iva::decimal,0.00,0.00 ,clave_provpago/*Added 240229*/,
-				ivaret_uuid::numeric,isrret_uuid::numeric,iepstras_uuid::numeric,otroimptoa_uuid::numeric,otroimptob_uuid::numeric,totalimptoret_uuid::numeric,totalimptotras_uuid::numeric,subtotal_uuid::numeric /*VCSS 06 Jul 2025 */);		
+				to_date(plazo_vencimiento,'YYYY-MM-DD'),monto_total::decimal,monto_iva::decimal,0.00,0.00 ,clave_provpago/*Added 240229*/ );
+			
 			expSql=format('select * from keplersc.kduxe where c1=%1$L and c2=%2$L and c3=%3$L and c4=%4$s and c5=%5$L and c6=%6$L and c7=%7$s and c8=%8$s and c9=%9$L',
 						sucursal_id,clave_cteprov,factura_xe,1,genero,naturaleza,grupo,tipo_clave,folio_operacion);
-				select query_to_xml(expSql, true, false, '') into xmlKDUXE;	
+				select query_to_xml(expSql, true, false, '') into xmlKDUXE;
+
 		end if;			
 	end if;
 		

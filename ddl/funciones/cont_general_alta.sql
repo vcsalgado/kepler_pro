@@ -321,6 +321,7 @@ begin
 			raise exception '%', strValor;
 		end if;
 	end if;
+raise notice '1 cargo Cta % Monto %',cuenta_cargo, monto_cargo;
 --FIN Cuenta Cargo
   --raise notice 'fin cuenta 19';
 --INICIO Cuenta abono, campo c20 kdmm
@@ -411,7 +412,7 @@ begin
 			raise exception '%', strValor;
 		end if;
 	end if;	
-
+raise notice '2 abono Cta % Monto %',cuenta_cargo, monto_cargo;
 --FIN Cuenta Abono
 --raise notice 'fin cuenta 20';
 --INICIO Creacion IVA
@@ -472,7 +473,7 @@ begin
 		end if;
 	end if;	
 --FIN Cuenta IVA
-
+raise notice 'cta iva Cta % Monto %',cuenta_cargo, monto_cargo;
 --INICIO Cuenta IEPS
 	--monto isan_ieps, viene en xmlkdm1 campo 15, variable monto_isan_ieps
 	cuenta_contable_kdmm := (xpath('//row/c22/text()', xmlKDMM))[1]::text;
@@ -566,7 +567,7 @@ begin
 --FIN Cuenta IEPS
 
 
-
+raise notice '3ieps Cta % Monto %',cuenta_cargo, monto_cargo;
 ----- START : SECTION RETENCION IVA , Added by JMM 20240619 
 
 --INICIO Cuenta IVA Retencion 
@@ -645,7 +646,7 @@ begin
 --FIN Cuenta IVA Retencion 
 
 ----- END : SECTION RETENCION IVA , Added by JMM 20240619 
-
+raise notice 'iva ret Cta % Monto %',cuenta_cargo, monto_cargo;
 
 
 --INICIO Cuenta Cargo Anticipo, Extra 1 , kdmm.c23
@@ -705,7 +706,7 @@ begin
 		end if;
 	end if;	
 --FIN Creacion Cuenta Cargo Anticipo
-
+raise notice '4';
 --INICIO Cuenta Abono Anticipo, Extra 2 , kdmm.c24
 	cuenta_contable_kdmm := (xpath('//row/c24/text()', xmlKDMM))[1]::text;
 	funCuenta = '';
@@ -884,7 +885,7 @@ begin
 	end if;	
 --FIN Creacion Cuenta Abono IVA Anticipo
 
-
+raise notice '5';
 --INICIO Cuenta Cargo Costo, Extra 3 , kdmm.c56 Campo a�adir, kdmm.c34, cuenta costo
 	cuenta_contable_kdmm := (xpath('//row/c34/text()', xmlKDMM))[1]::text;
 	funCuenta = '';
@@ -1044,7 +1045,7 @@ else
 	tipo_asiento = 'C';
 end if;	
 
-
+raise notice '6';
 --INICIO Cuenta extra 1, a�adir kdmm.58, kdmm.c36, cuenta extra
 	cuenta_contable_kdmm := (xpath('//row/c36/text()', xmlKDMM))[1]::text;
 	funCuenta = '';
@@ -1463,8 +1464,8 @@ end if;
 --INSERCION DE PARTIDAS en tabla de movimientos de poliza
 	--Obtener el folio de la poliza
 	--Formato fecha operacion YYYY-MM-DD, ejemplo: 2022-01-07
-	
 	--VCSS 2025-01-13  Verificacion de artidas de poliza creadas
+raise notice '7';
 	select count(*) into total_registros from tmpkdc2;
 	if total_registros = 0 then
 		raise exception 'No se crearon partidas para la poliza del movimiento, revise e intente nuevamente.';

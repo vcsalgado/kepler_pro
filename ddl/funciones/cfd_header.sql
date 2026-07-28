@@ -501,6 +501,12 @@ begin
 		--MSS 24/09/2024 Escapar & y '
 		razon_social := regexp_replace(razon_social,'&AMP;','&','gi');
 		razon_social:=regexp_replace(razon_social,'\\''','''','gi');
+	
+		if genero = 'U' and naturaleza ='A' and grupo='52' and tipo='3' then
+			rfc := rfc||'1';
+		
+		end if;
+	
 		insert into keplersc.kdf3header (
 			c1,c2,c3,c4,c5,
 			c6,c7,c8,c9,c10,

@@ -56,8 +56,7 @@ begin
 	delete from keplersc.control_de_citas where col_fecha=fcha::date;
 
 	for clave_oper,tipo_ope, nombre_ope, ini_horario_comida, fin_horario_comida
-	in select c1,c2,c3, c23,c24 from keplersc.kdoper oper where oper.c12='S' or oper.c1 in (
-		 select c10 from keplersc.kdctassermov mov where mov.c1=sucursal_id and mov.c10=oper.c1)
+	in select c1,c2,c3, c23,c24 from keplersc.kdoper where c12='S'
 	loop 
 						
 		expSql := format('insert into keplersc.control_de_citas(col_fecha,col_clave_operador,

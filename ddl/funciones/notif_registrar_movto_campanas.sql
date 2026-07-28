@@ -11,7 +11,6 @@ declare
    
    	sucursal_id text = '';
  	dealer text = '';
-  agencia text = '';
    
 	--Variables de retorno
 	resultado text;
@@ -24,9 +23,6 @@ begin
 		
 	select c5 into dealer from keplersc.kdms 
 		where c1 = sucursal_id;
-
-  select c2 into agencia from keplersc.kdcfdconfig
-    where c1 = sucursal_id;
 	
 	datos_interfaz := '{}'::jsonb;
 	api_id := 'DDOA_SSC';	 
@@ -52,12 +48,7 @@ begin
 	                'body', jsonb_build_object(
                     'method', 'SpecialServicesCampaign', 'request', datos_interfaz
                   )
-	            ),
-              'input_context', json_build_object(
-                'params', json_build_object(
-                  'agencia', agencia
-                )
-              )
+	            )
 	);
 	
     expSql := format('notify interfaces_toyota, %L', json_notif::text);

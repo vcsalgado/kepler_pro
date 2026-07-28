@@ -3,8 +3,7 @@ CREATE OR REPLACE FUNCTION keplersc.tbl_kdinf_upd(dataxml xml)
  LANGUAGE plpgsql
 AS $function$
 --Bitacora de cambios
---27/03/2025 Miriam Santana : Escapar las "
---23/05/2025 Victor Salgado : Se agrega auto demo en campo c22
+--27/03/2025 Miriam Santana: Escapar las "
 declare
 	--Variables de definicion de documento
 	no_partidas int = 0;
@@ -47,7 +46,6 @@ declare
 	ocupantes int;
 	cilindros int;
 	puertas int;
-	demo text = '';
 
 	pq01 text = '';
 	pq02 text = '';
@@ -240,10 +238,7 @@ begin
 	ocupantes := coalesce((xpath('//document/v_ocupantes/text()', dataxml))[1]::text,'0');
 	cilindros := coalesce((xpath('//document/v_cilindros/text()', dataxml))[1]::text,'0');
 	puertas := coalesce((xpath('//document/v_puertas/text()', dataxml))[1]::text,'0');
-	demo := coalesce((xpath('//document/c_demo/text()', dataxml))[1]::text,'');
-	if demo='0' then
-		demo:='';
-	end if;	
+
 
 	pq01 := coalesce((xpath('//document/c_pq01/text()', dataxml))[1]::text,'');
 	pq02 := coalesce((xpath('//document/c_pq02/text()', dataxml))[1]::text,'');
@@ -334,7 +329,6 @@ begin
 			c14 = regfed,
 			c17 = marca,
 			c18 = clase,
-			c22 = demo,
 			c26 = pedimento,
 			c27 = case when length(pedimento_fecha) > 0 then to_date(pedimento_fecha,'YYYY-MM-DD') else to_date('1900-01-01','YYYY-MM-DD') /*null*/ /*c27*/ end,
 			c28 = pedimento_lugar,

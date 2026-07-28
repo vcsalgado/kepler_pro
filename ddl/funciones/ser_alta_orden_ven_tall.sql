@@ -6,9 +6,6 @@ declare
 --Descripcion: . Resuelve ALTA_ORDEN_VEN_TALL  
 --Autor: Miriam Santana
 --Fecha: 18/10/2022
---Bitacora de cambios
---20/04/2026 Miriam Santana: Alta/Baja de anticipos de una factura para relacionarlos en el CFDI
-
 	--Variables para xml 
 	sucursal_id text;
 	genero text;
@@ -45,7 +42,6 @@ declare
 	precio_cargos decimal=0;
 		
 	rec record;
-	totReg int=0;	
 
 	--Variables de retorno
 	resultado text;
@@ -133,31 +129,6 @@ begin
 					select sum(c16),sum(c11) into precio_ctetot,subt_tots  from keplersc.kdtot where c1=sucursal_id  and c2=tipo_orden and c3=num_orden and c4=rec.c4;
 					select sum(c10),sum(c8) into precio_cargos,costo_cargos from keplersc.kdcar where c1=sucursal_id  and c2=tipo_orden and c3=num_orden and c4=rec.c4;
 					if costo_horas > 0 or importe_refacc > 0 or precio_ctetot > 0 or precio_cargos > 0 or rec.c6 ='L' then 
-
-/*						
-						--VCSS 17 julio 2025, recalculo de totales por programa de lealtad
-						select  count(*) into totReg from keplersc.kdlealtadmovs movs where movs.c1=rec.c1 and movs.c2=rec.c2 and movs.c3=rec.c3 and movs.c4=rec.c4 and c7='H';
-						if totReg > 0 then
-							select sum(c9) into costo_horas from keplersc.kdlealtadmovs movs 
-								where movs.c1=rec.c1 and movs.c2=rec.c2 and movs.c3=rec.c3 and movs.c4=rec.c4 and c7='H';
-						end if;
-						select  count(*) into totReg from keplersc.kdlealtadmovs movs where movs.c1=rec.c1 and movs.c2=rec.c2 and movs.c3=rec.c3 and movs.c4=rec.c4 and c7='R';
-						if totReg > 0 then
-							select sum(c9) into importe_refacc from keplersc.kdlealtadmovs movs 
-								where movs.c1=rec.c1 and movs.c2=rec.c2 and movs.c3=rec.c3 and movs.c4=rec.c4 and c7='R';
-						end if;
-						select  count(*) into totReg from keplersc.kdlealtadmovs movs where movs.c1=rec.c1 and movs.c2=rec.c2 and movs.c3=rec.c3 and movs.c4=rec.c4 and c7='T';
-						if totReg > 0 then
-							select sum(c9) into precio_ctetot from keplersc.kdlealtadmovs movs 
-								where movs.c1=rec.c1 and movs.c2=rec.c2 and movs.c3=rec.c3 and movs.c4=rec.c4 and c7='T';
-						end if;
-						select  count(*) into totReg from keplersc.kdlealtadmovs movs where movs.c1=rec.c1 and movs.c2=rec.c2 and movs.c3=rec.c3 and movs.c4=rec.c4 and c7='C';
-						if totReg > 0 then
-							select sum(c9) into precio_cargos from keplersc.kdlealtadmovs movs 
-								where movs.c1=rec.c1 and movs.c2=rec.c2 and movs.c3=rec.c3 and movs.c4=rec.c4 and c7='C';
-						end if;
-*/
-
 						monto_iva := (coalesce(costo_horas,0)+coalesce(importe_refacc,0)+coalesce(precio_ctetot,0)+coalesce(precio_cargos,0))*monto_iva::decimal/(coalesce(mano_obra_fac,'0')::decimal+coalesce(refacciones_fac,'0')::decimal+coalesce(tots_fac,'0')::decimal+coalesce(cargos_fac,'0')::decimal);
 						monto_total := coalesce(costo_horas,0)+coalesce(importe_refacc,0)+coalesce(precio_ctetot,0)+coalesce(precio_cargos,0)+monto_iva::decimal;
 						
@@ -185,15 +156,7 @@ begin
 					end if;
 				end if;
 			end loop;
-
-			---------------------------------------------------------------
-			--Alta/Baja de seleccion de anticipos de una factura para relacionarlos en el CFDI.		--MSS 22042026 seleccion de anticipos
-			---------------------------------------------------------------
-			select * into resultado, mensaje, adicionales from keplersc.cfd_alta_seleccion_anticipos(dataxml,folio_operacion);
-			if resultado = '0' then
-				raise exception '%',mensaje;
-			end if;
-		
+			
 		end if;
 	
 	end if;	

@@ -127,28 +127,16 @@ begin
 			mensaje := 'Partidas con datos incompletos ...';
 			raise exception '%', mensaje;	
 		end if;
-
-		--VCSS manejo de reemplazo, manejar refaccion original en back order. 30 Marzo 2026
-		SELECT coalesce(clave_original,'') into strValor FROM keplersc.prod_consulta_lista(suc, parte, 'CLAVE') LIMIT 1;
-
-		if strValor <> '' then
-			parte := strValor;
-		end if;
-
+	
 		if no_vacios > 0 then
 			-- Validar datos de catalogos ...
 		
 			totReg := 0;
 			select count(c1) into totReg from keplersc.kdini where c1 = parte;
 			if totReg = 0 then
-				select count(c1) into totReg from keplersc.kdinr where c1 = parte; --VCSS Validacion reemplazo 30 Marzo 2026
-				if totReg = 0 then
-					mensaje := 'No se encontro el Registro de la refacción ' || parte || ' como original o reemplazo. ';
-					raise exception '%', mensaje;
-				end if;
+				mensaje := 'No se encontro el Registro en la Tabla Kdini [Productos], [' || parte || ']';
+				raise exception '%', mensaje;
 			end if;	
-
-
 	
 			/*
 			 *  ESTA SECCION RESUELVE VERIFY_BACKORDER_ALTA 
@@ -231,13 +219,7 @@ begin
 		cant_d := cant::decimal;
 		pu_d := pu::decimal;
 		monto_d := monto::decimal;
-
-		--VCSS manejo de reemplazo, manejar refaccion original en back order. 30 Marzo 2026
-		SELECT coalesce(clave_original,'') into strValor FROM keplersc.prod_consulta_lista(suc, parte, 'CLAVE') LIMIT 1;
-		if strValor <> '' then
-			parte := strValor;
-		end if;
-
+		 
 		-- Cantidad debe ser > 0  
 		if cant_d <= 0 then 
 			mensaje := 'Cantidad debe ser > 0 , [' || parte || ']';

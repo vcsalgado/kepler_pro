@@ -6,7 +6,6 @@ AS $function$
 --Autor: Miriam Santana
 --Fecha: 19/08/2022
 --Bitacora de cambios
---24/11/2025. Victor Salgado. Integracion de impuestos
 				  
 declare
 	--Variables de definicion de documento
@@ -60,7 +59,6 @@ begin
 		update keplersc.kdm1 
 			set c14=monto_iva,c16=monto_total,c42=saldo_docto,c43=estado_movto, c197=current_date
 				,c15 = ret_isr, c23 = ret_iva  /*Added by JMM 20240704*/
-				,uuid_retisr=0,uuid_retiva=0,uuid_trasieps=0,uuid_otroimptoa=0,uuid_otroimptob=0
 			where c1=sucursal_id and c2=genero and c3=naturaleza and c4=grupo::integer 
 			and c5=tipo_clave::integer and c6=folio_operacion::text;
 		resultado := 1;

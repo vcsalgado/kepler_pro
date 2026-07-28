@@ -1,201 +1,1 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<pag xmlns="www.kepler.com.mx/2003/KSchema" dim="0,0,10,10" tit="Cat&#225;logo de roles">
-	<grp id="grpMain" brdr="0,0" clr="0,58,112" fnt="Arial,16" dim="-1,-1,10,20"  clrBrdr="0,97,181"  bclr="192,205,213" unfont="0" tit="Cat&#225;logo de roles" OnPgUp="PgUp" OnPgDn="PgDn" OnCtrPgUp="CtrPgUp" OnCtrPgDn="CtrPgDn" OnF1="" OnCtrIni="CtrIni" OnCtrEnd="CtrEnd" OnCtrDel="CtrDel" OnEnter="Exit"><br/><tab/>
-		<grp bclr="236,240,243" fntClrBrdr="255,206,0" fntBrdr="Arial,18" hSpace="4" clrBrdr="0,58,112" brdr="0,5" dim="58,27,7,12"  tit="Roles" fnt="Arial,16"><tab/><txt fnt="Arial,16" clr="0,58,112" bclr="255,255,255" hk="C">Clave</txt><tab n="4"/>
-			<edt id="clave" clr="64,64,64" clrBrdr="255,255,255"  dim="24,1" type="capital" bclr="255,255,255" brdr="2,0" OnChange="Busca" nc="20" hk="C" OnF9="BusquedaClave()" OnButton="BusquedaClave()"/>
-			<br/><br/><sp/><tab/><txt clr="0,58,112" fnt="Arial,16">Descripci&#243;n</txt>
-			<tab n="2"/><inp id="nombre" clr="64,64,64" clrBrdr="255,255,255"  dim="62,1" bclr="255,255,255" brdr="2,0" type="string" nc="60" OnChange="Cambio(2,nombre)"/><br/><tab/><txt fnt="Arial,16" clr="0,58,112" bclr="255,255,255">P&#225;gina inicio</txt><tab n="2"/>
-			<inp id="pagina" clr="64,64,64" clrBrdr="255,255,255"  dim="62,1" bclr="255,255,255" brdr="2,0" OnChange="Cambio(4,pagina)" nc="60" type="string"/><tab/><br/><tab/><br/><tab/><txt fnt="Arial,16" clr="0,58,112" bclr="255,255,255">Tipo </txt><tab n="4"/>
-			<cmb id="tipo" clr="64,64,64" clrBrdr="255,255,255"  dim="30,1" bclr="255,255,255" brdr="2,0" OnChange="Cambio(5,tipo,1)" type="string" tooltip="A=Administrador P=Publico (en blanco)=default" Null="N"/>
-			<br/><tab/><txt fnt="Arial,16" clr="0,58,112" bclr="255,255,255">Lenguaje</txt><tab n="3"/>
-			<cmb id="lenguaje" clr="64,64,64" clrBrdr="255,255,255"  dim="30,1" bclr="255,255,255" brdr="2,0" OnChange="Cambio(6,lenguaje,1)" type="string"/><tab/><br/><tab/>
-			<txt fnt="Arial,16" clr="0,58,112" bclr="255,255,255">Modifica p&#225;ginas</txt><tab/>
-			<chck id="ch" clr="64,64,64"  dim="3,16" bclr="255,255,255" brdr="3,0" OnChange="Cambio(7,ch)" YN="SN" clrBrdr="255,255,255"/><br/><tab/><br/><tab/>
-			<txt fnt="Arial,16" clr="0,58,112" bclr="255,255,255">Usuario BD</txt><tab n="2"/>
-			<inp id="usuariobd" clr="64,64,64" clrBrdr="255,255,255"  dim="20,1" bclr="255,255,255" brdr="2,0" OnChange="Cambio(8,usuariobd)" nc="18" type="capital"/><br/><tab/><txt fnt="Arial,16" clr="0,58,112" bclr="255,255,255">Password BD</txt><tab/>
-			<inp id="passwordbd" clr="64,64,64" clrBrdr="255,255,255"  dim="20,1" bclr="255,255,255" brdr="2,0" OnChange="Cambio(9,passwordbd)" nc="18" type="password"/><br/><tab/><txt fnt="Arial,16" clr="0,58,112" bclr="255,255,255">Comentarios</txt><tab n="2"/>
-			<inp id="comentarios" clr="64,64,64" clrBrdr="255,255,255"  dim="62,1" bclr="255,255,255" brdr="2,0" OnChange="Cambio(10,comentarios)" nc="60" type="string"/><br/><tab/>
-		</grp><br/>
-	</grp>
-	<script>
-		InstallDriver("KDB75");
-		class Main {
-			var frn,frP,kdb;
-			/* PARÁMETROS (Tienen sentido cuando la opción se ha ejecutado como diálogo.)
-			param(0) = Nombre del campo (o tabla) al que se devolverá la clave o descripción en la pantalla padre
-			param(1) = (Opcional) Nombre de la columna al que se devolverá la clave en la pantalla padre(Se debe especificar el grid en el parametro anterior)
-			param(2) = (Opcional) Bandera binaria de control. Es un string que indica ciertos parámetros de funcionamiento de la opción
-							Los caracteres se toman de izquierda a derecha y tienen el siguiente significado:
-							Bit 1= Si toma valor de 1, se devuelve la clave. Si toma valor de 0, se devuelve la descripción. Por default se toma valor de 1.
-							Bit 2= Si toma valor de 1, permite modificar el catálogo. Si toma valor de 0, no permite modificación. Por default se toma valor de 1.
-							Bit 3= Si toma valor de 1, permite insertar/borrar registros. Si toma valor de 0, no permite insertar/borrar. Por default se toma valor de 1.
-							Bit 4= Si toma valor de 1, permite cambiar de registro. Si toma valor de 0, no permite cambiar de registro. Por default se toma valor de 1.
-							Bit 5= Si toma valor de 1, regresa un cubo de memoria con campos principales de TODOS los registros(para guardar la info en un combo). Si toma valor de 0, solo regresa la clave o descripción. Por default se toma valor de 1.
-			param(3) = (Opcional) Función de la pantalla padre a ejecutar antes de regresarle el control.
-							
-			Valor de retorno = clave o descripción del producto
-			*/
-			var bit1,bit2,bit3,bit4,bit5;//Banderas de comportamiento (Ver descripción arriba)
-			var tabla_base;//Tabla base del catalogo (Se abre con el alias "a")
-			var camposDeseados;//Campos de la tabla que se requieren(Ej: a1...a4)
-			fun Main() {
-				//Recibe como parametros el combo del almacen(strDlg0), y el combo de la sucursal(strDlg1)
-				frn=new FRNT; 
-				frP=new FRNTP; 
-				kdb=new KDB;
-				bit1=1;bit2=1;bit3=1;bit4=1;bit5=1;//Inicializa las banderas con los valores default.
-				var bCtrl=trim(frn.param(2));
-				if (strlen(bCtrl)>0){ //Se especificó una bandera de control.
-					bit1=mid(bCtrl,0,1);bit2=mid(bCtrl,1,1);bit3=mid(bCtrl,2,1);
-					bit4=mid(bCtrl,3,1);bit5=mid(bCtrl,4,1);
-				}
-				if (strlen(trim(frn.param(1)))>0){ bit5=0;}//Si se especifica una columna, no se devolverán todos los registros, solo el actual
-				kdb.connect();
-				tabla_base="\\\\kdkr";//Roles
-				camposDeseados="a1...a10";//Ver el comando kdb.rel de abajo para entender s2
-				kdb.open("a," & tabla_base &",l,\\\\kdkl");
-				var valor_inicial=(bit1==1)? frP.get(frn.param(0),-1,0): frP.get(frn.param(0),-1,1);
-				if (strlen(trim(frn.param(1)))>0){ valor_inicial=frP.get(frn.param(0),-1,frn.param(1)); }//Se devolverá el valor a una tabla 
-				frn.set("clave",valor_inicial);//Se llena la clave si es ventana de diálogo.
-				LlenaCombosEstaticos();
-				kdb.table("tlenguaje,l,1,&,l2,l1"); kdb.exec();
-				frn.set("lenguaje",kdb.get("tlenguaje"));
-			//	frn.setPos("lenguaje",-1,1,"internal:Y","val:"& kdb.get("tlenguaje") );
-		
-				Bus(1);
-				if(bit2==0)deshabilita_campos();
-			}
-			fun BusquedaClave(){
-				Ventana("busqueda","clave","","\\\\kdkr");
-			}
-			fun camposLlave() {var llave= frn.get("clave"); 
-				if (bit4==0){ setmfy("clave"); } //Desactiva los campos de la llave para que no pueda cambiarse de registro
-				return llave;}//Campos que forman la llave. Puede ser una llave combinada
-			fun setData(){
-				set("clave","a1"); 
-				set("nombre","a2"); 
-				set("pagina","a4"); 
-				frn.setPos("tipo",-1,1,"internal:Y","val:'"& kdb.get("datos","a5") &"'");
-				frn.setPos("lenguaje",-1,1,"internal:Y","val:'"& kdb.get("datos","a6") &"'");
-			
-				set("ch","a7"); 
-				set("usuariobd","a8"); 
-				set("passwordbd","a9"); 
-				set("comentarios","a10"); 
-			}
-			fun verifica_borrar()//Esta función valida si el registro actual se puede borrar. Ej. Un producto NO se puede borrar si hay facturas con ese produccto.
-			{
-				//Falta validar que ningún perfil esté ocupando este rol. 
-				//Error("Existe al menos un perfil con este rol, NO es posible borrarlo");return 0;
-				return frn.message("Está a punto de borrar el rol " & frn.get("nombre") & ". ¿Desea Continuar?","Precaución",1);//Regresa 1 si se puede borrar. 0 si no.
-			}
-			fun deshabilita_campos(){//Deshabilita todos los campos que no sean parte de la llave. Pone invisibles los botones
-				setmfy("nombre"); setmfy("pagina"); setmfy("tipo"); 
-				setmfy("lenguaje"); setmfy("ch"); setmfy("usuariobd"); setmfy("passwordbd"); setmfy("comentarios"); 
-				//Invisbles los botones
-			}
-			fun Exit() {
-				kdb.exec(); //Ejecuta instrucciones pendientes (Cambios)
-				if (strlen(trim(frn.param(0)))>0){ //Solo si se especificó un campo a devolver los datos 
-					if(bit5==1){//Se regresará un cubo de memoria con todos los registros (para llenar un combo o una lista)
-						var cmd="dat1,a,1,&,a1,a2";//Por default se ordena por clave, y el campo visible es la clave(bit1=1)
-						if(bit1==0) cmd="dat1,a,2,&,a2,a1";//Se ordena por descripción, y el campo visible es la descripción
-						kdb.table(cmd);kdb.exec();
-						frP.set(frn.param(0),kdb.get("dat1"));//Se llenan los combos
-					}
-					var valor_retorno=frn.get("clave");//Por default se devuelve la clave(bit1=1)
-					if( bit1==0 ){
-						valor_retorno=frn.get("nombre");//Se devuelve el nombre
-					}
-					if (strlen(trim(frn.param(1)))>0){ //Se devolverá el valor a una tabla 
-						frP.setX(valor_retorno,trim(frn.param(0)),-1,trim(frn.param(1))); 
-						frP.scriptElm(frn.param(0),"OnChange",frn.param(1));
-					}
-					else{ //se devolverá el valor a un campo
-						frP.set(frn.param(0),valor_retorno); 
-						frP.scriptElm(frn.param(0),"OnChange");
-					}
-				}
-				if (strlen(trim(frn.param(3)))>0){ //Se ejecutará la función indicada en la ventana padre.
-					frP.script(frn.param(3));
-				}
-				frn.exit();
-			}
-			fun valoresDefault(){
-				var valores="6,ESPAÑOL,7,N";//Número_de_campo1,valor_default1[,Número_de_campoN,valor_defaultN,...]
-				return valores;
-			}
-	
-			//Funciones Auxiliares Para Catálogos(Genericas). 
-			//Necesitan las variable globales tabla_base y camposDeseados. 
-			//tabla_base especifíca el nombre de la tabla del catálogo que se está editando
-			//camposDeseados indica los campos que se modificaran de la tabla. Ej a1...a70
-			//Ademas de una funcion camposLlave que devuleva los campos que forman la clave
-			//Una funcion setData que establece en pantalla los valores de la base de datos. (Cubo de información: "datos")
-			//Una funcion verifica_borrar() que regresa 1 si se puede borrar el registro, 0 si no se debe borrar.
-			fun set(objeto,campo) { frn.set(objeto,kdb.get("datos",campo));}//Establece el valor de un campo de la BD al objeto indicado
-			fun Busca() {if(bit4==1) Bus(0);}
-			fun PgUp() {if(bit4==1) Bus(6);}
-			fun PgDn() {if(bit4==1) Bus(5);}
-			fun CtrIni() {if(bit4==1) Bus(7);}
-			fun CtrEnd() {if(bit4==1) Bus(8);}
-			fun Ventana(arch,cmp0,cmp1,cmp2,cmp3,cmp4,cmp5,cmp6,cmp7,cmp8,cmp9) {//Abre la pagina indicada como dialogo SOLO si el campo cmp0 se puede modificar(El cmp0 puede ser una tabla, y cmp1 la columna)
-				var b_valido=1;
-				if(strlen(cmp0)>0){//Se toma el cmp0 como el objeto (o columna) al que se devolverá el resultado.
-					if(strlen(cmp1)>0){//Se toma el cmp1 como el nombre de la columna a la que se devolverá el resultado
-						if( frn.getAtt(cmp0,"modify",cmp1) &= "N" ) b_valido=0;
-						if( frn.getAtt(cmp0,"available",cmp1) &= "N" ) b_valido=0;
-						if( frn.getAtt(cmp0,"visible",cmp1) &= "N" ) b_valido=0;
-					}else{//No se especificó una tabla.
-						if( frn.getAtt(cmp0,"modify") &= "N" ) b_valido=0;
-						if( frn.getAtt(cmp0,"available") &= "N" ) b_valido=0;
-						if( frn.getAtt(cmp0,"visible") &= "N" ) b_valido=0;
-					}
-				}
-				if(b_valido==1)frn.dialog(arch,cmp0,cmp1,cmp2,cmp3,cmp4,cmp5,cmp6,cmp7,cmp8,cmp9);
-			}
-			fun Error(string){frn.messageBar(string,1); frn.sound(1);}//Establece un mensaje de error en la barra de estado. Y emite un sonido de alerta.
-			fun Bus(relacional) { //1:>=	2:<=		3:>	 4:<		 5:Siguiente		6:Anterior		7:Primero		8:Ultimo
-				frn.messageBar("");
-				var cmd="datos,a,1," & relacional & "," & camposLlave() & ",&," & camposDeseados;
-				kdb.search(cmd); kdb.exec(); setData();
-			}
-			fun Cambio(numero_campo,objeto,desplazamiento) { //Realiza un cambio de valor en la BD
-				if(bit3==0){//No permite insertar nuevos registros
-					if(kdb.ok("datos")==0){frn.message("No es posible dar de alta nuevos registros","Permisos restringidos");break;}
-				}
-				var cmd="datos,a,1," & camposLlave() & ",&," & numero_campo & "," & frn.get(objeto,-1,desplazamiento) & ",&," & valoresDefault() & ",&," & camposDeseados;
-				kdb.write(cmd);kdb.exec();setData();
-			}
-			fun CtrDel() {//Borra el registro actual y devuelve el siguiente
-				if(bit3==1){
-					if ( verifica_borrar()==1 ){//Solo borrará el registro si la funcion verifica_borrar devuelve 1. Cada catálogo define su validacion para borrar.
-						var cmd="datos,a,1," & camposLlave() & ",&," & camposDeseados;
-						kdb.del(cmd); kdb.exec(); 
-						if(bit4==1)setData();else frn.exit();//Si no se puede posicionar en otro registro, se sale de la opción después de borrar.
-					}
-				}
-			}
-			fun setmfy(campo,valor){//Modifica el atrbuto modify de cierto objeto(0=no permite modificacion. 1=Permite modificacion)
-				var atrib=(valor==1)?"Y":"N";
-				frn.setAtt(campo,"modify",atrib);
-			}
-			fun setvbl(campo,valor){//Modifica el atrbuto visible de cierto objeto(0=no lo muestra. 1=si lo muestra)
-				var atrib=(valor==1)?"Y":"N";
-				frn.setAtt(campo,"visible",atrib);
-			}
-			fun LlenaCombosEstaticos(){
-				frn.setX("Normal","tipo",0,0);frn.setX("","tipo",0,1);
-				frn.setX("Administrador","tipo",1,0);frn.setX("A","tipo",1,1);
-				frn.setX("Publico","tipo",2,0);frn.setX("P","tipo",2,1);
-			}
-		}
-		
-			/*
-	---------------------------------------
-	AUTOR						FECHA			CAMBIO
-	---------------------------------------
-	Diana Barreto		2010-03-18		-Se corrigió el kdb.table al buscar el lenguaje ya que el indie estaba incorrecto
-	*/
-	</script>
-</pag>
+<?xml version="1.0" encoding="UTF-8"?><pag xmlns="www.kepler.com.mx/2003/KSchema" dim="0,0,10,10" tit="Cat&#225;logo de roles">	<grp id="grpMain" brdr="0,0" clr="0,58,112" fnt="Arial,16" dim="-1,-1,10,20"  clrBrdr="0,97,181"  bclr="192,205,213" unfont="0" tit="Cat&#225;logo de roles" OnPgUp="PgUp" OnPgDn="PgDn" OnCtrPgUp="CtrPgUp" OnCtrPgDn="CtrPgDn" OnF1="" OnCtrIni="CtrIni" OnCtrEnd="CtrEnd" OnCtrDel="CtrDel" OnEnter="Exit"><br/><tab/>		<grp bclr="236,240,243" fntClrBrdr="255,206,0" fntBrdr="Arial,18" hSpace="4" clrBrdr="0,58,112" brdr="0,5" dim="58,27,7,12"  tit="Roles" fnt="Arial,16"><tab/><txt fnt="Arial,16" clr="0,58,112" bclr="255,255,255" hk="C">Clave</txt><tab n="4"/>			<edt id="clave" clr="64,64,64" clrBrdr="255,255,255"  dim="24,1" type="capital" bclr="255,255,255" brdr="2,0" OnChange="Busca" nc="20" hk="C" OnF9="BusquedaClave()" OnButton="BusquedaClave()"/>			<br/><br/><sp/><tab/><txt clr="0,58,112" fnt="Arial,16">Descripci&#243;n</txt>			<tab n="2"/><inp id="nombre" clr="64,64,64" clrBrdr="255,255,255"  dim="62,1" bclr="255,255,255" brdr="2,0" type="string" nc="60" OnChange="Cambio(2,nombre)"/><br/><tab/><txt fnt="Arial,16" clr="0,58,112" bclr="255,255,255">P&#225;gina inicio</txt><tab n="2"/>			<inp id="pagina" clr="64,64,64" clrBrdr="255,255,255"  dim="62,1" bclr="255,255,255" brdr="2,0" OnChange="Cambio(4,pagina)" nc="60" type="string"/><tab/><br/><tab/><br/><tab/><txt fnt="Arial,16" clr="0,58,112" bclr="255,255,255">Tipo </txt><tab n="4"/>			<cmb id="tipo" clr="64,64,64" clrBrdr="255,255,255"  dim="30,1" bclr="255,255,255" brdr="2,0" OnChange="Cambio(5,tipo,1)" type="string" tooltip="A=Administrador P=Publico (en blanco)=default" Null="N"/>			<br/><tab/><txt fnt="Arial,16" clr="0,58,112" bclr="255,255,255">Lenguaje</txt><tab n="3"/>			<cmb id="lenguaje" clr="64,64,64" clrBrdr="255,255,255"  dim="30,1" bclr="255,255,255" brdr="2,0" OnChange="Cambio(6,lenguaje,1)" type="string"/><tab/><br/><tab/>			<txt fnt="Arial,16" clr="0,58,112" bclr="255,255,255">Modifica p&#225;ginas</txt><tab/>			<chck id="ch" clr="64,64,64"  dim="3,16" bclr="255,255,255" brdr="3,0" OnChange="Cambio(7,ch)" YN="SN" clrBrdr="255,255,255"/><br/><tab/><br/><tab/>			<txt fnt="Arial,16" clr="0,58,112" bclr="255,255,255">Usuario BD</txt><tab n="2"/>			<inp id="usuariobd" clr="64,64,64" clrBrdr="255,255,255"  dim="20,1" bclr="255,255,255" brdr="2,0" OnChange="Cambio(8,usuariobd)" nc="18" type="capital"/><br/><tab/><txt fnt="Arial,16" clr="0,58,112" bclr="255,255,255">Password BD</txt><tab/>			<inp id="passwordbd" clr="64,64,64" clrBrdr="255,255,255"  dim="20,1" bclr="255,255,255" brdr="2,0" OnChange="Cambio(9,passwordbd)" nc="18" type="password"/><br/><tab/><txt fnt="Arial,16" clr="0,58,112" bclr="255,255,255">Comentarios</txt><tab n="2"/>			<inp id="comentarios" clr="64,64,64" clrBrdr="255,255,255"  dim="62,1" bclr="255,255,255" brdr="2,0" OnChange="Cambio(10,comentarios)" nc="60" type="string"/><br/><tab/>		</grp><br/>	</grp>	<tools>		<tool name="endleft" OnMouseL="CtrIni()" img="_TL_First.png"/>		<tool name="left" OnMouseL="PgUp()" img="_TL_Previous.png"/>		<tool name="right" OnMouseL="PgDn()" img="_TL_Next.png"/>		<tool name="endright" OnMouseL="CtrEnd()" img="_TL_Last.png"/>	</tools>	<script>		InstallDriver("KDB75");		class Main {			var frn,frP,kdb;			/* PARÁMETROS (Tienen sentido cuando la opción se ha ejecutado como diálogo.)			param(0) = Nombre del campo (o tabla) al que se devolverá la clave o descripción en la pantalla padre			param(1) = (Opcional) Nombre de la columna al que se devolverá la clave en la pantalla padre(Se debe especificar el grid en el parametro anterior)			param(2) = (Opcional) Bandera binaria de control. Es un string que indica ciertos parámetros de funcionamiento de la opción							Los caracteres se toman de izquierda a derecha y tienen el siguiente significado:							Bit 1= Si toma valor de 1, se devuelve la clave. Si toma valor de 0, se devuelve la descripción. Por default se toma valor de 1.							Bit 2= Si toma valor de 1, permite modificar el catálogo. Si toma valor de 0, no permite modificación. Por default se toma valor de 1.							Bit 3= Si toma valor de 1, permite insertar/borrar registros. Si toma valor de 0, no permite insertar/borrar. Por default se toma valor de 1.							Bit 4= Si toma valor de 1, permite cambiar de registro. Si toma valor de 0, no permite cambiar de registro. Por default se toma valor de 1.							Bit 5= Si toma valor de 1, regresa un cubo de memoria con campos principales de TODOS los registros(para guardar la info en un combo). Si toma valor de 0, solo regresa la clave o descripción. Por default se toma valor de 1.			param(3) = (Opcional) Función de la pantalla padre a ejecutar antes de regresarle el control.										Valor de retorno = clave o descripción del producto			*/			var bit1,bit2,bit3,bit4,bit5;//Banderas de comportamiento (Ver descripción arriba)			var tabla_base;//Tabla base del catalogo (Se abre con el alias "a")			var camposDeseados;//Campos de la tabla que se requieren(Ej: a1...a4)			fun Main() {				//Recibe como parametros el combo del almacen(strDlg0), y el combo de la sucursal(strDlg1)				frn=new FRNT; 				frP=new FRNTP; 				kdb=new KDB;				bit1=1;bit2=1;bit3=1;bit4=1;bit5=1;//Inicializa las banderas con los valores default.				var bCtrl=trim(frn.param(2));				if (strlen(bCtrl)>0){ //Se especificó una bandera de control.					bit1=mid(bCtrl,0,1);bit2=mid(bCtrl,1,1);bit3=mid(bCtrl,2,1);					bit4=mid(bCtrl,3,1);bit5=mid(bCtrl,4,1);				}				if (strlen(trim(frn.param(1)))>0){ bit5=0;}//Si se especifica una columna, no se devolverán todos los registros, solo el actual				kdb.connect();				tabla_base="\\\\kdkr";//Roles				camposDeseados="a1...a10";//Ver el comando kdb.rel de abajo para entender s2				kdb.open("a," & tabla_base &",l,\\\\kdkl");				var valor_inicial=(bit1==1)? frP.get(frn.param(0),-1,0): frP.get(frn.param(0),-1,1);				if (strlen(trim(frn.param(1)))>0){ valor_inicial=frP.get(frn.param(0),-1,frn.param(1)); }//Se devolverá el valor a una tabla 				frn.set("clave",valor_inicial);//Se llena la clave si es ventana de diálogo.				LlenaCombosEstaticos();				kdb.table("tlenguaje,l,1,&,l2,l1"); kdb.exec();				frn.set("lenguaje",kdb.get("tlenguaje"));			//	frn.setPos("lenguaje",-1,1,"internal:Y","val:"& kdb.get("tlenguaje") );						Bus(1);				if(bit2==0)deshabilita_campos();			}			fun BusquedaClave(){				Ventana("busqueda","clave","","\\\\kdkr");			}			fun camposLlave() {var llave= frn.get("clave"); 				if (bit4==0){ setmfy("clave"); } //Desactiva los campos de la llave para que no pueda cambiarse de registro				return llave;}//Campos que forman la llave. Puede ser una llave combinada			fun setData(){				set("clave","a1"); 				set("nombre","a2"); 				set("pagina","a4"); 				frn.setPos("tipo",-1,1,"internal:Y","val:'"& kdb.get("datos","a5") &"'");				frn.setPos("lenguaje",-1,1,"internal:Y","val:'"& kdb.get("datos","a6") &"'");							set("ch","a7"); 				set("usuariobd","a8"); 				set("passwordbd","a9"); 				set("comentarios","a10"); 			}			fun verifica_borrar()//Esta función valida si el registro actual se puede borrar. Ej. Un producto NO se puede borrar si hay facturas con ese produccto.			{				//Falta validar que ningún perfil esté ocupando este rol. 				//Error("Existe al menos un perfil con este rol, NO es posible borrarlo");return 0;				return frn.message("Está a punto de borrar el rol " & frn.get("nombre") & ". ¿Desea Continuar?","Precaución",1);//Regresa 1 si se puede borrar. 0 si no.			}			fun deshabilita_campos(){//Deshabilita todos los campos que no sean parte de la llave. Pone invisibles los botones				setmfy("nombre"); setmfy("pagina"); setmfy("tipo"); 				setmfy("lenguaje"); setmfy("ch"); setmfy("usuariobd"); setmfy("passwordbd"); setmfy("comentarios"); 				//Invisbles los botones			}			fun Exit() {				kdb.exec(); //Ejecuta instrucciones pendientes (Cambios)				if (strlen(trim(frn.param(0)))>0){ //Solo si se especificó un campo a devolver los datos 					if(bit5==1){//Se regresará un cubo de memoria con todos los registros (para llenar un combo o una lista)						var cmd="dat1,a,1,&,a1,a2";//Por default se ordena por clave, y el campo visible es la clave(bit1=1)						if(bit1==0) cmd="dat1,a,2,&,a2,a1";//Se ordena por descripción, y el campo visible es la descripción						kdb.table(cmd);kdb.exec();						frP.set(frn.param(0),kdb.get("dat1"));//Se llenan los combos					}					var valor_retorno=frn.get("clave");//Por default se devuelve la clave(bit1=1)					if( bit1==0 ){						valor_retorno=frn.get("nombre");//Se devuelve el nombre					}					if (strlen(trim(frn.param(1)))>0){ //Se devolverá el valor a una tabla 						frP.setX(valor_retorno,trim(frn.param(0)),-1,trim(frn.param(1))); 						frP.scriptElm(frn.param(0),"OnChange",frn.param(1));					}					else{ //se devolverá el valor a un campo						frP.set(frn.param(0),valor_retorno); 						frP.scriptElm(frn.param(0),"OnChange");					}				}				if (strlen(trim(frn.param(3)))>0){ //Se ejecutará la función indicada en la ventana padre.					frP.script(frn.param(3));				}				frn.exit();			}			fun valoresDefault(){				var valores="6,ESPAÑOL,7,N";//Número_de_campo1,valor_default1[,Número_de_campoN,valor_defaultN,...]				return valores;			}				//Funciones Auxiliares Para Catálogos(Genericas). 			//Necesitan las variable globales tabla_base y camposDeseados. 			//tabla_base especifíca el nombre de la tabla del catálogo que se está editando			//camposDeseados indica los campos que se modificaran de la tabla. Ej a1...a70			//Ademas de una funcion camposLlave que devuleva los campos que forman la clave			//Una funcion setData que establece en pantalla los valores de la base de datos. (Cubo de información: "datos")			//Una funcion verifica_borrar() que regresa 1 si se puede borrar el registro, 0 si no se debe borrar.			fun set(objeto,campo) { frn.set(objeto,kdb.get("datos",campo));}//Establece el valor de un campo de la BD al objeto indicado			fun Busca() {if(bit4==1) Bus(0);}			fun PgUp() {if(bit4==1) Bus(6);}			fun PgDn() {if(bit4==1) Bus(5);}			fun CtrIni() {if(bit4==1) Bus(7);}			fun CtrEnd() {if(bit4==1) Bus(8);}			fun Ventana(arch,cmp0,cmp1,cmp2,cmp3,cmp4,cmp5,cmp6,cmp7,cmp8,cmp9) {//Abre la pagina indicada como dialogo SOLO si el campo cmp0 se puede modificar(El cmp0 puede ser una tabla, y cmp1 la columna)				var b_valido=1;				if(strlen(cmp0)>0){//Se toma el cmp0 como el objeto (o columna) al que se devolverá el resultado.					if(strlen(cmp1)>0){//Se toma el cmp1 como el nombre de la columna a la que se devolverá el resultado						if( frn.getAtt(cmp0,"modify",cmp1) &= "N" ) b_valido=0;						if( frn.getAtt(cmp0,"available",cmp1) &= "N" ) b_valido=0;						if( frn.getAtt(cmp0,"visible",cmp1) &= "N" ) b_valido=0;					}else{//No se especificó una tabla.						if( frn.getAtt(cmp0,"modify") &= "N" ) b_valido=0;						if( frn.getAtt(cmp0,"available") &= "N" ) b_valido=0;						if( frn.getAtt(cmp0,"visible") &= "N" ) b_valido=0;					}				}				if(b_valido==1)frn.dialog(arch,cmp0,cmp1,cmp2,cmp3,cmp4,cmp5,cmp6,cmp7,cmp8,cmp9);			}			fun Error(string){frn.messageBar(string,1); frn.sound(1);}//Establece un mensaje de error en la barra de estado. Y emite un sonido de alerta.			fun Bus(relacional) { //1:>=	2:<=		3:>	 4:<		 5:Siguiente		6:Anterior		7:Primero		8:Ultimo				frn.messageBar("");				var cmd="datos,a,1," & relacional & "," & camposLlave() & ",&," & camposDeseados;				kdb.search(cmd); kdb.exec(); setData();			}			fun Cambio(numero_campo,objeto,desplazamiento) { //Realiza un cambio de valor en la BD				if(bit3==0){//No permite insertar nuevos registros					if(kdb.ok("datos")==0){frn.message("No es posible dar de alta nuevos registros","Permisos restringidos");break;}				}				var cmd="datos,a,1," & camposLlave() & ",&," & numero_campo & "," & frn.get(objeto,-1,desplazamiento) & ",&," & valoresDefault() & ",&," & camposDeseados;				kdb.write(cmd);kdb.exec();setData();			}			fun CtrDel() {//Borra el registro actual y devuelve el siguiente				if(bit3==1){					if ( verifica_borrar()==1 ){//Solo borrará el registro si la funcion verifica_borrar devuelve 1. Cada catálogo define su validacion para borrar.						var cmd="datos,a,1," & camposLlave() & ",&," & camposDeseados;						kdb.del(cmd); kdb.exec(); 						if(bit4==1)setData();else frn.exit();//Si no se puede posicionar en otro registro, se sale de la opción después de borrar.					}				}			}			fun setmfy(campo,valor){//Modifica el atrbuto modify de cierto objeto(0=no permite modificacion. 1=Permite modificacion)				var atrib=(valor==1)?"Y":"N";				frn.setAtt(campo,"modify",atrib);			}			fun setvbl(campo,valor){//Modifica el atrbuto visible de cierto objeto(0=no lo muestra. 1=si lo muestra)				var atrib=(valor==1)?"Y":"N";				frn.setAtt(campo,"visible",atrib);			}			fun LlenaCombosEstaticos(){				frn.setX("Normal","tipo",0,0);frn.setX("","tipo",0,1);				frn.setX("Administrador","tipo",1,0);frn.setX("A","tipo",1,1);				frn.setX("Publico","tipo",2,0);frn.setX("P","tipo",2,1);			}		}					/*	---------------------------------------	AUTOR						FECHA			CAMBIO	---------------------------------------	Diana Barreto		2010-03-18		-Se corrigió el kdb.table al buscar el lenguaje ya que el indie estaba incorrecto	*/	</script></pag>

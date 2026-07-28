@@ -45,7 +45,6 @@ declare
 	xml_necesarias text = ''; 
 	xml_cargadas text = '';
 
-	intValor int =0 ;
 
 begin
 	--raise notice '%', dataxml;	
@@ -69,22 +68,15 @@ begin
 					
 					expXml:= format('<document><clave_producto>%1$s</clave_producto><fecha>%2$s</fecha>
 					<criterio_fecha>%3$s</criterio_fecha></document>',clave_ref,current_date,'N');
-					--Validar que el producto existe como origina o reemplazo
-					select count(*) into intValor from keplersc.kdini where c1=clave_ref;
-					if intValor = 0 then --No esta como oiginal
-						select count(*) into intValor from keplersc.kdinr where c1=clave_ref;
-					end if;
-
-					if intValor > 0 then --Esta como original o reemplazo
-						select * into cve_original, cve_actual, cadena_reemplazo from keplersc.prod_cadena_reemplazo(expXml::xml);
-							
-						select xmlforest(clave_ref as articulo_necesario, cantidad as cantidad,  punto as punto,
-						cadena_reemplazo as cadena_reemplazo) into xml_refs_necesarias::text;
-							 				
-						xml_necesarias := concat(xml_necesarias, format('<r%1$s>%2$s</r%1$s>' ,contador_refs_necesarias, xml_refs_necesarias ));
+					select * into cve_original, cve_actual, cadena_reemplazo from keplersc.prod_cadena_reemplazo(expXml::xml);
 						
-						contador_refs_necesarias := contador_refs_necesarias + 1;
-					end if;
+					select xmlforest(clave_ref as articulo_necesario, cantidad as cantidad,  punto as punto,
+					cadena_reemplazo as cadena_reemplazo) into xml_refs_necesarias::text;
+						 				
+					xml_necesarias := concat(xml_necesarias, format('<r%1$s>%2$s</r%1$s>' ,contador_refs_necesarias, xml_refs_necesarias ));
+					
+					contador_refs_necesarias := contador_refs_necesarias + 1;
+					
 				end loop;
 		
 			end if;

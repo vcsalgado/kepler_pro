@@ -2,10 +2,6 @@ CREATE OR REPLACE FUNCTION keplersc.invr_movtos_alta(dataxml xml, folio_operacio
  RETURNS TABLE(resultado text, mensaje text, adicionales text)
  LANGUAGE plpgsql
 AS $function$
-
---Bitacora de cambios
---20/04/202 Miriam Santana: Seleccion de anticipos de una factura para relacionarlos en el CFDI
-
 declare
 	--Variables de definicion de documento
 	no_partidas int = 0;
@@ -184,7 +180,8 @@ begin
 				-- condition implemented by JMM 20220711 ...
 			   if (upper(genero) = upper('X') and  upper(naturaleza) = upper('D') and grupo = '40' and tipo_clave = '1') 
 					or 	(upper(genero) = 'N' and  upper(naturaleza) = 'D' and (grupo = '05' or grupo = '5')) --VCSS 23 05 2025 Para ajustes de salida, se toma el costo ingresado
-				then 			   	-- No debe modificar el campo : importeFinalPartida, para este DOC por lo pronto 
+				then 
+			   	-- No debe modificar el campo : importeFinalPartida, para este DOC por lo pronto 
 			   	importeFinalPartida = importeFinalPartida;
 				else
 					if decValor <> 0 then
@@ -222,14 +219,6 @@ begin
 --raise notice 'PASO 42';			
 
 	end loop;
-
-	---------------------------------------------------------------
-	--Guarda la seleccion de anticipos de una factura para relacionarlos en el CFDI.		--MSS 22042026 seleccion de anticipos
-	---------------------------------------------------------------
-	select * into resultado, mensaje, adicionales from keplersc.cfd_alta_seleccion_anticipos(dataxml,folio_operacion);
-	if resultado = '0' then
-		raise exception '%',mensaje;
-	end if;
 
 	resultado := 1;
 	mensaje := '';

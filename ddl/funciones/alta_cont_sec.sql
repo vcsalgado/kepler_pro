@@ -2,7 +2,7 @@ CREATE OR REPLACE FUNCTION keplersc.alta_cont_sec(dataxml xml, folio_operacion t
  RETURNS TABLE(resultado text, mensaje text, adicionales text)
  LANGUAGE plpgsql
 AS $function$
---Descripcion: Realiza inserci?n de movimientos contables en KDM6
+--Descripcion: Realiza inserci�n de movimientos contables en KDM6
 --Autor: Luis Leal
 --Fecha: 07/10/22
 --08/03/2024 (JMM) :
@@ -10,7 +10,6 @@ AS $function$
 ---- para las Operaciones de Nvo Esquema de CxP - Contrarecibo Unico (Unificado)
 --17/07/2024 (JMM) : 
 ---- Incluir Concepto Presupuesto para nuevo SCH - Gastos ( C x P . Contra Recibos) 
---12/11/2025 VCSS Impuestos
 
 declare
 	--Variables de definicion de documento
@@ -33,7 +32,6 @@ declare
 	monto numeric = 0;
 	cargo_abono text;
 	inventario text;
-	primera_partida int=0;
 
 	--Variables de uso general 
 	strValor text;
@@ -51,11 +49,6 @@ declare
 	fecha text = '';
 	concepto_presupuesto text = '';
 
-	--VCSS 12/11/2025 Impuestos
-	tagMovtosCtas text = '';
-	concepto_factura text='';
-	referencia_uuid text = '';
-
 	--Variables de retorno
 	resultado text;
 	mensaje text;
@@ -72,48 +65,24 @@ begin
 	naturaleza := (xpath('//document/k_tipon/r2/text()', dataxml))[1];
 	grupo := (xpath('//document/k_tipon/r3/text()', dataxml))[1];
 	tipo_clave := (xpath('//document/k_tipon/r4/text()', dataxml))[1];
-	concepto_factura:= coalesce((xpath('//document/uuid/concepto_factura/text()',dataxml))[1]::text,'')::text;
 
 	--Partidas
-	flag_contrarec := coalesce((xpath('//document/ambiente/schema/text()',dataxml))[1]::text,'')::text;
-
-	if xpath_exists('//document/k_mov_ctas', dataxml) = true then 
-		tagMovtosCtas =  'k_mov_ctas';
-	else
- 		tagMovtosCtas =  'k_mov';
-	end if;
-
-	strValor := (xpath('//document/' || tagMovtosCtas ||' /no_partidas/text()',dataxml))[1];
+	strValor := (xpath('//document/k_mov/no_partidas/text()',dataxml))[1];
 	no_partidas := strValor::integer;	
 
-	primera_partida := 0;
 	numero_partida := 0;
-	if concepto_factura <> '' then
-		if flag_contrarec = 'CXP_TRANSFER_CONVERT' then
-			select coalesce(max(c7),0) into primera_partida from keplersc.kdm6 
-				where c1=sucursal_id and c2=genero and c3=naturaleza and c4=grupo::int 
-				and c5=tipo_clave::int and c6=folio_operacion;
-		end if;
-	end if;
-
-	numero_partida=primera_partida;
 
 	for cont in 0..no_partidas - 1 loop
 		
-			clave_cuenta := coalesce((xpath('//document/' || tagMovtosCtas ||'/r' ||cont||'/k_cuenta/text()',dataxml))[1], '');
-			cargo := coalesce((xpath('//document/' || tagMovtosCtas ||'/r' ||cont||'/k_cargo/text()',dataxml))[1],'0');
-			abono := coalesce((xpath('//document/' || tagMovtosCtas ||'/r' ||cont||'/k_abono/text()',dataxml))[1],'0');
-			if clave_cuenta = '' or (cargo='0' and abono = '0') then
+			clave_cuenta := coalesce((xpath('//document/k_mov/r' ||cont||'/k_cuenta/text()',dataxml))[1], '');
+			if clave_cuenta = '' then
 				continue;
 			end if;
 			numero_partida := numero_partida + 1;
-			descr_cuenta := (xpath('//document/' || tagMovtosCtas ||'/r' ||cont||'/k_cuentadesc/text()',dataxml))[1];
-			cargo := (xpath('//document/' || tagMovtosCtas ||'/r' ||cont||'/k_cargo/text()',dataxml))[1];
-			abono := (xpath('//document/' || tagMovtosCtas ||'/r' ||cont||'/k_abono/text()',dataxml))[1];		
-			inventario := coalesce((xpath('//document/' || tagMovtosCtas ||'/r' ||cont||'/k_inventario/text()',dataxml))[1],'');	
-
-			referencia_uuid := coalesce((xpath('//document/' || tagMovtosCtas ||'/r' ||cont||'/k_referencia_uuid/text()',dataxml))[1],''); --VCSS impuestos
-
+			descr_cuenta := (xpath('//document/k_mov/r' ||cont||'/k_cuentadesc/text()',dataxml))[1];
+			cargo := (xpath('//document/k_mov/r' ||cont||'/k_cargo/text()',dataxml))[1];
+			abono := (xpath('//document/k_mov/r' ||cont||'/k_abono/text()',dataxml))[1];		
+			inventario := coalesce((xpath('//document/k_mov/r' ||cont||'/k_inventario/text()',dataxml))[1],'');	
 
 			--Added by JMM 20240308
 			flag_contrarec = '';
@@ -123,10 +92,10 @@ begin
 		
 			afecta_inventario = '';
 			concepto_presupuesto = ''; /*Added by JMM 20240716*/
-			if upper(flag_contrarec) in ('CXP_CONTR_REC','CXP_CONTR_REC_INTERNO','CXP_CM_RETENCIONES') then --Adapted by JMM 20241015 
+			if upper(flag_contrarec) = 'CXP_CONTR_REC' then 
 			
 				if length(trim(inventario)) > 0 then
-					afecta_inventario := coalesce((xpath('//document/' || tagMovtosCtas ||'/r' ||cont||'/k_afecta/text()',dataxml))[1],'');
+					afecta_inventario := coalesce((xpath('//document/k_mov/r' ||cont||'/k_afecta/text()',dataxml))[1],'');
 					if length(trim(afecta_inventario)) = 0 then
 						mensaje := 'No se cuenta con la afectacion para el inventario registrado ' || inventario || ' , partida ' || numero_partida::text;
 						raise exception '%' , mensaje;
@@ -135,7 +104,7 @@ begin
 			
 				------  START : Segment for Budgets  ,  Added by JMM 20240716 
 			
-				st_prspto_concept := coalesce((xpath('//document/' || tagMovtosCtas ||'/r' ||cont||'/k_ctopto/text()',dataxml))[1],'');
+				st_prspto_concept := coalesce((xpath('//document/k_mov/r' ||cont||'/k_ctopto/text()',dataxml))[1],'');
 				fecha := coalesce((xpath('//document/k_fecha/text()', dataxml))[1]::text,'')::text;
 
 				func_Valor := '';
@@ -189,13 +158,22 @@ begin
 										raise exception '%', 'No puedes exceder el Presupuesto para el Concepto ... ' || ' Partida ' || numero_partida || ' , Nvo. Monto ' || nvo_monto || ' > Presupuesto ' || prspto_monto;
 									end if;
 								end if;
+							
 							end if;
+						
 						end if;
+					
 					else
-
+					
+						-- For Testing ...
+						--raise exception '%', 'Continua ... No Maneja Presupuesto';
+					
 					end if;
-				end if;	
+				
+				end if;
+			
 				------  END : Segment for Budgets  ,  Added by JMM 20240716 		
+			
 			end if;
 		
 		
@@ -207,16 +185,16 @@ begin
 				cargo_abono:= 'A';
 			end if;
 		
-			insert into keplersc.kdm6 (c1,c2,c3,c4,c5,c6,c7,c8,c9,c10,c11,c13 ,c12,ctopto,referencia)
+			insert into keplersc.kdm6 (c1,c2,c3,c4,c5,c6,c7,c8,c9,c10,c11,c13 ,c12/*Added by JMM 20240308*/ ,ctopto/*Added by JMM 20240716*/)
 			values(sucursal_id,genero,naturaleza,grupo::integer,tipo_clave::integer,
 				folio_operacion,numero_partida, clave_cuenta, descr_cuenta, cargo_abono, monto, inventario 
-				,afecta_inventario,concepto_presupuesto,referencia_uuid);
+				,afecta_inventario/*Added by JMM 20240308*/ ,concepto_presupuesto/*Added by JMM 20240716*/);
 			
 	end loop ;	
 	
 	resultado := 1;
 	mensaje := '';
-	adicionales := 'primera_partida=' || primera_partida::text;
+	adicionales := '';
 	return query select resultado, mensaje, adicionales;	
 
 exception

@@ -99,16 +99,13 @@ begin
 	D3_fechaPrimCorte:=A2_fechaIniMes + interval '15 day';
 	D4_fechaSegCorte:=A3_fechaFinMes;
 
-	--Obtiene catalogos basicos
-	select * from keplersc.kdconfigcc into rec_Y_KDCONFIGCC;
-
 	--LIMPIA_COMISIONES
 	delete from keplersc.kdcomisventas where c1=sucursal_id and c2=anio and c3=mes;
 	delete from keplersc.kdcomisquincena where c1=sucursal_id and c2=anio and c3=mes;
 
-	for rec_F_UV in select * from keplersc.kduv /*where c2='MND'*/  order by c1,c2--INI Loop sobre vendedores Alias F en K75, VIEW(F)
+	for rec_F_UV in select * from keplersc.kduv /*where c2='R0H'*/ order by c1,c2--INI Loop sobre vendedores Alias F en K75, VIEW(F)
 	loop
-raise notice 'Inicia Vendedor: %', rec_F_UV.c2;
+--raise notice 'Inicia Vendedor: %', rec_F_UV.c2;
 		--Reinicia variables de proceso
 		rec_H_VESQ:=null;
 		--INI ESTABLECE_FECHAS K75, las fechas se establecieron al inicio de la funcion
@@ -169,7 +166,7 @@ raise notice 'Inicia Vendedor: %', rec_F_UV.c2;
 					order by k.c1, k.c8
 					--Sucursal,Vendedor,Tipo de Operacion, Dentro de rango fecha: VIEW(K,2) WHILE K1=A1 AND K9=F2 AND K11=G1 AND K7>=A2 AND K7<=D(N5)					
 				loop
-raise notice 'Ciclo for: Vendedor:%, Tipo Oper:%, N5:% Vtas. comisionar:%, FecIni:%, FecFin:%',rec_F_UV.c2,rec_G_TOP.c1,N5,rec_K_COMISMOV.c8,A2_fechaIniMes,dateValor;					
+--raise notice 'Ciclo for: Vendedor:%, Tipo Oper:%, N5:% Vtas. comisionar:%, FecIni:%, FecFin:%',rec_F_UV.c2,rec_G_TOP.c1,N5,rec_K_COMISMOV.c8,A2_fechaIniMes,dateValor;					
 					--SET(0,N2,B31...B49)
 					B11_ComisionSinBonos = 0;
 					B12_GastosAdmin = 0;
@@ -248,7 +245,6 @@ raise notice 'Ciclo for: Vendedor:%, Tipo Oper:%, N5:% Vtas. comisionar:%, FecIn
 						where c1 = rec_I_VESQVEH.c5; --Clasif de Comision
 					if found then
 						B1_UtilidadBruta:=rec_K_COMISMOV.c22-rec_K_COMISMOV.c21-rec_K_COMISMOV.c20-rec_K_COMISMOV.c23;	
---raise notice 'B1_UtilidadBruta:=rec_K_COMISMOV.c22-rec_K_COMISMOV.c21-rec_K_COMISMOV.c20-rec_K_COMISMOV.c23: % = %-%-%-%',B1_UtilidadBruta,rec_K_COMISMOV.c22,rec_K_COMISMOV.c21,rec_K_COMISMOV.c20,rec_K_COMISMOV.c23;
 						--UtilBruta=Importe-IVA-ISAN-Costo
 						--COSTOS ADICIONALES Y SUBSIDIOS
 						rec_P_COMISADIS:=null;
@@ -257,18 +253,17 @@ raise notice 'Ciclo for: Vendedor:%, Tipo Oper:%, N5:% Vtas. comisionar:%, FecIn
 							c4=rec_K_COMISMOV.c4 and c5=rec_K_COMISMOV.c5 and c6=rec_K_COMISMOV.c6 and c7=rec_K_COMISMOV.c10 limit 1;
 						if found then
 							B1_UtilidadBruta:=B1_UtilidadBruta
-								-coalesce(rec_P_COMISADIS.c13,0) --Cargo al Costo de Unidades
-								+coalesce(rec_P_COMISADIS.c14,0) --Abono al Costo de Unidades
-								+coalesce(rec_P_COMISADIS.c9,0)  --Cargos de Bonificaciones
-								-coalesce(rec_P_COMISADIS.c10,0); --Abonos de Bonificaciones
-							B6_Subsidio = coalesce(rec_P_COMISADIS.c8,0);
+								-rec_P_COMISADIS.c13 --Cargo al Costo de Unidades
+								+rec_P_COMISADIS.c14 --Abono al Costo de Unidades
+								+rec_P_COMISADIS.c9  --Cargos de Bonificaciones
+								-rec_P_COMISADIS.c10; --Abonos de Bonificaciones
+							B6_Subsidio = rec_P_COMISADIS.c8;
 						end if;
---raise notice 'B1_UtilidadBruta-rec_P_COMISADIS.c13+rec_P_COMISADIS.c14 + rec_P_COMISADIS.c9 - rec_P_COMISADIS.c10 %-%+%+%-%',B1_UtilidadBruta,rec_P_COMISADIS.c13,rec_P_COMISADIS.c14,rec_P_COMISADIS.c9,rec_P_COMISADIS.c10;					
+					
 						--NOTAS DE DESCUENTO
-						B5_NotaDescuento = coalesce(rec_K_COMISMOV.c15,0); --Descuento
+						B5_NotaDescuento = rec_K_COMISMOV.c15; --Descuento
 						--UTILIDAD BRUTA FINAL
 						B1_UtilidadBruta=B1_UtilidadBruta-B5_NotaDescuento-B6_Subsidio;
----raise notice 'B1_UtilidadBruta-B5_NotaDescuento-B6_Subsidio %-%+%',B1_UtilidadBruta,B5_NotaDescuento,B6_Subsidio;
 					end if;
 					if 	B1_UtilidadBruta < 0 then
 						B1_UtilidadBruta:=0;
@@ -474,12 +469,12 @@ raise notice 'Ciclo for: Vendedor:%, Tipo Oper:%, N5:% Vtas. comisionar:%, FecIn
 					if rec_K_COMISMOV.c7 <= D3_fechaPrimCorte then
 						B21_BonoSemanal:=rec_H_VESQ.c25;
 					end if;
-					if rec_K_COMISMOV.c7 >= D3_fechaPrimCorte and rec_K_COMISMOV.c7 <= D4_fechaSegCorte then
+					if rec_K_COMISMOV.c7 > D3_fechaPrimCorte and rec_K_COMISMOV.c7 <= D4_fechaSegCorte then
 						B21_BonoSemanal:=rec_H_VESQ.c26;
 					end if;
 					--TO VER D5 y D6 estan en K75, pero no estan definidas, el calculo es quincenal no semanal
-raise notice 'Bono Semana % * B1_UtilidadBruta % =  %',B21_BonoSemanal,B1_UtilidadBruta,B21_BonoSemanal * B1_UtilidadBruta/100;
 					B21_BonoSemanal := B21_BonoSemanal * B1_UtilidadBruta/100;
+
 --raise notice 'Comis TMKT';
 					/*
 					SUB CALCULA_COMISION_TMKT
@@ -498,22 +493,19 @@ raise notice 'Bono Semana % * B1_UtilidadBruta % =  %',B21_BonoSemanal,B1_Utilid
 					B23_DescuentoAsesorTmkt:=0;
 					rec_V_COMISMOV2:=null;
 					--TO VER Tabla de KDCONFIGCC en Subaru esta vacia, validar registros
-
+					/*
 					select * into rec_V_COMISMOV2 from keplersc.kdcomismov2 
 						where c1=rec_K_COMISMOV.c1 and c2=rec_K_COMISMOV.c2 and c3= rec_K_COMISMOV.c3 and 
 						c4=rec_K_COMISMOV.c4 and c5=rec_K_COMISMOV.c5 and c6=rec_K_COMISMOV.c6 	and 
 						c10=rec_K_COMISMOV.c10;
 						--Sucursal,Genero,Naturaleza,Grupo,Tipo,Folio,Tipo						
 					if found then
-						if rec_V_COMISMOV2.c9 <> 'SA' and rec_V_COMISMOV2.c9 <> '' then --Contacto asignado
---raise notice 'ENCONTRADO rec_V_COMISMOV2 2';
-							if rec_Y_KDCONFIGCC is not null then
-								B23_DescuentoAsesorTmkt:=B22_ComisAntesTmkt*rec_Y_KDCONFIGCC.c2/100;
-							end if;
+						if rec_V_COMISMOV2.c9 <> 'SA' then --Contacto asignado
+							B23_DescuentoAsesorTmkt:=B22_ComisAntesTmkt*
 						end if;
 					end if;
---raise notice 'B24_ComisionTotal:=B22_ComisAntesTmkt-B23_DescuentoAsesorTmkt: %-%', B22_ComisAntesTmkt,B23_DescuentoAsesorTmkt;					
-
+					
+					*/
 					B24_ComisionTotal:=B22_ComisAntesTmkt-B23_DescuentoAsesorTmkt;
 					
 					--INGRESANDO LAS COMISIONES DE TODO EL MES
@@ -569,28 +561,9 @@ raise notice 'Bono Semana % * B1_UtilidadBruta % =  %',B21_BonoSemanal,B1_Utilid
 						--INSERTANDO EL MOVIMIENTO CUANDO HAY ASESOR DE TELEMARKETING INVOLUCRADO
 						if rec_V_COMISMOV2 is not null then
 							--TO DO Completar esquema cuando hay asesor TMKT, validar con K57
-							if rec_V_COMISMOV2.c9<>'SA' and rec_V_COMISMOV2.c9<>'' then --IF V9><"SA"
+							if rec_V_COMISMOV2.c9<>'SA' then --IF V9><"SA"
 								N8_Consecutivo:=N8_Consecutivo + 1;
---raise notice 'Entro N8_Consecutivo %; rec_K_COMISMOV.c8%; rec_ZM_COMISVENTAS.c15%', N8_Consecutivo, rec_K_COMISMOV.c8,rec_ZM_COMISVENTAS.c15;
-								insert into keplersc.kdcomisventas(c1,c2,c3,c4,c5,
-								c6,c7,c8,c9,c10,
-								c11,c12,c13,c14,c15,
-								c16,c17,c18,
-								c19,c20,
-								c21,c22,c23,c24,c25,
-								c26,c27,c28,c29,c30,
-								c31,c32,c33,c34,c35,
-								c36,c37) values(sucursal_id,anio,mes,rec_F_UV.c2,30,
-								rec_K_COMISMOV.c8,N8_Consecutivo,rec_K_COMISMOV.c10::int,rec_K_COMISMOV.c7,rec_K_COMISMOV.c11,
-								rec_K_COMISMOV.c12,substring(rec_E_INF.c4,1,30),rec_E_INF.c21,rec_K_COMISMOV.c25,rec_ZM_COMISVENTAS.c15,
-								rec_T_ICOM.c39,N12_EdadInventario,rec_ZM_COMISVENTAS.c18,
-								B1_UtilidadBruta,B2_GastosAdmin,
-								B3_Seguro,B4_GarantiaExtendida,B5_NotaDescuento,B6_Subsidio,B7_UtilidadBrutaAccesorios,
-								B11_ComisionSinBonos,B20_Traslado,B18_ComisionEdad,B19_Linea,B12_GastosAdmin,
-				 				B13_Seguro,B14_Garantia,B17_Accesorios,B21_BonoSemanal,	B22_ComisAntesTmkt,
-								-B24_ComisionTotal,-B23_DescuentoAsesorTmkt);	
-								--INS(Z,A1,A7,A6,V9,30,
-								--	K8,N8,K10,K7,K11,K12,E4,E21,K25,M5,T39,N12,F2,B1...B7,B11,B20,B18,B19,B12,B13,B14,B17,B21,B22,-B24,-B23)
+								--INS(Z,A1,A7,A6,V9,30,K8,N8,K10,K7,K11,K12,E4,E21,K25,M5,T39,N12,F2,B1...B7,B11,B20,B18,B19,B12,B13,B14,B17,B21,B22,-B24,-B23)							
 							end if;
 						end if ;
 					end if; --Fin N5 = 4
@@ -648,38 +621,9 @@ raise notice 'Bono Semana % * B1_UtilidadBruta % =  %',B21_BonoSemanal,B1_Utilid
 												--INSERTANDO EL MOVIMIENTO CUANDO HAY ASESOR DE TELEMARKETING INVOLUCRADO
 						if rec_V_COMISMOV2 is not null then
 							--TO DO Completar esquema cuando hay asesor TMKT, validar con K57
-							if rec_V_COMISMOV2.c9<>'SA' and rec_V_COMISMOV2.c9<>'' then --IF V9><"SA"
+							if rec_V_COMISMOV2.c9<>'SA' then --IF V9><"SA"
 								N8_Consecutivo:=N8_Consecutivo + 1;
-								rec_ZM_COMISVENTAS.c15:='';
-								rec_ZM_COMISVENTAS.c18:='';
-								if rec_M_VOBJLINEA is not null then
-									rec_ZM_COMISVENTAS.c15:=rec_M_VOBJLINEA.c5;
-								end if;
-								if rec_V_COMISMOV2 is not null then
-									rec_ZM_COMISVENTAS.c18:=rec_V_COMISMOV2.c9;
-								end if;
---raise notice 'Entro N8_Consecutivo %; rec_K_COMISMOV.c8%; rec_ZM_COMISVENTAS.c15:%', N8_Consecutivo, rec_K_COMISMOV.c8,rec_ZM_COMISVENTAS.c15;
-/*
-								insert into keplersc.kdcomisventas(c1,c2,c3,c4,c5,
-								c6,c7,c8,c9,c10,
-								c11,c12,c13,c14,c15,
-								c16,c17,c18,
-								c19,c20,
-								c21,c22,c23,c24,c25,
-								c26,c27,c28,c29,c30,
-								c31,c32,c33,c34,c35,
-								c36,c37) values(sucursal_id,anio,mes,rec_F_UV.c2,30,
-								rec_K_COMISMOV.c8,N8_Consecutivo,rec_K_COMISMOV.c10::int,rec_K_COMISMOV.c7,rec_K_COMISMOV.c11,
-								rec_K_COMISMOV.c12,substring(rec_E_INF.c4,1,30),rec_E_INF.c21,rec_K_COMISMOV.c25,rec_ZM_COMISVENTAS.c15,
-								rec_T_ICOM.c39,N12_EdadInventario,rec_ZM_COMISVENTAS.c18,
-								B1_UtilidadBruta,B2_GastosAdmin,
-								B3_Seguro,B4_GarantiaExtendida,B5_NotaDescuento,B6_Subsidio,B7_UtilidadBrutaAccesorios,
-								B11_ComisionSinBonos,B20_Traslado,B18_ComisionEdad,B19_Linea,B12_GastosAdmin,
-				 				B13_Seguro,B14_Garantia,B17_Accesorios,B21_BonoSemanal,	B22_ComisAntesTmkt,
-								-B24_ComisionTotal,-B23_DescuentoAsesorTmkt);
-*/
-								--INS(Z,A1,A7,A6,V9,30,
-								--	K8,N8,K10,K7,K11,K12,E4,E21,K25,M5,T39,N12,F2,B1...B7,B11,B20,B18,B19,B12,B13,B14,B17,B21,B22,-B24,-B23)							
+								--INS(Z,A1,A7,A6,V9,30,K8,N8,K10,K7,K11,K12,E4,E21,K25,M5,T39,N12,F2,B1...B7,B11,B20,B18,B19,B12,B13,B14,B17,B21,B22,-B24,-B23)							
 							end if;
 						end if ;					
 					end if; --Fin N5<5
@@ -862,10 +806,10 @@ raise notice 'Bono Semana % * B1_UtilidadBruta % =  %',B21_BonoSemanal,B1_Utilid
 				select * into rec_T_ICOM from keplersc.kdicom k2  --IF BUS(T,1,0,V1,V8,ULT)>0 AND BUS(X,3,1,V1,V8)>0 then
 					where c1=rec_V_COMISMOV2.c1 and c2=rec_V_COMISMOV2.c8 limit 1;
 				if found then
-				select * into rec_E_INF from keplersc.kdinf where c1=rec_T_ICOM.c1	and c2=rec_T_ICOM.c2 limit 1;
-				if not found then
-					continue;
-				end if;
+					select * into rec_E_INF from keplersc.kdinf where c1=rec_T_ICOM.c1	and c2=rec_T_ICOM.c2 limit 1;
+					if not found then
+						continue;
+					end if;
 --raise notice 'PASO 2, rec_V_COMISMOV2.c1:%, rec_V_COMISMOV2.c8:%',rec_V_COMISMOV2.c1,rec_V_COMISMOV2.c8;				
 					--TO VER: Validar que el registro obtenido corresponda al del k75 esperado
 					select * into rec_X_COMISMOV2 from keplersc.kdcomismov2 k 
@@ -926,7 +870,7 @@ raise notice 'Bono Semana % * B1_UtilidadBruta % =  %',B21_BonoSemanal,B1_Utilid
 							N6:=N5-2;
 							N8_Consecutivo:=1;
 							--BUS(Z,1,0,A1,A7,A6,N6,F2,20,K8,ULT)>0
-raise notice 'INI C mes:%',mes;
+--raise notice 'INI C mes:%',mes;
 							select max(c8) into N8_Consecutivo from keplersc.kdcomisquincena
 								where c1=sucursal_id and c2=lpad(anio,2,'0') and c3=mes --c3=lpad(mes,2,'0') 
 								and c4=N6 and c5=rec_F_UV.c2 and c6=20 and c7=rec_V_COMISMOV2.c8;

@@ -273,7 +273,6 @@ declare
 	subtotal_uuid text = '';
 	otroimptoa_uuid text = '';
 	otroimptob_uuid text = '';
-	concepto_factura_uuid text = '';
 
 	--Added 20240229 by JMM , Proveedor de Pago
 	clave_provpago text = '';
@@ -698,9 +697,6 @@ begin
 		otroimptob_uuid := coalesce((xpath('//document/uuid/otroimptob/text()',dataxml))[1]::text,'')::text;
 	end if;
 
-	if xpath_exists('//document/uuid/concepto_factura/text()', dataxml) = true then 
-		concepto_factura_uuid := coalesce((xpath('//document/uuid/concepto_factura/text()',dataxml))[1]::text,'')::text;
-	end if;
 
 	-- Validar que no se repita el uuid ... To Addapting
 	if length(/*folio_uuid*/total_uuid) > 0 then
@@ -853,32 +849,32 @@ begin
 	aux_tip := '0';
 	aux_folio := '';
 
-	if xpath_exists('//document/c_gen/text()', dataxml) = true then 
-		aux_gen := coalesce((xpath('//document/c_gen/text()',dataxml))[1]::text,'')::text;
-	end if;
-	if xpath_exists('//document/c_nat/text()', dataxml) = true then 
-		aux_nat := coalesce((xpath('//document/c_nat/text()',dataxml))[1]::text,'')::text;
-	end if;
-	if xpath_exists('//document/c_gpo/text()', dataxml) = true then 
-		aux_gpo := coalesce((xpath('//document/c_gpo/text()',dataxml))[1]::text,'')::text;
-	end if;
-	if xpath_exists('//document/c_tip/text()', dataxml) = true then 
-		aux_tip := coalesce((xpath('//document/c_tip/text()',dataxml))[1]::text,'')::text;
-	end if;
-	if xpath_exists('//document/c_folio/text()', dataxml) = true then 
-		aux_folio := coalesce((xpath('//document/c_folio/text()',dataxml))[1]::text,'')::text;
-	end if;
-	if xpath_exists('//document/c_ref/text()', dataxml) = true then 
-		ref_compl := coalesce((xpath('//document/c_ref/text()',dataxml))[1]::text,'')::text;
-	end if;
-	--Added by JMM 20240905
-	if xpath_exists('//document/c_ref_aux/text()', dataxml) = true then 
-		ref_aux := coalesce((xpath('//document/c_ref_aux/text()',dataxml))[1]::text,'')::text;
-	end if;
-					
 	if upper(flag_gastos) = 'CXP_CONTR_REC_DEVCLI' then
 	
 		cr_st = 'D';
+	
+		if xpath_exists('//document/c_gen/text()', dataxml) = true then 
+			aux_gen := coalesce((xpath('//document/c_gen/text()',dataxml))[1]::text,'')::text;
+		end if;
+		if xpath_exists('//document/c_nat/text()', dataxml) = true then 
+			aux_nat := coalesce((xpath('//document/c_nat/text()',dataxml))[1]::text,'')::text;
+		end if;
+		if xpath_exists('//document/c_gpo/text()', dataxml) = true then 
+			aux_gpo := coalesce((xpath('//document/c_gpo/text()',dataxml))[1]::text,'')::text;
+		end if;
+		if xpath_exists('//document/c_tip/text()', dataxml) = true then 
+			aux_tip := coalesce((xpath('//document/c_tip/text()',dataxml))[1]::text,'')::text;
+		end if;
+		if xpath_exists('//document/c_folio/text()', dataxml) = true then 
+			aux_folio := coalesce((xpath('//document/c_folio/text()',dataxml))[1]::text,'')::text;
+		end if;
+		if xpath_exists('//document/c_ref/text()', dataxml) = true then 
+			ref_compl := coalesce((xpath('//document/c_ref/text()',dataxml))[1]::text,'')::text;
+		end if;
+		--Added by JMM 20240905
+		if xpath_exists('//document/c_ref_aux/text()', dataxml) = true then 
+			ref_aux := coalesce((xpath('//document/c_ref_aux/text()',dataxml))[1]::text,'')::text;
+		end if;
 	
 		if length(aux_gen) = 0 or length(aux_nat) = 0 or length(aux_gpo) = 0 or length(aux_tip) = 0 
 			or length(referencia) = 0 or length(aux_folio) = 0 or length(ref_compl) = 0 
@@ -1087,6 +1083,7 @@ begin
 		monto_ieps_ret := coalesce((xpath('//document/k_isan/text()',dataxml))[1]::text,'0')::text;		
 	end if;
 	*/
+
 	insert into keplersc.kdm1 (
 		c1,c2,c3,c4,c5,
 		c6,c7,c8,c9,c10,
@@ -1140,7 +1137,7 @@ begin
 		/*Added 20240905 by JMM*/
 		,doc_refer_aux,
 		tipo_relacion, motivo_cancelacion, /*MSS 24022025*/
-		uuid_trasieps,uuid_totalimptotras,uuid_totalimptoret,uuid_subtotal,uuid_otroimptoa,uuid_otroimptob,esquema,concepto_factura /*VCSS 06 Jul 2025 */
+		uuid_trasieps,uuid_totalimptotras,uuid_totalimptoret,uuid_subtotal,uuid_otroimptoa,uuid_otroimptob /*VCSS 06 Jul 2025 */
 		)
 	values (
 		sucursal_id,genero,naturaleza,grupo::integer,tipo_clave::integer,
@@ -1195,9 +1192,9 @@ begin
 		/*Added 20240905 JMM*/
 		,ref_aux,
 		tipo_rel, motivo_cancel, /*MSS 24022025*/
-		iepstras_uuid,totalimptotras_uuid,totalimptoret_uuid,subtotal_uuid,otroimptoa_uuid,otroimptob_uuid,flag_gastos,concepto_factura_uuid /*VCSS 06 Jul 2025 */
+		iepstras_uuid,totalimptotras_uuid,totalimptoret_uuid,subtotal_uuid,otroimptoa_uuid,otroimptob_uuid /*VCSS 06 Jul 2025 */
 		);	
-
+	
 	resultado := 1;
 	mensaje := '';
 	adicionales := '';
