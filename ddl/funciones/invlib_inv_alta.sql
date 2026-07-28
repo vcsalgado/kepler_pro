@@ -129,7 +129,7 @@ begin
 		  		-- Updated by JMM 20230108 ... El Inventario puede estar en varios registros,
 	 			-- ... por eso debe usarse el Folio 		 	 
 				--select (c16-c54-c14) as c16,c14 into v_costo, v_iva from keplersc.kdm1 where c2 = genero and c3 = naturaleza and c4= grupo::numeric and c5 = tipo::numeric and c100 = v_inventario;
-		  		--MSS 28112025 Agregue la sucursal al where del select a kdm1
+				--MSS 28112025 Agregue la sucursal al where del select a kdm1
 		  		select (c16-c54-c14) as c16,c14 into v_costo, v_iva from keplersc.kdm1 where c1 = sucursal_id and c2 = genero and c3 = naturaleza and c4= grupo::numeric and c5 = tipo::numeric and c6 = folio_operacion;
 		  	
 			end if;

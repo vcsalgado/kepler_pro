@@ -4,7 +4,6 @@ CREATE OR REPLACE FUNCTION keplersc.docdis(dataxml xml)
 AS $function$
 --Bitacora de cambios
 --26/03/2025 Miriam Santana: Enviar el dato detalle_movto para registrarse en bitacora KDUSRACCESS
---02/09/2025 Miriam Santana: Ajustar poliza descuadrada por 0.01
 DECLARE 
 	--Variables para xml
 	sucursal_desc text;
@@ -126,6 +125,7 @@ begin
 		end if;
 	end if;
 
+
 	/*
 	 * Validaciones genericas del documento y obtencion del xml del documento
  	*/
@@ -204,16 +204,6 @@ begin
 	put_mensaje:=get_mensaje;
 	folio_operacion:=get_mensaje;
 	put_adicionales:=get_adicionales;
-
-	--MSS 02092025 Ajusta poliza contable con registro en bitacora
-	select * into get_resultado, get_mensaje, get_adicionales  from keplersc.cont_ajusta_poliza(dataxml,xmlKDMM,folio_operacion);
-	if get_resultado = '0' then
-		raise exception '%',get_mensaje;
-	else
-		detalle_movto := get_adicionales;
-		put_resultado='1';
-	raise notice 'Detalle movto: %',detalle_movto;
-	end if;	
 
 	/*
  	* REGISTRO DE OPERACION EN BITACORA DE USUARIOS PARA TRANSACCIONES SATISFACTORIAS

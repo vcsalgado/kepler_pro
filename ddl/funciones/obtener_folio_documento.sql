@@ -87,7 +87,6 @@ begin
 	end if;
 
 	folio_operacion:=strValor;
-
 	--Buscar si no existe folio repetido en tabla del documento 
 	if tabla <>'' then		--MSS: Sin validar folio repetido, no hay tabla donde validar
 		if tabla='kdm1' then
@@ -95,12 +94,10 @@ begin
 				and c2=%4$L and c3=%5$L and c4=%6$s and c5=%7$s and c1=%8$L', 
 				tabla, campo_folio , folio_operacion, genero,naturaleza,grupo,tipo_clave,sucursal_id);
 		else
-			expSql=format('select count(*) as ctd_folio_repetido from keplersc.%1$s where %2$s=%3$L and c1=%4$L', 
+			sql_folio_repetido :=  format('select count(*) as ctd_folio_repetido from keplersc.%1$s where %2$s=%3$L and c1=%4$L', 
 				tabla, campo_folio , folio_operacion,sucursal_id );
-			sql_folio_repetido := expSql;
 		end if;
-raise notice 'sucursal_id:% folio_id:% val_c2:% val_c3:% folio_operacion:%',sucursal_id,folio_id,val_c2,val_c3,folio_operacion ;
-raise notice 'expSql:% ',expSql;
+	
 		select query_to_xml(sql_folio_repetido, false, true, '' ) :: xml into retorno_sql ;
 	
 		intValor := ((xpath('//row/ctd_folio_repetido/text()', retorno_sql))[1]::text)::int;
@@ -108,7 +105,7 @@ raise notice 'expSql:% ',expSql;
 	
 		if  tabla <> 'kdm1' then
 			if ctd_folio_repetido > 0 then
-				raise exception '%: %' , 'El folio ingresado ya esta utilizado.', ctd_folio_repetido;
+				raise exception '%' , 'El folio ingresado ya esta utilizado.';
 			end if;
 		end if;
 	

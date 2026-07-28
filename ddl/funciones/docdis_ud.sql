@@ -43,7 +43,7 @@ DECLARE
 
 	flag_cobros text = '';	--MSS 22122024 Anulacion de cobro
 	usuario_movto text = '';		--MSS 13052026 Excluir validacion metodo de pago
-			
+		
 	--Variables de retorno desde funciones externas
 	get_resultado text; --retorno
 	get_mensaje text; --retorno
@@ -283,7 +283,7 @@ begin
 				and (xpath('//row/c86/text()', xmlKDMM))[1]::text = 'S' then --Abrir campo Importe
 				--TO DO: Desarrollar CXPLIB.CXCP_SUSTITUCION				
 			end if; --FIN CXCP_SUSTITUCION
-			
+
 			--MSS 13052026 Excluir validacion metodo de pago
 			select count(*) into totalReg from keplersc.param_opc_usr_sec 
 				where sucursal=sucursal_id and opcion='Excluir validacion metodo de pago' and lower(usuario)=lower(usuario_movto);
@@ -295,7 +295,7 @@ begin
 					end if;			
 				end if;
 			end if;
-		
+
 			--CXCP_ALTA_SINMOV
 			if (xpath('//row/c47/text()', xmlKDMM))[1]::text <> 'S' then --Pantalla movimientos CXP			
 				--CXCP_ALTA_SINMOV

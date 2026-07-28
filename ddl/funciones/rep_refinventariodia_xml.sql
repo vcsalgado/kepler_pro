@@ -104,8 +104,7 @@ BEGIN
 				v_resultado_fecha := (select now()::date - v_primera_fecha::date); --N2				
 				if v_resultado_unidades::decimal <> 0 then 
 					v_resultado = v_resultado_monto / v_resultado_unidades::decimal; --B2
-				end if;
-				
+				end if;				
 				--if v_resultado_fecha >= 0 and v_resultado_fecha <= 1999 then 
 				select c4 into v_descripcion_color from keplersc.KDICE2 where c1 = v_clave_vehiculo  and c3 = v_color_exterior; --F
 				if v_descripcion_color is null or v_descripcion_color = '' then 

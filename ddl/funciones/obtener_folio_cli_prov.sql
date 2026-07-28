@@ -6,6 +6,7 @@ AS $function$
 --Autor: Luis Leal
 --Fecha: 08/12/2022
 --Bitacora de cambios
+
 declare 	
 
 	ultimo_folio text;
@@ -19,7 +20,7 @@ declare
 begin
 
 	if tipo = 'C' then
-		select max(c2) into ultimo_folio from keplersc.kdud where substring(c2,2,1) not in ('A','V','R','S');		--MSS 230924: No considerar clave de cliente CA00001 
+		select max(c2) into ultimo_folio from keplersc.kdud where substring(c2,2,1) <> 'A';		--MSS 230924: No considerar clave de cliente CA00001 
 	end if;
 	
 	if tipo = 'P' then

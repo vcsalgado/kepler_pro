@@ -274,7 +274,7 @@ begin
 				end if;							
 			end if; --FIN CXCP_SUSTITUCION
 			*/
-
+		
 			--CXCP_ALTA_SINMOV
 			if (xpath('//row/c47/text()', xmlKDMM))[1]::text <> 'S' then --Pantalla movimientos CXP			
 				--CXCP_ALTA_SINMOV

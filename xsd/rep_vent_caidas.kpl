@@ -1,330 +1,1 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<pag xmlns="www.kepler.com.mx/2003/KSchema" tit="Reporte de Ventas caidas ">
-	<grp dim="1,-1,10,20" brdr="2,1" bclr="192,205,213" clr="0,58,112" fnt="Arial,16" unfont="0"
-		OnF1="Ventana(rep_Hlp)"><br/>
-			<br/>
-	<tab/><txt fnt=",22" clr="0,0,0">Reporte ventas caidas</txt><br/><tab/><hLine clr="0,0,0"/><br/><tab n="2"/>
-		<br/><br/>
-		<tab/>
-		<grp dim="70,30,15,5" bclr="236,240,243" tit="Reporte Ventas Caidas" brdr="0,5" clrBrdr="0,58,112" fntClrBrdr="236,240,243" fntBrdr="Arial,18" hSpace="4">
-			<tab/><txt>Sucursal:</txt><sp n="2"/><cmb id="cmb_sucursal" dim="25,36" brdr="2,1" bclr="255,255,255" clr="64,64,64" clrBrdr="255,255,255"  brdr="2,0" fnt="Arial,16" 
-			      Null="N" modify="Y" available="Y"/><tab/><br/><br/>
-			      <tab/><txt clr="0,58,112" id="fecha_inicial_txt" fnt="Arial,16" visible="Y">Fecha Inicial:</txt><tab/>
-					<edt id="fecha_inicial" dim="14,1" fmt="DD/MM/CCYY" clr="64,64,64" clrBrdr="255,255,255"  bclr="255,255,255" brdr="2,0" fnt="Arial,16"  type="date" 
-					 page="_ks_fecha,fecha_inicial" OnF9="Dialog(3,_ks_fecha,fecha_inicial)" visible="Y"/>
-					<br/> 
-					<tab/>
-					<txt clr="0,58,112" id="fecha_final_txt"  fnt="Arial,16" visible="Y">Fecha Final:</txt>
-					<tab n="2"/>
-					<edt id="fecha_final" dim="14,1" fmt="DD/MM/CCYY" clr="64,64,64" clrBrdr="255,255,255"  bclr="255,255,255" brdr="2,0" fnt="Arial,16"  type="date" 
-					page="_ks_fecha,fecha_final" OnF9="Dialog(3,_ks_fecha,fecha_final)" visible="Y"/>
-					
-					<br/>  <br/>
-			<tab n="7"/><bot id="bot_ejecutar" dim="8,0" brdr="5" text="Ejecutar" OnEnter="Ejecuta()" default="1"/><br/>
-		</grp>
-		
-	</grp>
-	<script>
-		InstallDriver("KDB75");
-		class Main {
-			var frn,kdb,rep,sys;
-			var fecha_ini, fecha_fin, suc;
-			var suc_usuario,perfil_usuario,usuario ,rol_usuario ,asterisco;
-			fun Main() {
-				frn=new FRNT;
-				kdb=new KDB;
-				rep=new REP;
-				sys=new SYS;
-				kdb.connect();
-				suc_usuario = frn.lib("libKepler","UserInfo(1)");
-				perfil_usuario = frn.lib("libKepler","UserInfo(2)");
-				usuario = frn.config("user","name");
-				rol_usuario = frn.config("user","role");
-				asterisco = "*";
-				Inicializa();
-			}	
-			
-			fun Inicializa(){//Inicializa los valores en Pantalla
-				frn.set("fecha_inicial",fnDate(sys.date("year"),sys.date("month"),1));
-				frn.set("fecha_final",fnDate(sys.date("year"),sys.date("month"),31));
-
-
-
-				//... (Llena Combos, e inputs en pantalla)
-				IniParams();//Inicializa par�mtros de impresi�n entre otros
-				IniCombos();
-			}
-						
-			fun IniCombos(){
-				var cmd, cubo , ok, mensajeError;
-			
-				
-				//Llenar combo sucursales
-				cmd = "select '['||c1||'] '||c2 as c2, c1 from keplersc.kdms";
-				if (rol_usuario &! "ADMINISTRADOR"  && rol_usuario &! "ADMINISTRATOR"){
-					cmd = cmd & " where c1='" & suc_usuario & "'";
-				}else {
-					if (suc_usuario &! asterisco && suc_usuario &! "" ){
-						cmd = cmd & " where c1='" & suc_usuario & "'";
-					}
-				}
-				
-				cubo = frn.lib("libGeneral.kpl","EjecutarSqlSel",cmd,"srvcitacrud.Inicializa()");		
-				ok=getXmlAtt(cubo,"ok");
-				if(ok &! "" && !ok){
-					mensajeError = getXmlAtt(cubo,"native3");
-					mensajeError = frn.lib("libGeneral.kpl","ErrorBD",mensajeError);
-					frn.message(mensajeError,"Error","Aceptar");
-					return;
-				}
-					
-				frn.set("cmb_sucursal",getXml(cubo));
-			
-				
-				
-						
-			}
-			
-			fun IniParams(){//Inicializa par�metros de impresi�n. Pueden ser cambiados por el usuario final mediante men�: Archivo -> Configurar P�gina
-				frn.set("param_paper","letter");	//Tama�o de papel predefinido:	"paper=letter|legal|size"
-				frn.set("param_sizeX","21.59","param_sizeY","27.94");	//Tama�o de papel personalizado	"size=21.59,27.94cm"
-				frn.set("param_borderL","1.5","param_borderT","1.5","param_borderR","1.5","param_borderB","1.5");	//M�rgenes Izq,Arr,Der,Aba:	"border=1.5,1.5,1.5,1.5cm"
-				frn.set("param_Fx","1.0");	//Escala de impresi�n (1=100 por ciento)	"F=1,1"
-				frn.set("param_landscape","N");	//Orientaci�n	de la hoja (Vertical="N", Horizontal="Y")	"landscape=N|Y"
-				frn.set("param_emp","L");	//Posici�n de "Raz�n social"(izq,der,cen)	@emp=L|R|C"
-			}
-			
-			fun Ejecuta(){//Prepara datos del reporte 
-				//...(cubos de datos e informaci�n necesaria)
-
-				var cubo, ok, cmd, mensajeError ;
-				fecha_ini= frn.get("fecha_inicial");
-				fecha_fin= frn.get("fecha_final");
-				suc = frn.get("cmb_sucursal",-1,1);
-
-				cmd = "select k.c4 as k_parte, k.c5 as k_descrip, k.c6 as k_cantidad,
-						k.c7 as k_unitario, k.c8 as k_importe,
-							CASE
-						        WHEN k.c10 = 'R' THEN 'Refacciones'
-						        ELSE 'Servicio ' || k.c11 || '-' || k.c12
-						    END AS k_origen,
-						    CASE
-						        WHEN k.c9 = 'E' THEN 'Existencia'
-						        WHEN k.c9 = 'C' THEN 'Distribuidora'
-						        ELSE 'Precio'
-						    END AS k_motivo,
-						    k.c2 as k_fecha,
-						    k.c9 as motivo,
-						    k.c10 as origen,
-						    k.c8 as importe
-						from keplersc.kdvencaidas k
-						where k.c2 >= '"& fecha_ini &"' and k.c2 <='"& fecha_fin &"' and k.c1 = '"& suc &"'
-						order by k.c2";
-				
-				cubo = frn.lib("libGeneral.kpl","EjecutarSqlSel",cmd,"rep_vent_caidas.Ejecuta()");
-				frn.lib("libGeneral.kpl","FileSave",cubo,"C:\Basura\cuboPrueba");
-				ok=getXmlAtt(cubo,"ok");
-				if(ok &! "" && !ok){
-					mensajeError = getXmlAtt(cubo,"native3");
-					mensajeError = frn.lib("libGeneral.kpl","ErrorBD",mensajeError);
-					frn.message(mensajeError,"Error","Aceptar");
-					return;
-				}
-				Reporte();
-			}
-			
-			fun Reporte(){//Ejecuta el Reporte
-				// Se define el formato a usar y se liga a la variable del reporte "rep"
-
-				var cubo, ok, cmd, mensajeError;
-				var compania, usuario, strValor, fechaImpresion, horaImpresion;
-
-				var k_parte, k_descrip, k_cantidad, k_unitario, k_importe, k_origen, k_motivo, k_fecha, motivo, origen , importe;
-				var total_imp_ref, total_imp_serv;
-				var sum_precio_ref, sum_precio_serv;
-				var sum_exis_ref, sum_exis_serv;
-				var sum_dist_ref, sum_dist_serv;
-
-				kdb.readPage("datFto","rep_vent_caidasfto.kpl");
-				kdb.exec();
-				rep.source(kdb.get("datFto")); 
-
-				kdb.kde("KDE");//Configuraci�n del servidor
-				kdb.exec();
-				compania = kdb.get("KDE","1");
-				usuario = kdb.get("KDE","14");
-				strValor = sys.date();	
-				fechaImpresion = sys.date();
-				horaImpresion = sys.time();
-
-				k_parte = "58510BZA01C0";
-				k_descrip = "ALFOMBRA PISO FRONTAL";
-				k_cantidad = "1.00000";
-				k_unitario = "14623.54";
-				k_importe = "14623.54";
-				k_origen = "Refacciones";
-				k_motivo = "Precio";
-				k_origen = "2020-09-04";
-
-				fecha_ini= frn.get("fecha_inicial");
-				fecha_fin= frn.get("fecha_final");
-				suc = frn.get("cmb_sucursal",-1,1);
-
-				rep.rst();
-				setRepPage();//Establece los par�metros finales de impresi�n(rep.page(...);), pues pueden haber cambiado por el usuario 
-				//Da valor a los inputs del reporte(rep.set();), e indica la ejecuci�n de "grupos de renglones de impresi�n" (rep.exe();)
-				rep.set("fecha",sys.date());rep.set("hora",sys.time());
-		
-				rep.set("k_empresa",compania);
-				rep.set("k_sucursal",frn.get("cmb_sucursal",-1,0)); 
-				rep.set("k_fecha",frn.get("edt_fecha"));
-				rep.set("k_fecha_imp",fechaImpresion);
-				rep.set("K_hora_imp",horaImpresion);
-				rep.set("k_fecha_ini",fecha_ini);
-				rep.set("k_fecha_fin",fecha_fin);
-				
-
-				rep.exe("encabezado");
-
-				
-				//Esto es un ejemplo:
-				var acum=0,val=0;
-
-				cmd = "select k.c4 as k_parte, k.c5 as k_descrip, k.c6 as k_cantidad,
-						k.c7 as k_unitario, k.c8 as k_importe,
-							CASE
-						        WHEN k.c10 = 'R' THEN 'Refacciones'
-						        ELSE 'Servicio ' || k.c11 || '-' || k.c12
-						    END AS k_origen,
-						    CASE
-						        WHEN k.c9 = 'E' THEN 'Existencia'
-						        WHEN k.c9 = 'C' THEN 'Distribuidora'
-						        ELSE 'Precio'
-						    END AS k_motivo,
-						    k.c2 as k_fecha,
-						    k.c9 as motivo,
-						    k.c10 as origen,
-						    k.c8 as importe
-						from keplersc.kdvencaidas k
-						where k.c2 >= '"& fecha_ini &"' and k.c2 <='"& fecha_fin &"' and k.c1 = '"& suc &"'
-						order by k.c2";
-				
-				cubo = frn.lib("libGeneral.kpl","EjecutarSqlSel",cmd,"rep_vent_caidas.Ejecuta()");
-				frn.lib("libGeneral.kpl","FileSave",cubo,"C:\Basura\cuboPrueba");
-				ok=getXmlAtt(cubo,"ok");
-				if(ok &! "" && !ok){
-					mensajeError = getXmlAtt(cubo,"native3");
-					mensajeError = frn.lib("libGeneral.kpl","ErrorBD",mensajeError);
-					frn.message(mensajeError,"Error","Aceptar");
-					return;
-				}
-
-				for(var ren=0;ren<nXml(cubo);ren++){
-					k_parte = getXmlAtt(cubo,"r"&ren,"k_parte");
-					k_descrip= getXmlAtt(cubo,"r"&ren,"k_descrip");
-					k_cantidad= getXmlAtt(cubo,"r"&ren,"k_cantidad");
-					k_unitario= getXmlAtt(cubo,"r"&ren,"k_unitario");
-					k_importe= getXmlAtt(cubo,"r"&ren,"k_importe");
-					k_origen= getXmlAtt(cubo,"r"&ren,"k_origen");
-					k_motivo= getXmlAtt(cubo,"r"&ren,"k_motivo");
-					k_fecha= getXmlAtt(cubo,"r"&ren,"k_fecha");
-					motivo= getXmlAtt(cubo,"r"&ren,"motivo");
-					origen= getXmlAtt(cubo,"r"&ren,"origen");
-					importe= getXmlAtt(cubo,"r"&ren,"importe");
-
-					rep.set("k_parte",k_parte);
-					rep.set("k_descrip", k_descrip);
-					rep.set("k_cantidad", k_cantidad);
-
-					rep.set("k_unitario",k_unitario);
-					rep.set("k_importe",k_importe);
-					rep.set("k_origen",k_origen);
-					rep.set("k_motivo",k_motivo);
-					rep.set("k_motivo",k_motivo);
-					rep.set("k_fecha",k_fecha);
-
-					rep.exe("detalle");
-
-					rep.exe("salto");
-
-					val = ren + 1 ; 
-
-					if (origen &= "R") {
-						if (motivo &= "P"){
-							sum_precio_ref = sum_precio_ref + importe ;
-						}else if (motivo &= "E"){
-							sum_exis_ref = sum_exis_ref + importe ;
-						}else if (motivo &= "C"){
-							sum_dist_ref = sum_dist_ref + importe ;
-						}
-					}
-					else if (origen &= "S"){
-						if (motivo &= "P"){
-							sum_precio_serv = sum_precio_serv + importe ;
-						}else if (motivo &= "E"){
-							sum_exis_serv = sum_exis_serv + importe ;
-						}else if (motivo &= "C"){
-							sum_dist_serv = sum_dist_serv + importe ;
-						}
-					}
-				}	
-
-				rep.set("k_sum_precio_ref",sum_precio_ref);
-				rep.set("k_sum_exis_ref",sum_exis_ref);
-				rep.set("k_sum_dist_ref",sum_dist_ref);
-
-				rep.set("k_sum_precio_serv",sum_precio_serv);
-				rep.set("k_sum_exis_serv",sum_exis_serv);
-				rep.set("k_sum_dist_serv",sum_dist_serv);
-
-				total_imp_ref = sum_precio_ref + sum_exis_ref + sum_dist_ref;
-				total_imp_serv = sum_precio_serv + sum_exis_serv + sum_dist_serv;
-
-				rep.set("k_total_imp_ref",total_imp_ref);
-				rep.set("k_total_imp_serv",total_imp_serv);
-
-				acum = val;
-				rep.set("input3",acum);
-
-				rep.exe("linea");
-
-				rep.exe("hola");
-				rep.exe("total");
-				
-				//Modos de impresi�n 
-				rep.win(); //Muestra la vista previa de la impresi�n. A partir de la vista previa (Preprint) se decide si se imprime o no.
-				//rep.print("\\192.168.1.100\HPLaserJet"); //Env�a el reporte directamente a una impresora, sin mostrar la vista previa.
-				//frn.dialog("_ks_printdlg"); //Permite seleccionar impresora destino y manda el reporte a impresi�n. No muestra la vista previa.
-				//rep.export("file:Reportes\\reporteHTML.html","format:html","inputs:N");//Guardar� el reporte en la carpeta local k80\Reportes, con el nombre reporteHTML.html
-			}
-			
-			fun setRepPage() {//Establece los par�metros finales de impresi�n.
-				var paper="paper=" & frn.get("param_paper");var size="size=" & frn.get("param_sizeX") & "," & frn.get("param_sizeY") & "cm";
-				var brdr="border=" & frn.get("param_borderL") & "," & frn.get("param_borderT") & "," & frn.get("param_borderR") & "," & frn.get("param_borderB") & "cm";
-				var fact="F=" & frn.get("param_Fx") & "," & frn.get("param_Fx");
-				var lndsp="landscape=" & frn.get("param_landscape");
-				var emp="@emp=" & frn.get("param_emp");
-				rep.page(paper,size,brdr,fact,lndsp,"color=Y","collate=Y","copies=1","pages=1,999","prompt=N",emp);
-			}
-			fun CombinaCombo(combo,colClave,colDesc,posFinal){//Combina el contenido de 2 columnas de un combo y lo pone en la columna visble. Ej: para mostrar "Clave - Descripci�n". 
-				//NOTA: Por default posiciona el combo con el primer elemento. Se puede pasar como parametro "posicionaFinal" un 1 para que se posicione en el ultimo registro
-				var clavecombinada="";
-				for(var i=0,n=frn.N(combo);i<n;i++){
-					clavecombinada=frn.get(combo,i,colClave) & " - " & frn.get(combo,i,colDesc);
-					frn.setX(clavecombinada,combo, i, 0);
-				}
-				if(posFinal==1&&frn.N(combo)>0) frn.setPos(combo,frn.N(combo)-1,0,"internal:Y");//Lo posiciona en el �ltimo renglon
-				else frn.setPos(combo,0,0,"internal:Y"); 
-			}			
-			fun Ventana(arch,cmp0,cmp1,cmp2,cmp3,cmp4,cmp5,cmp6,cmp7,cmp8,cmp9){ //Abre pagina indicada como dialogo SOLO si el campo cmp0 se puede modificar(El cmp0 puede ser una tabla, y cmp1 la columna)
-				var b_valido=1;
-				if(strlen(cmp0)>0){//Se toma el cmp0 como el objeto (o grid) al que se devolver� el resultado.
-					if( frn.getAtt(cmp0,"modify",cmp1) &= "N" ) b_valido=0;
-					if( frn.getAtt(cmp0,"available",cmp1) &= "N" ) b_valido=0;
-					if( frn.getAtt(cmp0,"visible",cmp1) &= "N" ) b_valido=0;
-				}
-				if(b_valido==1)frn.dialog(arch,cmp0,cmp1,cmp2,cmp3,cmp4,cmp5,cmp6,cmp7,cmp8,cmp9);
-			}
-		}
-	</script>
-</pag>
+<?xml version="1.0" encoding="UTF-8"?><pag xmlns="www.kepler.com.mx/2003/KSchema" tit="Reporte de Ventas caidas ">	<grp dim="1,-1,10,20" brdr="2,1" bclr="192,205,213" clr="0,58,112" fnt="Arial,16" unfont="0"		OnF1="Ventana(rep_Hlp)"><br/>			<br/>	<tab/><txt fnt=",22" clr="0,0,0">Reporte ventas caidas</txt><br/><tab/><hLine clr="0,0,0"/><br/><tab n="2"/>		<br/><br/>		<tab/>		<grp dim="70,30,15,5" bclr="236,240,243" tit="Reporte Ventas Caidas" brdr="0,5" clrBrdr="0,58,112" fntClrBrdr="236,240,243" fntBrdr="Arial,18" hSpace="4">			<tab/><txt>Sucursal:</txt><sp n="2"/><cmb id="cmb_sucursal" dim="25,36" brdr="2,1" bclr="255,255,255" clr="64,64,64" clrBrdr="255,255,255"  brdr="2,0" fnt="Arial,16" 			      Null="N" modify="Y" available="Y"/><tab/><br/><br/>			      <tab/><txt clr="0,58,112" id="fecha_inicial_txt" fnt="Arial,16" visible="Y">Fecha Inicial:</txt><tab/>					<edt id="fecha_inicial" dim="14,1" fmt="DD/MM/CCYY" clr="64,64,64" clrBrdr="255,255,255"  bclr="255,255,255" brdr="2,0" fnt="Arial,16"  type="date" 					 page="_ks_fecha,fecha_inicial" OnF9="Dialog(3,_ks_fecha,fecha_inicial)" visible="Y"/>					<br/> 					<tab/>					<txt clr="0,58,112" id="fecha_final_txt"  fnt="Arial,16" visible="Y">Fecha Final:</txt>					<tab n="2"/>					<edt id="fecha_final" dim="14,1" fmt="DD/MM/CCYY" clr="64,64,64" clrBrdr="255,255,255"  bclr="255,255,255" brdr="2,0" fnt="Arial,16"  type="date" 					page="_ks_fecha,fecha_final" OnF9="Dialog(3,_ks_fecha,fecha_final)" visible="Y"/>										<br/>  <br/>			<tab n="7"/><bot id="bot_ejecutar" dim="8,0" brdr="5" text="Ejecutar" OnEnter="Ejecuta()" default="1"/><br/>		</grp>			</grp>	<tools>		<tool name="ejecuta" OnMouseL="Ejecuta()" tooltip="Ejecutar(Ctrl+T)" scut="Ctrl+T" img="_TL_execute.png"/>	</tools>	<script>		InstallDriver("KDB75");		class Main {			var frn,kdb,rep,sys;			var fecha_ini, fecha_fin, suc;			var suc_usuario,perfil_usuario,usuario ,rol_usuario ,asterisco;			fun Main() {				frn=new FRNT;				kdb=new KDB;				rep=new REP;				sys=new SYS;				kdb.connect();				suc_usuario = frn.lib("libKepler","UserInfo(1)");				perfil_usuario = frn.lib("libKepler","UserInfo(2)");				usuario = frn.config("user","name");				rol_usuario = frn.config("user","role");				asterisco = "*";				Inicializa();			}							fun Inicializa(){//Inicializa los valores en Pantalla				frn.set("fecha_inicial",fnDate(sys.date("year"),sys.date("month"),1));				frn.set("fecha_final",fnDate(sys.date("year"),sys.date("month"),31));				//... (Llena Combos, e inputs en pantalla)				IniParams();//Inicializa par�mtros de impresi�n entre otros				IniCombos();			}									fun IniCombos(){				var cmd, cubo , ok, mensajeError;											//Llenar combo sucursales				cmd = "select '['||c1||'] '||c2 as c2, c1 from keplersc.kdms";				if (rol_usuario &! "ADMINISTRADOR"  && rol_usuario &! "ADMINISTRATOR"){					cmd = cmd & " where c1='" & suc_usuario & "'";				}else {					if (suc_usuario &! asterisco && suc_usuario &! "" ){						cmd = cmd & " where c1='" & suc_usuario & "'";					}				}								cubo = frn.lib("libGeneral.kpl","EjecutarSqlSel",cmd,"srvcitacrud.Inicializa()");						ok=getXmlAtt(cubo,"ok");				if(ok &! "" && !ok){					mensajeError = getXmlAtt(cubo,"native3");					mensajeError = frn.lib("libGeneral.kpl","ErrorBD",mensajeError);					frn.message(mensajeError,"Error","Aceptar");					return;				}									frn.set("cmb_sucursal",getXml(cubo));																				}						fun IniParams(){//Inicializa par�metros de impresi�n. Pueden ser cambiados por el usuario final mediante men�: Archivo -> Configurar P�gina				frn.set("param_paper","letter");	//Tama�o de papel predefinido:	"paper=letter|legal|size"				frn.set("param_sizeX","21.59","param_sizeY","27.94");	//Tama�o de papel personalizado	"size=21.59,27.94cm"				frn.set("param_borderL","1.5","param_borderT","1.5","param_borderR","1.5","param_borderB","1.5");	//M�rgenes Izq,Arr,Der,Aba:	"border=1.5,1.5,1.5,1.5cm"				frn.set("param_Fx","1.0");	//Escala de impresi�n (1=100 por ciento)	"F=1,1"				frn.set("param_landscape","N");	//Orientaci�n	de la hoja (Vertical="N", Horizontal="Y")	"landscape=N|Y"				frn.set("param_emp","L");	//Posici�n de "Raz�n social"(izq,der,cen)	@emp=L|R|C"			}						fun Ejecuta(){//Prepara datos del reporte 				//...(cubos de datos e informaci�n necesaria)				var cubo, ok, cmd, mensajeError ;				fecha_ini= frn.get("fecha_inicial");				fecha_fin= frn.get("fecha_final");				suc = frn.get("cmb_sucursal",-1,1);				cmd = "select k.c4 as k_parte, k.c5 as k_descrip, k.c6 as k_cantidad,						k.c7 as k_unitario, k.c8 as k_importe,							CASE						        WHEN k.c10 = 'R' THEN 'Refacciones'						        ELSE 'Servicio ' || k.c11 || '-' || k.c12						    END AS k_origen,						    CASE						        WHEN k.c9 = 'E' THEN 'Existencia'						        WHEN k.c9 = 'C' THEN 'Distribuidora'						        ELSE 'Precio'						    END AS k_motivo,						    k.c2 as k_fecha,						    k.c9 as motivo,						    k.c10 as origen,						    k.c8 as importe						from keplersc.kdvencaidas k						where k.c2 >= '"& fecha_ini &"' and k.c2 <='"& fecha_fin &"' and k.c1 = '"& suc &"'						order by k.c2";								cubo = frn.lib("libGeneral.kpl","EjecutarSqlSel",cmd,"rep_vent_caidas.Ejecuta()");				frn.lib("libGeneral.kpl","FileSave",cubo,"C:\Basura\cuboPrueba");				ok=getXmlAtt(cubo,"ok");				if(ok &! "" && !ok){					mensajeError = getXmlAtt(cubo,"native3");					mensajeError = frn.lib("libGeneral.kpl","ErrorBD",mensajeError);					frn.message(mensajeError,"Error","Aceptar");					return;				}				Reporte();			}						fun Reporte(){//Ejecuta el Reporte				// Se define el formato a usar y se liga a la variable del reporte "rep"				var cubo, ok, cmd, mensajeError;				var compania, usuario, strValor, fechaImpresion, horaImpresion;				var k_parte, k_descrip, k_cantidad, k_unitario, k_importe, k_origen, k_motivo, k_fecha, motivo, origen , importe;				var total_imp_ref, total_imp_serv;				var sum_precio_ref, sum_precio_serv;				var sum_exis_ref, sum_exis_serv;				var sum_dist_ref, sum_dist_serv;				kdb.readPage("datFto","rep_vent_caidasfto.kpl");				kdb.exec();				rep.source(kdb.get("datFto")); 				kdb.kde("KDE");//Configuraci�n del servidor				kdb.exec();				compania = kdb.get("KDE","1");				usuario = kdb.get("KDE","14");				strValor = sys.date();					fechaImpresion = sys.date();				horaImpresion = sys.time();				k_parte = "58510BZA01C0";				k_descrip = "ALFOMBRA PISO FRONTAL";				k_cantidad = "1.00000";				k_unitario = "14623.54";				k_importe = "14623.54";				k_origen = "Refacciones";				k_motivo = "Precio";				k_origen = "2020-09-04";				fecha_ini= frn.get("fecha_inicial");				fecha_fin= frn.get("fecha_final");				suc = frn.get("cmb_sucursal",-1,1);				rep.rst();				setRepPage();//Establece los par�metros finales de impresi�n(rep.page(...);), pues pueden haber cambiado por el usuario 				//Da valor a los inputs del reporte(rep.set();), e indica la ejecuci�n de "grupos de renglones de impresi�n" (rep.exe();)				rep.set("fecha",sys.date());rep.set("hora",sys.time());						rep.set("k_empresa",compania);				rep.set("k_sucursal",frn.get("cmb_sucursal",-1,0)); 				rep.set("k_fecha",frn.get("edt_fecha"));				rep.set("k_fecha_imp",fechaImpresion);				rep.set("K_hora_imp",horaImpresion);				rep.set("k_fecha_ini",fecha_ini);				rep.set("k_fecha_fin",fecha_fin);								rep.exe("encabezado");								//Esto es un ejemplo:				var acum=0,val=0;				cmd = "select k.c4 as k_parte, k.c5 as k_descrip, k.c6 as k_cantidad,						k.c7 as k_unitario, k.c8 as k_importe,							CASE						        WHEN k.c10 = 'R' THEN 'Refacciones'						        ELSE 'Servicio ' || k.c11 || '-' || k.c12						    END AS k_origen,						    CASE						        WHEN k.c9 = 'E' THEN 'Existencia'						        WHEN k.c9 = 'C' THEN 'Distribuidora'						        ELSE 'Precio'						    END AS k_motivo,						    k.c2 as k_fecha,						    k.c9 as motivo,						    k.c10 as origen,						    k.c8 as importe						from keplersc.kdvencaidas k						where k.c2 >= '"& fecha_ini &"' and k.c2 <='"& fecha_fin &"' and k.c1 = '"& suc &"'						order by k.c2";								cubo = frn.lib("libGeneral.kpl","EjecutarSqlSel",cmd,"rep_vent_caidas.Ejecuta()");				frn.lib("libGeneral.kpl","FileSave",cubo,"C:\Basura\cuboPrueba");				ok=getXmlAtt(cubo,"ok");				if(ok &! "" && !ok){					mensajeError = getXmlAtt(cubo,"native3");					mensajeError = frn.lib("libGeneral.kpl","ErrorBD",mensajeError);					frn.message(mensajeError,"Error","Aceptar");					return;				}				for(var ren=0;ren<nXml(cubo);ren++){					k_parte = getXmlAtt(cubo,"r"&ren,"k_parte");					k_descrip= getXmlAtt(cubo,"r"&ren,"k_descrip");					k_cantidad= getXmlAtt(cubo,"r"&ren,"k_cantidad");					k_unitario= getXmlAtt(cubo,"r"&ren,"k_unitario");					k_importe= getXmlAtt(cubo,"r"&ren,"k_importe");					k_origen= getXmlAtt(cubo,"r"&ren,"k_origen");					k_motivo= getXmlAtt(cubo,"r"&ren,"k_motivo");					k_fecha= getXmlAtt(cubo,"r"&ren,"k_fecha");					motivo= getXmlAtt(cubo,"r"&ren,"motivo");					origen= getXmlAtt(cubo,"r"&ren,"origen");					importe= getXmlAtt(cubo,"r"&ren,"importe");					rep.set("k_parte",k_parte);					rep.set("k_descrip", k_descrip);					rep.set("k_cantidad", k_cantidad);					rep.set("k_unitario",k_unitario);					rep.set("k_importe",k_importe);					rep.set("k_origen",k_origen);					rep.set("k_motivo",k_motivo);					rep.set("k_motivo",k_motivo);					rep.set("k_fecha",k_fecha);					rep.exe("detalle");					rep.exe("salto");					val = ren + 1 ; 					if (origen &= "R") {						if (motivo &= "P"){							sum_precio_ref = sum_precio_ref + importe ;						}else if (motivo &= "E"){							sum_exis_ref = sum_exis_ref + importe ;						}else if (motivo &= "C"){							sum_dist_ref = sum_dist_ref + importe ;						}					}					else if (origen &= "S"){						if (motivo &= "P"){							sum_precio_serv = sum_precio_serv + importe ;						}else if (motivo &= "E"){							sum_exis_serv = sum_exis_serv + importe ;						}else if (motivo &= "C"){							sum_dist_serv = sum_dist_serv + importe ;						}					}				}					rep.set("k_sum_precio_ref",sum_precio_ref);				rep.set("k_sum_exis_ref",sum_exis_ref);				rep.set("k_sum_dist_ref",sum_dist_ref);				rep.set("k_sum_precio_serv",sum_precio_serv);				rep.set("k_sum_exis_serv",sum_exis_serv);				rep.set("k_sum_dist_serv",sum_dist_serv);				total_imp_ref = sum_precio_ref + sum_exis_ref + sum_dist_ref;				total_imp_serv = sum_precio_serv + sum_exis_serv + sum_dist_serv;				rep.set("k_total_imp_ref",total_imp_ref);				rep.set("k_total_imp_serv",total_imp_serv);				acum = val;				rep.set("input3",acum);				rep.exe("linea");				rep.exe("hola");				rep.exe("total");								//Modos de impresi�n 				rep.win(); //Muestra la vista previa de la impresi�n. A partir de la vista previa (Preprint) se decide si se imprime o no.				//rep.print("\\192.168.1.100\HPLaserJet"); //Env�a el reporte directamente a una impresora, sin mostrar la vista previa.				//frn.dialog("_ks_printdlg"); //Permite seleccionar impresora destino y manda el reporte a impresi�n. No muestra la vista previa.				//rep.export("file:Reportes\\reporteHTML.html","format:html","inputs:N");//Guardar� el reporte en la carpeta local k80\Reportes, con el nombre reporteHTML.html			}						fun setRepPage() {//Establece los par�metros finales de impresi�n.				var paper="paper=" & frn.get("param_paper");var size="size=" & frn.get("param_sizeX") & "," & frn.get("param_sizeY") & "cm";				var brdr="border=" & frn.get("param_borderL") & "," & frn.get("param_borderT") & "," & frn.get("param_borderR") & "," & frn.get("param_borderB") & "cm";				var fact="F=" & frn.get("param_Fx") & "," & frn.get("param_Fx");				var lndsp="landscape=" & frn.get("param_landscape");				var emp="@emp=" & frn.get("param_emp");				rep.page(paper,size,brdr,fact,lndsp,"color=Y","collate=Y","copies=1","pages=1,999","prompt=N",emp);			}			fun CombinaCombo(combo,colClave,colDesc,posFinal){//Combina el contenido de 2 columnas de un combo y lo pone en la columna visble. Ej: para mostrar "Clave - Descripci�n". 				//NOTA: Por default posiciona el combo con el primer elemento. Se puede pasar como parametro "posicionaFinal" un 1 para que se posicione en el ultimo registro				var clavecombinada="";				for(var i=0,n=frn.N(combo);i<n;i++){					clavecombinada=frn.get(combo,i,colClave) & " - " & frn.get(combo,i,colDesc);					frn.setX(clavecombinada,combo, i, 0);				}				if(posFinal==1&&frn.N(combo)>0) frn.setPos(combo,frn.N(combo)-1,0,"internal:Y");//Lo posiciona en el �ltimo renglon				else frn.setPos(combo,0,0,"internal:Y"); 			}						fun Ventana(arch,cmp0,cmp1,cmp2,cmp3,cmp4,cmp5,cmp6,cmp7,cmp8,cmp9){ //Abre pagina indicada como dialogo SOLO si el campo cmp0 se puede modificar(El cmp0 puede ser una tabla, y cmp1 la columna)				var b_valido=1;				if(strlen(cmp0)>0){//Se toma el cmp0 como el objeto (o grid) al que se devolver� el resultado.					if( frn.getAtt(cmp0,"modify",cmp1) &= "N" ) b_valido=0;					if( frn.getAtt(cmp0,"available",cmp1) &= "N" ) b_valido=0;					if( frn.getAtt(cmp0,"visible",cmp1) &= "N" ) b_valido=0;				}				if(b_valido==1)frn.dialog(arch,cmp0,cmp1,cmp2,cmp3,cmp4,cmp5,cmp6,cmp7,cmp8,cmp9);			}		}	</script></pag>

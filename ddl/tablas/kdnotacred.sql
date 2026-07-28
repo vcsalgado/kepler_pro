@@ -17,9 +17,9 @@ CREATE  TABLE keplersc.kdnotacred (
   c16 character varying(10) NOT NULL DEFAULT ''::character varying
 ) TABLESPACE pg_default;
 ALTER TABLE ONLY keplersc.kdnotacred ADD CONSTRAINT pk_kdnotacred PRIMARY KEY (c1, c3, c4, c5, c6, c7);
+CREATE INDEX IF NOT EXISTS sindkdnotacred04 ON keplersc.kdnotacred USING btree (c1, c16) TABLESPACE pg_default;
 CREATE INDEX IF NOT EXISTS sindkdnotacred02 ON keplersc.kdnotacred USING btree (c1, c2, c3, c4, c5, c6, c7) TABLESPACE pg_default;
 CREATE INDEX IF NOT EXISTS sindkdnotacred03 ON keplersc.kdnotacred USING btree (c1, c12, c13, c14, c15, c16) TABLESPACE pg_default;
-CREATE INDEX IF NOT EXISTS sindkdnotacred04 ON keplersc.kdnotacred USING btree (c1, c16) TABLESPACE pg_default;
 COMMENT ON TABLE keplersc.kdnotacred IS 'Notas de Crédito';
 COMMENT ON COLUMN keplersc.kdnotacred.c9 IS 'ISAN';
 COMMENT ON COLUMN keplersc.kdnotacred.c8 IS 'Fecha';

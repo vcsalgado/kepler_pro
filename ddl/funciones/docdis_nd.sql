@@ -9,8 +9,8 @@ DECLARE
 	--aislada.
 	--Autor: Victor Salgado
 	--Fecha: 27 Junio 2022
-	--13/03/2025 Victor Salgado: Se elimina validacions para obetncion de folio
-	
+	--13/03/2025 Victor Salgado: Se elimina validacions para obetncion de folio	
+
 	--Variables para xml
 	sucursal_id text;
 	tipo_desc text;
@@ -73,8 +73,8 @@ begin
 			select * into get_resultado, get_mensaje, get_adicionales from keplersc.obtener_folio_documento(folio_id,0,0, dataxml);			
 			if get_resultado = '0' then	
 				raise exception '%',get_mensaje;
-				end if;
-				folio_operacion := get_mensaje;
+			end if;
+			folio_operacion := get_mensaje;
 --		else
 			--TO DO: Verificar, hasta el momento para esta condición no hay ningún documento
 			--       ¿Como se procesan documentos donde no se les calcula el folio?

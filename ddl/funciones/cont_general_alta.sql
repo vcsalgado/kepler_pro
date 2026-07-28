@@ -1463,7 +1463,7 @@ end if;
 --INSERCION DE PARTIDAS en tabla de movimientos de poliza
 	--Obtener el folio de la poliza
 	--Formato fecha operacion YYYY-MM-DD, ejemplo: 2022-01-07
-	
+
 	--VCSS 2025-01-13  Verificacion de artidas de poliza creadas
 	select count(*) into total_registros from tmpkdc2;
 	if total_registros = 0 then

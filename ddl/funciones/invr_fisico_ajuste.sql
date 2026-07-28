@@ -61,10 +61,6 @@ declare
 		resultado text = '';
 		mensaje text = '';
 	    adicionales text = '';
-		
-		_resultado text ='';
-		_mensaje text = '';
-		_adicionales text = '';
    
 begin 
 	
@@ -124,13 +120,9 @@ begin
 				insert into keplersc.kdinl_rec select fecha_proceso, * from keplersc.kdinl;
 				insert into keplersc.kdink_rec select fecha_proceso, * from keplersc.kdink;
 			end if;
--- Ejecutar recalculo de estadisticas para los productos en kdifis exclusivamente
-			select * into _resultado, _mensaje, _adicionales from keplersc.invr_actualizar_estadistica_ifis(sucursal_id);
-			if _resultado='0' then
-				raise exception '%', _mensaje;
-			end if;
+
 --mensaje:=concat(mensaje,'DESPUES REC : ',fecha_proceso, '-' ,fecha_texto);
-			for producto, existencia_real, costo_prom_real,col_estatus in select c2,c6,c7,estatus from keplersc.kdifis where c1=sucursal_id --and c2='1659331030'
+			for producto, existencia_real, costo_prom_real,col_estatus in select c2,c6,c7,estatus from keplersc.kdifis where c1=sucursal_id --and c2='044950K120'
 			loop
 							
 				if producto = '' then
@@ -246,6 +238,7 @@ begin
 					end if;
 				
 				end loop;
+
 				costo_del_fisico := existencia_real * costo_prom_real;
 						
 				ajuste_de_existencia := existencia_real - cantidad;
@@ -257,8 +250,6 @@ begin
 				end if;
 			
 				importe := importe + ajuste_del_costo;
---raise exception 'producto:%, ctd_entradas:% ,ctd_salidas:% ,costo_entradas:% ,costo_salidas:%, existencia_real:%, costo_prom_real:% costo_del_fisico:%,ajuste_de_existencia:%. ajuste_del_costo:%  importe:% '
---	,producto,ctd_entradas,ctd_salidas,costo_entradas,costo_salidas, existencia_real, costo_prom_real,costo_del_fisico,ajuste_de_existencia,ajuste_del_costo, importe;
 			
 				if tipo_ope = 'Alta' then								
 					insert into keplersc.kdinvrdif(c1,c2,c3,c4,c5,c6,c7,c8,c9,c10,c11,c12,c13,c14)
@@ -321,7 +312,9 @@ begin
 	
 		if tipo_ope = 'Alta' or tipo_ope = 'Baja' then
 	
-			if importe <> 0 then
+			select c6 into strValor from keplersc.kdmm where col_sucursal=sucursal_id and c1=gen_mov and c2=nat_mov and c3=gpo_mov and c4=tipo_mov;	
+			
+			if importe <> 0 and strValor = 'S' then
 			
 				select c19,c20 into cuenta_cargo, cuenta_abono from keplersc.kdmm where col_sucursal=sucursal_id and c1=gen_mov and c2=nat_mov and c3=gpo_mov and c4=tipo_mov;	
 			

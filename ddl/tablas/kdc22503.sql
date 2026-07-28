@@ -50,14 +50,14 @@ CREATE  TABLE keplersc.kdc22503 (
   c49 character varying(1) NOT NULL DEFAULT ''::character varying,
   c50 character varying(1) NOT NULL DEFAULT ''::character varying
 ) TABLESPACE pg_default;
-ALTER TABLE ONLY keplersc.kdc22503 ADD CONSTRAINT pk_kdc22503 PRIMARY KEY (c3, c2, c8, c1, c10);
+ALTER TABLE ONLY keplersc.kdc22503 ADD CONSTRAINT kdc22503_pkey PRIMARY KEY (c3, c2, c8, c1, c10);
 CREATE INDEX IF NOT EXISTS kdc22503_c13_c2_c3_c8_c1_c10_idx ON keplersc.kdc22503 USING btree (c13, c2, c3, c8, c1, c10) TABLESPACE pg_default;
 CREATE INDEX IF NOT EXISTS kdc22503_c14_c15_c16_c17_c18_c19_c8_c1_c10_idx ON keplersc.kdc22503 USING btree (c14, c15, c16, c17, c18, c19, c8, c1, c10) TABLESPACE pg_default;
 CREATE INDEX IF NOT EXISTS kdc22503_c21_c2_c3_c8_c1_c10_idx ON keplersc.kdc22503 USING btree (c21, c2, c3, c8, c1, c10) TABLESPACE pg_default;
 CREATE INDEX IF NOT EXISTS kdc22503_c2_c8_c1_c10_idx ON keplersc.kdc22503 USING btree (c2, c8, c1, c10) TABLESPACE pg_default;
 CREATE UNIQUE INDEX IF NOT EXISTS kdc22503_c3_c2_c8_c1_c10_idx ON keplersc.kdc22503 USING btree (c3, c2, c8, c1, c10) TABLESPACE pg_default;
 CREATE INDEX IF NOT EXISTS kdc22503_c8_c1_c10_idx ON keplersc.kdc22503 USING btree (c8, c1, c10) TABLESPACE pg_default;
-CREATE INDEX IF NOT EXISTS sindkdc2250305 ON keplersc.kdc22503 USING btree (c14, c15, c16, c17, c18, c19, c8, c1, c10) TABLESPACE pg_default;
+CREATE INDEX IF NOT EXISTS kdc22503_c14_c15_c16_c17_c18_c19_c8_c1_c10_idx1 ON keplersc.kdc22503 USING btree (c14, c15, c16, c17, c18, c19, c8, c1, c10) TABLESPACE pg_default;
 COMMENT ON COLUMN keplersc.kdc22503.c9 IS 'Monto en moneda de origen';
 COMMENT ON COLUMN keplersc.kdc22503.c8 IS 'Tipo de póliza';
 COMMENT ON COLUMN keplersc.kdc22503.c7 IS 'Referencia';

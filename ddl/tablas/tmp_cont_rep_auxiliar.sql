@@ -6,7 +6,7 @@ CREATE  TABLE keplersc.tmp_cont_rep_auxiliar (
   fecha_poliza timestamp without time zone NULL,
   sucursal character varying(7) NULL,
   documento character varying(25) NULL,
-  desc_documento character varying(40) NULL,
+  desc_documento character varying(35) NULL,
   usuario character varying(23) NULL,
   desc_poliza character varying(40) NULL,
   cargo numeric(15,2) NULL,

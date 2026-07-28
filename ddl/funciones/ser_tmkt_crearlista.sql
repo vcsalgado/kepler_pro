@@ -111,7 +111,7 @@ AS $procedure$
 	 	update keplersc.kdtmktserconf set c6=current_date where c1=sucursal ;
 	 
 	 	--borra registros que nunca se atendieron
-	 	delete from keplersc.kdtmktser2 where c1=sucursal and c5 <= current_date - 30 and c8=0 and c9=0;
+	 	delete from keplersc.kdtmktser2 where c1=sucursal and c5 <= current_date - 7 and c8=0 and c9=0;
 
 		--paso 2 vuelve a crear contactos para contactos pendientes con asesores inactivos
 		for folio_contacto,asesor,status_asesor,pantalla,fecha_contacto_duplicado, tipo_contacto,motivo_contacto,
@@ -140,7 +140,7 @@ AS $procedure$
 				end if;
 			end loop;
 		
-raise notice 'limite_superior_servicio:%; limite_inferior_servicio;%; conf_marca:%',limite_superior_servicio,limite_inferior_servicio,conf_marca;
+
 		--paso3 (crear contactos TMKT para las series con ultima orden de servicio entre las fechas establecidas en la conf TMKT)
 		for folio_orden,fecha_orden,clave_cliente, serie in select distinct pun.c3,ord.c11,ord.c12,ord.c14 
 			from keplersc.kdvntall as ord inner join keplersc.kdvnpun as pun on ord.c1=pun.c1 and ord.c2=pun.c2 and ord.c3=pun.c3 and pun.c13='S'
@@ -240,18 +240,16 @@ raise notice 'limite_superior_servicio:%; limite_inferior_servicio;%; conf_marca
 										fecha_N := fecha_programacion + dias_sumar;
 										tipo_N := recordatorio_ant_4;
 									end if;
-									--VCSS 15 oct 2025 Solo se crean contactos N-7, TO DO: Parameterizar
-									if tipo_N = 7 then
-										insert into keplersc.kdtmktser2(c1,c2,c3,c4,c5,c6,c7,c8,c9,c14,c18,c19,c20,c22,c23,c24,c25,c26,c28) 
-										values(sucursal,folio_contacto_nvo,asesor_elegido,10,fecha_N,10,0,0,0,serie,10,'P',clave_cliente, 
-										concat('N-',tipo_N::text), medio_contacto,current_date,'A',fecha_vale_salida,0);
-									end if;
+								
+									insert into keplersc.kdtmktser2(c1,c2,c3,c4,c5,c6,c7,c8,c9,c14,c18,c19,c20,c22,c23,c24,c25,c26,c28) 
+									values(sucursal,folio_contacto_nvo,asesor_elegido,10,fecha_N,10,0,0,0,serie,10,'P',clave_cliente, 
+									concat('N-',tipo_N::text), medio_contacto,current_date,'A',fecha_vale_salida,0);
+									
 								end loop;
 							
 							--si ya paso tiempo para contacto urgente, caso raro, solo cuando la rutina se corre por primera vez
 							else 
-									select * into asesor_elegido from keplersc.asesores_tmkt(sucursal,serie);			
-				
+							
 									select * into get_resultado, get_mensaje, get_adicionales from keplersc.obtener_folio_documento(concat('TMKT.', sucursal),0,0, dataxml);
 									if get_resultado = '0' then
 										raise exception '%',get_mensaje;
@@ -259,7 +257,7 @@ raise notice 'limite_superior_servicio:%; limite_inferior_servicio;%; conf_marca
 									folio_contacto_nvo := get_mensaje; 
 								
 									insert into keplersc.kdtmktser2(c1,c2,c3,c4,c5,c6,c7,c8,c9,c14,c18,c19,c20,c22,c23,c24,c25,c26,c28) 
-									values(sucursal,folio_contacto_nvo,asesor_elegido,10,fecha_programacion,10,0,0,0,serie,10,
+									values(sucursal,folio_contacto_nvo,'',10,fecha_programacion,10,0,0,0,serie,10,
 									'P',clave_cliente, 'NU', medio_contacto,current_date,'A', fecha_vale_salida,0);
 								
 							end if;

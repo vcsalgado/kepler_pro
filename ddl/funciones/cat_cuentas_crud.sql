@@ -6,8 +6,6 @@ AS $function$
 --Autor: Victor Salgado
 --Fecha: 16/03/2023
 --Bitacora de cambios
---02/10/2025 VCSS Se agrega el anio en la vlidacion de las cuentas, se hace
---el llamado a nuevas funciones
 declare
 	--Variables de definicion de documento
 	anio text = '';
@@ -44,23 +42,23 @@ begin
 		if descripcion is null then 
 			raise exception 'No se proporcionó descripción de la cuenta';
 		end if;
-	end if;
+	end if; 
 
 	nombre_tabla = concat('keplersc.kdc1',anio); 
+
 	if tipo_movto = 'NUEVO' then
 		--Validar que la cuenta no tenga un padre con movimientos
-		intValor:= (select * from keplersc.verify_cuenta_movtos_padre(clave,anio));
---raise exception 'clave %, anio %, intValor %',clave,anio,intValor;
+		intValor:= (select * from keplersc.verify_cuenta_movtos_padre(clave));
 		if intValor > 0 then
 			raise exception 'La cuenta % tiene % movimientos en alguna de las cuentas de las que depende.',clave,intValor::text;
 		end if;
 	
 		--Validar que la cuenta no tenga hijos con movimientos	
-		intValor:= (select * from keplersc.verify_cuenta_movtos_hijos(clave,anio));
+		intValor:= (select * from keplersc.verify_cuenta_movtos_hijos(clave));
 		if intValor > 0 then
 			raise exception 'La cuenta % tiene % movimientos en alguna de las cuentas dependen de esta.',clave,intValor::text;
 		end if;	
-
+		
 		--Validar que la cuenta no tenga hijos con saldos
 		intValor:= (select * from keplersc.verify_cuenta_saldo_hijos(clave));
 		if intValor > 0 then

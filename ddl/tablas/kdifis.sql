@@ -13,12 +13,10 @@ CREATE  TABLE keplersc.kdifis (
   cantidad_sis numeric NOT NULL DEFAULT 0,
   costo_invent_sis numeric NOT NULL DEFAULT 0,
   costo_invent_real numeric NOT NULL DEFAULT 0,
-  estatus character varying(30) NULL DEFAULT 'PENDIENTE'::character varying
+  estatus character varying(20) NULL DEFAULT 'PENDIENTE'::character varying
 ) TABLESPACE pg_default;
 ALTER TABLE ONLY keplersc.kdifis ADD CONSTRAINT kdifis_pk PRIMARY KEY (c1, c2);
-COMMENT ON TABLE keplersc.kdifis IS 'Inventario fisico';
 COMMENT ON COLUMN keplersc.kdifis.folio_marbe IS 'Folio Marbete';
-COMMENT ON COLUMN keplersc.kdifis.estatus IS 'Estado del Registro';
 COMMENT ON COLUMN keplersc.kdifis.costo_invent_sis IS 'Costo inventario sistema';
 COMMENT ON COLUMN keplersc.kdifis.costo_invent_real IS 'Costo inventario real';
 COMMENT ON COLUMN keplersc.kdifis.cantidad_sis IS 'Cantidad en sistema';

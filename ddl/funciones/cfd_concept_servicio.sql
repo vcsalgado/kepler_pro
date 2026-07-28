@@ -67,7 +67,7 @@ begin
     tasa_impto := strValor::decimal/100;      						--Porcentaje             
     fec_prod := current_date::text;
     
-   --raise notice '%','Entro a concept servicio';
+	--raise notice '%','Entro a concept servicio';
 	--kdhoras  
   	precio_sin_impto:=0;
 	precio_total_sin_impto:=0;

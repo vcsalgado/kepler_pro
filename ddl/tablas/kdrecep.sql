@@ -20,8 +20,7 @@ CREATE  TABLE keplersc.kdrecep (
   c19 character varying(10) NOT NULL DEFAULT ''::character varying,
   c20 character varying(5) NOT NULL DEFAULT ''::character varying,
   c21 numeric NOT NULL DEFAULT 0,
-  col_cita_en_linea character varying(1) NOT NULL DEFAULT ''::character varying,
-  col_sucursal character varying(2) NOT NULL DEFAULT ''::character varying
+  col_cita_en_linea character varying(1) NOT NULL DEFAULT ''::character varying
 ) TABLESPACE pg_default;
 ALTER TABLE ONLY keplersc.kdrecep ADD CONSTRAINT pk_kdrecep PRIMARY KEY (c1);
 CREATE INDEX IF NOT EXISTS sindkdrecep02 ON keplersc.kdrecep USING btree (c12) TABLESPACE pg_default;

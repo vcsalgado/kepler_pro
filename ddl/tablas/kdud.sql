@@ -1,5 +1,5 @@
 CREATE  TABLE keplersc.kdud (
-  c1 character varying(7) NOT NULL DEFAULT ''::character varying,
+  c1 character varying(7) NOT NULL DEFAULT '01'::character varying,
   c2 character varying(7) NOT NULL DEFAULT ''::character varying,
   c3 character varying(130) NOT NULL DEFAULT ''::character varying,
   c4 character varying(80) NOT NULL DEFAULT ''::character varying,

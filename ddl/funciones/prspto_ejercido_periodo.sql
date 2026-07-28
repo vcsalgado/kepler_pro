@@ -76,8 +76,7 @@ begin
 				'from keplersc.kdm6 k6 ' ||
 				'inner join keplersc.kdm1 k1 on k6.c1 = k1.c1 and k6.c2 = k1.c2 and k6.c3 = k1.c3 and k6.c4 = k1.c4 and k6.c5 = k1.c5 and k6.c6 = k1.c6 ' ||
 				'where k6.c1 = ' || E'\'' || vsuc || E'\'' || ' and k6.c2 = ' || E'\'' || 'X' || E'\'' || ' and k6.c3 = ' || E'\'' || 'A' || E'\'' || ' and k6.c4 = 12 and k6.c5 = 1 and k6.ctopto = ' || E'\'' || vconcept || E'\'' || ' ' || 
-				'and upper(k1.c43) <> ' || E'\'' || 'C' || E'\'' || ' and extract(year from k1.c9)::text = ' || E'\'' || vyear || E'\'' || ' and lpad(extract(month from k1.c9)::text,2,' || E'\'' || '0' || E'\'' || ') = ' || E'\'' || vmonth || E'\'' || ' ' || 
-				'and upper(k1.st_x_comprobar) in (' || E'\'' || 'S' || E'\'' || ', trim(' || E'\'' || ' ' || E'\'' || ') ' || ', ' || E'\'' || 'I' || E'\'' || ' ) ' ||
+				'and upper(k1.c43) <> ' || E'\'' || 'C' || E'\'' || ' and extract(year from k1.c9)::text = ' || E'\'' || vyear || E'\'' || ' and lpad(extract(month from k1.c9)::text,2,' || E'\'' || '0' || E'\'' || ') = ' || E'\'' || vmonth || E'\'' || ' ' ||
 				') ' ||  
 			', 0) as importe ';
 
@@ -92,24 +91,6 @@ begin
 				'and upper(k1.c43) <> ' || E'\'' || 'C' || E'\'' || ' and extract(year from k1.c9)::text = ' || E'\'' || vyear || E'\'' || ' and lpad(extract(month from k1.c9)::text,2,' || E'\'' || '0' || E'\'' || ') = ' || E'\'' || vmonth || E'\'' || ' ' ||
 				') ' ||
 			', 0) as importe ';
-		
-		
-		-- Start : Section Added by JMM 20240923 
-		
-		cmd = cmd || 'union all ';
-
-		cmd = cmd ||	'select coalesce( ' ||
-				'( ' ||
-				'select sum( case when upper(kd.c10) = ' || E'\'' || 'C' || E'\'' || ' then kd.c11 else case when upper(kd.c10) = ' || E'\'' || 'A' || E'\'' || ' then kd.c11 * -1 else 0 end end ) importe ' ||
-				'from keplersc.kdmdocsnodeduc kd ' || 
-				'inner join keplersc.kdm1 k1 on kd.c1 = k1.c1 and kd.c2 = k1.c2 and kd.c3 = k1.c3 and kd.c4 = k1.c4 and kd.c5 = k1.c5 and kd.c6 = k1.c6 ' || 
-				'where kd.c1 = ' || E'\'' || vsuc || E'\'' || ' and kd.c2 = ' || E'\'' || 'X' || E'\'' || ' and kd.c3 = ' || E'\'' || 'A' || E'\'' || ' and kd.c4 = 12 and kd.c5 = 1 and kd.ctopto = ' || E'\'' || vconcept || E'\'' || ' ' ||
-				'and upper(k1.c43) <> ' || E'\'' || 'C' || E'\'' || ' and extract(year from k1.c9)::text = ' || E'\'' || vyear || E'\'' || ' and lpad(extract(month from k1.c9)::text,2,' || E'\'' || '0' || E'\'' || ') = ' || E'\'' || vmonth || E'\'' || ' ' ||
-				') ' ||
-			', 0) as importe ';
-		
-		-- End : Section Added by JMM 20240923 
-		
 
 		cmd = cmd || ') rf ) t_sum ';
 

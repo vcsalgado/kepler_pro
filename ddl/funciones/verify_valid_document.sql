@@ -1,4 +1,4 @@
-CREATE OR REPLACE FUNCTION keplersc.verify_valid_document(genero text, naturaleza text, grupo integer, tipo_movto integer)
+CREATE OR REPLACE FUNCTION keplersc.verify_valid_document(sucursal_id text, genero text, naturaleza text, grupo integer, tipo_movto integer)
  RETURNS TABLE(resultado text, mensaje text)
  LANGUAGE plpgsql
 AS $function$
@@ -20,7 +20,7 @@ BEGIN
 		case when c90 is null then 'N' else c90 end as c90
 	into documento_no_valido 
 	from keplersc.kdmm 
-	where c1=genero and c2=naturaleza and c3=grupo and c4=tipo_movto;
+	where col_sucursal=sucursal_id and c1=genero and c2=naturaleza and c3=grupo and c4=tipo_movto;
 
 	if documento_no_valido is null then
 		mensaje := 'Documento no definido, operacion no permitida';

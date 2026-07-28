@@ -30,8 +30,7 @@ CREATE  TABLE keplersc.kdxd (
   c29 character varying(1) NULL DEFAULT 'S'::character varying,
   pagador numeric NOT NULL DEFAULT 0,
   ctadep character varying(18) NOT NULL DEFAULT ''::character varying,
-  pagdev numeric NOT NULL DEFAULT 0,
-  interno numeric NOT NULL DEFAULT 0
+  pagdev numeric NOT NULL DEFAULT 0
 ) TABLESPACE pg_default;
 CREATE UNIQUE INDEX IF NOT EXISTS pk_kdxd ON keplersc.kdxd USING btree (c2) TABLESPACE pg_default;
 CREATE INDEX IF NOT EXISTS sindkdxd02 ON keplersc.kdxd USING btree (c3, c2) TABLESPACE pg_default;
@@ -41,7 +40,6 @@ CREATE INDEX IF NOT EXISTS sindkdxd05 ON keplersc.kdxd USING btree (c14, c2) TAB
 COMMENT ON TABLE keplersc.kdxd IS 'Proveedores';
 COMMENT ON COLUMN keplersc.kdxd.pagdev IS 'Para Ctrl Interno Proveedor Generico Pago Devoluciones Clientes';
 COMMENT ON COLUMN keplersc.kdxd.pagador IS 'Proveedor de Pago';
-COMMENT ON COLUMN keplersc.kdxd.interno IS 'ST Proveedor Interno / Empleados Recibiendo Despositos para Gastos Operativos';
 COMMENT ON COLUMN keplersc.kdxd.ctadep IS 'Cuenta Deposito del Proveedor - Transferencias';
 COMMENT ON COLUMN keplersc.kdxd.c9 IS 'Fax';
 COMMENT ON COLUMN keplersc.kdxd.c8 IS 'Telefono 2';

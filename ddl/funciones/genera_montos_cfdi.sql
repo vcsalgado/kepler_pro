@@ -67,6 +67,9 @@ raise notice 'TOTs';
 		for rec in select * from keplersc.kdcar
 		loop
 			select c11 into iva_default from keplersc.kdmargen where c1=rec.c2;
+			if iva_default is null then
+				iva_default=16;
+			end if;
 			iva_total := 0;
 			importe_total := 0;
 			if rec.c10 > 0 then 
@@ -83,6 +86,9 @@ raise notice 'Cargos';
 		for rec in select * from keplersc.kdref
 		loop
 			select c11 into iva_default from keplersc.kdmargen where c1=rec.c2;
+			if iva_default is null then
+				iva_default=16;
+			end if;
 			iva_total := 0;
 			importe_total := 0;
 			if rec.c16 > 0 then 
@@ -101,6 +107,9 @@ raise notice 'Refacc';
 		for rec in select * from keplersc.kdhoras
 		loop
 			select c11 into iva_default from keplersc.kdmargen where c1=rec.c2;
+			if iva_default is null then
+				iva_default=16;
+			end if;
 			iva_total := 0;
 			importe_total := 0;
 			subtotal := 0;

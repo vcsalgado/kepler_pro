@@ -38,6 +38,13 @@
 <tab n="20"/><img id="guardar" dim="40,40" brdr="0,1"  img="_60_Save.png" OnEnter="GuardarCambios()" available="Y" clrBrdr="0,0,0" tooltip="Guardar cambios" bPx="1" default="1"/><br/><br/>
 		</grp><br/>
 	</grp>
+	<tools>
+		<tool name="endleft" OnMouseL="CtrIni()" img="_TL_First.png"/>
+		<tool name="left" OnMouseL="PgUp()" img="_TL_Previous.png"/>
+		<tool name="right" OnMouseL="PgDn()" img="_TL_Next.png"/>
+		<tool name="endright" OnMouseL="CtrEnd()" img="_TL_Last.png"/>
+	</tools>
+	
 	<script>
 		InstallDriver("KDB75");
 		class Main {
