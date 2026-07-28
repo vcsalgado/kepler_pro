@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pag xmlns="www.kepler.com.mx/2003/KSchema" roles="" tit="">
+	<grp dim="1,-1,7,11" brdr="0,0" clr="0,58,112" bclr="192,205,213" fnt="Arial,16" unfont="0" OnEnter="Exit()"><br/>
+		<grp id="grupo_crud" dim="80,20,7,11" bclr="236,240,243" fntClrBrdr="236,240,243" fntBrdr="Arial,18" hSpace="4" clrBrdr="0,58,112" brdr="0,5" fntBrdr="Arial,18"><tab/>
+			<br/><br/><tab/>
+            <txt>Clave :</txt><sp/><tab/>
+			<inp id="k_coach" dim="10,1" brdr="2,0" clr="64,64,64" bclr="255,255,255" clrBrdr="255,255,255" type="capital" nc="5" available="N" tooltip="Clave del Coach"/><br/><sp/><tab/>
+			<txt>Nombre :</txt><tab/>
+			<inp id="k_nombre" dim="65,1" brdr="2,0" clr="64,64,64" bclr="255,255,255" clrBrdr="255,255,255" type="capital" nc="50" tooltip="Nombre del Coach"/><br/><sp/><tab/>
+			<txt>Usuario :</txt><tab/>
+			<inp id="k_usuario" dim="25,1" brdr="2,0" clr="64,64,64" bclr="255,255,255" type="capital" nc="20" clrBrdr="255,255,255" OnF9="ObtenerUsuario()" tooltip="Usuario del Coach"/><br/><sp/><tab/>
+			<txt>Estatus :</txt><tab/>
+			<inp id="k_status" dim="3,1" brdr="2,0" clr="64,64,64" bclr="255,255,255" type="capital" nc="1" clrBrdr="255,255,255" OnMouseD="Estatus()" OnChange="ValidaAI()" tooltip="Estatus (Doble Click cambiar estatus)"/><br/><sp/><tab/>
+			<txt>Esquema :</txt>
+			<inp id="k_esquema" dim="10,1" brdr="2,0" clr="64,64,64" bclr="255,255,255" type="capital" nc="5" clrBrdr="255,255,255" OnF9="ObtenerEsquema()" tooltip="Esquema ( F9 b&#250;squeda )"/><br/><sp/>
+			<br/>
+            <tab n="11"/><bot id="btn_aceptar" dim="12,0" brdr="5" text="Aceptar" OnEnter="Execute()" default="0" visible="Y" available="Y"/><br/>
+			<inp id="input_crud" dim="10,1" brdr="2,0" clr="64,64,64" bclr="255,255,255" clrBrdr="255,255,255" visible="N"/><br/><tab/>
+		
+		
+			
+		</grp><br/><br/>
+	</grp>
+	<script>
+		InstallDriver("KDB75");
+		class Main {
+			var frn,kdb,frP, accion,externo, clave_sel,sucursal_id;
+            var cmdQuery,xmlRequest,ok,cuboResultados,cubo,mensajeError;
+			fun Main() {
+				frn=new FRNT;
+				frP=new FRNTP;
+				kdb=new KDB;
+				kdb.connect();
+			
+				ctlrs_off();
+				insertar_datos();
+			
+					
+			}
+			
+			fun ctlrs_off(){
+			
+				accion = frn.param(0);
+				frn.set("input_crud", accion);
+				frn.rst("grupo_crud");
+				externo	= frn.param(2);
+				frn.setAtt("grupo_crud", "tit", accion );
+				clave_sel = frn.param(1);
+                sucursal_id = frn.param(3);
+		
+				frn.setAtt("btn_aceptar", "available", "N" );
+				frn.setAtt("btn_aceptar", "visible", "N" );
+				if (accion &= "Nuevo"){
+					frn.setAtt("k_coach", "available", "Y" );
+				
+				}else{
+					frn.set("k_coach", clave_sel );
+				}
+
+				
+				if (accion &! "Consultar"){
+					frn.setAtt("btn_aceptar", "available", "Y" );
+					frn.setAtt("btn_aceptar", "visible", "Y" );
+				}
+			
+			}
+				
+			fun insertar_datos(){	
+				if (accion &= "Modificar"){
+					//llamada externa(padre)
+					if (externo &= "s"){
+						if (clave_sel &= ""){
+							frn.message("selecciona una clave con F9 para modificar","Error","Aceptar");
+							frn.setAtt("btn_aceptar", "visible", "N" );
+							return;
+						}
+					}
+				}
+				if (accion &! "Nuevo") {
+					cmdQuery="select c2,c3,c4,c6 from keplersc.kdcatcoach where c1='" & clave_sel & "' and c5 ='" & sucursal_id & "'"; 
+				
+					cuboResultados = frn.lib("libGeneral.kpl","EjecutarSqlSel",cmdQuery,"cat_coaches_crud.insertar_datos()");
+				
+					frn.lib("libGeneral.kpl","FileSave",cuboResultados,"C:\Basura\cuboResultados");
+					
+					ok=getXmlAtt(cuboResultados,"ok");
+					if(ok &! "" && !ok){
+						mensajeError = getXmlAtt(cuboResultados,"native3");
+						frn.message(mensajeError,"Error","Aceptar");
+						return;
+					}	
+					frn.set("k_nombre",getXmlAtt(cuboResultados,"r"&0,"c2"));
+					frn.set("k_usuario",getXmlAtt(cuboResultados,"r"&0,"c3"));
+					frn.set("k_status",getXmlAtt(cuboResultados,"r"&0,"c4"));
+					frn.set("k_esquema",getXmlAtt(cuboResultados,"r"&0,"c6"));
+                    if (accion &= "Modificar") {
+                        frn.setAtt("grupo_crud", "available","Y");
+                    }else{
+                        frn.setAtt("k_coach", "available","N");
+                        frn.setAtt("k_nombre", "available","N");
+                        frn.setAtt("k_usuario", "available","N");
+                        frn.setAtt("k_status", "available","N");
+                        frn.setAtt("k_esquema", "available","N");
+                        frn.setAtt("btn_aceptar", "available", "Y" );
+                    }
+                }else{
+                    frn.setAtt("grupo_crud", "available","Y");
+                    frn.setPos("k_coach");    
+				}
+			}
+		
+			fun Execute() {
+				var resultado_confirmacion = frn.message("¿Desea continuar?","Mensaje de Confirmacion", 2);
+				if (resultado_confirmacion &! 1)  {
+					return;
+				}
+		
+				xmlRequest = getXml(frn.dataPag());	
+                setXml(xmlRequest,"k_sucn",sucursal_id);	
+				frn.lib("libGeneral.kpl","FileSave",xmlRequest ,"C:\Basura\xmlRequest ");
+		
+				cmdQuery="SELECT * FROM keplersc.com_coaches_crud('<document>" & getXmlStr(xmlRequest ,"EOF:13_10") & "</document>')";
+				cubo = frn.lib("libGeneral.kpl","EjecutarSql",cmdQuery,"cat_coaches_crud.Execute()");	
+				frn.lib("libGeneral.kpl","FileSave",cubo ,"C:\Basura\cuboResultados");					
+				var resultado=getXml(cubo ,"resultado");
+				
+				if(resultado &= "0"){
+					mensajeError = getXml(cubo ,"mensaje");
+					frn.message(mensajeError,"Error","Aceptar");
+					return;
+				}
+				frP.scriptElm("bot","OnEnter");	
+				if (accion &= "Nuevo" || accion &= "Modificar") {	
+					var sms =  "";
+					if (accion &= "Nuevo"){
+						sms = "Registro guardado";
+					}else {
+						sms = "Registro modificado";
+					}
+					frn.message(sms ,"Mensaje","Aceptar");
+					frn.exit();	
+				}
+				if (accion &= "Eliminar"){
+					frn.message("Registro eliminado","Mensaje","Aceptar");
+					frn.exit();			
+				}
+			}		
+					
+            fun ObtenerEsquema(){
+            	//esquema bonos y desctos    
+                cmdQuery = "select c1 as esquema from keplersc.kdesqgv where c25 ='" & sucursal_id & "'";				
+
+            	//esquema ventas    
+            	//cmdQuery = "select c1 as esquema, c2 as descripcion from keplersc.kdvesq where c29 ='" & sucursal_id & "'";				
+
+                frn.dialog("genlistafiltrosel","Esquemas",cmdQuery,"esquema","k_esquema","0","0","N","S");			   
+            }
+
+            fun ObtenerUsuario(){
+                cmdQuery = "select c1 as usuario, c12 as nombre from keplersc.kdusrinfo";				
+                frn.dialog("genlistafiltrosel","Usuarios",cmdQuery,"usuario","k_usuario","0","0","N","S");			   
+            }
+
+            fun Estatus() {
+                if (frn.get("k_status") &= "A") {
+                    frn.set("k_status","I");
+                } else {
+                    frn.set("k_status","A");
+                }
+		    }    
+
+            fun ValidaAI(){
+                if (frn.get("k_status") &! "A" && frn.get("k_status") &! "I"){
+                    frn.setPos("k_status");
+                    frn.message("Sólo puede ser A o I","Error","&Aceptar");
+                    return;
+                }  
+            }    
+
+		}
+	</script>
+</pag>

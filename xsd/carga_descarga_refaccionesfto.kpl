@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pag xmlns='www.kepler.com.mx/2003/KSchema' tit='Carga/Descarga Refacciones' scale="48">
+<grp dim='1,-1,10,20' brdr='0,1' clr='0,0,0' bclr='255,255,255' fnt="Arial,15b" unfont="0">
+	<grp dim="15,8,7,12"><sp/>
+		<img id="img"  dim="14,80" brdr="0,1" img="logocliente.jpg"/>
+	</grp>
+	<grp dim="100,8,7,1">
+		<inp id="titulo"  dim="100,1" brdr="0,1" type="string" fnt="Arial,30b"/><br/><tab n="4"/><sp/>
+		<br/>
+		<txt fnt="Arial,18">Sucursal:</txt>
+		<inp id="rep_suc"  just="L" dim="60,1" brdr="0,1" type="string" fnt="Arial,17" nc="20"/><br/>
+	</grp><br exe="encabezado"/>
+	
+	<sp/>
+	<grp dim="65,7,7,14" brdr="2,5">
+		<sp/><txt>Cliente: [ </txt><sp/>
+		<inp id="rep_cliente"  just="L" dim="10,1" brdr="0,1" type="string" fnt="Arial,15" nc="10"/>
+		<txt fnt="Arial,15b">] </txt>
+			<inp id="rep_clientenombre"  dim="72,1" brdr="0,1" type="string" fnt="Arial,15"/><tab/><br/><hLine/><br/><br/>
+		<sp/><txt>Orden:</txt>
+			<inp id="tipo_orden"  dim="2,1" brdr="0,1" type="string" fnt="Arial,15"/>
+			<inp id="folio_orden"  dim="40,1" brdr="0,1" type="string" fnt="Arial,15"/><br/>
+			<br exe="partida2"/>
+	</grp>
+	<tab n="1"/>
+	<grp id="tipo" dim="20,5,7,2" brdr="2,5" tit="Documento"><br/>
+		<sp/><txt fnt="Tahoma,21" clr="255,0,0">No.</txt><inp id="rep_folio"  dim="16,1" brdr="0,1" type="string" fnt="Tahoma,21" clr="255,0,0" nc="7"/><br/>
+		<sp/><inp id="rep_docto"  dim="20,1" brdr="0,1" type="string" fnt="Arial,14"/><br exe="encabezado"/><br/>
+		<sp/><txt>Fecha:</txt>
+			<tab/><inp id="rep_fecha" dim="20,1" brdr="0,1" type="date" fnt="Arial,15" fmt="DD/MM/CCYY" nc="-1"/><br/>
+		
+	</grp>	
+	<br exe="encabezado"/>
+	<br exe="encabezado"/>
+	
+	<sp/>
+	<inp id="Clav_rep"  dim="15,1" bclr="136,137,150" type="string" just="L" clr="252,252,252">Clave</inp>
+	<inp id="Desc_rep"  dim="33,1" bclr="136,137,150" type="string" just="L" clr="252,252,252">Descripci&#243;n</inp>	
+	<inp id="Cantidad_rep"  dim="7,1" bclr="136,137,150" type="string" just="C" clr="252,252,252">Cant.</inp>
+	<inp id="Uni_rep"  dim="5,1" bclr="136,137,150" type="string" just="C" clr="252,252,252">Unidad</inp>
+	<inp id="Cost_unit"  dim="8,1" bclr="136,137,150" type="string" just="C" clr="252,252,252">Precio</inp>
+	<inp id="Impor_rep"  dim="11,1" bclr="136,137,150" type="string" just="C" clr="252,252,252">Importe</inp>
+	<inp id="punto_rep"  dim="11,1" bclr="136,137,150" type="string" just="C" clr="252,252,252">Punto</inp>
+
+	<br exe="partidas"/>
+	<sp/>
+		<inp id="rep_clave"  dim="15,1" brdr="0,1" just="L" type="string" fnt="Arial,15" nc="20"/>
+		<inp id="rep_producto"  dim="30,1" brdr="0,1" just="L" type="string" fnt="Arial,15" nc="-1"/>
+		<inp id="rep_cantidad"  dim="8,1" brdr="0,1" just="R" type="number" fnt="Arial,15"/><tab/>
+		<inp id="rep_unidad"  dim="3,1" brdr="0,1" just="L" type="string" fnt="Arial,15" nc="5"/>
+		<inp id="rep_precio"  dim="8,1" brdr="0,1" bclr="255,255,255" just="L" type="number" nc="10" fnt="Arial,15" nd="2"/>
+		<inp id="rep_importe"  dim="9,1" brdr="0,1" just="R" type="number" fnt="Arial,15" nd="2" nc="-1"/><tab n="3"/><sp/>
+		<inp id="rep_punto"  dim="9,1" brdr="0,1"  fnt="Arial,15"/>
+
+	<br exe="partida"/><tab n="4"/><sp/><tab n="5"/><sp/>
+		
+		<br/>
+		<sp/><hLine dim="89,0"/><br exe="lineaFinal"/>
+		<tab n="20"/><sp/>
+		<grp dim="25,12,4,4">
+			<sp/><txt fnt="Arial,0b">Subtotal</txt>
+				<sp n="2"/><tab n="2"/><inp id="rep_subtotal"  dim="20,1" brdr="0,1" just="R" type="number" fnt="Arial,15" nd="2"/><br/>
+			<sp/><txt fnt="Arial,0b">IVA</txt>
+				<sp n="2"/><tab n="5"/><inp id="rep_iva"  dim="20,1" brdr="0,1" just="R" type="number" fnt="Arial,15" nd="6"/><br/>
+			<sp/><txt fnt="Arial,15b">TOTAL</txt>
+				<sp n="2"/><tab n="3"/><inp id="rep_total"  dim="20,1" brdr="0,1" just="R" type="number" fnt="Arial,15b" nd="2"/>
+		</grp><br exe="fin"/><br exe="fin"/><inp id="rep_TotalLetras"  dim="87,1" brdr="0,1" just="C" type="string" fnt="Arial,15"/>
+		<br exe="fin"/><br exe="fin"/><tab/><sp/>
+<br/>
+
+	
+	</grp>
+</pag>

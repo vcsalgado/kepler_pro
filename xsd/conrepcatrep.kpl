@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pag xmlns='www.kepler.com.mx/2003/KSchema' tit="Reporte de catalogo de cuentas contables">
+	<grp brdr="0,0" clr="0,58,112" fnt="Arial,16" dim='1,-1,10,20' bclr="192,205,213" unfont="0" OnF1="Dialog(1,conrepcatayu)" tit="Reportes contables" clrBrdr="0,97,181"><br/>
+	<grp bclr="236,240,243" fntClrBrdr="255,206,0" fntBrdr="Arial,18" hSpace="4" clrBrdr="0,58,112" brdr="0,5" dim="30,10,7,12" tit="Catalogo de cuentas contables"  fnt="Arial,16"><tab/><txt>Nivel</txt>
+		<tab n="4"/><inp id="niv" clr="64,64,64" clrBrdr="255,255,255"  dim="3,1" bclr="255,255,255" brdr="2,0" fnt="Arial,16" type="number" fmt="DD/MM/YY" min="1" max="9" nc="1" default="1"/><br/><tab/><txt>Cuenta inicial</txt>
+		<tab/><edt id="cta_ini" clr="64,64,64" clrBrdr="255,255,255"  dim="20,1" bclr="255,255,255" brdr="2,0" fnt="Arial,16" OnF9="Dialog(1,concatcuebus,cta_ini)" page="concatcuebus,cta_ini" OnF10="Dialog(1,concatcuepag,numero,,01111)" type="string"/><br/><tab/><txt>Cuenta final</txt>
+		<tab n="2"/><edt id="cta_fin" clr="64,64,64" clrBrdr="255,255,255"  dim="20,1" bclr="255,255,255" brdr="2,0" fnt="Arial,16" OnF9="Dialog(1,concatcuebus,cta_fin)" page="concatcuebus,cta_fin" OnF10="Dialog(1,concatcuepag,numero,,01111)" type="string"/><br/>
+	</grp><br/><br/><tab n="8"/>
+<img id="btnEjecutar" dim="60,60" brdr="0,1" tooltip="Ejecutar reporte." bPx="1" available="Y" OnEnter="Reporte()" img="_60_ExecuteReport.png"/>
+	</grp>
+	<script>
+		InstallDriver("KDB75");
+		class Main {
+			var frn,kdb,rep,sys;
+			var year,cIni,cFin,nivel,long;
+			var nocta,nomcta;
+			var totIni,totFin,totCargos,totAbonos;
+			var tipoCta;
+			var tabla_ana;
+			fun Main() {
+				frn=new FRNT;
+				kdb=new KDB;
+				rep=new REP;
+				sys=new SYS;
+				kdb.connect();
+				Inicializa();
+			}	
+			
+			fun Inicializa(){//Inicializa los valores en Pantalla
+				//Revisa si hay año definido por la session
+				if(frn.config("temp","k_workDate")){
+					year=mid(frn.config("temp","k_workYear"),2,2);
+				}else {
+					kdb.kde("yr");kdb.exec();
+					year=kdb.get("yr",14);
+				}
+				kdb.open("c,kdc1" & year);
+				frn.set("niv",8);
+				frn.set("fecha_ini",sys.date(sys.date(year),sys.date("month"),1));
+				frn.set("fecha_fin",sys.date(sys.date(year),sys.date("month"),31));
+				kdb.search("inicial,c,1,7,&,c1");
+				kdb.search("final,c,1,8,&,c1");
+				kdb.exec();
+				frn.set("cta_ini",kdb.get("inicial","c1"));
+				frn.set("cta_fin",kdb.get("final","c1"));
+			}
+				
+			fun Dialog(iModo,pag,par0,par1,par2,par3,par4,par5,par6,par7,par8,par9,par10,par11,par12,par13,par14,par15){
+				/*iModo: 0)No hace mayor validación. Siempre despliega la ventana. NO CONCATENA PREFIJO
+							1)Solo concatena el prefijo de la carpeta del lenguaje, no hace mayor validación. Siempre despliega la ventana
+							2)Modo especial. Se valida que el campo indicado en par0 se puede modificar(El par0 puede ser una tabla, y par1 la columna)
+							3)Modo especial para páginas de operacion:Solo si se está en alta o modifica despliega la pagina. Simpre agrega el prefijo del lenguaje
+				*/
+				var prefix=frn.lib("libKepler","langPrefix");
+				var page=prefix&pag;
+				var b_valido=1;
+				if(iModo==0)page=pag;
+				else if(iModo==2&&(strlen(par0)>0)){//Se toma el par0 como el objeto (o grid) al que se devolverá el resultado.
+					if( frn.getAtt(par0,"modify",par1) &= "N" ) b_valido=0;
+					if( frn.getAtt(par0,"available",par1) &= "N" ) b_valido=0;
+					if( frn.getAtt(par0,"visible",par1) &= "N" ) b_valido=0;
+				}
+				else if(iModo==3)b_valido=0;
+				if(b_valido==1)frn.dialog(page,par0,par1,par2,par3,par4,par5,par6,par7,par8,par9,par10,par11,par12,par13,par14,par15);
+			}
+			
+			fun Reporte(){//Ejecuta el Reporte
+				//Obtienen los valores de los campos en pantalla
+				cIni=frn.get("cta_ini",-1,0); //guarda la clave inicial de busqueda -1 nos entrega el renglon actual
+				cFin=frn.get("cta_fin",-1,0); //guarda la clave final de busqueda
+				
+				// Se define el formato a usar y se imprime el encabezado
+				var prefix=frn.lib("libKepler","langPrefix");
+				var pageFto=prefix&"conrepcatfto";
+				kdb.readPage("datos", pageFto);//se define el formato a usar
+				//kdb.readPage("datos","conrepcatfto");//se define el formato a usar
+				kdb.exec();
+				rep.source(kdb.get("datos")); 
+				rep.rst(); 
+				//Tipo de hoja, ancho, alto,margen iz, margen derecho, margen arriba, margen abajo, factor de escala en x, factor de escala en y,orientacion, color, ventana de ajuste
+				rep.page("paper=letter|legal|size","size=18,14cm","border=1.5,1.5,1.5,1.5cm","F=1,1","landscape=N|Y","color=Y|N","prompt=N|Y","@emp=L|R|C");
+				rep.set("fecha",sys.date()); rep.set("hora",sys.time());
+				rep.exe("encabezado");
+				//Genera el reporte para las cuentas solicitadas
+				UnaCuenta();				
+				rep.win(); 
+			}
+			
+			fun UnaCuenta(){
+				//Se usa el SP de k_cnt con el modo niveles, para obtener, el nivel de todas la cuentas. Se usan los limites de pantalla.
+				kdb.sp("k_cnt","modo:niveles","dat:cuentas","cve:'"& cIni &"'-'"& cFin &"'","niv:"& frn.get("niv") &"","stat:1","ao:20"&year);
+				kdb.exec();
+frn.lib("libGeneral.kpl","FileSave",kdb.get("cuentas"),"C:\Basura\xmlCuentas");				
+				var nCtas=kdb.N("cuentas");
+				for (var i=0;i<nCtas;i++){					
+					nocta=kdb.get("cuentas","r"&i,"cta");
+					nomcta=kdb.get("cuentas","r"&i,"dsc");
+					var niv= kdb.get("cuentas","r"&i,"niv");
+					rep.set("nivel",niv);
+					if (nivel==1){
+						ObtenTipoCta();
+						rep.exe("vacio");
+						//ObtenTipoCta();
+					}			
+					//Si la cuenta es de un nivel igual o inferior al solicitado lo imprime
+					if (nivel<=frn.get("niv")){
+						rep.set("numero_cuenta",nocta);
+						rep.set("nombre_cuenta",nomcta);
+						ObtenTipoCta();//jcr
+						rep.exe("detalle");
+					}
+				}
+			}
+			
+			fun ObtenTipoCta(){
+				kdb.iov("GET,CUENTAS,a1...a24,$,datos");
+				kdb.exec();
+				var longTip=strlen(kdb.get("datos","a1"));
+				var cuenta=mid(nocta,0,longTip);
+				if (strcmp(cuenta,kdb.get("datos","a1"))>=0 && strcmp(kdb.get("datos","a2"),cuenta)>=0) { tipoCta="Activo Circulante"; }
+				if (strcmp(cuenta,kdb.get("datos","a3"))>=0 && strcmp(kdb.get("datos","a4"),cuenta)>=0) { tipoCta="Activo Fijo"; }
+				if (strcmp(cuenta,kdb.get("datos","a5"))>=0 && strcmp(kdb.get("datos","a6"),cuenta)>=0) { tipoCta="Activo Diferido"; }
+				if (strcmp(cuenta,kdb.get("datos","a7"))>=0 && strcmp(kdb.get("datos","a8"),cuenta)>=0) { tipoCta="Pasivo Circulante"; }
+				if (strcmp(cuenta,kdb.get("datos","a9"))>=0 && strcmp(kdb.get("datos","a10"),cuenta)>=0) { tipoCta="Pasivo Largo Plazo"; }
+				if (strcmp(cuenta,kdb.get("datos","a11"))>=0 && strcmp(kdb.get("datos","a12"),cuenta)>=0) { tipoCta="Capital Contable"; }
+				if (strcmp(cuenta,kdb.get("datos","a13"))>=0 && strcmp(kdb.get("datos","a14"),cuenta)>=0) { tipoCta="Ventas"; }
+				if (strcmp(cuenta,kdb.get("datos","a15"))>=0 && strcmp(kdb.get("datos","a16"),cuenta)>=0) { tipoCta="Costo de Ventas"; }
+				if (strcmp(cuenta,kdb.get("datos","a17"))>=0 && strcmp(kdb.get("datos","a18"),cuenta)>=0) { tipoCta="Gastos"; }
+				if (strcmp(cuenta,kdb.get("datos","a19"))>=0 && strcmp(kdb.get("datos","a20"),cuenta)>=0) { tipoCta="Gastos / Productos Financieros"; }
+				if (strcmp(cuenta,kdb.get("datos","a21"))>=0 && strcmp(kdb.get("datos","a22"),cuenta)>=0) { tipoCta="ISR y PTU"; }
+				if (strcmp(cuenta,kdb.get("datos","a23"))>=0 && strcmp(kdb.get("datos","a24"),cuenta)>=0) { tipoCta="Cuentas de Orden"; }
+				rep.set("tipo_cta",tipoCta);
+			}
+			
+		}
+				/*
+	Autor							Fecha				Cambio
+	--------------------------------------------------------------
+	Eliana Carrera Meraz		06/11/12			Se modifica en la funcion ObtenTipoCta el nombre del foliador a mayúsculas pues con SQL no encontraba pues lo buscaba por mayusculas.
+	Juan Cristobal	Rangel	21-10-13			Se modifica el calculo de los niveles de las cuentas, se remplaza el método de contar guiones y se usa el SP de K_cnt
+	Juan Cristobal	Rangel	11-02-14			Se agrega una llamada a la funcion ObtenTipoCta, dentro de la funcion UnaCuenta para que se muestre el tipo de cuenta 
+														que de la cual forma parte en la clasificacion de las cuentas.
+	Juan Cristobal	Rangel	25-03-14			Se modifica el orden de ejecución de la funcion  ObtenTipoCta(), dentro de la funcion UnaCuenta(), ya que se desfazaban las
+														etiquetas, de tipo de cuenta, en la impresión del reporte.
+	*/
+		
+	</script>
+</pag>

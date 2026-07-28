@@ -1,0 +1,763 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pag xmlns="www.kepler.com.mx/2003/KSchema" roles="" tit="Catalogo de Coaches Objetivos Mensuales">
+<grp  brdr="0,0" clr="0,58,112" fnt="Arial,14"  dim="0,0,20,20" bclr="192,205,213" unfont="0">
+	<sp/><inp id="k_titulo" dim="40,1" brdr="0,0" bclr="192,205,213" clr="0,0,0" clrBrdr="192,205,213" type="string" modify="N" available="N" fnt="Arial,22"/>
+	<br/><br/>
+	<sp/><hLine clr="0,0,0"/>
+	<br/><br/>
+	<sp/>
+	<grp id="gpo_criterio" bclr="236,240,243" fntClrBrdr="255,255,255" unfont="0" fntBrdr="Arial,18" hSpace="4" 
+		clrBrdr="0,58,112" dim="55,4,10,15" brdr="0,5" tit="Selecci&#243;n de periodo" fnt="Arial,-1">
+		<sp/>
+		<inp id="suc" dim="8,1" brdr="0,0" bclr="236,240,243" clr="0,0,0" clrBrdr="192,205,213" 
+			type="string" modify="N" available="N" fnt=",16"/>
+		<cmb id="k_sucn" dim="25,1" brdr="0,0" bclr="255,255,255" clr="64,64,64" clrBrdr="255,255,255" Null="N" fnt=",16"/><tab/>
+		<inp id="clave" dim="8,1" brdr="0,0" bclr="236,240,243" clr="0,0,0" clrBrdr="192,205,213" 
+			type="string" modify="N" available="N" fnt=",16"/>
+		<cmb id="k_clave" dim="10,1" brdr="0,0" bclr="255,255,255" clr="0,0,0" clrBrdr="192,205,213" 
+		type="capital" modify="Y" available="Y" fnt=",16"/><tab/>
+		<inp id="mes" dim="4,1" brdr="0,0" bclr="236,240,243" clr="0,0,0" clrBrdr="192,205,213" 
+			type="string" modify="N" available="N" fnt=",16"/>
+		<cmb id="k_mes" dim="4,1" brdr="0,0" bclr="255,255,255" clr="0,0,0" clrBrdr="192,205,213" 
+				type="capital" available="Y" OnChange="reset()" fnt=",16"/><tab/>
+		<inp id="anio" dim="4,1" brdr="0,0" bclr="236,240,243" clr="0,0,0" clrBrdr="192,205,213" 
+			type="string" modify="N" available="N" fnt=",16"/>
+		<cmb id="k_anio" dim="6,1" brdr="0,0" bclr="255,255,255" clr="0,0,0" clrBrdr="192,205,213" 
+			type="capital" available="Y" fnt=",16"/>
+		<tab/>	
+		<img id="img_criterio" dim="20,20" bPx="1" brdr="0,1" available="Y" img="_20_Find.png"
+		OnEnter="cargaCata(1)"/>
+		<br/>		
+	</grp>
+	<br/><br/>	
+	<sp/>
+	<grp id="gpo_2" bclr="236,240,243" fntClrBrdr="255,255,255" unfont="0" fntBrdr="Arial,18" hSpace="4" clrBrdr="0,58,112" 
+		dim="55,12,10,15" brdr="0,5" tit="Coaches, Objetivos Mensuales" fnt="Arial,-1">
+			<tab/>
+        <txt>---NUEVOS---</txt>
+        <tab n="4"/>
+        <txt>---NUEVOS---</txt>
+        <tab n="3"/>
+        <txt>NUEVOS</txt>
+        <sp/>
+        <txt>SEMI </txt>
+         <tab n="5"/>
+		 <sp/>
+        <txt>U BRUTA</txt>
+        <sp/><tab/>
+        <txt>SEGUROS</txt>
+		<tab n="2"/>
+        <txt>-------------------- SEMINUEVOS -------------------- </txt>
+        <br/><sp/>
+        <txt>ENT1</txt>
+        <sp n="2"/>
+        <txt>ETN2</txt>
+        <sp n="2"/>
+        <txt>%UB</txt>
+        <sp n="2"/>
+        <txt>FIN1</txt>
+        <sp n="2"/>
+        <txt>F1N2</txt>
+        <sp n="2"/>
+        <txt>CSI1</txt>
+        <sp n="2"/>
+        <txt>CSI2</txt>
+        <sp n="2"/>
+        <txt>DIAS</txt>
+        <sp n="2"/>
+        <txt>DIAS</txt>
+        <sp n="2"/>
+        <txt>FACT</txt>
+        <sp n="2"/>
+        <txt>TOMAS</txt>
+        <sp n="1"/>
+        <txt>GREXT</txt>
+        <sp n="1"/>
+        <txt>ACCESOR</txt>
+        <sp n="3"/>
+        <txt>CONTADO</txt>
+		<sp n="4"/>
+        <txt>FACT</txt>
+        <sp n="3"/>
+        <txt>ENT1</txt>
+        <sp n="2"/>
+        <txt>ENT2</txt>
+        <sp n="2"/>
+        <txt>FIN1</txt>
+        <sp n="2"/>
+        <txt>FIN2</txt>
+        <br/>
+        <sp/>
+        <inp id="k_ent1" dim="4,1" brdr="0,0" bclr="255,255,255" clr="0,0,0" clrBrdr="192,205,213" 
+				type="number" modify="Y" available="Y" nc="5" nd="0"/>
+        <sp/>
+        <inp id="k_ent2" dim="4,1" brdr="0,0" bclr="255,255,255" clr="0,0,0" clrBrdr="192,205,213" 
+				type="number" modify="Y" available="Y" nc="5" nd="0"/>
+                <sp/>
+        <inp id="k_ub" dim="4,1" brdr="0,0" bclr="255,255,255" clr="0,0,0" clrBrdr="192,205,213" 
+				type="number" modify="Y" available="Y" nc="5" nd="2"/>
+                <sp/>
+        <inp id="k_fin1" dim="4,1" brdr="0,0" bclr="255,255,255" clr="0,0,0" clrBrdr="192,205,213" 
+				type="number" modify="Y" available="Y" nc="5" nd="0"/>
+                <sp/>
+        <inp id="k_fin2" dim="4,1" brdr="0,0" bclr="255,255,255" clr="0,0,0" clrBrdr="192,205,213" 
+				type="number" modify="Y" available="Y" nc="5" nd="0"/>
+                <sp/>
+        <inp id="k_csi1" dim="4,1" brdr="0,0" bclr="255,255,255" clr="0,0,0" clrBrdr="192,205,213" 
+				type="number" modify="Y" available="Y" nc="5" nd="2"/>
+                <sp/>
+        <inp id="k_csi2" dim="4,1" brdr="0,0" bclr="255,255,255" clr="0,0,0" clrBrdr="192,205,213" 
+				type="number" modify="Y" available="Y" nc="5" nd="2"/>
+                <sp/>
+        <inp id="k_dias1" dim="4,1" brdr="0,0" bclr="255,255,255" clr="0,0,0" clrBrdr="192,205,213" 
+				type="number" modify="Y" available="Y" nc="5" nd="0"/>
+                <sp/>
+        <inp id="k_dias2" dim="4,1" brdr="0,0" bclr="255,255,255" clr="0,0,0" clrBrdr="192,205,213" 
+				type="number" modify="Y" available="Y" nc="5" nd="0"/>
+                <sp/>
+        <inp id="k_fact" dim="4,1" brdr="0,0" bclr="255,255,255" clr="0,0,0" clrBrdr="192,205,213" 
+				type="number" modify="Y" available="Y" nc="5" nd="0"/>
+                <sp/>
+        <inp id="k_tomas" dim="4,1" brdr="0,0" bclr="255,255,255" clr="0,0,0" clrBrdr="192,205,213" 
+				type="number" modify="Y" available="Y" nc="5" nd="0"/>
+                <sp/>
+        <inp id="k_grext" dim="4,1" brdr="0,0" bclr="255,255,255" clr="0,0,0" clrBrdr="192,205,213" 
+				type="number" modify="Y" available="Y" nc="5" nd="0"/>
+                <sp/>
+        <inp id="k_accesor" dim="7,1" brdr="0,0" bclr="255,255,255" clr="0,0,0" clrBrdr="192,205,213" 
+				type="number" modify="Y" available="Y" nc="10" nd="2"/>
+                <sp/>
+        <inp id="k_contado" dim="7,1" brdr="0,0" bclr="255,255,255" clr="0,0,0" clrBrdr="192,205,213" 
+				type="number" modify="Y" available="Y" nc="10" nd="2"/>
+                <sp/>
+
+
+        <tab/>
+        <inp id="k_sem_fact" dim="4,1" brdr="0,0" bclr="255,255,255" clr="0,0,0" clrBrdr="192,205,213" 
+				type="number" modify="Y" available="Y" nc="5" nd="0"/> 
+                <sp/>
+        <inp id="k_sem_ent1" dim="4,1" brdr="0,0" bclr="255,255,255" clr="0,0,0" clrBrdr="192,205,213" 
+				type="number" modify="Y" available="Y" nc="5" nd="0"/>
+                <sp/>
+        <inp id="k_sem_ent2" dim="4,1" brdr="0,0" bclr="255,255,255" clr="0,0,0" clrBrdr="192,205,213" 
+				type="number" modify="Y" available="Y" nc="5" nd="0"/>
+                <sp/>
+        <inp id="k_sem_fin1" dim="4,1" brdr="0,0" bclr="255,255,255" clr="0,0,0" clrBrdr="192,205,213" 
+				type="number" modify="Y" available="Y" nc="5" nd="0"/>
+                <sp/>
+        <inp id="k_sem_fin2" dim="4,1" brdr="0,0" bclr="255,255,255" clr="0,0,0" clrBrdr="192,205,213" 
+				type="number" modify="Y" available="Y" nc="5" nd="0"/>
+        <sp/>
+        <br/>
+        <tab/>
+			<bot id="k_btn_cons" dim="10,10" brdr="5" text="Guardar" hk="K" step="0" 
+			 OnEnter="guardar()" available="N" visible="N" fnt="Arial,16"/>
+        <br/>
+    
+		</grp>
+	</grp>
+	<script>
+		InstallDriver("KDB75");
+		class Main {
+			var frn,frP,kdb,sys,suc_usuario,perfil_usuario,rol_usuario,asterisco, externo, cuboXml;
+			var tipoOper,consPlantilla, accion; //Variables relacionadas con parametros (colsulta , eliminar, baja)
+			var strTitulo, strQuery, strColValor, strCtrlSet, strMostrarLlave, strRenglon, strColumna, clave, modelo, clave_2; 
+			fun Main(){
+				frn=new FRNT;
+				kdb=new KDB;
+				frP=new FRNTP;
+				sys=new SYS;
+				kdb.connect();
+				
+				suc_usuario = frn.lib("libKepler","UserInfo(1)");
+				perfil_usuario = frn.lib("libKepler","UserInfo(2)");
+				rol_usuario = frn.config("user","role");
+				asterisco = "*";
+				
+                tipoOper = frn.param(0);
+				clave = frn.param(1);
+				clave_2 = frn.param(3);
+	
+				llena_combos();
+				ConfiguraUI();
+				
+				Inicializa();
+			
+			}
+
+			fun opcion_user(){
+				var mes, anio, k_coach, k_suc, queryCata, cubo_cata, ok, mensajeError, cuboXml, xml_cubo_cata, query,cuboQuery, resultado, mensaje;
+				var opcion = frn.message("No existe el registro cunsultado
+				| 1-Nuevo con el mes anterior
+				| 2-Nuevo iniciando en 0
+				| 3-Cancelar","Titulo: Atencion"
+				,"&Anterior","&Nuevo en 0","&Cancelar");
+
+            mes = frn.get("k_mes");
+				anio =mid(frn.get("k_anio"),2,2);
+				k_coach = frn.get("k_clave",-1,1);
+				k_suc = frn.get("k_sucn",-1,1);
+
+				if (opcion&="1"){
+					queryCata = 
+						"select c5 as k_ent1,
+						c6 as k_ent2, c7 as k_ub, c8 as k_fin1,
+						c9 as k_fin2, c10 as k_csi1, c11 as k_csi2,
+						c12 as k_dias1, c13 as k_dias2, c14 as k_fact,
+						c15 as k_tomas, c16 as k_grext, c17 as k_accesor,
+						c18 as k_contado, c20 as k_sem_fact, c21 as k_sem_ent1,
+						c22 as k_sem_ent2, c23 as k_sem_fin1, c24 as k_sem_fin2
+						from keplersc.KDOBJGV where c1='"& k_suc &"' and c2='"& k_coach &"' 
+						order by c4 desc,c3 desc limit 1";
+					cubo_cata= frn.lib("libGeneral.kpl","EjecutarSqlSel",queryCata,"cat_crud_coachesobjmens.cargaCata()");
+					frn.lib("libGeneral.kpl","FileSave",cubo_cata,"C:\Basura\cubo_cata");
+					xml_cubo_cata=frn.lib("libGeneral.kpl","CreaXmlDesdeAtt",cubo_cata,"r0");
+					frn.lib("libGeneral.kpl","FileSave",xml_cubo_cata,"C:\Basura\xml_cubo_cata");
+					frn.setX(xml_cubo_cata);
+
+					var k_ent1= frn.get("k_ent1");
+					var k_ent2= frn.get("k_ent2");
+					var k_ub= frn.get("k_ub");
+					var k_fin1= frn.get("k_fin1");
+					var k_fin2= frn.get("k_fin2");
+					var k_csi1= frn.get("k_csi1");
+					var k_csi2= frn.get("k_csi2");
+					var k_dias1= frn.get("k_dias1");
+					var k_dias2= frn.get("k_dias2");
+					var k_fact= frn.get("k_fact");
+					var k_tomas= frn.get("k_tomas");
+					var k_grext= frn.get("k_grext");
+					var k_accesor= frn.get("k_contado");
+					var k_contado = frn.get("k_contado");
+					var k_sem_fact = frn.get("k_sem_fact");
+					var k_sem_ent1 = frn.get("k_sem_ent1");
+					var k_sem_ent2 = frn.get("k_sem_ent2");
+					var k_sem_fin1 = frn.get("k_fin1");
+					var k_sem_fin2 = frn.get("k_fin2");
+
+                    query = "insert into keplersc.KDOBJGV (c1, c2, c3, c4, c5, c6, c7, c8, c9, c10
+					,c11, c12, c13, c14, c15, c16, c17, c18, c19, c20, c21, c22, c23, c24)
+                        values ('"& k_suc &"','"& k_coach &"','"& mes &"','"& anio &"'
+						,'"& k_ent1 &"','"& k_ent2 &"','"& k_ub &"','"& k_fin1 &"'
+						,'"& k_fin2 &"','"& k_csi1 &"','"& k_csi2 &"'
+						,'"& k_dias1 &"','"& k_dias2 &"','"& k_fact &"'
+						,'"& k_tomas &"','"& k_grext &"','"& k_accesor &"'
+						,'"& k_contado &"','0','"& k_sem_fact &"'
+						,'"& k_sem_ent1 &"','"& k_sem_ent2 &"','"& k_sem_fin1 &"','"& k_sem_fin2 &"')";
+                    cuboQuery = frn.lib("libGeneral.kpl","EjecutarSql",query,"cat_crud_coachesobjmens.kpl.guardar()");
+
+                    resultado = getXml(cuboQuery,"resultado");
+                    mensaje = "Registro "& k_suc & " "& k_coach &" Generado con Exito";
+			        if(resultado &= "0"){
+				        mensajeError = getXml(cuboQuery ,"mensaje");
+				            frn.message(mensajeError,"Error","Aceptar");
+				            return;
+				    }else{
+                        frn.message(mensaje, "Alta Correcta", "Aceptar");	
+                    }
+
+					frn.setAtt("k_btn_cons", "available", "Y");
+					frn.setAtt("k_btn_cons", "visible", "Y");
+					frn.message("Cargados valores del mes pasado","Informacion");
+
+				}else if (opcion&="2"){
+					if(k_coach &! "" && mes &! "" && anio &! ""){
+						    query = "insert into keplersc.KDOBJGV (c1, c2, c3, c4, c5, c6, c7, c8, c9, c10
+						,c11, c12, c13, c14, c15, c16, c17, c18, c19, c20, c21, c22, c23, c24)
+						        values ('"& k_suc &"','"& k_coach &"','"& mes &"','"& anio &"'
+							,'0','0','0','0'
+							,'0','0','0'
+							,'0','0','0'
+							,'0','0','0'
+							,'0','0','0'
+							,'0','0','0','0')";
+						    cuboQuery = frn.lib("libGeneral.kpl","EjecutarSql",query,"cat_crud_coachesobjmens.guardar()");
+
+						    resultado = getXml(cuboQuery,"resultado");
+						    mensaje = "Registro "& k_coach & " "& k_suc &" Generado con Exito";
+					    if(resultado &= "0"){
+					        mensajeError = getXml(cuboQuery ,"mensaje");
+					            frn.message(mensajeError,"Error","Aceptar");
+					            return;
+					    }else{
+						        frn.message(mensaje, "Alta Correcta", "Aceptar");
+							queryCata = 
+								"select c5 as k_ent1,
+								c6 as k_ent2, c7 as k_ub, c8 as k_fin1,
+								c9 as k_fin2, c10 as k_csi1, c11 as k_csi2,
+								c12 as k_dias1, c13 as k_dias2, c14 as k_fact,
+								c15 as k_tomas, c16 as k_grext, c17 as k_accesor,
+								c18 as k_contado, c20 as k_sem_fact, c21 as k_sem_ent1,
+								c22 as k_sem_ent2, c23 as k_sem_fin1, c24 as k_sem_fin2
+								from keplersc.KDOBJGV where c1='"& k_suc &"' and c2='"& k_coach &"'
+								and c3='"& mes &"' and c4='"& anio &"'
+								order by c4 desc,c3 desc limit 1";
+							cubo_cata= frn.lib("libGeneral.kpl","EjecutarSqlSel",queryCata,"cat_crud_coachesobjmens.cargaCata()");
+							frn.lib("libGeneral.kpl","FileSave",cubo_cata,"C:\Basura\cubo_cata");
+							xml_cubo_cata=frn.lib("libGeneral.kpl","CreaXmlDesdeAtt",cubo_cata,"r0");
+							frn.lib("libGeneral.kpl","FileSave",xml_cubo_cata,"C:\Basura\xml_cubo_cata");
+							frn.setX(xml_cubo_cata);
+							frn.message("Valores en 0","Informacion");
+						    }
+						}else{
+						    mensajeError = "La Clave nueva y la Descripcion no pueden estar en vacio";
+						    frn.message(mensajeError,"Error","Aceptar");
+						}
+				}else if (opcion&="3"){
+					frn.message("Accion cancelada","Informacion");
+				}
+			}
+			
+			fun reset(){
+				frn.set("k_ent1", 0);
+				frn.set("k_ent2", 0);
+				frn.set("k_ub", 0);
+				frn.set("k_fin1", 0);
+				frn.set("k_fin2", 0);
+				frn.set("k_csi1", 0);
+				frn.set("k_csi2", 0);
+				frn.set("k_dias1", 0);
+				frn.set("k_dias2", 0);
+				frn.set("k_fact", 0);
+				frn.set("k_tomas", 0);
+				frn.set("k_grext", 0);
+				frn.set("k_accesor", 0);
+				frn.set("k_contado", 0);
+				frn.set("k_sem_fact", 0);
+				frn.set("k_sem_ent1", 0);
+				frn.set("k_sem_ent2", 0);
+				frn.set("k_sem_fin1", 0);
+				frn.set("k_sem_fin2", 0);
+				frn.setAtt("k_btn_cons", "available", "N");
+				frn.setAtt("k_btn_cons", "visible", "N");
+			}
+
+			fun llena_combos(){
+				var cmdQuery, cuboQuery, ok, mensajeError, 
+			
+				
+				//Llenar combo sucursales
+				cmd = "select '['||c1||'] '||c2 as c2, c1 from keplersc.kdms";
+				if (rol_usuario &! "ADMINISTRADOR"  && rol_usuario &! "ADMINISTRATOR"){
+					cmd = cmd & " where c1='" & suc_usuario & "'";
+				}else {
+					if (suc_usuario &! asterisco && suc_usuario &! "" ){
+						cmd = cmd & " where c1='" & suc_usuario & "'";
+					}
+				}
+					
+				var cubo = frn.lib("libGeneral.kpl","EjecutarSqlSel",cmd,"srvcitacrud.Inicializa()");		
+				ok=getXmlAtt(cubo,"ok");
+				if(ok &! "" && !ok){
+					mensajeError = getXmlAtt(cubo,"native3");
+					mensajeError = frn.lib("libGeneral.kpl","ErrorBD",mensajeError);
+					frn.message(mensajeError,"Error","Aceptar");
+					return;
+				}
+					
+				frn.set("k_sucn",getXml(cubo));
+			
+				
+				
+						
+				
+				//Anio
+				cmdQuery = "SELECT concat('20',substring(table_name,5,2)) as anio FROM INFORMATION_SCHEMA.TABLES 
+								WHERE TABLE_NAME LIKE 'kdc22%'
+								group by anio
+								order by anio desc";
+				cuboQuery = frn.lib("libGeneral.kpl","EjecutarSqlSel",cmdQuery,"comdevdircrud.IniCombos()");
+				frn.set("k_anio",cuboQuery);
+				frn.set("k_anio",mid(fnDate(sys.date()),0,4));
+
+				//Mes
+				cmdQuery = "select substring(table_name,7,2) as mes from information_schema.tables
+							where table_name  like 'kdc22%'  and substring(table_name,7,2) != ''
+							group  by mes";
+				cuboQuery = frn.lib("libGeneral.kpl","EjecutarSqlSel",cmdQuery,"comdevdircrud.IniCombos()");
+				frn.set("k_mes",cuboQuery);
+				frn.set("k_mes",mid(fnDate(sys.date()),5,2));
+
+				//Coaches
+				cmdQuery = "select concat('[',c1,']',' ',c2) as k_descrip, c1 as k_clave_coach, c2 as k_nombre_coach from keplersc.kdcatcoach";
+				cuboQuery = frn.lib("libGeneral.kpl","EjecutarSqlSel",cmdQuery,"comdevdircrud.IniCombos()");
+				frn.set("k_clave",cuboQuery);
+				//frn.lib("libGeneral.kpl","FileSave",cuboQuery,"C:\Basura\cubo_anio");
+			}
+
+        fun guardar(){
+            tipoOper = frn.param(0);
+            var query, k_coach, k_clave_2, k_desc, resultado, mensaje, mensajeError, cuboQuery;
+			var k_ent1, k_ent2, k_ub, k_fin1, k_fin2, k_csi1, k_csi2, k_dias1, k_dias2, k_fact;
+			var k_tomas, k_grext, k_accesor, k_contado, k_sem_fact, k_sem_ent1, k_sem_ent2, k_sem_fin1, k_sem_fin2;
+			var k_mes, k_anio, k_coach, k_suc;
+
+			k_suc = frn.get("k_sucn",-1,1);
+			k_coach = frn.get("k_clave",-1,1);
+			k_mes = frn.get("k_mes");
+			k_anio =mid(frn.get("k_anio"),2,2);
+
+			k_ent1= frn.get("k_ent1");
+			k_ent2= frn.get("k_ent2");
+			k_ub= frn.get("k_ub");
+			k_fin1= frn.get("k_fin1");
+			k_fin2= frn.get("k_fin2");
+			k_csi1= frn.get("k_csi1");
+			k_csi2= frn.get("k_csi2");
+			k_dias1= frn.get("k_dias1");
+			k_dias2= frn.get("k_dias2");
+			k_fact= frn.get("k_fact");
+			k_tomas= frn.get("k_tomas");
+			k_grext= frn.get("k_grext");
+			k_accesor= frn.get("k_contado");
+			k_contado = frn.get("k_contado");
+			k_sem_fact = frn.get("k_sem_fact");
+			k_sem_ent1 = frn.get("k_sem_ent1");
+			k_sem_ent2 = frn.get("k_sem_ent2");
+			k_sem_fin1 = frn.get("k_sem_fin1");
+			k_sem_fin2 = frn.get("k_sem_fin2");
+			
+            if(tipoOper&="Nuevo"){
+                if(k_coach &! "" && k_mes &! "" && k_anio &! ""){
+                    query = "insert into keplersc.KDOBJGV (c1, c2, c3, c4, c5, c6, c7, c8, c9, c10
+					,c11, c12, c13, c14, c15, c16, c17, c18, c19, c20, c21, c22, c23, c24)
+                        values ('"& k_suc &"','"& k_coach &"','"& k_mes &"','"& k_anio &"'
+						,'"& k_ent1 &"','"& k_ent2 &"','"& k_ub &"','"& k_fin1 &"'
+						,'"& k_fin2 &"','"& k_csi1 &"','"& k_csi2 &"'
+						,'"& k_dias1 &"','"& k_dias2 &"','"& k_fact &"'
+						,'"& k_tomas &"','"& k_grext &"','"& k_accesor &"'
+						,'"& k_contado &"','0','"& k_sem_fact &"'
+						,'"& k_sem_ent1 &"','"& k_sem_ent2 &"','"& k_sem_fin1 &"','"& k_sem_fin2 &"')";
+                    cuboQuery = frn.lib("libGeneral.kpl","EjecutarSql",query,"cat_crud_color_exterior.kpl.guardar()");
+
+                    resultado = getXml(cuboQuery,"resultado");
+                    mensaje = "Registro "& k_coach & " "& k_suc &" Generado con Exito";
+			        if(resultado &= "0"){
+				        mensajeError = getXml(cuboQuery ,"mensaje");
+				            frn.message(mensajeError,"Error","Aceptar");
+				            return;
+				    }else{
+                        frn.message(mensaje, "Alta Correcta", "Aceptar");
+
+                    }
+                }else{
+                    mensajeError = "La Clave nueva y la Descripcion no pueden estar en vacio";
+                    frn.message(mensajeError,"Error","Aceptar");
+                }
+            }else if(tipoOper&="Modificar"){
+				if( k_mes &! "" && k_anio &! ""){
+                    query = "update keplersc.KDOBJGV
+					set c5 = '"& k_ent1 &"'
+					,c6 = '"& k_ent2 &"'
+					,c7 = '"& k_ub &"'
+					,c8 = '"& k_fin1 &"'
+					,c9 = '"& k_fin2 &"'
+					,c10 = '"& k_csi1 &"'
+					,c11 = '"& k_csi2 &"'
+					,c12 = '"& k_dias1 &"'
+					,c13 = '"& k_dias2 &"'
+					,c14 = '"& k_fact &"'
+					,c15 = '"& k_tomas &"'
+					,c16 = '"& k_grext &"'
+					,c17 = '"& k_accesor &"'
+					,c18 = '"& k_contado &"'
+					,c19 = '"& "0" &"'
+					,c20 = '"& k_sem_fact &"'
+					,c21 = '"& k_sem_ent1 &"'
+					,c22 = '"& k_sem_ent2 &"'
+					,c23 = '"& k_sem_fin1 &"'
+					,c24 = '"& k_sem_fin2 &"'
+					where c1 = '"& k_suc &"' and c2= '"& k_coach &"' and c3= '"& k_mes &"' and c4 = '"& k_anio &"'";
+
+                    cuboQuery = frn.lib("libGeneral.kpl","EjecutarSql",query,"cat_crud_color_exterior.guardar()");
+
+                    resultado = getXml(cuboQuery,"resultado");
+                    mensaje = "Registro "& k_coach &" "& k_suc &" Actualizado con Exito ";
+			        if(resultado &= "0"){
+				        mensajeError = getXml(cuboQuery ,"mensaje");
+				            frn.message(mensajeError,"Error","Aceptar");
+				            return;
+				    }else{
+                        frn.message(mensaje, "Alta Correcta", "Aceptar");
+                        frn.exit();	
+						
+                    }
+                }else{
+                    mensajeError = "La Clave nueva y la Descripcion no pueden estar en vacio";
+                    frn.message(mensajeError,"Error","Aceptar");
+                }
+            }else if(tipoOper&="Consultar"){
+				frn.exit();
+			}
+        }
+
+		fun cargaCata(bot){
+			var queryCata, cubo_cata, ok, mensajeError, xml_cubo_cata, mes, anio, k_clave, k_coach, k_suc;
+
+			if(strlen(clave)>0){
+				frn.setPos("k_clave",-1,1,"internal:Y","val:" & clave);
+			}	
+
+			frn.set("k_suc", clave_2);
+
+            mes = frn.get("k_mes");
+            anio =mid(frn.get("k_anio"),2,2);
+			k_coach = frn.get("k_clave",-1,1);
+			k_suc = frn.get("k_sucn",-1,1);
+			var boton = bot;
+			if (tipoOper &! "Nuevo" && boton == 1 ){
+				queryCata="select * from keplersc.kdobjgv
+				where c1='"& k_suc &"' and c2='"& k_coach &"' and c3='"& mes &"' and c4='"& anio &"'";
+				cubo_cata= frn.lib("libGeneral.kpl","EjecutarSqlSel",queryCata,"cat_crud_coachesobjmens.cargaCata()");
+				
+				if (getXmlAtt(cubo_cata,"r0","c1")&=""){
+					opcion_user();
+				}else{
+					queryCata = 
+						"select c5 as k_ent1,
+						c6 as k_ent2, c7 as k_ub, c8 as k_fin1,
+						c9 as k_fin2, c10 as k_csi1, c11 as k_csi2,
+						c12 as k_dias1, c13 as k_dias2, c14 as k_fact,
+						c15 as k_tomas, c16 as k_grext, c17 as k_accesor,
+						c18 as k_contado, c20 as k_sem_fact, c21 as k_sem_ent1,
+						c22 as k_sem_ent2, c23 as k_sem_fin1, c24 as k_sem_fin2
+						from keplersc.KDOBJGV where c1='"& k_suc &"' and c2='"& k_coach &"'
+						and c3='"& mes &"' and c4='"& anio &"'
+						order by c4 desc,c3 desc limit 1";
+					cubo_cata= frn.lib("libGeneral.kpl","EjecutarSqlSel",queryCata,"cat_crud_coachesobjmens.cargaCata()");
+					frn.lib("libGeneral.kpl","FileSave",cubo_cata,"C:\Basura\cubo_cata");
+					xml_cubo_cata=frn.lib("libGeneral.kpl","CreaXmlDesdeAtt",cubo_cata,"r0");
+					frn.lib("libGeneral.kpl","FileSave",xml_cubo_cata,"C:\Basura\xml_cubo_cata");
+					frn.setX(xml_cubo_cata);
+					frn.setAtt("k_btn_cons", "available", "Y");
+					frn.setAtt("k_btn_cons", "visible", "Y");
+
+				}
+            }else if(tipoOper &= "Nuevo"){
+				frn.setAtt("k_btn_cons", "available", "Y");
+				frn.setAtt("k_btn_cons", "visible", "Y");
+			}
+				activaCampos();
+		
+		}
+
+			fun ConfiguraUI(){
+				consPlantilla="PLANTILLA"; //AQUI DEFINE LA CONSTANTE PARA COMPARAR EN PARAMETROS
+				if (frn.nParam() == 0){
+					frn.message("Accion no permitida.","Error","&Aceptar");
+//					frn.open("redirect",2);
+					return;
+				}
+
+				//Establecer titulo de la ventana
+				if (tipoOper &= "PLANTILLA"){
+					frn.setAtt("gpo_2","tit","Catalogo PLANTILLA...");
+					frn.set("k_titulo","Catalogo Color exterior Plantilla");
+				}
+				else if (tipoOper &= "Nuevo"){
+					frn.setAtt("gpo_2","tit","Catalogo de Coaches Objetivos Mensuales Alta Nuevo");
+					frn.set("k_titulo","Coaches Objetivos Mensuales Alta");
+				}
+				else if (tipoOper &= "Modificar"){
+					frn.setAtt("gpo_2","tit","Objetivos Mensuales");
+					frn.set("k_titulo","Coaches, Objetivos Mensuales");
+				}
+				else if (tipoOper &= "Eliminar"){
+					frn.setAtt("gpo_2","tit","Coaches Objetivos Mensuales Elimina");
+					frn.set("k_titulo","Catalogo Coaches Objetivos Mensuales Eliminar");
+				}
+				else if (tipoOper &= "Consultar"){
+					frn.setAtt("gpo_2","tit","Catalogo de Coaches Objetivos Mensuales Consulta");
+					frn.set("k_titulo","Catalogo Coaches Objetivos Mensuales Consulta");
+				}
+				else{
+					frn.message("Accion no permitida.","Error","&Aceptar");
+//					frn.open("redirect",2);
+//					return;
+				}
+			}
+					
+			fun Inicializa(){
+				frn.rst("gpo_2");
+				Inicia_Forma();
+				}
+	
+
+			fun activaCampos(){
+				var k_clave = frn.get("k_clave");
+                if(tipoOper&="Nuevo" && k_clave &=""){
+                }
+                
+				frn.setAtt("k_clave", "available", "Y");
+				frn.setAtt("k_clave", "bclr", "255,255,255");
+				frn.setAtt("k_mes", "available", "Y");
+				frn.setAtt("k_mes", "bclr", "255,255,255");
+                frn.setAtt("k_anio", "available", "Y");
+				frn.setAtt("k_anio", "bclr", "255,255,255");
+
+				frn.setAtt("k_ent1", "available", "Y");
+				frn.setAtt("k_ent1", "bclr", "255,255,255");
+				frn.setAtt("k_ent2", "available", "Y");
+				frn.setAtt("k_ent2", "bclr", "255,255,255");
+				frn.setAtt("k_ub", "available", "Y");
+				frn.setAtt("k_ub", "bclr", "255,255,255");
+				frn.setAtt("k_fin1", "available", "Y");
+				frn.setAtt("k_fin1", "bclr", "255,255,255");
+				frn.setAtt("k_fin2", "available", "Y");
+				frn.setAtt("k_fin2", "bclr", "255,255,255");
+				frn.setAtt("k_csi1", "available", "Y");
+				frn.setAtt("k_csi1", "bclr", "255,255,255");
+				frn.setAtt("k_csi2", "available", "Y");
+				frn.setAtt("k_csi2", "bclr", "255,255,255");
+				frn.setAtt("k_dias1", "available", "Y");
+				frn.setAtt("k_dias1", "bclr", "255,255,255");
+				frn.setAtt("k_dias2", "available", "Y");
+				frn.setAtt("k_dias2", "bclr", "255,255,255");
+				frn.setAtt("k_fact", "available", "Y");
+				frn.setAtt("k_fact", "bclr", "255,255,255");
+				frn.setAtt("k_tomas", "available", "Y");
+				frn.setAtt("k_tomas", "bclr", "255,255,255");
+				frn.setAtt("k_grext", "available", "Y");
+				frn.setAtt("k_grext", "bclr", "255,255,255");
+				frn.setAtt("k_accesor", "available", "Y");
+				frn.setAtt("k_accesor", "bclr", "255,255,255");
+				frn.setAtt("k_contado", "available", "Y");
+				frn.setAtt("k_contado", "bclr", "255,255,255");
+				frn.setAtt("k_sem_fact", "available", "Y");
+				frn.setAtt("k_sem_fact", "bclr", "255,255,255");
+				frn.setAtt("k_sem_ent1", "available", "Y");
+				frn.setAtt("k_sem_ent1", "bclr", "255,255,255");
+				frn.setAtt("k_sem_ent2", "available", "Y");
+				frn.setAtt("k_sem_ent2", "bclr", "255,255,255");
+				frn.setAtt("k_sem_fin1", "available", "Y");
+				frn.setAtt("k_sem_fin1", "bclr", "255,255,255");
+				frn.setAtt("k_sem_fin2", "available", "Y");
+				frn.setAtt("k_sem_fin2", "bclr", "255,255,255");
+
+				if(tipoOper&="Modificar"){
+					frn.setAtt("k_clave", "available", "N");
+					frn.setAtt("k_clave", "bclr", "236,240,243");
+                    //frn.set("k_clave",clave);
+
+					
+					frn.setAtt("k_ent1", "available", "Y");
+					frn.setAtt("k_ent1", "bclr", "255,255,255");
+					frn.setAtt("k_ent2", "available", "Y");
+					frn.setAtt("k_ent2", "bclr", "255,255,255");
+					frn.setAtt("k_ub", "available", "Y");
+					frn.setAtt("k_ub", "bclr", "255,255,255");
+					frn.setAtt("k_fin1", "available", "Y");
+					frn.setAtt("k_fin1", "bclr", "255,255,255");
+					frn.setAtt("k_fin2", "available", "Y");
+					frn.setAtt("k_fin2", "bclr", "255,255,255");
+					frn.setAtt("k_csi1", "available", "Y");
+					frn.setAtt("k_csi1", "bclr", "255,255,255");
+					frn.setAtt("k_csi2", "available", "Y");
+					frn.setAtt("k_csi2", "bclr", "255,255,255");
+					frn.setAtt("k_dias1", "available", "Y");
+					frn.setAtt("k_dias1", "bclr", "255,255,255");
+					frn.setAtt("k_dias2", "available", "Y");
+					frn.setAtt("k_dias2", "bclr", "255,255,255");
+					frn.setAtt("k_fact", "available", "Y");
+					frn.setAtt("k_fact", "bclr", "255,255,255");
+					frn.setAtt("k_tomas", "available", "Y");
+					frn.setAtt("k_tomas", "bclr", "255,255,255");
+					frn.setAtt("k_grext", "available", "Y");
+					frn.setAtt("k_grext", "bclr", "255,255,255");
+					frn.setAtt("k_accesor", "available", "Y");
+					frn.setAtt("k_accesor", "bclr", "255,255,255");
+					frn.setAtt("k_contado", "available", "Y");
+					frn.setAtt("k_contado", "bclr", "255,255,255");
+					frn.setAtt("k_sem_fact", "available", "Y");
+					frn.setAtt("k_sem_fact", "bclr", "255,255,255");
+					frn.setAtt("k_sem_ent1", "available", "Y");
+					frn.setAtt("k_sem_ent1", "bclr", "255,255,255");
+					frn.setAtt("k_sem_ent2", "available", "Y");
+					frn.setAtt("k_sem_ent2", "bclr", "255,255,255");
+					frn.setAtt("k_sem_fin1", "available", "Y");
+					frn.setAtt("k_sem_fin1", "bclr", "255,255,255");
+					frn.setAtt("k_sem_fin2", "available", "Y");
+					frn.setAtt("k_sem_fin2", "bclr", "255,255,255");
+				}else if(tipoOper&="Consultar" || tipoOper&="Eliminar"){
+					frn.setAtt("k_clave", "available", "N");
+					frn.setAtt("k_clave", "bclr", "236,240,243");
+                    //frn.set("k_clave",clave);
+
+					frn.setAtt("k_ent1", "available", "N");
+					frn.setAtt("k_ent1", "bclr", "236,240,243");
+					frn.setAtt("k_ent2", "available", "N");
+					frn.setAtt("k_ent2", "bclr", "236,240,243");
+					frn.setAtt("k_ub", "available", "N");
+					frn.setAtt("k_ub", "bclr", "236,240,243");
+					frn.setAtt("k_fin1", "available", "N");
+					frn.setAtt("k_fin1", "bclr", "236,240,243");
+					frn.setAtt("k_fin2", "available", "N");
+					frn.setAtt("k_fin2", "bclr", "236,240,243");
+					frn.setAtt("k_csi1", "available", "N");
+					frn.setAtt("k_csi1", "bclr", "236,240,243");
+					frn.setAtt("k_csi2", "available", "N");
+					frn.setAtt("k_csi2", "bclr", "236,240,243");
+					frn.setAtt("k_dias1", "available", "N");
+					frn.setAtt("k_dias1", "bclr", "236,240,243");
+					frn.setAtt("k_dias2", "available", "N");
+					frn.setAtt("k_dias2", "bclr", "236,240,243");
+					frn.setAtt("k_fact", "available", "N");
+					frn.setAtt("k_fact", "bclr", "236,240,243");
+					frn.setAtt("k_tomas", "available", "N");
+					frn.setAtt("k_tomas", "bclr", "236,240,243");
+					frn.setAtt("k_grext", "available", "N");
+					frn.setAtt("k_grext", "bclr", "236,240,243");
+					frn.setAtt("k_accesor", "available", "N");
+					frn.setAtt("k_accesor", "bclr", "236,240,243");
+					frn.setAtt("k_contado", "available", "N");
+					frn.setAtt("k_contado", "bclr", "236,240,243");
+					frn.setAtt("k_sem_fact", "available", "N");
+					frn.setAtt("k_sem_fact", "bclr", "236,240,243");
+					frn.setAtt("k_sem_ent1", "available", "N");
+					frn.setAtt("k_sem_ent1", "bclr", "236,240,243");
+					frn.setAtt("k_sem_ent2", "available", "N");
+					frn.setAtt("k_sem_ent2", "bclr", "236,240,243");
+					frn.setAtt("k_sem_fin1", "available", "N");
+					frn.setAtt("k_sem_fin1", "bclr", "236,240,243");
+					frn.setAtt("k_sem_fin2", "available", "N");
+					frn.setAtt("k_sem_fin2", "bclr", "236,240,243");
+				}
+			}
+
+			fun Inicia_Forma(){
+				var cmd,ok,mensajeError, cubo;
+				//Etiquetas 
+				frn.set("clave","Clave Coach");
+				frn.set("suc","Sucursal");
+				frn.set("mes","Mes ");
+                frn.set("anio","Anio ");
+
+				frn.setAtt("k_clave", "available", "N");
+				frn.setAtt("k_clave", "bclr", "236,240,243");
+
+				cargaCata();
+				//Obtencion de registros
+			}
+		
+//---------------------------------------------------------------EXTRAS-------------------------------------------------------------------GAD fl4r30n
+						
+			fun Dialog(iModo,pag,par0,par1,par2,par3,par4,par5,par6,par7,par8,par9,par10,par11,par12,par13,par14,par15){
+				/*iModo: 0)No hace mayor validaci?n. Siempre despliega la ventana. NO CONCATENA PREFIJO
+							1)Solo concatena el prefijo de la carpeta del lenguaje, no hace mayor validaci?n. Siempre despliega la ventana
+							2)Modo especial. Se valida que el campo indicado en par0 se puede modificar(El par0 puede ser una tabla, y par1 la columna)
+							3)Modo especial para p?ginas de operacion:Solo si se est? en alta o modifica despliega la pagina. Simpre agrega el prefijo del lenguaje
+				*/
+				var prefix=frn.lib("libKepler","langPrefix");
+				var page=prefix&pag;
+				var b_valido=1;
+				if(iModo==0)page=pag;
+				else if(iModo==2&&(strlen(par0)>0)){//Se toma el par0 como el objeto (o grid) al que se devolver? el resultado.
+					if( frn.getAtt(par0,"modify",par1) &= "N" ) b_valido=0;
+					if( frn.getAtt(par0,"available",par1) &= "N" ) b_valido=0;
+					if( frn.getAtt(par0,"visible",par1) &= "N" ) b_valido=0;
+				}
+				if(iModo==3)frn.dialog(page,par0,par1,par2,par3,par4,par5,par6,par7,par8,par9,par10,par11,par12,par13,par14,par15);
+			}
+		}
+	</script>
+</pag>

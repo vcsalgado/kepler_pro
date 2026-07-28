@@ -1,0 +1,398 @@
+<?xml version="1.0" encoding="UTF-8"?><pag xmlns="www.kepler.com.mx/2003/KSchema" roles="" tit="Cierra-Abre  Mes">
+<grp  brdr="0,0" clr="0,58,112" fnt="Arial,16"  dim="0,0,10,12" bclr="192,205,213" unfont="0">
+	<br/>
+		<tab/><inp id="k_titulo" dim="50,1" brdr="0,0" bclr="192,205,213" clr="0,0,0" clrBrdr="192,205,213"
+			type="string" modify="N" available="N" fnt="Arial,22"/>
+	<br/><tab/><hLine clr="0,0,0"/>
+		<br/><br/>
+		<tab/>
+		<grp dim="32,27,10,10" bclr="236,240,243" fntClrBrdr="236,240,243" fntBrdr="Arial,18" hSpace="4" clrBrdr="0,58,112" brdr="0,5" fnt="Arial,16" tit="Cierra-Abre Mes">		
+			<sp/><tab n="1"/>
+			<txt clr="0,58,112" hk="S">A&#241;o</txt>
+			<cmb id="k_anio" clr="64,64,64" clrBrdr="192,205,213" dim="5,1" bclr="255,255,255" brdr="2,0" fnt="Arial,16" 
+			available="Y" OnChange="ResetResults"/>
+			<tab n="6"/>
+
+			<img id="bot" dim="20,20" bPx="Y" brdr="0,1"  img="_20_Find.png" OnEnter="Buscar()" available="Y" clrBrdr="0,0,0" visible="Y" modify="Y"/>
+			<br/>
+			
+			<br/>
+			<tab/>
+			<txt clr="0,58,112" hk="S">Enero</txt>
+			<tab n="2"/>
+			<inp id="k_ene" dim="3,1" brdr="2,0" clr="64,64,64" bclr="255,255,255" clrBrdr="192,205,213"
+				type="capital" tooltip="Doble click para cambiar" modify="N" OnMouseD="cierra_abre"/>	
+			<tab n="2"/>
+			<txt clr="0,58,112" hk="S">Febrero</txt>
+			<tab/>
+			<inp id="k_feb" dim="3,1" brdr="2,0" clr="64,64,64" bclr="255,255,255" clrBrdr="192,205,213"
+				type="capital" tooltip="Doble click para cambiar" modify="N" OnMouseD="cierra_abre"/>	
+
+			<br/>
+			<tab/>
+			<txt clr="0,58,112" hk="S">Marzo</txt>
+			<tab n="2"/>
+			<inp id="k_mar" dim="3,1" brdr="2,0" clr="64,64,64" bclr="255,255,255" clrBrdr="192,205,213"
+				type="capital" tooltip="Doble click para cambiar" modify="N" OnMouseD="cierra_abre"/>	
+			<tab n="2"/>
+			<txt clr="0,58,112" hk="S">Abril</txt>
+			<tab/>
+			<inp id="k_abr" dim="3,1" brdr="2,0" clr="64,64,64" bclr="255,255,255" clrBrdr="192,205,213"
+				type="capital" tooltip="Doble click para cambiar" modify="N" OnMouseD="cierra_abre"/>			
+			
+			<br/>
+			<tab/>
+			<txt clr="0,58,112" hk="S">Mayo</txt>
+			<tab n="2"/>
+			<inp id="k_may" dim="3,1" brdr="2,0" clr="64,64,64" bclr="255,255,255" clrBrdr="192,205,213"
+				type="capital" tooltip="Doble click para cambiar" modify="N" OnMouseD="cierra_abre"/>	
+			<tab n="2"/>
+			<txt clr="0,58,112" hk="S">Junio</txt>
+			<tab/>
+			<inp id="k_jun" dim="3,1" brdr="2,0" clr="64,64,64" bclr="255,255,255" clrBrdr="192,205,213"
+				type="capital" tooltip="Doble click para cambiar" modify="N" OnMouseD="cierra_abre"/>		
+	
+			<br/>
+			<tab/>
+			<txt clr="0,58,112" hk="S">Julio</txt>
+			<tab n="2"/>
+			<inp id="k_jul" dim="3,1" brdr="2,0" clr="64,64,64" bclr="255,255,255" clrBrdr="192,205,213"
+				type="capital" tooltip="Doble click para cambiar" modify="N" OnMouseD="cierra_abre"/>	
+			<tab n="2"/>
+			<txt clr="0,58,112" hk="S">Agosto</txt>
+			<tab/>
+			<inp id="k_ago" dim="3,1" brdr="2,0" clr="64,64,64" bclr="255,255,255" clrBrdr="192,205,213"
+				type="capital" tooltip="Doble click para cambiar" modify="N" OnMouseD="cierra_abre"/>		
+		
+			<br/>
+			<tab/>
+			<txt clr="0,58,112" hk="S">Septiembre</txt>
+			<tab/>
+			<inp id="k_sep" dim="3,1" brdr="2,0" clr="64,64,64" bclr="255,255,255" clrBrdr="192,205,213"
+				type="capital" tooltip="Doble click para cambiar" modify="N" OnMouseD="cierra_abre"/>	
+			<tab n="2"/>
+			<txt clr="0,58,112" hk="S">Octubre</txt>
+			<tab/>
+			<inp id="k_oct" dim="3,1" brdr="2,0" clr="64,64,64" bclr="255,255,255" clrBrdr="192,205,213"
+				type="capital" tooltip="Doble click para cambiar" modify="N" OnMouseD="cierra_abre"/>		
+	
+			<br/>
+			<tab/>
+			<txt clr="0,58,112" hk="S">Noviembre</txt>
+			<tab/>
+			<inp id="k_nov" dim="3,1" brdr="2,0" clr="64,64,64" bclr="255,255,255" clrBrdr="192,205,213"
+				type="capital" tooltip="Doble click para cambiar" modify="N" OnMouseD="cierra_abre"/>	
+			<tab n="2"/>
+			<txt clr="0,58,112" hk="S">Diciembre</txt>
+
+			<inp id="k_dic" dim="3,1" brdr="2,0" clr="64,64,64" bclr="255,255,255" clrBrdr="192,205,213"
+				type="capital" tooltip="Doble click para cambiar" modify="N" OnMouseD="cierra_abre"/>		
+
+			<br/>
+			<tab/>
+				<txt clr="0,58,112" hk="S">*Doble Click Cambia entre (A)bierto a (C)errado</txt>
+			<br/>
+			<tab n="1"/><bot id="bot_guardar" dim="14,0" brdr="5" text="Guardar" default="0" OnEnter="Guardar()"/>
+		</grp>
+</grp>
+	<script>
+		InstallDriver("KDB75");
+		class Main {
+			var frn,frP,kdb,sys,suc_usuario,perfil_usuario,usuario ,rol_usuario  ,asterisco, externo ;
+			var tipoOper; //Variables relacionadas con parametros
+			var consAdmin, consControl, consPlantilla, consCargarHorasTab,consCierraAbrePuntosTab ,consCargos,consCargosSel,consRefsCierra,consRefsAbre,
+				consIniciarTerminarTrabajo,consCargosAbre,consTotsCierra,consCargosCierra ,consTotsAbre,consCalidadAlta, resVal,
+				consCalidadBaja,consAutorizaCierre,consAbreOrdenGeneral,consCierraOrdenGeneral;
+			var consCuestPre, consCuestEnt, consCuestWlka ; //CUEST
+			fun Main(){
+				frn=new FRNT;
+				kdb=new KDB;
+				frP=new FRNTP;
+				sys=new SYS;
+				kdb.connect();
+				
+				suc_usuario = frn.lib("libKepler","UserInfo(1)");
+				perfil_usuario = frn.lib("libKepler","UserInfo(2)");
+				usuario = frn.config("user","name");
+				rol_usuario = frn.config("user","role");
+				asterisco = "*";
+				
+				
+				
+				Inicializa();
+				Buscar();
+			
+			}
+
+			fun ResetResults(){
+				frn.rst("k_ene");
+				frn.rst("k_feb");
+				frn.rst("k_mar");
+				frn.rst("k_abr");
+				frn.rst("k_may");
+				frn.rst("k_jun");
+				frn.rst("k_jul");
+				frn.rst("k_ago");
+				frn.rst("k_sep");
+				frn.rst("k_oct");
+				frn.rst("k_nov");
+				frn.rst("k_dic");
+
+				Buscar();
+			}
+		
+			fun cierra_abre(){
+
+				var pos = frn.getPos();
+
+				if (frn.get(pos) &= "" || frn.get(pos) &= "A"){
+					frn.set(pos,"C");
+				}else{
+					frn.set(pos,"A");
+				}
+				
+			}
+
+			fun ValidarDatos(){
+
+			
+				if (frn.get("k_ene") &= "") {						
+					frn.setPos("k_ene");
+					resVal=0;
+					frn.message("Debe especificar (A)bierto o (C)errado, verificar","Error","Aceptar");
+					return;
+				}
+
+				if (frn.get("k_feb") &= "") {						
+					frn.setPos("k_feb");
+					resVal=0;
+					frn.message("Debe especificar (A)bierto o (C)errado, verificar","Error","Aceptar");
+					return;
+				}
+				if (frn.get("k_mar") &= "") {						
+					frn.setPos("k_mar");
+					resVal=0;
+					frn.message("Debe especificar (A)bierto o (C)errado, verificar","Error","Aceptar");
+					return;
+				}
+				if (frn.get("k_abr") &= "") {						
+					frn.setPos("k_abr");
+					resVal=0;
+					frn.message("Debe especificar (A)bierto o (C)errado, verificar","Error","Aceptar");
+					return;
+				}
+				if (frn.get("k_may") &= "") {						
+					frn.setPos("k_may");
+					resVal=0;
+					frn.message("Debe especificar (A)bierto o (C)errado, verificar","Error","Aceptar");
+					return;
+				}
+
+				if (frn.get("k_jun") &= "") {						
+					frn.setPos("k_jun");
+					resVal=0;
+					frn.message("Debe especificar (A)bierto o (C)errado, verificar","Error","Aceptar");
+					return;
+				}
+
+				if (frn.get("k_jul") &= "") {						
+					frn.setPos("k_jul");
+					resVal=0;
+					frn.message("Debe especificar (A)bierto o (C)errado, verificar","Error","Aceptar");
+					return;
+				}
+				if (frn.get("k_ago") &= "") {						
+					frn.setPos("k_ago");
+					resVal=0;
+					frn.message("Debe especificar (A)bierto o (C)errado, verificar","Error","Aceptar");
+					return;
+				}
+				if (frn.get("k_sep") &= "") {						
+					frn.setPos("k_sep");
+					resVal=0;
+					frn.message("Debe especificar (A)bierto o (C)errado, verificar","Error","Aceptar");
+					return;
+				}
+
+				if (frn.get("k_oct") &= "") {						
+					frn.setPos("k_oct");
+					resVal=0;
+					frn.message("Debe especificar (A)bierto o (C)errado, verificar","Error","Aceptar");
+					return;
+				}
+				if (frn.get("k_nov") &= "") {						
+					frn.setPos("k_nov");
+					resVal=0;
+					frn.message("Debe especificar (A)bierto o (C)errado, verificar","Error","Aceptar");
+					return;
+				}
+
+				if (frn.get("k_dic") &= "") {						
+					frn.setPos("k_dic");
+					resVal=0;
+					frn.message("Debe especificar (A)bierto o (C)errado, verificar","Error","Aceptar");
+					return;
+				}
+			}
+
+
+			fun Guardar() {
+				var cmdQuery, mensajeError;
+
+				resVal = 1;
+				ValidarDatos();
+				if(resVal == 0){
+					return;
+				}
+			
+
+				var resultado_confirmacion = frn.message("¿Desea continuar?","Mensaje de Confirmacion", 2);
+				if (resultado_confirmacion &! 1)  {
+					return;
+				}
+
+				var xmlRequest = getXml(frn.dataPag());	
+
+				setXml(xmlRequest ,"usuario",usuario);
+
+				frn.lib("libGeneral.kpl","FileSave",xmlRequest ,"C:\Basura\xmlRequest ");
+				cmdQuery="SELECT * FROM keplersc.cierra_abre_mes('<document>" & getXmlStr(xmlRequest ,"EOF:13_10") & "</document>')";
+				var cubo = frn.lib("libGeneral.kpl","EjecutarSql",cmdQuery,"ordenbitabierta.Guardar()");	
+				frn.lib("libGeneral.kpl","FileSave",cubo ,"C:\Basura\cuboResultados");					
+				var resultado=getXml(cubo ,"resultado");
+
+				if(resultado &= "0"){
+					mensajeError = getXml(cubo ,"mensaje");
+					frn.message(mensajeError,"Error","Aceptar");
+					return;
+				}
+					frn.message("Registro Guardado","Mensaje","Aceptar");
+					Buscar();
+			}	
+
+			fun Inicializa(){
+				var cmd,cubo,ok,mensajeError ;
+
+				frn.set("k_titulo","Cierra-Abre Mes");		
+
+
+				//Anio
+				var cont,maxCont,nMes;
+				maxCont=mid(fnDate(sys.date()),2,4);
+				for(cont=20; cont<=maxCont; cont++) {
+					frn.setX(cont,"k_anio",cont-20,0);			
+					frn.setX(cont,"k_anio",cont-20,1);
+				}
+				frn.set("k_anio",mid(fnDate(sys.date()),2,2));
+			}
+			
+			fun Buscar() {
+			
+				var xmlRequest,cmd,ok,cuboResultados, totOrd , contOrd, ref_clave, ref_desc;
+		
+
+				var anio;
+				anio=frn.get("k_anio",-1,0);	
+
+				//llena datos de la orden
+				cmd= "select c10 as k_ene, c11 as k_feb, c12 as k_mar, c13 as k_abr, c14 as k_may , c15 as k_jun,
+					c16 as k_jul, c17 as k_ago, c18 as k_sep, c19 as k_oct, c20 as k_nov, c21 as k_dic
+					from keplersc.kdym  
+					where c1='20" & anio  & "'";
+				frn.lib("libGeneral.kpl","FileSave",cmd,"C:\Basura\cmdRequest");
+				cuboResultados = frn.lib("libGeneral.kpl","EjecutarSqlSel",cmd,"ordenentsaluni.Buscar()");
+				ok=getXmlAtt(cuboResultados,"ok");
+				if(ok &! "" && !ok){
+					var mensajeError = getXmlAtt(cuboResultados,"native3");
+					mensajeError = frn.lib("libGeneral.kpl","ErrorBD",mensajeError);
+					frn.message(mensajeError,"Error","Aceptar");
+					return;
+				}
+				frn.lib("libGeneral.kpl","FileSave",cuboResultados,"C:\Basura\cubocliente");
+				xmlRequest=frn.lib("libGeneral.kpl","CreaXmlDesdeAtt",cuboResultados,"r0");
+				frn.setX(xmlRequest);
+	
+			}
+			
+			
+			
+			
+		
+//---------------------------------------------------------------EXTRAS-------------------------------------------------------------------
+			
+			
+			fun Formar_folio(){
+			
+				var xmlReqEst, cubofol, cmd, ok, mensajeError ;
+				if (frn.get("folio_orden_bus") &! ""){
+					setXml(xmlReqEst,"document","folio_id",frn.get("folio_orden_bus"));
+					
+					cmd="select * from keplersc.consulta_folio('" & getXmlStr(xmlReqEst,"EOF:13_10") & "')";
+					cubofol=  frn.lib("libGeneral.kpl","EjecutarSqlSel",cmd,"comopecompras.Formar_folio()");
+					frn.lib("libGeneral.kpl","FileSave",cubofol,"C:\Basura\cuboFol");				
+					var resultado =getXmlAtt(cubofol,"r0", "resultado");
+					if(resultado &= "0"){
+						mensajeError = getXmlAtt(cubofol,"r0", "mensaje");
+						mensajeError = frn.lib("libGeneral.kpl","ErrorBD",mensajeError);
+						frn.message(mensajeError,"Error","Aceptar");
+						return;
+					}
+					var fol = getXmlAtt(cubofol,"r0", "mensaje");
+					
+					frn.set("folio_orden_bus", fol);
+				}
+				Buscar();
+			}
+			
+			
+			fun llenar_cmb(cuboResultados, cmb){
+					
+				var len_cubo = nXml(cuboResultados);
+				
+				var pos_ini = frn.N(cmb);
+					
+				for (var cont=0; cont<len_cubo ; cont++){
+			
+					var desc= getXmlAtt(cuboResultados,"r"&cont,"descripcion");
+					var clave= getXmlAtt(cuboResultados,"r"&cont,"clave");
+					
+					frn.setX(desc, cmb, cont+pos_ini ,0);
+					frn.setX(clave, cmb, cont+pos_ini ,1);
+				
+				}	
+			}
+			
+			fun descr_combo(combo,posicion,valor){
+
+				var descr, valor_actual;
+				var len_combo = frn.N(combo);
+
+				for (var cont=0; cont<len_combo ; cont++){
+					valor_actual= frn.get(combo,cont,posicion);
+					if (valor_actual &=  valor){
+						descr = frn.get(combo,cont,0);
+						return descr;
+					}
+				}
+			}
+			
+
+			fun Dialog(iModo,pag,par0,par1,par2,par3,par4,par5,par6,par7,par8,par9,par10,par11,par12,par13,par14,par15){
+				/*iModo: 0)No hace mayor validaci?n. Siempre despliega la ventana. NO CONCATENA PREFIJO
+							1)Solo concatena el prefijo de la carpeta del lenguaje, no hace mayor validaci?n. Siempre despliega la ventana
+							2)Modo especial. Se valida que el campo indicado en par0 se puede modificar(El par0 puede ser una tabla, y par1 la columna)
+							3)Modo especial para p?ginas de operacion:Solo si se est? en alta o modifica despliega la pagina. Simpre agrega el prefijo del lenguaje
+				*/
+				var prefix=frn.lib("libKepler","langPrefix");
+				var page=prefix&pag;
+				var b_valido=1;
+				if(iModo==0)page=pag;
+				else if(iModo==2&&(strlen(par0)>0)){//Se toma el par0 como el objeto (o grid) al que se devolver? el resultado.
+					if( frn.getAtt(par0,"modify",par1) &= "N" ) b_valido=0;
+					if( frn.getAtt(par0,"available",par1) &= "N" ) b_valido=0;
+					if( frn.getAtt(par0,"visible",par1) &= "N" ) b_valido=0;
+				}
+				if(iModo==3)frn.dialog(page,par0,par1,par2,par3,par4,par5,par6,par7,par8,par9,par10,par11,par12,par13,par14,par15);
+			}
+		}
+	</script></pag>

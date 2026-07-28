@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pag xmlns="www.kepler.com.mx/2003/KSchema" tit="Reporte de " scale="48">
+	<grp dim="1,-1,10,20" brdr="0,1" bclr="255,255,255" clr="0,0,0" fnt="Arial,15" unfont="0">
+		<br exe="encabezado"/>
+		<hLine dim="90,0" g="2" type="1"/>
+		<br exe="encabezado"/>
+		<grp dim="10,7,7,12">
+			<br/><img id="img" dim="12,50" brdr="0,1" img="logocliente.jpg"/>
+		</grp>
+		<tab n="1"/>
+		<grp dim="62,5,7,12" brdr="0,1">
+			<br/>
+			<inp id="k_empresa" fnt=",20b" dim="80,1" clr="0,58,112" type="string" available = "N"/>
+			<br/><txt fnt=",16b" clr="0,58,112">Libro Mayor Auxiliar del  </txt>
+			<inp id="k_fecha_ini" fnt=",16b" dim="10,1" clr="0,58,112" type="date" just="C" fmt="DD/MM/CCYY" available = "N"/>
+			<txt fnt=",16b" clr="0,58,112"> al </txt>
+			<inp id="k_fecha_fin" fnt=",16b" dim="10,1" clr="0,58,112" type="date" just="C" fmt="DD/MM/CCYY" available = "N" nc="-1"/><tab/><txt fnt=",16b" clr="0,58,112">Nivel: </txt>
+			<inp id="k_nivel" dim="4,1" clr="0,58,112" clrBrdr="255,255,255" type="string" modify="N" fnt=",16b"/>
+			<br/>
+			<br/>
+		</grp>
+		<tab n="1"/>
+		<grp dim="20,5,7,12">
+			<br/>
+			<txt>P&#225;g:</txt><tab/><inp id="k_pag" dim="4,1" type="number" just="L" mcr="k_pag"/>
+			<br/>
+			<txt>Fecha:</txt><tab/><inp id="k_fecha_imp" dim="10,1" type="date" just="L" fmt="DD-MM-CCYY"/>
+			<br/>
+			<txt>Hora:</txt><sp/><tab n="1"/><inp id="K_hora_imp" dim="5,1" type="time" just="L"/>
+		</grp>
+		<br exe="encabezado"/>
+		<sp/><tab n="14"/><txt fnt=",0b">Saldo Inicial </txt><tab n="2"/><txt fnt=",0b">Debe</txt>
+		<tab n="3"/><txt fnt=",-1b">Haber</txt>
+		<tab n="3"/><txt fnt=",-1b">Saldo Final</txt>	
+		<br exe="encabezado"/>
+		<hLine dim="90,0" g="2" type="1"/>
+		<br exe="encabezado"/>
+		<inp id="k_enc_grupo" dim="35,1" type="string" modify="N" fnt=",16bs"/>
+		<br exe="encabezado_grupo"/>
+		<br exe="encabezado_grupo"/>		
+		<inp id="k_cuenta" dim="10,1" type="string" fnt=",-1b" modify="N"/>
+		<inp id="k_nombre" dim="26,1" type="string" fnt=",-1b" modify="N"/><tab/>
+		<inp id="k_saldo_ini" dim="12,1" clrBrdr="255,255,255" type="number" modify="N" just="R" nd="2"/>
+		<inp id="k_cargos" dim="12,1" type="number" modify="N" nc="-1" just="R" nd="2"/>
+		<inp id="k_abonos" dim="12,1" type="number" modify="N" nc="-1" just="R" nd="2"/>
+		<inp id="k_saldo_final" dim="12,1" type="number" modify="N" nc="5" just="R" nd="2"/>	
+		<br exe="seccion_cuenta"/>				
+		<sp/><inp id="k_fecha" dim="7,1" type="date" just="L" fmt="DD/MM/CCYY" nc="-1" modify="N"/>
+		<inp id="k_tipo_poliza" dim="3,1" type="string" modify="N" fnt=",0" just="C"/>
+		<inp id="k_referencia" dim="9,1" type="string" modify="N"/><inp id="k_documento" dim="12,1" type="string"/>
+		<inp id="k_descripcion" dim="19,1" type="string"/>
+		<inp id="k_movto_cargo" dim="12,1" type="number" just="R" modify="N" nd="2" fnt=",0"/>
+		<inp id="k_movto_abono" dim="12,1" type="number" just="R" modify="N" nd="2"/>
+		<br exe="seccion_poliza"/>
+		<inp id="k_total_grupo" dim="35,1" type="string" modify="N" fnt=",16bs"/><tab n="2"/>
+		<inp id="k_saldo_ini_grupo" dim="12,1" type="number" modify="N" just="R" nd="2" fnt=",0b"/>
+		<inp id="k_cargos_grupo" dim="12,1" clrBrdr="255,255,1" type="number" modify="N" just="R" nd="2" fnt=",0b"/>
+		<inp id="k_abonos_grupo" dim="12,1" type="number" modify="N" just="R" nd="2" fnt=",0b"/>
+		<inp id="k_saldo_fin_grupo" dim="12,1" type="number" modify="N" just="R" nd="2" fnt=",0b"/>
+		<br exe="seccion_total_grupo"/>
+		<br exe="seccion_total_grupo"/>	
+		<hLine dim="90,0" g="2" type="1"/>
+		<br exe="seccion_total_reporte"/>		
+		<sp/><tab n="9"/><txt fnt=",b">Sumas iguales      </txt><tab/><inp id="k_total_inicial" dim="12,1" type="number" fnt=",-1b" just="R" modify="N" nd="2"/>
+		<inp id="k_total_cargos" dim="12,1" type="number" modify="N" nc="5" just="R" nd="2" fnt=",0b"/>
+		<inp id="k_total_abonos" dim="12,1" type="number" modify="N" nc="5" just="R" nd="2" fnt=",0b"/><inp id="k_total_final" dim="12,1" type="number" fnt=",-1b" just="R" modify="N" nd="2"/>
+		<br exe="seccion_total_reporte"/>
+	</grp>
+</pag>
