@@ -2,10 +2,6 @@ CREATE OR REPLACE FUNCTION keplersc.invr_movtos_alta(dataxml xml, folio_operacio
  RETURNS TABLE(resultado text, mensaje text, adicionales text)
  LANGUAGE plpgsql
 AS $function$
-
---Bitacora de cambios
---20/04/202 Miriam Santana: Seleccion de anticipos de una factura para relacionarlos en el CFDI
-
 declare
 	--Variables de definicion de documento
 	no_partidas int = 0;
@@ -66,13 +62,13 @@ begin
 --	usuario_movto := (xpath('//document/movimiento/usuario/text()',dataxml))[1];
 --	fecha_movto := (xpath('//document/movimiento/fecha/text()',dataxml))[1];
 	hora_movto := (xpath('//document/movimiento/hora/text()',dataxml))[1];
-	
+
 	--VCSS 30-Ago-2024 Para efecto de inventarios, siempre se debe de registrar la fecha del movimiento
 	fecha_registro:=now();
 	fecha_operacion := to_char(fecha_registro, 'YYYY-MM-DD');
 	hora_movto := to_char(fecha_registro, 'HH24:MI');
 
-
+	
 	if length(hora_movto)<5 then
 		--Rectificar la hora por si faltan ceros en horas o minutos
 		strValor:=lpad(substring(hora_movto,1,position(':' in hora_movto)-1),2,'0') || ':' || lpad(substring(hora_movto,position(':' in hora_movto)+1),2,'0');
@@ -104,7 +100,7 @@ begin
 		intValor := cantidad_unidades::int;
 		cantidadTotal := cantidadTotal + intValor;
 	end loop;
-	
+
 	if cantidadTotal>0 then
 		promCantidadPartida := total50s / cantidadTotal::decimal;
 	else
@@ -119,14 +115,14 @@ begin
 		deccantidad_partida := 0;
 		cantidad_unidades := (xpath('//document/k_mov/r'||intCont||'/k_q/text()',dataxml))[1];
 		deccantidad_partida := cantidad_unidades::decimal;		
-
-		clave_producto := (xpath('//document/k_mov/r' ||intCont||'/k_parte/text()',dataxml))[1];
-		importe_partida := (xpath('//document/k_mov/r' ||intCont||'/k_monto/text()',dataxml))[1];
-		importeFinalPartida := importe_partida::decimal;
-	
-		if deccantidad_partida > 0 or importeFinalPartida > 0 then
+		
+		if deccantidad_partida > 0 then
 	
 			numero_partida := numero_partida + 1;	
+			
+			clave_producto := (xpath('//document/k_mov/r' ||intCont||'/k_parte/text()',dataxml))[1];
+			importe_partida := (xpath('//document/k_mov/r' ||intCont||'/k_monto/text()',dataxml))[1];
+			--cantidad_unidades := (xpath('//document/k_mov/r'||intCont||'/k_q/text()',dataxml))[1];
 		
 			select xmlforest(clave_producto as clave_producto)::text into strValor;
 			select '<document>'||strValor||'</document>' into strValor;
@@ -138,6 +134,7 @@ begin
 				raise exception '%',mensaje;
 			end if;
 		
+			importeFinalPartida := importe_partida::decimal;
 			if genero = 'X' or genero = 'N' then 
 				importeFinalPartida := importeFinalPartida + (promCantidadPartida * cantidad_unidades::decimal);
 			end if;
@@ -184,16 +181,17 @@ begin
 				-- condition implemented by JMM 20220711 ...
 			   if (upper(genero) = upper('X') and  upper(naturaleza) = upper('D') and grupo = '40' and tipo_clave = '1') 
 					or 	(upper(genero) = 'N' and  upper(naturaleza) = 'D' and (grupo = '05' or grupo = '5')) --VCSS 23 05 2025 Para ajustes de salida, se toma el costo ingresado
-				then 			   	-- No debe modificar el campo : importeFinalPartida, para este DOC por lo pronto 
+				then 
+			   	-- No debe modificar el campo : importeFinalPartida, para este DOC por lo pronto 
 			   	importeFinalPartida = importeFinalPartida;
 				else
 					if decValor <> 0 then
-						importeFinalPartida = decValor * cantidad_unidades::decimal;
+						importeFinalPartida = decValor;
 					end if;
 				end if;
 			end if;
 		
---raise exception 'KDINM Prod% cant% precio% Oper%',clave_producto,cantidad_unidades,importeFinalPartida,folio_operacion;
+			
 			-- Orinal VCSS
 		   insert into keplersc.kdinm(c1,c2,c3,c4,c5,c6,c7,c8,c9,c10,c11,c12,c13)
 			values(sucursal_id,clave_producto,fecha_registro,hora_movto,
@@ -222,14 +220,6 @@ begin
 --raise notice 'PASO 42';			
 
 	end loop;
-
-	---------------------------------------------------------------
-	--Guarda la seleccion de anticipos de una factura para relacionarlos en el CFDI.		--MSS 22042026 seleccion de anticipos
-	---------------------------------------------------------------
-	select * into resultado, mensaje, adicionales from keplersc.cfd_alta_seleccion_anticipos(dataxml,folio_operacion);
-	if resultado = '0' then
-		raise exception '%',mensaje;
-	end if;
 
 	resultado := 1;
 	mensaje := '';

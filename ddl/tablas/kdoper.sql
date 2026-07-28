@@ -20,9 +20,7 @@ CREATE  TABLE keplersc.kdoper (
   c19 character varying(5) NOT NULL DEFAULT ''::character varying,
   c20 character varying(20) NOT NULL DEFAULT ''::character varying,
   c21 character varying(5) NOT NULL DEFAULT ''::character varying,
-  c22 character varying(5) NOT NULL DEFAULT ''::character varying,
-  c23 character varying(5) NOT NULL DEFAULT ''::character varying,
-  c24 character varying(5) NOT NULL DEFAULT ''::character varying
+  c22 character varying(5) NOT NULL DEFAULT ''::character varying
 ) TABLESPACE pg_default;
 ALTER TABLE ONLY keplersc.kdoper ADD CONSTRAINT pk_kdoper PRIMARY KEY (c1);
 CREATE INDEX IF NOT EXISTS sindkdoper02 ON keplersc.kdoper USING btree (c12, c2, c16, c1) TABLESPACE pg_default;
@@ -36,8 +34,6 @@ COMMENT ON COLUMN keplersc.kdoper.c6 IS 'Poblacion';
 COMMENT ON COLUMN keplersc.kdoper.c5 IS 'Colonia';
 COMMENT ON COLUMN keplersc.kdoper.c4 IS 'Direccion';
 COMMENT ON COLUMN keplersc.kdoper.c3 IS 'Nombre del Operario';
-COMMENT ON COLUMN keplersc.kdoper.c24 IS 'Fin Horario Comida';
-COMMENT ON COLUMN keplersc.kdoper.c23 IS 'Inicio Horario Comida';
 COMMENT ON COLUMN keplersc.kdoper.c22 IS 'Ayudante';
 COMMENT ON COLUMN keplersc.kdoper.c21 IS 'Jefe de Taller';
 COMMENT ON COLUMN keplersc.kdoper.c20 IS 'Usuario de Kepler';

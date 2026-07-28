@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <pag xmlns="www.kepler.com.mx/2003/KSchema" roles="" tit="Catalogo TISAN">
 <grp  brdr="0,0" clr="0,58,112" fnt="Arial,14"  dim="0,0,20,20" bclr="192,205,213" unfont="0">
-	<tab/><txt fnt=",22" clr="0,0,0">Catalogo TISAN	</txt><tab/>
+	<txt fnt=",22" clr="0,0,0">  Catalogo TISAN	</txt><tab/>
 	<br/>
-	<tab/><hLine clr="0,0,0"/>
+	<hLine clr="0,0,0"	dim="25,0,0,0"/>
 	<br/>
 
 	<br/>
-	<tab/>
 	<grp id="grupo_crud" bclr="236,240,243" fntClrBrdr="255,255,255" unfont="0" fntBrdr="Arial,18" hSpace="4" clrBrdr="0,58,112" 
 		dim="25,9,10,20" brdr="0,5" tit="Nuevo" fnt="Arial,16">
 		<inp id="input_crud" dim="10,1" brdr="2,0" clr="64,64,64" bclr="255,255,255" clrBrdr="255,255,255" visible="N"/>
@@ -116,7 +115,7 @@
 				return;
 			}
 			
-			var resultado_confirmacion = frn.message("Desea continuar?","Mensaje de Confirmacion", 2);
+			var resultado_confirmacion = frn.message("¿Desea continuar?","Mensaje de Confirmacion", 2);
 			if (resultado_confirmacion &! 1)  {
 				return;
 			}
@@ -224,7 +223,7 @@
 		
 		fun ConfiguraUI(){
 			if (frn.nParam() == 0){
-				frn.message("Accion no permitida.","Error","&Aceptar");
+				frn.message("Acción no permitida.","Error","&Aceptar");
 //				frn.open("redirect",2);
 				return;
 			}

@@ -8,8 +8,8 @@ CREATE  TABLE keplersc.kdvesqveh (
 ALTER TABLE ONLY keplersc.kdvesqveh ADD CONSTRAINT pk_kdvesqveh PRIMARY KEY (c1, c2, c3, c4);
 COMMENT ON TABLE keplersc.kdvesqveh IS 'Ventas Esquema Vehiculos';
 COMMENT ON COLUMN keplersc.kdvesqveh.c5 IS 'Tipo Comision';
-COMMENT ON COLUMN keplersc.kdvesqveh.c4 IS 'Tipo Auto';
-COMMENT ON COLUMN keplersc.kdvesqveh.c3 IS 'Tipo Operacion';
-COMMENT ON COLUMN keplersc.kdvesqveh.c2 IS 'Esquema';
+COMMENT ON COLUMN keplersc.kdvesqveh.c4 IS 'Operacion';
+COMMENT ON COLUMN keplersc.kdvesqveh.c3 IS 'Esquema';
+COMMENT ON COLUMN keplersc.kdvesqveh.c2 IS 'Tipo Auto';
 COMMENT ON COLUMN keplersc.kdvesqveh.c1 IS 'Sucursal';
 

@@ -6,7 +6,6 @@ AS $function$
 --Bitacora de cambios
 --22/12/2024 Miriam Santana: Quitar validaciones para sustituye_cont, y pasen las anulacion de cobros por alta_cont_mov
 declare
-
 	--Variables de definicion de documento
 	sucn_ini text = '';
 	gen_ini text = '';
@@ -21,7 +20,6 @@ declare
 	tipo_fin text = '';
 	fecha_fin text = '';
 	tipo_proc text = '';
-
 	dia text = '';
 	mes text = '';
 	anio text = '';
@@ -54,13 +52,6 @@ declare
 	get_mensaje text = '';
 	get_adicionales text = '';
 
-	chk_movto text='';
-	sucn_mov text = '';
-	gen_mov text='';
-	nat_mov text='';
-	gpo_mov text='';
-	tipo_mov text='';
-
 	--Variables de log proceso
 	fecha_movto text = '';
 	hora_movto text = '';
@@ -87,21 +78,9 @@ begin
 	fecha_fin := (xpath('//document/fecha_fin/text()', dataxml))[1];
 	tipo_proc := (xpath('//document/tipo_proc/text()', dataxml))[1];	
 	folio_unico := coalesce((xpath('//document/inp_mov/text()', dataxml))[1],'');
-	
-	chk_movto := (xpath('//document/chk_movto/text()', dataxml))[1];
 
-	if chk_movto='1' then
-		sucn_mov := (xpath('//document/k_sucn_mov/r1/text()', dataxml))[1];	
-		gen_mov := (xpath('//document/k_gen_mov/text()', dataxml))[1];
-		nat_mov := (xpath('//document/k_nat_mov/text()', dataxml))[1];
-		gpo_mov := (xpath('//document/k_gpo_mov/text()', dataxml))[1];
-		tipo_mov := (xpath('//document/k_tipo_mov/text()', dataxml))[1];
-		movtosIni:=concat(sucn_mov,gen_mov,nat_mov,lpad(gpo_mov,3,'0'),lpad(tipo_mov,3,'0'));
-		movtosFin:=movtosIni;
-	else
-		movtosIni:=concat(sucn_ini,gen_ini,nat_ini,lpad(gpo_ini,3,'0'),lpad(tipo_ini,3,'0'));
-		movtosFin:=concat(sucn_fin,gen_fin,nat_fin,lpad(gpo_fin,3,'0'),lpad(tipo_fin,3,'0'));	
-	end if;
+	movtosIni:=concat(sucn_ini,gen_ini,nat_ini,lpad(gpo_ini,3,'0'),lpad(tipo_ini,3,'0'));
+	movtosFin:=concat(sucn_fin,gen_fin,nat_fin,lpad(gpo_fin,3,'0'),lpad(tipo_fin,3,'0'));
 
 	--Crear tabla temporal de proceso
 	drop table if exists tmpRows;
@@ -125,7 +104,7 @@ begin
 		
 	);
 
-raise notice 'movtosIni:%, movtosFin:%, fecha_ini:%, Fecha_fin:% ', movtosIni, movtosFin,Fecha_Ini ,Fecha_Fin;
+--raise notice 'movtosIni:%, movtosFin:%, fecha_ini:%, Fecha_fin:% ', movtosIni, movtosFin,Fecha_Ini ,Fecha_Fin;
 	--Obtener registros a procesar desde kdm1
 	for rec_KDM1 in select * from keplersc.kdm1 
 		where c9>=to_date(fecha_Ini,'yyyy-mm-dd') 
@@ -134,7 +113,7 @@ raise notice 'movtosIni:%, movtosFin:%, fecha_ini:%, Fecha_fin:% ', movtosIni, m
 		and concat(c1,c2,c3,lpad(c4::text,3,'0'),lpad(c5::text,3,'0'))<=movtosFin
 		order by c1,c2,c3,c4,c5,c6
 	loop
-raise notice 'kdm1 movto:%',concat(rec_KDM1.c1,rec_KDM1.c2,rec_KDM1.c3,lpad(rec_KDM1.c4::text,3,'0'),lpad(rec_KDM1.c5::text,3,'0'));		
+--raise notice 'kdm1 movto:%',concat(rec_KDM1.c1,rec_KDM1.c2,rec_KDM1.c3,lpad(rec_KDM1.c4::text,3,'0'),lpad(rec_KDM1.c5::text,3,'0'));		
 		if folio_unico<>'' and rec_KDM1.c6<>folio_unico then
 			continue;
 		end if;
@@ -247,9 +226,8 @@ raise notice 'kdm1 movto:%',concat(rec_KDM1.c1,rec_KDM1.c2,rec_KDM1.c3,lpad(rec_
 							else
 								notaProceso:='';
 								simboloProceso:='.';
-								funcionProceso:='cont_general_alta';								
-							end if;						
-
+								funcionProceso:='cont_general_alta';
+							end if;
 						end if;							
 					end if;
 				end if;	
@@ -336,13 +314,6 @@ raise notice 'kdm1 movto:%',concat(rec_KDM1.c1,rec_KDM1.c2,rec_KDM1.c3,lpad(rec_
 			strValor:=concat(strValor,'<k_monto>',rec_KDM1.c16::text,'</k_monto>');	
 			strValor:=concat(strValor,'<k_miepsret>',rec_KDM1.c15::text,'</k_miepsret>');	
 			strValor:=concat(strValor,'<k_mivaret>',rec_KDM1.c25::text,'</k_mivaret>');	
-
-			--Sustituciones
-			strValor:=concat(strValor,'<k_natdocto>',rec_KDM1.c36::text,'</k_natdocto>');	
-			strValor:=concat(strValor,'<k_gpodocto>',rec_KDM1.c37::text,'</k_gpodocto>');
-			strValor:=concat(strValor,'<k_tipodocto>',rec_KDM1.c38::text,'</k_tipodocto>');
-			strValor:=concat(strValor,'<k_foliodocto>',rec_KDM1.c39::text,'</k_foliodocto>');
-	
 			strValor:=concat(strValor,'</document>');	
 			xmlUI:=strValor::xml;
 
@@ -373,21 +344,6 @@ raise notice 'kdm1 movto:%',concat(rec_KDM1.c1,rec_KDM1.c2,rec_KDM1.c3,lpad(rec_
 				end if;	
 			end if;
 
-			if rec_TMP.funcion_cont='sustituye_cont' then
-				select * into get_resultado, get_mensaje, get_adicionales from keplersc.sustituye_cont(xmlUI,xmlKDMM,rec_TMP.folio);
-				if get_resultado = '0' then			
-					no_poliza_proc := 0;
-					tipo_poliza_proc:= '';
-					notaProceso := get_mensaje;
-				else
-					no_poliza_proc := get_mensaje::numeric;
-					tipo_poliza_proc := rec_KDMM.c18;
-					notaProceso := 'Póliza regenerada correctamente';	
-					
-				end if;	
-			end if;
-		
-		
 			if get_resultado = '1' then
 				--Eliminar registro de poliza
 				if 	rec_TMP.no_poliza <> 0 and rec_TMP.tipo_poliza <> '' then

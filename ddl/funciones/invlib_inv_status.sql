@@ -4,14 +4,11 @@ CREATE OR REPLACE FUNCTION keplersc.invlib_inv_status(dataxml xml, xmlkdmm xml)
 AS $function$
 DECLARE 
 
---Debe ser llamada con los parametros dataXml y xmlKDMM)	
---Autor: Saltiel Cruz
---Fecha: 17 Oct 2022
---actualizado:07/Dic/2022
---Bitacora de cambios
---27/05/2025 Miriam Santana: Se incluye validaciones para anulacion por sustitución (flag_anulacion)
-
---Variables para xml
+	--Debe ser llamada con los parametros dataXml y xmlKDMM)	
+	--Autor: Saltiel Cruz
+	--Fecha: 17 Oct 2022
+	--actualizado:07/Dic/2022
+	--Variables para xml
 	sucursal_id text;
 	tipo_desc text;
 	genero text;
@@ -34,7 +31,6 @@ DECLARE
 	v_estado_venta numeric = 0;
 
 	xmlResultado xml;
-	flag_anulacion text = '';	--MSS 27052025 Anulacion por sustitucion
 			
 	--Variables de retorno desde funciones externas
 	resultado text; --retorno
@@ -60,8 +56,6 @@ begin
 	xmlKDM1_c8 := (xpath('//row/c8/text()', xmlkdmm))[1];
  	xmlKDM1_c65 := (xpath('//row/c65/text()', xmlkdmm))[1];
     xmlKDM1_c76 := (xpath('//row/c76/text()', xmlkdmm))[1];
-   
-   	flag_anulacion :=coalesce((xpath('//document/ambiente/flag_anulacion/text()',dataxml))[1]::text,'')::text;	--MSS 27052025 Anulacion por sustitucion
 	if xmlKDM1_c8 = 'S' then 
 		
 		if(select count(*) from keplersc.KDINF where c1 = sucursal_id and c2 = v_inventario) > 0 then --VERIFICANDO COMPRA Y PEDIDO
@@ -170,11 +164,9 @@ begin
 			end if;	--end xmlKDM1_c65=30
 			
 			if xmlKDM1_c65::numeric = 30 and naturaleza = 'A' then  --NOTA CREDITO DE FACTURA
-				if upper(flag_anulacion) <> 'CANCELA_X_SUST' then	--MSS 27052025 Anulacion por sustitucion
-					update keplersc.kdinf 
-					set c32 = 10 --'LISTO PARA HACER FACTURA OTRA VEZ O DAR DE BAJA PEDIDO
-					where c1 = sucursal_id and c2 = v_inventario;	
-				end if;
+				update keplersc.kdinf 
+				set c32 = 10 --'LISTO PARA HACER FACTURA OTRA VEZ O DAR DE BAJA PEDIDO
+				where c1 = sucursal_id and c2 = v_inventario;	
 			end if;
 		
 			if xmlKDM1_c65::numeric = 40 and naturaleza = 'D' then --FACTURA DE INTERESES Y COBRANZA

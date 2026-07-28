@@ -67,7 +67,7 @@ begin
 	
 		select E.c1, E.c3, E.c4, E.c5, E.c6, upper(M.c5) as Tipo, sum(case when E.c2 = 'I' then E.c10 else (E.c10 * -1) end) as Ingresos 
 		from keplersc.kdecaja E 
-		inner join keplersc.kdmm M on E.c1=M.col_sucursal and E.c3 = M.c1 and E.c4 = M.c2 and E.c5 = M.c3 and E.c6 = M.c4 and upper(M.c14) = upper('S')
+		inner join keplersc.kdmm M on E.c3 = M.c1 and E.c4 = M.c2 and E.c5 = M.c3 and E.c6 = M.c4 and upper(M.c14) = upper('S')
 		where 
 			( E.c9 >= to_date(fech_ini/*'2022-04-01'*/,'YYYY-MM-DD') and E.c9 <= to_date(fech_fin/*'2022-04-30'*/,'YYYY-MM-DD') ) 
 			and ( E.c1 >= sucursal_ini and E.c1 <= sucursal_fin )  

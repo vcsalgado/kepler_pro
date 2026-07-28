@@ -6,8 +6,6 @@ AS $function$
 --Autor: Saltiel Rc
 --Fecha: 11/02/2022
 --Bitacora de cambios
---Updated.1 by JMM , 17/10/2023 
---  : Params to Calc by Zones was implemented 
 declare
 v_sucursal_id text= '';--k_sucN c1 
 v_Apli_min_anticipo text= '';--k_AplMinAnt c11
@@ -23,14 +21,6 @@ v_InvVirtual text = ''; --k_InvVirtual c10
 v_PedMostVIN text = ''; --k_PedMostVIN C13
 --v_1_2 text = ''; -- k_1o2 C6
 --v_Fecha text = ''; -- k_FechaActualizada C7
-
--- Added by JMM 20231017
-dor_ss text = '';
-alt_ss text = '';
-baj_ss text = '';
-obs_ss text = '';
--- End Added by JMM
-
 resultado text= '';
 mensaje text = '0';
 adicionales text = '';
@@ -42,12 +32,8 @@ BEGIN
 
 	v_sucursal_id := upper((xpath('//document/k_sucn/r1/text()', dataxml))[1]::text); --C1
 	v_Apli_min_anticipo := upper((xpath('//document/k_aplminant/r0/text()', dataxml))[1]::text); --C11
-	v_min_anticipo =upper((xpath('//document/k_minanticipo/text()', dataxml))[1]::text);--C9
-		   
-	--v_Formula := upper((xpath('//document/k_formula/text()', dataxml))[1]::text); --C5
-	-- UPD Obj in K80 by JMM 20231017 
-	v_Formula := upper((xpath('//document/k_formula/r0/text()', dataxml))[1]::text); --C5 
-	
+	v_min_anticipo =upper((xpath('//document/k_minanticipo/text()', dataxml))[1]::text);--C9	   
+	v_Formula := upper((xpath('//document/k_formula/text()', dataxml))[1]::text); --C5
 	v_DiasVenBusMen:= upper((xpath('//document/k_diasvenbusmen/text()', dataxml))[1]::text); --C2	 	 
 	v_DiasVenBusDia:= upper((xpath('//document/k_diasvenbusdia/text()', dataxml))[1]::text); -- C4	 	
 	v_DelayTraslado:=  upper((xpath('//document/k_delaytraslado/text()', dataxml))[1]::text) ;--C3		
@@ -61,14 +47,6 @@ BEGIN
 	/*v_nocatalogo := upper((xpath('//document/k_nocatalogo/text()', dataxml))[1]::text);--COpcion*/
   --	raise notice 'Variables cargadas %' ,v_sucursal_id;
     /*	raise notice 'C1 v_sucursal_id %' ,v_sucursal_id;*/
-	
-	-- Added by JMM ... 20231017 ... Params by Zones
-	dor_ss := upper((xpath('//document/k_ss_dor/text()', dataxml))[1]::text); --C15
-	alt_ss := upper((xpath('//document/k_ss_alt/text()', dataxml))[1]::text); --C16
-	baj_ss := upper((xpath('//document/k_ss_baj/text()', dataxml))[1]::text); --C17
-	obs_ss := upper((xpath('//document/k_ss_obs/text()', dataxml))[1]::text); --C18
-	-- End Added by 
-	
 	select count(*) into totreg from keplersc.KDPEDIDOSUGERIDOCONF 
 	where C1 = v_sucursal_id;
 
@@ -77,11 +55,8 @@ BEGIN
 		if totreg = 0 then 
 		--insert into	
 			insert into keplersc.kdpedidosugeridoconf 
-			(C1,C11,C9,C5,C2,C4,C3,C8,C12,C14,C10,C13
-				-- Added by JMM ... 20231017
-				,C15,C16,C17,C18)
-			values (
-				v_sucursal_id,
+			(C1,C11,C9,C5,C2,C4,C3,C8,C12,C14,C10,C13)
+			values (v_sucursal_id,
 				v_Apli_min_anticipo,
 				v_min_anticipo::numeric,
 				v_Formula,
@@ -92,15 +67,7 @@ BEGIN
 				v_DesvEst,
 				v_StockSeguridad,
 				v_InvVirtual,
-	 			v_PedMostVIN
-	 			-- Added by JMM ... 20231017
-	 			,
-	 			dor_ss::numeric,
-				alt_ss::numeric,
-				baj_ss::numeric,
-				obs_ss::numeric
-	 			-- End Added
-	 		);
+	 			v_PedMostVIN);
 		 	--raise notice 'var%' , v_sucursal_id;
 		end if;
 		raise notice 'resultado: %', 'Actualizar' ; 	
@@ -119,17 +86,10 @@ BEGIN
 			C14 = v_StockSeguridad,
 			C10 = v_InvVirtual,
 			C13 = v_PedMostVIN
-			--Added by JMM ... 20231017
-			,
-			C15 = dor_ss::numeric,
-			C16 = alt_ss::numeric,
-			C17 = baj_ss::numeric,
-			C18 = obs_ss::numeric
-			-- End Added 
 		WHERE C1 = v_sucursal_id;
 --	raise notice 'actualizado ';
 			resultado := 1;
-			mensaje := 'Pedido Sugerido actualizado';
+			mensaje := 'Pedido Sugerido actualizado:';
 			adicionales := '0';
 	--end if;
 	return query select resultado, mensaje, adicionales;

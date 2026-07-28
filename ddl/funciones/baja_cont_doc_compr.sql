@@ -64,7 +64,7 @@ begin
 	end if;
 
 	if upper(flag_contrarec) <> 'CXP_CONTR_REC_CONVERT_ROLLBACK' then 
-		raise exception '%', 'Se esta llamando a la funcion [ baja_cont_doc_no_deduc ] desde una Operacion No Valida ...';
+		raise exception '%', 'Se esta llamando a la funcion [ alta_cont_doc_compr ] desde una Operacion No Valida ...';
 	end if;
 
 	--Partidas

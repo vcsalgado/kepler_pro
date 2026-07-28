@@ -3,7 +3,7 @@ CREATE  TABLE keplersc.kdmm (
   c2 character varying(1) NOT NULL DEFAULT ''::character varying,
   c3 numeric NOT NULL DEFAULT 0,
   c4 numeric NOT NULL DEFAULT 0,
-  c5 character varying(50) NOT NULL DEFAULT ''::character varying,
+  c5 character varying(40) NOT NULL DEFAULT ''::character varying,
   c6 character varying(1) NOT NULL DEFAULT ''::character varying,
   c7 character varying(1) NOT NULL DEFAULT ''::character varying,
   c8 character varying(1) NOT NULL DEFAULT ''::character varying,
@@ -104,7 +104,7 @@ CREATE  TABLE keplersc.kdmm (
   col_sucursal character varying(2) NOT NULL DEFAULT '01'::character varying,
   folio_manual character varying(1) NOT NULL DEFAULT ''::character varying
 ) TABLESPACE pg_default;
-ALTER TABLE ONLY keplersc.kdmm ADD CONSTRAINT kdmm_pk PRIMARY KEY (c2, c1, c3, c4, col_sucursal);
+ALTER TABLE ONLY keplersc.kdmm ADD CONSTRAINT kdmm_pk PRIMARY KEY (c1, c2, c3, c4, col_sucursal);
 COMMENT ON TABLE keplersc.kdmm IS 'Catálogo de documentos';
 COMMENT ON COLUMN keplersc.kdmm.folio_manual IS 'Folio manual';
 COMMENT ON COLUMN keplersc.kdmm.c95 IS 'Uen V=Ventas, S=Servicio, R=Refacciones';

@@ -11,8 +11,8 @@ CREATE  TABLE keplersc.kdord (
   c10 character varying(7) NOT NULL DEFAULT ''::character varying,
   c11 character varying(130) NOT NULL DEFAULT ''::character varying,
   c12 character varying(80) NOT NULL DEFAULT ''::character varying,
-  c13 character varying(70) NOT NULL DEFAULT ''::character varying,
-  c14 character varying(70) NOT NULL DEFAULT ''::character varying,
+  c13 character varying(50) NOT NULL DEFAULT ''::character varying,
+  c14 character varying(50) NOT NULL DEFAULT ''::character varying,
   c15 character varying(20) NOT NULL DEFAULT ''::character varying,
   c16 character varying(20) NOT NULL DEFAULT ''::character varying,
   c17 character varying(20) NOT NULL DEFAULT ''::character varying,
@@ -164,5 +164,4 @@ COMMENT ON COLUMN keplersc.kdord.c12 IS 'Direccion';
 COMMENT ON COLUMN keplersc.kdord.c11 IS 'Nombre';
 COMMENT ON COLUMN keplersc.kdord.c10 IS 'Clave del Cliente';
 COMMENT ON COLUMN keplersc.kdord.c1 IS 'Sucursal';
-CREATE TRIGGER kdord_notif AFTER INSERT OR DELETE OR UPDATE ON keplersc.kdord FOR EACH ROW EXECUTE FUNCTION keplersc.notif_registrar_movto();
 

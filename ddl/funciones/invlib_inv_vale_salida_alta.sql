@@ -7,7 +7,7 @@ DECLARE
 	--Debe ser llamada con los parametros dataXml y xmlKDMM)	
 	--Autor: Saltiel Cruz
 	--Fecha: 03 NOV 2022
-	--Actualizacion, el Folio_operacion estaba reemplazandose con cero. 23/Dic/2022	
+	--Actualización, el Folio_operacion estaba reemplazandose con cero. 23/Dic/2022	
 	--Variables para xml
 	v_sucursal_id text;
 	tipo_desc text;
@@ -17,7 +17,6 @@ DECLARE
 	tipo text;
 	tipo_clave text;
 	v_inventario text ='';
-	v_fecha_movto text='';
 	
 	--xml Movimiento
 	xmlKDM1 xml;
@@ -48,12 +47,12 @@ DECLARE
 	v_asesor_comprador text ='';
 	v_valuador text ='';
 	v_asesor_cc text ='';
+	v_fecha_vale timestamp;
+	v_dia int;
 --Variables de uso general	
 	mensajeError text;		
 	--folio_operacion text;
 	xmlResultado xml;
-	totReg int = 0;
-	v_folio text = ''; 
 			
 	--Variables de retorno desde funciones externas
 	get_resultado text; --retorno
@@ -79,48 +78,13 @@ begin
 	v_coach := upper((xpath('//document/k_coach/r2/text()', dataxml))[1]::text);
     v_tipoauto:= upper((xpath('//document/k_tipoauto/text()', dataxml))[1]::text);
     v_asesor_cc:= upper((xpath('//document/k_asesor_cc/text()', dataxml))[1]::text);
-   	v_fecha_movto:= upper((xpath('//document/k_fecha/text()', dataxml))[1]::text);
-   
-   --Validar que no se tenga un vale activo
-   
-   	--LGLG 13/06/24 codigo obsoleto
-	/*select count(folio) into totReg from 
-	(select folio, sum(alta) as alta, sum(baja) as baja from
-	(select c6 as folio, 1 alta, 0 as baja  from keplersc.kdcomismov where c8=v_inventario and c10='0'
-	union 
-	select c6 as folio, 0 alta, 1 as baja  from keplersc.kdcomismov where c8=v_inventario and c10='1') as movtos
-	group by folio) as resumen
-	where alta=1 and baja = 0;*/
-
-   	--LGLG 13/06/24 correccion query
-	select count(inv) into totReg from 
-	(select inv, sum(alta) as alta, sum(baja) as baja from
-	(select c6 as folio, c8 as inv, 1 alta, 0 as baja  from keplersc.kdcomismov where c8=v_inventario and c10='0'
-	union 
-	select c6 as folio, c8 as inv, 0 alta, 1 as baja  from keplersc.kdcomismov where c8=v_inventario and c10='1') as movtos
-	group by inv) as resumen
-	where alta > baja;
-
-	if totReg>0 then	
-	
-		--LGLG 13/06/24 codigo obsoleto
-		/*select folio into v_folio from 
-		(select folio, sum(alta) as alta, sum(baja) as baja from
-		(select c6 as folio, 1 alta, 0 as baja  from keplersc.kdcomismov where c8=v_inventario and c10='0'
-		union 
-		select c6 as folio, 0 alta, 1 as baja  from keplersc.kdcomismov where c8=v_inventario and c10='1') as movtos
-		group by folio) as resumen
-		where alta=1 and baja = 0 limit 1;
-		raise exception 'Ya se tiene un vale de salida para el inventario:%; el folio es:%',v_inventario,v_folio;*/
-	
-		--LGLG 13/06/24 encuentra ultimo vale 
-		select c6 into v_folio from keplersc.kdcomismov where c1=v_sucursal_id 
-		and c8=v_inventario and c10='0' order by c6 desc limit 1;
-		raise exception 'Ya se tiene un vale de salida para el inventario:%; el folio es:%',v_inventario,v_folio;
-	
-	end if;
-
-	--raise notice 'terminado';
+   	v_dia= extract('day' from now());
+   	if v_dia <=6 then
+	   	v_fecha_vale = date_trunc('month', now()) + interval '-1 day';
+	 else
+		v_fecha_vale = now();
+	 end if;	
+   --raise notice 'terminado';
 	if (select count(*) from keplersc.kdpedido where c1 = v_sucursal_id and c2 = v_inventario) > 0 and 
 		(select count(*) from keplersc.KDINF where c1 = v_sucursal_id and c2 = v_inventario) > 0 and 
 		(select count(*) from keplersc.KDVENTAS where c1 = v_sucursal_id and c2 = v_inventario) > 0  then
@@ -141,22 +105,22 @@ begin
 		update keplersc.KDVENTAS 
 		set c16 = v_vendedor,
 			c13 = v_coach
-		where c1 = v_sucursal_id and c2 = v_inventario;	
+		where c1 = v_sucursal_id and c2 = v_inventario;
+	
 	
 		insert into keplersc.KDCOMISMOV (c1,c2,c3,c4,c5,c6,c7,c8,c9,c10,c11,c12,c13,c14,c15,c16,c17,c18,c19,c20,c21,c22,c23,c24,c25,c26)
 		values (v_sucursal_id,genero,naturaleza,grupo::numeric,tipo::numeric,
-					folio_operacion,v_fecha_movto::timestamp,v_inventario,v_vendedor,0,
+					folio_operacion,v_fecha_vale,v_inventario,v_vendedor,0,
 					v_clave_de_operacion,v_clave_vehiculo,v_fecha_factura::timestamp,v_tipoauto,v_descuento,
 					v_gastos_administrativos,v_seguro_del_automovil,v_suma_accesorios,v_suma_pedidos,v_ISAN,
 					v_IVA, v_Importe,v_costo,v_fecha_compra::timestamp,v_anio_modelo,
 					v_coach);
 		select c41,c42 into v_asesor_comprador,v_valuador from keplersc.KDICOM where  c1 = v_sucursal_id and c2 = v_inventario and c3 = (select count(*) from keplersc.KDICOM  where  c1 = v_sucursal_id and c2 = v_inventario);
-			
+		
 		insert into keplersc.KDCOMISMOV2 (c1,c2,c3,c4,c5,c6,c7,c8,c9,c10,c11,c12,c13,c15,c16)
 		values (v_sucursal_id,genero,naturaleza,grupo::numeric,tipo::numeric,
-				folio_operacion,v_fecha_movto::timestamp,v_inventario,v_asesor_cc,0,
+				folio_operacion,v_fecha_vale,v_inventario,v_asesor_cc,0,
 				v_clave_de_operacion,v_asesor_comprador,v_valuador,v_vendedor,'');
-			
 	end if;
 	
 	--paso:= 'docdis.invlib_INV_VALE_SALIDA_ADIS_ALTA';

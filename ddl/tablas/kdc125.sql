@@ -100,12 +100,9 @@ CREATE  TABLE keplersc.kdc125 (
   c99 character varying(1) NOT NULL DEFAULT ''::character varying,
   c100 character varying(1) NOT NULL DEFAULT ''::character varying
 ) TABLESPACE pg_default;
-ALTER TABLE ONLY keplersc.kdc125 ADD CONSTRAINT pk_kdc125 PRIMARY KEY (c1);
 CREATE UNIQUE INDEX IF NOT EXISTS kdc125_c1_idx ON keplersc.kdc125 USING btree (c1) TABLESPACE pg_default;
 CREATE INDEX IF NOT EXISTS kdc125_c2_c1_idx ON keplersc.kdc125 USING btree (c2, c1) TABLESPACE pg_default;
 CREATE INDEX IF NOT EXISTS kdc125_c3_c1_idx ON keplersc.kdc125 USING btree (c3, c1) TABLESPACE pg_default;
-CREATE INDEX IF NOT EXISTS sindkdc12502 ON keplersc.kdc125 USING btree (c2, c1) TABLESPACE pg_default;
-CREATE INDEX IF NOT EXISTS sindkdc12503 ON keplersc.kdc125 USING btree (c3, c1) TABLESPACE pg_default;
 COMMENT ON COLUMN keplersc.kdc125.c86 IS 'suma de abonos en dólares en el mes 12';
 COMMENT ON COLUMN keplersc.kdc125.c85 IS 'suma de abonos en dólares en el mes 11';
 COMMENT ON COLUMN keplersc.kdc125.c84 IS 'suma de abonos en dólares en el mes 10';

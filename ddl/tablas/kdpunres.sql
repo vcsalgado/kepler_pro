@@ -9,12 +9,12 @@ CREATE  TABLE keplersc.kdpunres (
   c8 timestamp without time zone NOT NULL DEFAULT '1800-01-01 00:00:00'::timestamp without time zone,
   c9 character varying(8) NOT NULL DEFAULT ''::character varying,
   c10 numeric(15,2) NOT NULL DEFAULT 0,
-  c11 character varying(300) NOT NULL DEFAULT ''::character varying,
+  c11 character varying(70) NOT NULL DEFAULT ''::character varying,
   c12 character varying(1) NOT NULL DEFAULT ''::character varying,
   c13 character varying(1) NOT NULL DEFAULT ''::character varying,
-  c14 character varying(300) NOT NULL DEFAULT ''::character varying,
-  c15 character varying(300) NOT NULL DEFAULT ''::character varying,
-  c16 character varying(300) NOT NULL DEFAULT ''::character varying,
+  c14 character varying(70) NOT NULL DEFAULT ''::character varying,
+  c15 character varying(70) NOT NULL DEFAULT ''::character varying,
+  c16 character varying(70) NOT NULL DEFAULT ''::character varying,
   c17 character varying(20) NOT NULL DEFAULT ''::character varying,
   c18 character varying(20) NOT NULL DEFAULT ''::character varying,
   c19 numeric(15,2) NOT NULL DEFAULT 0,
@@ -29,9 +29,7 @@ CREATE  TABLE keplersc.kdpunres (
   c28 character varying(70) NOT NULL DEFAULT ''::character varying,
   c29 character varying(70) NOT NULL DEFAULT ''::character varying,
   c30 character varying(70) NOT NULL DEFAULT ''::character varying,
-  c31 character varying(70) NOT NULL DEFAULT ''::character varying,
-  c32 character varying(1) NULL,
-  c33 character varying(300) NULL
+  c31 character varying(70) NOT NULL DEFAULT ''::character varying
 ) TABLESPACE pg_default;
 ALTER TABLE ONLY keplersc.kdpunres ADD CONSTRAINT pk_kdpunres PRIMARY KEY (c1, c2, c3, c4);
 CREATE INDEX IF NOT EXISTS sindkdpunres02 ON keplersc.kdpunres USING btree (c25, c8, c9) TABLESPACE pg_default;
@@ -44,8 +42,6 @@ COMMENT ON COLUMN keplersc.kdpunres.c7 IS 'Hora Inicial';
 COMMENT ON COLUMN keplersc.kdpunres.c6 IS 'Fecha Inicial';
 COMMENT ON COLUMN keplersc.kdpunres.c5 IS 'Estatus';
 COMMENT ON COLUMN keplersc.kdpunres.c4 IS 'Punto';
-COMMENT ON COLUMN keplersc.kdpunres.c33 IS 'Recomendaciones del tecnico';
-COMMENT ON COLUMN keplersc.kdpunres.c32 IS '¿El trabajo fue revisado por el Asesor Tecnico? (S,N)';
 COMMENT ON COLUMN keplersc.kdpunres.c31 IS 'Recomendaciones 3';
 COMMENT ON COLUMN keplersc.kdpunres.c30 IS 'Recomendaciones  2';
 COMMENT ON COLUMN keplersc.kdpunres.c3 IS 'Folio de la Orden';

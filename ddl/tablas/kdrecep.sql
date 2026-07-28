@@ -19,14 +19,11 @@ CREATE  TABLE keplersc.kdrecep (
   c18 character varying(10) NOT NULL DEFAULT ''::character varying,
   c19 character varying(10) NOT NULL DEFAULT ''::character varying,
   c20 character varying(5) NOT NULL DEFAULT ''::character varying,
-  c21 numeric NOT NULL DEFAULT 0,
-  col_cita_en_linea character varying(1) NOT NULL DEFAULT ''::character varying,
-  col_sucursal character varying(2) NOT NULL DEFAULT ''::character varying
+  c21 numeric NOT NULL DEFAULT 0
 ) TABLESPACE pg_default;
 ALTER TABLE ONLY keplersc.kdrecep ADD CONSTRAINT pk_kdrecep PRIMARY KEY (c1);
 CREATE INDEX IF NOT EXISTS sindkdrecep02 ON keplersc.kdrecep USING btree (c12) TABLESPACE pg_default;
 CREATE INDEX IF NOT EXISTS sindkdrecep03 ON keplersc.kdrecep USING btree (c11, c1) TABLESPACE pg_default;
-COMMENT ON COLUMN keplersc.kdrecep.col_cita_en_linea IS 'S o N';
 COMMENT ON COLUMN keplersc.kdrecep.c9 IS 'Comentarios';
 COMMENT ON COLUMN keplersc.kdrecep.c8 IS 'Comentarios';
 COMMENT ON COLUMN keplersc.kdrecep.c7 IS 'Telefono oficina';

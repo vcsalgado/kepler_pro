@@ -375,8 +375,6 @@ begin
 				c_modelo := coalesce((xpath('//document/k_mov/r'||intCont||'/c_modelo/text()',dataxml))[1],'');
 				c_anio := coalesce((xpath('//document/k_mov/r'||intCont||'/c_anio/text()',dataxml))[1],'');
 				c_version := coalesce((xpath('//document/k_mov/r'||intCont||'/c_version/text()',dataxml))[1],'');
-				--Convertir &amp; a solo &
-				c_version=replace(c_version,'&amp;','&');
 				c_descrip := coalesce((xpath('//document/k_mov/r'||intCont||'/c_descrip/text()',dataxml))[1],'');
 			
 				-- To Implement when ESantana Complete hes option

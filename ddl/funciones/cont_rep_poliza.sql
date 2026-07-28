@@ -76,7 +76,7 @@ begin
 		from keplersc.%1$s as cnt 
 		left outer join keplersc.%2$s as dc on dc.c1=cnt.c3
 		inner join keplersc.kdm1 as km on km.c1=cnt.c14 and km.c2=cnt.c15 and km.c3=cnt.c16 and km.c4=cnt.c17 and km.c5=cnt.c18 and km.c6=cnt.c19
- 		inner join keplersc.kdmm as mm on col_sucursal=cnt.c14 and mm.c1=cnt.c15 and mm.c2=cnt.c16 and mm.c3=cnt.c17 and mm.c4=cnt.c18
+ 		inner join keplersc.kdmm as mm on mm.c1=cnt.c15 and mm.c2=cnt.c16 and mm.c3=cnt.c17 and mm.c4=cnt.c18
 		where cnt.c8=%3$L and cnt.c1 between %4$L::numeric and %5$L::numeric and cnt.c14=%6$L 
 		order by cnt.c14,cnt.c8,cnt.c1'
 		,tabla,tabla_2,tipo_poliza,poliza_inicial,poliza_final,sucursal_id,'');
@@ -88,7 +88,7 @@ raise notice 'expSql:% ',expSql;
 		from keplersc.%1$s as cnt 
 		left outer join keplersc.%2$s as dc on dc.c1=cnt.c3
 		inner join keplersc.kdm1 as km on km.c1=cnt.c14 and km.c2=cnt.c15 and km.c3=cnt.c16 and km.c4=cnt.c17 and km.c5=cnt.c18 and km.c6=cnt.c19
- 		inner join keplersc.kdmm as mm on col_sucursal=cnt.c14 and mm.c1=cnt.c15 and mm.c2=cnt.c16 and mm.c3=cnt.c17 and mm.c4=cnt.c18
+ 		inner join keplersc.kdmm as mm on mm.c1=cnt.c15 and mm.c2=cnt.c16 and mm.c3=cnt.c17 and mm.c4=cnt.c18
 		where cnt.c8=%3$L and cnt.c1 between %4$L::numeric and %5$L::numeric and cnt.c14=%6$L 
 		order by cnt.c14,cnt.c8,cnt.c1'
 		,tabla,tabla_2,tipo_poliza,poliza_inicial,poliza_final,sucursal_id,'') 

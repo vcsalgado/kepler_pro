@@ -6,7 +6,6 @@ AS $function$
 --Autor: Luis Leal
 --Fecha: 15/01/2022
 --Bitacora de cambios
---Fecha: 2023-11-09 , By JMM ... Erase Data Related to GM 
 declare
 	--Variables de definicion de documento
 	sucursal_id text = '';
@@ -41,11 +40,9 @@ begin
 
 	usuario_movto := (xpath('//document/movimiento/usuario/text()', dataxml))[1];
 
-	-- UPD by JMM 2023-11-10
-	select nl.c5-nl.c6,nl.c8-nl.c9,nl.c14,nl.c15,/*gm.c5*/0 into exist,valor_inv,ultimo_costo,
-	penultimo_costo,precio_GM from keplersc.kdinl as nl 
-	/*left outer join keplersc.kdigm as gm on nl.c2=gm.c1*/ 
-	where nl.c1= sucursal_id  and nl.c2= producto;
+	select nl.c5-nl.c6,nl.c8-nl.c9,nl.c14,nl.c15,gm.c5 into exist,valor_inv,ultimo_costo,
+	penultimo_costo,precio_GM from keplersc.kdinl as nl left outer join keplersc.kdigm as gm 
+	on nl.c2=gm.c1 where nl.c1= sucursal_id  and nl.c2= producto;
 	if found then
 
 		if valor_inv <> 0 and exist <> 0 then
@@ -61,15 +58,10 @@ begin
 				if penultimo_costo > 0 then
 					costo_promedio_real := penultimo_costo;
 				else
-				
-					-- UPD By JMM ... 2023-11-10 
-					/*
 					if precio_GM > 0 then
 						costo_promedio_real :=precio_GM;
+	
 					end if;
-					*/
-					costo_promedio_real := 0;
-				
 				end if;
 			end if;
 		end if;
@@ -96,13 +88,9 @@ begin
 	
 	diferencia_valor_inventario := valor_inv_real - valor_inv;
 
-	-- UPD By JMM ... 2023-11-10 
-	/*
 	if precio_GM is null then
 		precio_GM := 0;
 	end if;
-	*/
-	precio_GM := 0;
 	
 	xmlResultado :=  xmlforest(exist as exist,valor_inv as valor_inv,costo_promedio as costo_promedio,
 	ultimo_costo as ultimo_costo,penultimo_costo as penultimo_costo, precio_GM as precio_GM,

@@ -1,1 +1,279 @@
-<?xml version="1.0" encoding="UTF-8"?><pag xmlns="www.kepler.com.mx/2003/KSchema" roles="" tit="Cat&#225;logo de Esquemas"><grp  brdr="0,0" clr="0,58,112" fnt="Arial,14"  dim="1,-1,7,11" bclr="192,205,213" unfont="0">	<tab/><txt fnt=",22" clr="0,0,0">Cat&#225;logo de Esquemas</txt><tab/>	<br/>	<tab/>	<hLine clr="0,0,0"/>	<br/><br/>	<tab/>	<grp id="gpo_1" bclr="236,240,243" fntClrBrdr="255,255,255" unfont="0" fntBrdr="Arial,18" hSpace="4" 		clrBrdr="0,58,112" dim="85,7,7,11" brdr="0,5" tit="Criterio de selecci&#243;n" fnt="Arial,16">        <tab/><txt>Sucursal:</txt>		<sp/>		<cmb id="k_sucn" dim="35,1" brdr="2,0" bclr="255,255,255" clr="64,64,64" clrBrdr="255,255,255" available="Y" OnChange="CambiaSucursal()" tooltip="Sucursal"/>        <tab/><txt>Esquema:</txt>		<inp id="k_esquema" dim="8,1" brdr="0,0" bclr="255,255,255" clr="64,64,64" clrBrdr="255,255,255" type="capital" nc="5" modify="Y" available="Y" fnt="Arial,0" OnF9="ObtenerEsquema()" OnChange="ResetEsquema()" tooltip="Esquema ( F9 b&#250;squeda )"/>		<tab/>        <img id="img_buscar" dim="20,20" bPx="1" brdr="0,1" available="Y" img="_20_Find.png" OnEnter="BuscarEsquema()"/>	        <br/>	</grp>	<br/><br/><tab/>	<grp id="gpo_2" bclr="236,240,243" fntClrBrdr="255,255,255" unfont="0" fntBrdr="Arial,18" hSpace="4" clrBrdr="0,58,112" 		dim="85,48,7,11" brdr="0,5" tit="Detalle de Esquema" fnt="Arial,16" available="N">		<tab/><txt>Descripci&#243;n :</txt><tab/>        <inp id="k_descripcion" dim="50,1" brdr="2,0" bclr="255,255,255" clr="64,64,64" clrBrdr="255,255,255" type="capital" nc="30" tooltip="Descripci&#243;n"/>        <br/>        <tab/><txt>Sueldo Base :</txt>        <inp id="k_sueldobase" dim="15,1" brdr="2,0" bclr="255,255,255" clr="64,64,64" clrBrdr="255,255,255" type="number" nd="2" tooltip=" Sueldo Base"/>        <br/>        <tab/><txt>Adicionales :</txt><tab/>        <inp id="k_adicionales1" dim="15,1" brdr="2,0" bclr="255,255,255" clr="64,64,64" clrBrdr="255,255,255" type="number" nd="2" tooltip="Adicionales"/>        <br/>        <tab/><txt>Adicionales :</txt><tab/>        <inp id="k_adicionales2" dim="15,1" brdr="2,0" bclr="255,255,255" clr="64,64,64" clrBrdr="255,255,255" type="number" nd="2" tooltip="Adicionales"/><br/>        <br/>        <tab/><txt>Descuento por Traspaso :</txt>        <inp id="k_desctotraspaso" dim="15,1" brdr="2,0" bclr="255,255,255" clr="64,64,64" clrBrdr="255,255,255" type="number" nd="5" tooltip="Descuento por Traspaso"/>        <br/>        <tab/><txt>Aumento por Unidad Inventario :</txt>        <inp id="k_aumentoinvent" dim="15,1" brdr="2,0" bclr="255,255,255" clr="64,64,64" clrBrdr="255,255,255" type="number" nd="5" tooltip="Aumento por Unidad Inventario"/><br/>        <br/>        <tab/><txt>Bono por Toma :</txt>        <inp id="k_bonotoma" dim="15,1" brdr="2,0" bclr="255,255,255" clr="64,64,64" clrBrdr="255,255,255" type="number" nd="2" tooltip="Bono por Toma"/>        <br/>        <tab/><txt>D&#237;as para Bono por Venta :</txt><tab/>        <inp id="k_diasbonovta" dim="15,1" brdr="2,0" bclr="255,255,255" clr="64,64,64" clrBrdr="255,255,255" type="number" nd="0" tooltip="D&#237;as para Bono por Venta"/>        <br/>        <tab/><txt>Bono por Venta :</txt><tab/>        <inp id="k_bonovta" dim="15,1" brdr="2,0" bclr="255,255,255" clr="64,64,64" clrBrdr="255,255,255" type="number" nd="2" tooltip="Bono por Venta"/>        <br/>        <br/>        <tab/><txt>Clave Seminuevo Certificado :</txt>        <inp id="k_cveseminvo" dim="25,1" brdr="2,0" bclr="255,255,255" clr="64,64,64" clrBrdr="255,255,255" type="capital" nc="18" tooltip="Clave Seminuevo Certificado"/>        <br/>        <tab/><txt>Bono Seminuevo Certificado :</txt>        <inp id="k_bonoseminvo" dim="15,1" brdr="2,0" bclr="255,255,255" clr="64,64,64" clrBrdr="255,255,255" type="number" nd="2" tooltip="Bono Seminuevo Certificado"/>        <br/>        <br/>        <tab/><txt>&#191; Esquema Activo ? :</txt>        <tab/>        <inp id="k_activo" dim="2,1" brdr="2,0" bclr="255,255,255" clr="64,64,64" clrBrdr="255,255,255" type="capital" nc="1" tooltip="&#191;Esquema Activo? (A)ctivo (I)nactivo (Doble Click para cambiar)" modify="Y" OnMouseD="Activo()" OnChange="ValidaActivo()"/>        <tab n="2"/><txt>(A)ctivo o (I)nactivo</txt>        <br/>        <br/>        <tab/><txt>Bono Semana 1 :</txt>        <inp id="k_bonosem1" dim="15,1" brdr="2,0" bclr="255,255,255" clr="64,64,64" clrBrdr="255,255,255" type="number" nd="2" tooltip="Bono Semana 1"/>        <br/>        <tab/><txt>Bono Semana 2 :</txt>        <inp id="k_bonosem2" dim="15,1" brdr="2,0" bclr="255,255,255" clr="64,64,64" clrBrdr="255,255,255" type="number" nd="2" tooltip="Bono Semana 2"/>        <br/>        <tab/><txt>Bono Semana 3 :</txt>        <inp id="k_bonosem3" dim="15,1" brdr="2,0" bclr="255,255,255" clr="64,64,64" clrBrdr="255,255,255" type="number" nd="2" tooltip="Bono Semana 3"/>        <br/>        <tab/><txt>Bono Semana 4 :</txt>        <inp id="k_bonosem4" dim="15,1" brdr="2,0" bclr="255,255,255" clr="64,64,64" clrBrdr="255,255,255" type="number" nd="2" tooltip="Bono Semana 4"/>        <br/><tab n="25"/>		<img id="Aceptar" dim="40,40" bPx="Y" brdr="0,1"  img="_60_DocNew.png" default="0" OnEnter="Ejecuta()" tooltip="Aceptar documento &lt;Ctrl&gt;&lt;T&gt;" available="Y" clrBrdr="0,0,0" visible="Y" modify="Y"/>	</grp></grp><script>	InstallDriver("KDB75");	class Main {		var frn,frP,kdb,sys,suc_usuario,perfil_usuario,rol_usuario,asterisco, externo, cuboXml;		var tipoOper; //Variables relacionadas con parametros		var clave, sucursal_id, esquema_id; 		var cmdQuery, cuboQuery, ok, mensajeError,resVal;		fun Main(){			frn=new FRNT;			kdb=new KDB;			frP=new FRNTP;			sys=new SYS;			kdb.connect();						suc_usuario = frn.lib("libKepler","UserInfo(1)");			perfil_usuario = frn.lib("libKepler","UserInfo(2)");			rol_usuario = frn.config("user","role");			asterisco = "*";			tipoOper = frn.param(0);			clave = frn.param(1);			llena_combos();			ConfiguraUI();			Inicializa();		}            		fun llena_combos(){									//Llenar combo sucursales			var cmd = "select '['||c1||'] '||c2 as c2, c1 from keplersc.kdms";			if (rol_usuario &! "ADMINISTRADOR"  && rol_usuario &! "ADMINISTRATOR"){				cmd = cmd & " where c1='" & suc_usuario & "'";			}else {				if (suc_usuario &! asterisco && suc_usuario &! "" ){					cmd = cmd & " where c1='" & suc_usuario & "'";				}			}							var cubo = frn.lib("libGeneral.kpl","EjecutarSqlSel",cmd,"srvcitacrud.Inicializa()");					ok=getXmlAtt(cubo,"ok");			if(ok &! "" && !ok){				mensajeError = getXmlAtt(cubo,"native3");				mensajeError = frn.lib("libGeneral.kpl","ErrorBD",mensajeError);				frn.message(mensajeError,"Error","Aceptar");				return;			}								frn.set("k_sucn",getXml(cubo));													}        fun ObtenerEsquema(){			sucursal_id = frn.get("k_sucn",-1,1);			cmdQuery = "select c1 as esquema from keplersc.kdvesq where c29 ='" & sucursal_id & "'";							frn.dialog("genlistafiltrosel","Esquemas",cmdQuery,"esquema","k_esquema","0","0","N","S");	            ResetEsquema();        }				fun ResetEsquema(){			frn.set("k_descripcion", "");            frn.set("k_sueldobase", "");            frn.set("k_adicionales1", "");            frn.set("k_adicionales2", "");            frn.set("k_desctotraspaso", "");            frn.set("k_aumentoinvent", "");            frn.set("k_bonotoma", "");            frn.set("k_diasbonovta", "");            frn.set("k_bonovta", "");            frn.set("k_cveseminvo", "");            frn.set("k_bonoseminvo", "");            frn.set("k_activo", "A");            frn.set("k_bonosem1", "");            frn.set("k_bonosem2", "");            frn.set("k_bonosem3", "");            frn.set("k_bonosem4", "");            frn.setAtt("gpo_2", "available", "N");		}		        fun CambiaSucursal(){            frn.set("k_esquema", "");            ResetEsquema();        }        fun CambiaEsquema(){            ResetEsquema();        }		fun BuscarEsquema(){			var xmlProd, suc, esq, nuevo;            suc = frn.get("k_sucn",-1,1);            esq = frn.get("k_esquema");           if (esq&=""){				frn.setPos("k_esquema");				frn.message("Es necesario indicar el Esquema","Error","Aceptar");				return;				}			cmdQuery = "select c2 as k_descripcion,c3 as k_sueldobase, c4 as k_adicionales1,c5 as k_adicionales2," &                    "c7 as k_desctotraspaso,c8 as k_aumentoinvent,c10 as k_bonotoma,c11 as k_diasbonovta,c12 as k_bonovta," &                    "c14 as k_cveseminvo,c15 as k_bonoseminvo,c19 as k_activo,c25 as k_bonosem1,c26 as k_bonosem2," &                    "c27 as k_bonosem3,c28 as k_bonosem4 " &                    "from keplersc.kdvesq " &                    "where c1='" & esq & "' and c29 ='" & suc & "'";			rstXml(cuboQuery);			cuboQuery = frn.lib("libGeneral.kpl","EjecutarSqlSel",cmdQuery,"cat_crud_esquema.BuscarEsquema");			ok=getXmlAtt(cuboQuery,"ok");			if(ok &! "" && !ok){				mensajeError = getXmlAtt(cuboQuery,"native3");				mensajeError = frn.lib("libGeneral.kpl","ErrorBD",mensajeError);				frn.message(mensajeError,"Error","Aceptar");				return;			}            if(nXml(cuboQuery) == 0){				frn.setPos("bono1objent_nvos");				nuevo = frn.message("El esquema no existe. Desea crearlo como nuevo?","Atencion",2);				if (nuevo == 0){                    frn.setPos("k_esquema");                    frn.setAtt("gpo_2", "available", "N");					return;                }else{                    frn.setAtt("gpo_2", "available", "Y");   				}			}else {            rstXml(xmlProd);			xmlProd=frn.lib("libGeneral.kpl","CreaXmlDesdeAtt",cuboQuery,"r0");            ResetEsquema(); //Limpiar antes de cargar datos            frn.setAtt("gpo_2", "available", "Y");			frn.setX(xmlProd);            }			}		        fun ValidarDatos(){            var descripcion;            //Validar Descripcion			descripcion = frn.get("k_descripcion");			if (descripcion&=""){				frn.setPos("k_descripcion");				resVal=0;				frn.message("Es necesario indicar la descripcion del Esquema","Error","Aceptar");				return;				}        }		fun Ejecuta(){			var xmlPantalla,continua,resultado,mensaje,adicionales;		    resVal = 1;			ValidarDatos();			if(ok &! "1" || resVal == 0){				return;			}            continua = frn.message("Desea continuar?","Atencion",2);			if (continua == 0){				return;			}			xmlPantalla = getXml(frn.dataPag()); //Obtener el xml de la pantalla;						frn.lib("libGeneral.kpl","FileSave",xmlPantalla,"C:\Basura\xmlPantallaCatEsquemas");			cmdQuery="select * from keplersc.com_catesquemas_crud('<document>" & getXmlStr(xmlPantalla,"EOF:13_10") & "</document>')";						kdb.rst(cuboQuery);			cuboQuery = frn.lib("libGeneral.kpl","EjecutarSql",cmdQuery,"cat_crud_esquema");			resultado= getXml(cuboQuery,"resultado");			mensaje= getXml(cuboQuery,"mensaje");							if(resultado &= "0"){				frn.message(mensaje,"Error","Aceptar");				return;			}            frn.setPos("k_esquema");			frn.message("Esquema registrado","Mensaje","Aceptar");            BuscarEsquema();            frn.setAtt("gpo_2", "available", "N");		}				fun ConfiguraUI(){			if (frn.nParam() == 0){				frn.message("Accion no permitida.","Error","&Aceptar");//				frn.open("redirect",2);				return;			}		}				fun Inicializa(){			ResetEsquema();		}		fun Activo() {			if (frn.get("k_activo") &= "A") {				frn.set("k_activo","I");			} else {                frn.set("k_activo","A");			}		}            fun ValidaActivo(){            if (frn.get("k_activo") &! "A" && frn.get("k_activo") &! "I"){                frn.setPos("k_activo");				frn.message("Solo puede ser A o I","Error","&Aceptar");                return;			}          }               					}				</script></pag>
+<?xml version="1.0" encoding="UTF-8"?>
+<pag xmlns="www.kepler.com.mx/2003/KSchema" roles="" tit="Cat&#225;logo de Esquemas">
+<grp  brdr="0,0" clr="0,58,112" fnt="Arial,14"  dim="1,-1,7,11" bclr="192,205,213" unfont="0">
+	<tab/><txt fnt=",22" clr="0,0,0">Cat&#225;logo de Esquemas</txt><tab/>
+	<br/>
+	<tab/>
+	<hLine clr="0,0,0"/>
+	<br/><br/>
+	<tab/>
+	<grp id="gpo_1" bclr="236,240,243" fntClrBrdr="255,255,255" unfont="0" fntBrdr="Arial,18" hSpace="4" 
+		clrBrdr="0,58,112" dim="85,7,7,11" brdr="0,5" tit="Criterio de selecci&#243;n" fnt="Arial,16">
+        <tab/><txt>Sucursal:</txt>
+		<sp/>
+		<cmb id="k_sucn" dim="35,1" brdr="2,0" bclr="255,255,255" clr="64,64,64" clrBrdr="255,255,255" modify="N" OnChange="CambiaSucursal()" tooltip="Sucursal"/>
+        <tab/><txt>Esquema:</txt>
+		<inp id="k_esquema" dim="8,1" brdr="0,0" bclr="255,255,255" clr="64,64,64" clrBrdr="255,255,255" type="capital" nc="5" modify="Y" available="Y" fnt="Arial,0" OnF9="ObtenerEsquema()" OnChange="ResetEsquema()" tooltip="Esquema ( F9 b&#250;squeda )"/>
+		<tab/>
+        <img id="img_buscar" dim="20,20" bPx="1" brdr="0,1" available="Y" img="_20_Find.png" OnEnter="BuscarEsquema()"/>	
+        <br/>
+	</grp>
+	<br/><br/><tab/>
+	<grp id="gpo_2" bclr="236,240,243" fntClrBrdr="255,255,255" unfont="0" fntBrdr="Arial,18" hSpace="4" clrBrdr="0,58,112" 
+		dim="85,48,7,11" brdr="0,5" tit="Detalle de Esquema" fnt="Arial,16" available="N">
+		<tab/><txt>Descripci&#243;n :</txt><tab/>
+        <inp id="k_descripcion" dim="50,1" brdr="2,0" bclr="255,255,255" clr="64,64,64" clrBrdr="255,255,255" type="capital" nc="30" tooltip="Descripci&#243;n"/>
+        <br/>
+        <tab/><txt>Sueldo Base :</txt>
+        <inp id="k_sueldobase" dim="15,1" brdr="2,0" bclr="255,255,255" clr="64,64,64" clrBrdr="255,255,255" type="number" nd="2" tooltip=" Sueldo Base"/>
+        <br/>
+        <tab/><txt>Adicionales :</txt><tab/>
+        <inp id="k_adicionales1" dim="15,1" brdr="2,0" bclr="255,255,255" clr="64,64,64" clrBrdr="255,255,255" type="number" nd="2" tooltip="Adicionales"/>
+        <br/>
+        <tab/><txt>Adicionales :</txt><tab/>
+        <inp id="k_adicionales2" dim="15,1" brdr="2,0" bclr="255,255,255" clr="64,64,64" clrBrdr="255,255,255" type="number" nd="2" tooltip="Adicionales"/><br/>
+        <br/>
+        <tab/><txt>Descuento por Traspaso :</txt>
+        <inp id="k_desctotraspaso" dim="15,1" brdr="2,0" bclr="255,255,255" clr="64,64,64" clrBrdr="255,255,255" type="number" nd="5" tooltip="Descuento por Traspaso"/>
+        <br/>
+        <tab/><txt>Aumento por Unidad Inventario :</txt>
+        <inp id="k_aumentoinvent" dim="15,1" brdr="2,0" bclr="255,255,255" clr="64,64,64" clrBrdr="255,255,255" type="number" nd="5" tooltip="Aumento por Unidad Inventario"/><br/>
+        <br/>
+        <tab/><txt>Bono por Toma :</txt>
+        <inp id="k_bonotoma" dim="15,1" brdr="2,0" bclr="255,255,255" clr="64,64,64" clrBrdr="255,255,255" type="number" nd="2" tooltip="Bono por Toma"/>
+        <br/>
+        <tab/><txt>D&#237;as para Bono por Venta :</txt><tab/>
+        <inp id="k_diasbonovta" dim="15,1" brdr="2,0" bclr="255,255,255" clr="64,64,64" clrBrdr="255,255,255" type="number" nd="0" tooltip="D&#237;as para Bono por Venta"/>
+        <br/>
+        <tab/><txt>Bono por Venta :</txt><tab/>
+        <inp id="k_bonovta" dim="15,1" brdr="2,0" bclr="255,255,255" clr="64,64,64" clrBrdr="255,255,255" type="number" nd="2" tooltip="Bono por Venta"/>
+        <br/>
+        <br/>
+        <tab/><txt>Clave Seminuevo Certificado :</txt>
+        <inp id="k_cveseminvo" dim="25,1" brdr="2,0" bclr="255,255,255" clr="64,64,64" clrBrdr="255,255,255" type="capital" nc="18" tooltip="Clave Seminuevo Certificado"/>
+        <br/>
+        <tab/><txt>Bono Seminuevo Certificado :</txt>
+        <inp id="k_bonoseminvo" dim="15,1" brdr="2,0" bclr="255,255,255" clr="64,64,64" clrBrdr="255,255,255" type="number" nd="2" tooltip="Bono Seminuevo Certificado"/>
+        <br/>
+        <br/>
+        <tab/><txt>&#191; Esquema Activo ? :</txt>
+        <tab/>
+        <inp id="k_activo" dim="2,1" brdr="2,0" bclr="255,255,255" clr="64,64,64" clrBrdr="255,255,255" type="capital" nc="1" tooltip="&#191;Esquema Activo? (A)ctivo (I)nactivo (Doble Click para cambiar)" modify="Y" OnMouseD="Activo()" OnChange="ValidaActivo()"/>
+        <tab n="2"/><txt>(A)ctivo o (I)nactivo</txt>
+        <br/>
+        <br/>
+        <tab/><txt>Bono Semana 1 :</txt>
+        <inp id="k_bonosem1" dim="15,1" brdr="2,0" bclr="255,255,255" clr="64,64,64" clrBrdr="255,255,255" type="number" nd="2" tooltip="Bono Semana 1"/>
+        <br/>
+        <tab/><txt>Bono Semana 2 :</txt>
+        <inp id="k_bonosem2" dim="15,1" brdr="2,0" bclr="255,255,255" clr="64,64,64" clrBrdr="255,255,255" type="number" nd="2" tooltip="Bono Semana 2"/>
+        <br/>
+        <tab/><txt>Bono Semana 3 :</txt>
+        <inp id="k_bonosem3" dim="15,1" brdr="2,0" bclr="255,255,255" clr="64,64,64" clrBrdr="255,255,255" type="number" nd="2" tooltip="Bono Semana 3"/>
+        <br/>
+        <tab/><txt>Bono Semana 4 :</txt>
+        <inp id="k_bonosem4" dim="15,1" brdr="2,0" bclr="255,255,255" clr="64,64,64" clrBrdr="255,255,255" type="number" nd="2" tooltip="Bono Semana 4"/>
+        <br/><tab n="25"/>
+		<img id="Aceptar" dim="40,40" bPx="Y" brdr="0,1"  img="_60_DocNew.png" default="0" OnEnter="Ejecuta()" tooltip="Aceptar documento &lt;Ctrl&gt;&lt;T&gt;" available="Y" clrBrdr="0,0,0" visible="Y" modify="Y"/>
+
+	</grp>
+</grp>
+<script>
+	InstallDriver("KDB75");
+	class Main {
+		var frn,frP,kdb,sys,suc_usuario,perfil_usuario,rol_usuario,asterisco, externo, cuboXml;
+		var tipoOper; //Variables relacionadas con parametros
+		var clave, sucursal_id, esquema_id; 
+		var cmdQuery, cuboQuery, ok, mensajeError,resVal;
+		fun Main(){
+			frn=new FRNT;
+			kdb=new KDB;
+			frP=new FRNTP;
+			sys=new SYS;
+			kdb.connect();
+			
+			suc_usuario = frn.lib("libKepler","UserInfo(1)");
+			perfil_usuario = frn.lib("libKepler","UserInfo(2)");
+			rol_usuario = frn.config("user","role");
+			asterisco = "*";
+			tipoOper = frn.param(0);
+			clave = frn.param(1);
+			llena_combos();
+			ConfiguraUI();
+			Inicializa();
+		}
+            
+		fun llena_combos(){
+			// Fill Combo Sucursal (Con Query de PostgreSQL)
+			cmdQuery = "select '['||c1||'] '||c2 as c2, c1, c2 as c3  from keplersc.kdms";
+			rstXml(cuboQuery);
+			cuboQuery = frn.lib("libGeneral.kpl","EjecutarSqlSel",cmdQuery,"comdevdircrud.IniCombos()");
+			ok=getXmlAtt(cuboQuery,"ok");
+			if(ok &! "" && !ok){
+				mensajeError = getXmlAtt(cuboQuery,"native3");
+				mensajeError = frn.lib("libGeneral.kpl","ErrorBD",mensajeError);
+				frn.message(mensajeError,"Error","Aceptar");
+				return;
+			}
+			frn.set("k_sucn",cuboQuery);			
+		}
+
+        fun ObtenerEsquema(){
+			sucursal_id = frn.get("k_sucn",-1,1);
+			cmdQuery = "select c1 as esquema from keplersc.kdvesq where c29 ='" & sucursal_id & "'";				
+			frn.dialog("genlistafiltrosel","Esquemas",cmdQuery,"esquema","k_esquema","0","0","N","S");	
+
+            ResetEsquema();
+        }
+		
+		fun ResetEsquema(){
+			frn.set("k_descripcion", "");
+            frn.set("k_sueldobase", "");
+            frn.set("k_adicionales1", "");
+            frn.set("k_adicionales2", "");
+            frn.set("k_desctotraspaso", "");
+            frn.set("k_aumentoinvent", "");
+            frn.set("k_bonotoma", "");
+            frn.set("k_diasbonovta", "");
+            frn.set("k_bonovta", "");
+            frn.set("k_cveseminvo", "");
+            frn.set("k_bonoseminvo", "");
+            frn.set("k_activo", "A");
+            frn.set("k_bonosem1", "");
+            frn.set("k_bonosem2", "");
+            frn.set("k_bonosem3", "");
+            frn.set("k_bonosem4", "");
+            frn.setAtt("gpo_2", "available", "N");
+		}
+		
+        fun CambiaSucursal(){
+            frn.set("k_esquema", "");
+            ResetEsquema();
+        }
+
+        fun CambiaEsquema(){
+            ResetEsquema();
+        }
+
+		fun BuscarEsquema(){
+			var xmlProd, suc, esq, nuevo;
+            suc = frn.get("k_sucn",-1,1);
+            esq = frn.get("k_esquema");
+           if (esq&=""){
+				frn.setPos("k_esquema");
+				frn.message("Es necesario indicar el Esquema","Error","Aceptar");
+				return;	
+			}
+			cmdQuery = "select c2 as k_descripcion,c3 as k_sueldobase, c4 as k_adicionales1,c5 as k_adicionales2," &
+                    "c7 as k_desctotraspaso,c8 as k_aumentoinvent,c10 as k_bonotoma,c11 as k_diasbonovta,c12 as k_bonovta," &
+                    "c14 as k_cveseminvo,c15 as k_bonoseminvo,c19 as k_activo,c25 as k_bonosem1,c26 as k_bonosem2," &
+                    "c27 as k_bonosem3,c28 as k_bonosem4 " &
+                    "from keplersc.kdvesq " &
+                    "where c1='" & esq & "' and c29 ='" & suc & "'";
+			rstXml(cuboQuery);
+			cuboQuery = frn.lib("libGeneral.kpl","EjecutarSqlSel",cmdQuery,"cat_crud_esquema.BuscarEsquema");
+			ok=getXmlAtt(cuboQuery,"ok");
+			if(ok &! "" && !ok){
+				mensajeError = getXmlAtt(cuboQuery,"native3");
+				mensajeError = frn.lib("libGeneral.kpl","ErrorBD",mensajeError);
+				frn.message(mensajeError,"Error","Aceptar");
+				return;
+			}
+
+            if(nXml(cuboQuery) == 0){
+				frn.setPos("bono1objent_nvos");
+				nuevo = frn.message("El esquema no existe. ¿Desea crearlo como nuevo?","Atención",2);
+				if (nuevo == 0){
+                    frn.setPos("k_esquema");
+                    frn.setAtt("gpo_2", "available", "N");
+					return;
+                }else{
+                    frn.setAtt("gpo_2", "available", "Y");   
+				}
+			}else {
+            rstXml(xmlProd);
+			xmlProd=frn.lib("libGeneral.kpl","CreaXmlDesdeAtt",cuboQuery,"r0");
+            ResetEsquema(); //Limpiar antes de cargar datos
+            frn.setAtt("gpo_2", "available", "Y");
+			frn.setX(xmlProd);
+            }	
+		}
+		
+        fun ValidarDatos(){
+            var descripcion;
+            //Validar Descripción
+			descripcion = frn.get("k_descripcion");
+			if (descripcion&=""){
+				frn.setPos("k_descripcion");
+				resVal=0;
+				frn.message("Es necesario indicar la descripción del Esquema","Error","Aceptar");
+				return;	
+			}
+        }
+
+		fun Ejecuta(){
+			var xmlPantalla,continua,resultado,mensaje,adicionales;
+		    resVal = 1;
+			ValidarDatos();
+			if(ok &! "1" || resVal == 0){
+				return;
+			}
+
+            continua = frn.message("¿Desea continuar?","Atención",2);
+			if (continua == 0){
+				return;
+			}
+
+			xmlPantalla = getXml(frn.dataPag()); //Obtener el xml de la pantalla;
+			
+			frn.lib("libGeneral.kpl","FileSave",xmlPantalla,"C:\Basura\xmlPantallaCatEsquemas");
+			cmdQuery="select * from keplersc.com_catesquemas_crud('<document>" & getXmlStr(xmlPantalla,"EOF:13_10") & "</document>')";			
+			kdb.rst(cuboQuery);
+			cuboQuery = frn.lib("libGeneral.kpl","EjecutarSql",cmdQuery,"cat_crud_esquema");
+			resultado= getXml(cuboQuery,"resultado");
+			mensaje= getXml(cuboQuery,"mensaje");
+				
+			if(resultado &= "0"){
+				frn.message(mensaje,"Error","Aceptar");
+				return;
+			}
+            frn.setPos("k_esquema");
+			frn.message("Esquema registrado","Mensaje","Aceptar");
+            BuscarEsquema();
+            frn.setAtt("gpo_2", "available", "N");
+		}
+		
+		fun ConfiguraUI(){
+			if (frn.nParam() == 0){
+				frn.message("Acción no permitida.","Error","&Aceptar");
+//				frn.open("redirect",2);
+				return;
+			}
+		}		
+
+		fun Inicializa(){
+			ResetEsquema();
+		}
+
+		fun Activo() {
+			if (frn.get("k_activo") &= "A") {
+				frn.set("k_activo","I");
+			} else {
+                frn.set("k_activo","A");
+			}
+		}    
+
+        fun ValidaActivo(){
+            if (frn.get("k_activo") &! "A" && frn.get("k_activo") &! "I"){
+                frn.setPos("k_activo");
+				frn.message("Sólo puede ser A o I","Error","&Aceptar");
+                return;
+			}  
+        }    
+           
+				
+	}
+	
+		
+	</script>
+</pag>

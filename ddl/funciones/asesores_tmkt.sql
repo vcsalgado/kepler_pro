@@ -19,10 +19,7 @@ declare
 begin
 	
 		
-	select tmkt.c3 into ult_asesor from keplersc.kdtmktser2 as tmkt
-	inner join keplersc.kdsercattmkt as ases on tmkt.c1=ases.col_sucursal and tmkt.c3=ases.c1
-	and ases.c3='A' and ases.c1 <> 'CITASENLINEA' and ases.c1 <> 'SA' 
-	where tmkt.c1=sucursal and tmkt.c14=serie and tmkt.c5 < current_date order by tmkt.c2 desc limit 1;
+	select c3 into ult_asesor from keplersc.kdtmktser2 where c1=sucursal and c14=serie and c5 < current_date order by c2 desc limit 1;
 	if found then
 	
 		asesor_elegido := ult_asesor;
@@ -32,12 +29,10 @@ begin
 		contador := 0;
 		menos_contactos_asignados := 0;
 		asesor_con_menos := '';
-		for clave_asesor in select c1 from keplersc.kdsercattmkt where col_sucursal=sucursal
-		and c1<>'SA' and c3='A' and c1<>'CITASENLINEA'
+		for clave_asesor in select c1 from keplersc.kdsercattmkt where c1<>'SA' and c3='A' 
 		loop 
 			
-			select count(*) into ctd from keplersc.kdtmktser2 where 
-			c3=clave_asesor and c5 >= current_date and c7 <= 20;
+			select count(*) into ctd from keplersc.kdtmktser2 where c3=clave_asesor and c5 >= current_date ;
 			if ctd > 0 then 
 			
 				if contador = 0 then 

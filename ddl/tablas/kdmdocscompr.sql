@@ -19,8 +19,6 @@ CREATE  TABLE keplersc.kdmdocscompr (
   c18 numeric(15,2) NOT NULL DEFAULT 0,
   ctopto character varying(10) NOT NULL DEFAULT ''::character varying
 ) TABLESPACE pg_default;
-CREATE UNIQUE INDEX IF NOT EXISTS pk_kdmdocscompr ON keplersc.kdmdocscompr USING btree (c1, c2, c3, c4, c5, c6, c7) TABLESPACE pg_default;
-CREATE INDEX IF NOT EXISTS sindkdmdocscompr02 ON keplersc.kdmdocscompr USING btree (c13, c1, c2, c3, c4, c5, c6, c7) TABLESPACE pg_default;
 COMMENT ON TABLE keplersc.kdmdocscompr IS 'Movimientos contables por documento comprobado';
 COMMENT ON COLUMN keplersc.kdmdocscompr.ctopto IS 'Concepto Presupuesto';
 COMMENT ON COLUMN keplersc.kdmdocscompr.c9 IS 'Descripcion de la cuenta';

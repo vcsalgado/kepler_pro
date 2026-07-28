@@ -5,9 +5,6 @@ AS $function$
 --Descripcion: BAJA_INVENT 
 --Autor: Saltiel Rc
 --Fecha: 15/09/2022
---Bitacora de cambios
---Miriam Santana: 07/10/24 No permitir baja de pedido si ya esta vendido
---Miriam Santana:25/05/2026 Deseleccionar anticipos
 
 declare
 v_sucursal_id text = ''; 
@@ -24,14 +21,6 @@ v_aniocontable text='';
 v_diacontable text='';
 v_mescontable text='';
 v_fechacontable text = '';
-estado_venta int;		--MSS 
-
---MSS Deseleccionar anticipos
-gen_ant	text;
-nat_ant text;
-gpo_ant int;
-tipo_ant int;
-folio_ant text;
 
 resultado text= '';
 mensaje text = '0';
@@ -65,26 +54,20 @@ BEGIN
 	    		v_diacontable = (select extract(day from (select now())))::text ;
 				v_fechacontable = v_diacontable||'/'||v_mescontable||'/'||v_aniocontable;
 				--raise notice  'fecha %' , v_fechacontable;	
-				expSql = 'select * from keplersc.kdmm where col_sucursal='|| E'\'' || v_sucursal_id || E'\'' || ' and c1=' || E'\'' || genero || E'\'' ||
+				expSql = 'select * from keplersc.kdmm where c1='  || E'\'' || genero || E'\'' ||
 					' and c2=' || E'\'' || naturaleza || E'\'' || ' and c3=' || grupo || ' and c4=' || tipo;	
 				select query_to_xml(expSql, true, false, '') into xmlKDMM;
-
 				strValor := (xpath('//row/c90/text()', xmlKDMM))[1];
 				if strValor is not null then
 					if strValor = 'S' then
-						mensajeError := 'Documento no valido';
+						mensajeError := 'Documento no válido';
 						raise exception '%',mensajeError;			
 					end if;
 				end if;
 
-				--MSS 07102024 No permitir baja de pedido si ya esta vendido
-				select c32 into estado_venta from keplersc.kdinf where c1 = v_sucursal_id and c2 = v_inventario;	
-				if estado_venta > 10 then
-					raise exception 'El inventario ya esta vendido, verifique...';
-				end if;
-				
-				---BAJA_INVENT - INV_PEDIDO_BAJA ()damos de baja
-				 
+		
+				---BAJA_INVENT - INV_PEDIDO_BAJA ()damos de baja 
+			
 				strValor := (xpath('//row/c8/text()', xmlKDMM))[1];
 				strValor2 := (xpath('//row/c65/text()', xmlKDMM))[1];
 				if strValor = 'S' then						
@@ -119,14 +102,6 @@ BEGIN
 							  c5 = tipo::numeric  and 
 							  c6 = v_folio;
 				 		
-						--MSS 25052026: Deseleccionar anticipos
-						select c2,c3,c4,c5,c6 into gen_ant,nat_ant,gpo_ant,tipo_ant,folio_ant from keplersc.kdf3ncant
-							where c1=v_sucursal_id and tipo_relacion ='' and folio_relacionado = v_inventario;
-					
-						update keplersc.kdf3ncant set
-							folio_relacionado = ''				
-							where c1=v_sucursal_id and c2=gen_ant and c3=nat_ant and c4=gpo_ant and c5=tipo_ant and c6=folio_ant;
-						
 						insert into keplersc.KDUSRACCESS (c1,c2,c3,c4,c5,c6,c7,c8,c9,c10)
 						values(v_rol_usuario,
 								(select now()),

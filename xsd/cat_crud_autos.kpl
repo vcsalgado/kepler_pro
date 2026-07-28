@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <pag xmlns="www.kepler.com.mx/2003/KSchema" roles="" tit="Cat&#225;logo de Veiculos">
 <grp  brdr="0,0" clr="0,58,112" fnt="Arial,16"  dim="0,0,10,10" bclr="192,205,213" unfont="0">
-	<tab/><inp id="k_titulo" fnt=",22" dim="30,1" brdr="0,0" bclr="192,205,213" clr="0,0,0" clrBrdr="192,205,213"
+	<tab/><inp id="k_titulo" dim="30,1" brdr="0,0" bclr="192,205,213" clr="0,0,0" clrBrdr="192,205,213"
 				type="string" modify="N" available="N" fnt="Arial,25"/>
 	<br/>
 	<br/>
-		<tab/><hLine clr="0,0,0"/>
+		<hLine clr="0,0,0"/>
 		<br/><br/>
 		<tab/>
 		<grp id="gpo_2" bclr="236,240,243" fntClrBrdr="255,255,255" unfont="0" fntBrdr="Arial,18" hSpace="4" clrBrdr="0,58,112" dim="94,54,10,9" brdr="0,5" tit="Cat&#225;logo de Autos Alta Nuevo" fnt="Arial,16">
@@ -112,7 +112,7 @@
 					type="string" modify="N" available="N" fnt="Arial,0"/>
 			<sp/>
 				<inp id="k_cilindros" dim="5,1" brdr="0,0" bclr="255,255,255" clr="0,0,0" clrBrdr="192,205,213" 
-					type="number" modify="Y" available="Y" fnt="Arial,0"  nc="5" nd="0" tooltip="N&#250;mero de Cilindros" fmt="5" max="12"/>
+					type="number" modify="Y" available="Y" fnt="Arial,0"  nc="5" nd="0" tooltip="N&#250;mero de Cilindros"/>
 			<tab n="7"/>
 				<inp id="ocupantes" dim="18,1" brdr="0,0" bclr="236,240,243"  clrBrdr="192,205,213" 
 					type="string" modify="N" available="N" fnt="Arial,0"/>
@@ -335,7 +335,7 @@
 					frn.message("Meses promedio de entrega no puede estar vacia","Mensaje","&Aceptar");
 				}else if(k_v_se_prod &= ""){
 					frn.setPos("k_v_se_prod");
-					frn.message("Vehiculo aun se produce no puede estar vacia","Mensaje","&Aceptar");
+					frn.message("Vehículo aun se produce no puede estar vacia","Mensaje","&Aceptar");
 				}else if(k_precio_lista &= ""){
 					frn.setPos("k_precio_lista");
 					frn.message("Precio de lista no puede estar vacia","Mensaje","&Aceptar");
@@ -345,6 +345,9 @@
 				}else if(k_cilindros &= ""){
 					frn.setPos("k_cilindros");
 					frn.message("Cilindros no puede estar vacia","Mensaje","&Aceptar");
+				}else if(k_cilindros == 0){
+					frn.setPos("k_cilindros");
+					frn.message("Cilindros no puede ser 0","Mensaje","&Aceptar");
 				}else if(k_ocupantes &= ""){
 					frn.setPos("k_ocupantes");
 					frn.message("Ocupantes no puede estar vacia","Mensaje","&Aceptar");
@@ -359,10 +362,10 @@
 					frn.message("Combustible no puede estar vacia","Mensaje","&Aceptar");
 				}else if(k_n_puertas &= 0){
 					frn.setPos("k_n_puertas");
-					frn.message("Numero de puertas no puede ser 0","Mensaje","&Aceptar");
+					frn.message("Número de puertas no puede ser 0","Mensaje","&Aceptar");
 				}else if(k_n_puertas &= ""){
 					frn.setPos("k_n_puertas");
-					frn.message("Numero de puertas no puede estar vacia","Mensaje","&Aceptar");
+					frn.message("Número de puertas no puede estar vacia","Mensaje","&Aceptar");
 				}else if(k_fecha_ini_ven &= ""){
 					frn.setPos("k_fecha_ini_ven");
 					frn.message("Fecha de inicio de venta no puede estar vacia","Mensaje","&Aceptar");
@@ -436,7 +439,7 @@
 					frn.message("Meses promedio de entrega no puede estar vacia","Mensaje","&Aceptar");
 				}else if(k_v_se_prod &= ""){
 					frn.setPos("k_v_se_prod");
-					frn.message("Vehiculo aun se produce no puede estar vacia","Mensaje","&Aceptar");
+					frn.message("Vehículo aun se produce no puede estar vacia","Mensaje","&Aceptar");
 				}else if(k_precio_lista &= ""){
 					frn.setPos("k_precio_lista");
 					frn.message("Precio de lista no puede estar vacia","Mensaje","&Aceptar");
@@ -463,10 +466,10 @@
 					frn.message("Combustible no puede estar vacia","Mensaje","&Aceptar");
 				}else if(k_n_puertas &= 0){
 					frn.setPos("k_n_puertas");
-					frn.message("Numero de puertas no puede ser 0","Mensaje","&Aceptar");
+					frn.message("Número de puertas no puede ser 0","Mensaje","&Aceptar");
 				}else if(k_n_puertas &= ""){
 					frn.setPos("k_n_puertas");
-					frn.message("Numero de puertas no puede estar vacia","Mensaje","&Aceptar");
+					frn.message("Número de puertas no puede estar vacia","Mensaje","&Aceptar");
 				}else if(k_fecha_ini_ven &= ""){
 					frn.setPos("k_fecha_ini_ven");
 					frn.message("Fecha de inicio de venta no puede estar vacia","Mensaje","&Aceptar");
@@ -620,7 +623,7 @@
 			fun ConfiguraUI(accion){
 				consPlantilla="PLANTILLA"; //AQUI DEFINE LA CONSTANTE PARA COMPARAR EN PARAMETROS
 				if (frn.nParam() == 0){
-					frn.message("Accion no permitida.","Error","&Aceptar");
+					frn.message("Acción no permitida.","Error","&Aceptar");
 					frn.open("redirect",2);
 					return;
 				}
@@ -628,31 +631,31 @@
 				tipoOper = accion;
 				//Establecer titulo de la ventana
 				if (tipoOper &= "PLANTILLA"){
-					frn.setAtt("gpo_2","tit","Catalogo PLANTILLA...");
-					frn.set("k_titulo","Catalogo Vehiculos Plantilla");
+					frn.setAtt("gpo_2","tit","Catálogo PLANTILLA...");
+					frn.set("k_titulo","Catálogo Vehículos Plantilla");
 				}
 				else if (tipoOper &= "N"){
-					frn.setAtt("gpo_2","tit","Catalogo de Autos Alta Nuevo");
-					frn.set("k_titulo","Catalogo Vehiculos Alta");
+					frn.setAtt("gpo_2","tit","Catálogo de Autos Alta Nuevo");
+					frn.set("k_titulo","Catálogo Vehículos Alta");
 					activaCampos();
 				}
 				else if (tipoOper &= "M"){
-					frn.setAtt("gpo_2","tit","Catalogo de Autos Modificar");
-					frn.set("k_titulo","Catalogo Vehiculos Modificar");
+					frn.setAtt("gpo_2","tit","Catálogo de Autos Modificar");
+					frn.set("k_titulo","Catálogo Vehículos Modificar");
 					activaCampos();
 			 
 				}
 				else if (tipoOper &= "Eliminar"){
-					frn.setAtt("gpo_2","tit","Catalogo de Autos Elimina Auto");
-					frn.set("k_titulo","Catalogo Vehiculos Eliminar");
+					frn.setAtt("gpo_2","tit","Catálogo de Autos Elimina Auto");
+					frn.set("k_titulo","Catálogo Vehículos Eliminar");
 				}
 				else if (tipoOper &= "C"){
-					frn.setAtt("gpo_2","tit","Catalogo de Autos Consulta");
-					frn.set("k_titulo","Catalogo Vehiculos Consulta");
+					frn.setAtt("gpo_2","tit","Catálogo de Autos Consulta");
+					frn.set("k_titulo","Catálogo Vehículos Consulta");
 					activaCampos();
 				}
 				else{
-					frn.message("Accion no permitida.","Error","&Aceptar");
+					frn.message("Acción no permitida.","Error","&Aceptar");
 					frn.open("redirect",2);
 					return;
 				}
@@ -728,7 +731,7 @@
 				}
 				if((nXml(cubo) == 0) && (linea_id &! "")) {
 					frn.setPos("k_linea");
-					frn.message("La linea del vehiculo no existe","Error","Aceptar");
+					frn.message("La línea del vehículo no existe","Error","Aceptar");
 		
 					return;
                  } else{
@@ -777,7 +780,7 @@
 				}
 				if((nXml(cubo) == 0) && (cisan_id &! "")) {
 					frn.setPos("k_calc_isan");
-					frn.message("El tipo de calculo ISAN no existe","Error","Aceptar");
+					frn.message("El tipo de cálculo ISAN no existe","Error","Aceptar");
 					return;
                  } else{
 				    frn.set("k_desc_cisan",getXmlAtt(cubo,"r0","descripcion"));	    
@@ -901,23 +904,23 @@
 				var cmd,ok,mensajeError, cubo, cmdQueryanio, cmdQuerymes;
 				//Etiquetas 
 				frn.set("clave","Clave");
-				frn.set("desc","Descripcion ");
+				frn.set("desc","Descripción ");
 				frn.set("clase","Clase");
 				frn.set("marca","Marca");
 				frn.set("tipo_cal_isa","Tipo Calc ISAN");
-				frn.set("linea","Linea");
+				frn.set("linea","Línea");
 				frn.set("nuevo_usado","Nuevo o Usado");
 				frn.set("meses_entrega","Meses promedio para entrega"); //usar numeros negativos para toyotas que lleguen en barco
-				frn.set("v_se_prod","Vehiculo todavia se produce");
+				frn.set("v_se_prod","Vehículo todavía se produce");
 				frn.set("precio_lista","Precio de lista");
 				frn.set("cilindros","Cilindros");
 				frn.set("ocupantes","Ocupantes");
 				frn.set("procedencia","Procedencia");
 				frn.set("combustible","Combustible");
-				frn.set("n_puertas","Numero de puertas");
+				frn.set("n_puertas","Número de puertas");
 				frn.set("fecha_ini_ven","Fecha de inicio de Venta");
 				frn.set("no_usar_regla_3_mes","No usar regla de 3 meses");
-				frn.set("vehiculo_reemplaza","Vehiculo que Reemplaza");
+				frn.set("vehiculo_reemplaza","Vehículo que Reemplaza");
 				frn.set("codigo_sat", "Codigo del SAT");
 				frn.set("unidad_medida", "Clave unidad medida SAT");
 				frn.setAtt("k_clave", "available", "N");
@@ -957,7 +960,6 @@
 				frn.setAtt("codigo_sat_descrip", "available", "N");
 				//frn.setAtt("codigo_sat_descrip", "bclr", "236,240,243");			
 
-/*
 				cmd = "select c8 as nuevousado,
 					case when c8 = 'N' then 'NUEVO'
 					when c8 = 'U' then 'USADO'
@@ -976,10 +978,6 @@
 					group by c8			
 					order by c8 desc";
 					}
-*/
-				cmd = "select 'N','NUEVO' as nuevousado union select 'U','USADO' as nuevousado";
-
-/*	
 				var cmd_v_se_produce = "select
 					case when c11 = 'S' then 'S'
 					when c11 != 'S' then 'N'
@@ -987,10 +985,6 @@
 					from keplersc.kdiv
 					where c11 <> ''
 					group by c11";
-*/				
-				var cmd_v_se_produce = "select 'S','SI' as nuevousado union select 'N','NO' as nuevousado";
-
-/*
 				var cmd_k_no_usar_regla_3_mes= "select
 					case when c28 = 'S' then 'S'
 					when c28 != 'S' then 'N'
@@ -998,8 +992,6 @@
 					from keplersc.kdiv
 					where c28 in ('S','N')
 					group by c28";
-*/
-				var cmd_k_no_usar_regla_3_mes = "select 'S','SI' as nuevousado union select 'N','NO' as nuevousado";
 
 				cubo = frn.lib("libGeneral.kpl","EjecutarSqlSel",cmd,"Inicia_Forma.cat_crud_autos()");
 				frn.set("k_nuevo_usado", cubo);

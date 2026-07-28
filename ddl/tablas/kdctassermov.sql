@@ -9,9 +9,7 @@ CREATE  TABLE keplersc.kdctassermov (
   c8 numeric(12,2) NOT NULL DEFAULT 0,
   c9 numeric(6,3) NOT NULL DEFAULT 0,
   c10 character varying(5) NOT NULL DEFAULT ''::character varying,
-  c11 character varying NULL,
-  c12 character varying(5) NOT NULL DEFAULT ''::character varying,
-  c13 character varying(5) NOT NULL DEFAULT ''::character varying
+  c11 character varying NULL
 ) TABLESPACE pg_default;
 ALTER TABLE ONLY keplersc.kdctassermov ADD CONSTRAINT pk_kdctassermov PRIMARY KEY (c1, c2, c3);
 COMMENT ON TABLE keplersc.kdctassermov IS 'Puntos de las Citas de Servicio';
@@ -23,8 +21,6 @@ COMMENT ON COLUMN keplersc.kdctassermov.c5 IS 'Tipo de Operario';
 COMMENT ON COLUMN keplersc.kdctassermov.c4 IS 'Autorizacion o Tipo de Punto';
 COMMENT ON COLUMN keplersc.kdctassermov.c3 IS 'Punto';
 COMMENT ON COLUMN keplersc.kdctassermov.c2 IS 'Folio de la Cita';
-COMMENT ON COLUMN keplersc.kdctassermov.c13 IS 'Horario Fin';
-COMMENT ON COLUMN keplersc.kdctassermov.c12 IS 'Horario Inicio';
 COMMENT ON COLUMN keplersc.kdctassermov.c11 IS 'Clave Campaña';
 COMMENT ON COLUMN keplersc.kdctassermov.c10 IS 'Clave Operario';
 COMMENT ON COLUMN keplersc.kdctassermov.c1 IS 'Sucursal';

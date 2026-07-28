@@ -3,11 +3,10 @@ CREATE OR REPLACE FUNCTION keplersc.ser_registro_calidad(dataxml xml)
  LANGUAGE plpgsql
 AS $function$
 
---Descripcion: Realiza insercion y actualizacion del registro de calidad de una orden en KDPUNRES
+--Descripcion: Realiza inserción y actualizacion del registro de calidad de una orden en KDPUNRES
 --Autor: Miriam Santana
 --Fecha: 04/11/2022
 --Bitacora de cambios
---Miriam Santana 31/05/2024: Grabar la pregunta El trabajo fue revisado por el asesor tecnico?
 declare
 	--Variables de definicion de documento
 	sucursal_id text;
@@ -16,7 +15,6 @@ declare
 	num_orden text;
 	punto text;
 	revisado text;
-	revasesTec text;
 	reparado text;
 	reportec text;
 	garantia text;
@@ -28,8 +26,6 @@ declare
 	usuario text;
 	serie text;
 	operacion text;
-	clave_operario text;
-	usuario_operario text;
 
 	--Variables de uso general
 	tiempo_transcurrido decimal;
@@ -47,18 +43,16 @@ begin
 	punto := (xpath('//document/k_punto_rel/text()',dataxml))[1];		--Num de punto que corresponden los datos a grabar
 	serie := (xpath('//document/k_serie/text()',dataxml))[1];
 	revisado := (xpath('//document/k_revisado/text()',dataxml))[1];
-	revasesTec := (xpath('//document/k_revasesTec/text()',dataxml))[1]; 
 	reparado := (xpath('//document/k_reparado/text()',dataxml))[1];
 	reportec := (xpath('//document/k_reportec/text()',dataxml))[1];
 	garantia := (xpath('//document/k_garantia/text()',dataxml))[1];
-	tipo_orden_garantia := (xpath('//document/k_tipo_orden_garantia/r1/text()',dataxml))[1];
+	tipo_orden_garantia := (xpath('//document/k_tipo_orden_garantia/text()',dataxml))[1];
 	num_orden_garantia := (xpath('//document/k_num_orden_garantia/text()',dataxml))[1];
 	comentarios := (xpath('//document/k_comentarios/text()',dataxml))[1];
 	observaciones := (xpath('//document/k_observaciones/text()',dataxml))[1];
 	recomendaciones := (xpath('//document/k_recomendaciones/text()',dataxml))[1];
 	usuario := (xpath('//document/movimiento/usuario/text()',dataxml))[1];
 	operacion := (xpath('//document/operacion/text()',dataxml))[1];
-	clave_operario := coalesce((xpath('//document/clave_operario/text()', dataxml))[1]::text,'')::text;
 	
 	if operacion = 'ALTA' then
 		select c4,c5 into fec_orden, hora_recepcion
@@ -73,11 +67,11 @@ begin
 			insert into keplersc.kdpunres (
 				c1,c2,c3,c4,c5,
 				c6,c7,c8,c9,c10,
-				c11,c20)
+				c11)
 			values(
 				sucursal_id,tipo_orden,num_orden,punto::integer,30,
 				fec_orden,hora_recepcion,current_date,substring(current_time::text,1,8),tiempo_transcurrido,
-				'TRABAJO TERMINADO',clave_operario);	
+				'TRABAJO TERMINADO');	
 		end if;
 		update keplersc.kdpunres set
 			c5=30,
@@ -91,8 +85,7 @@ begin
 			c22=coalesce(garantia,''),
 			c23=coalesce(tipo_orden_garantia,''),
 			c24=coalesce(num_orden_garantia,''),
-			c25=serie,
-			c32=coalesce(revasesTec,'')
+			c25=serie
 		where c1=sucursal_id and c2=tipo_orden and c3=num_orden and c4=punto::integer;
 	end if;
 	if operacion = 'BAJA' then
@@ -114,10 +107,10 @@ begin
 			c28='',
 			c29='',
 			c30='',
-			c31='',
-			C32=''
+			c31=''
 		where c1=sucursal_id and c2=tipo_orden and c3=num_orden and c4=punto::integer;
 	end if;
+--raise exception 'Alto manual para pruebas';	
 
 	resultado := 1;
 	mensaje := '';

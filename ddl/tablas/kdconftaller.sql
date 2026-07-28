@@ -7,9 +7,7 @@ CREATE  TABLE keplersc.kdconftaller (
   c6 character varying(1) NOT NULL DEFAULT ''::character varying,
   c7 character varying(1) NOT NULL DEFAULT ''::character varying,
   c8 character varying(1) NOT NULL DEFAULT ''::character varying,
-  c9 character varying(1) NOT NULL DEFAULT ''::character varying,
-  c10 integer NOT NULL DEFAULT 1,
-  col_servicio_express character varying NOT NULL DEFAULT ''::character varying
+  c9 character varying(1) NOT NULL DEFAULT ''::character varying
 ) TABLESPACE pg_default;
 ALTER TABLE ONLY keplersc.kdconftaller ADD CONSTRAINT pk_kdconftaller PRIMARY KEY (c1);
 COMMENT ON TABLE keplersc.kdconftaller IS 'Configuracion taller';
@@ -21,6 +19,5 @@ COMMENT ON COLUMN keplersc.kdconftaller.c5 IS 'ID Usuario Alterno Gerente';
 COMMENT ON COLUMN keplersc.kdconftaller.c4 IS 'ID Usuario Alterno Gerente';
 COMMENT ON COLUMN keplersc.kdconftaller.c3 IS 'ID Usuario Gerente';
 COMMENT ON COLUMN keplersc.kdconftaller.c2 IS 'Sucursal';
-COMMENT ON COLUMN keplersc.kdconftaller.c10 IS 'Dias en adelante a revisar disponibilidad de asesores(citas en linea)';
 COMMENT ON COLUMN keplersc.kdconftaller.c1 IS 'Id Configuracion Taller';
 

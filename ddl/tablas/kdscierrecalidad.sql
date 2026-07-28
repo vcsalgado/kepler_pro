@@ -6,7 +6,7 @@ CREATE  TABLE keplersc.kdscierrecalidad (
   c5 timestamp without time zone NOT NULL DEFAULT '1800-01-01 00:00:00'::timestamp without time zone,
   c6 character varying(8) NOT NULL DEFAULT ''::character varying,
   c7 character varying(10) NOT NULL DEFAULT ''::character varying,
-  c8 character varying(300) NOT NULL DEFAULT ''::character varying,
+  c8 character varying(70) NOT NULL DEFAULT ''::character varying,
   c9 character varying(70) NOT NULL DEFAULT ''::character varying,
   c10 character varying(70) NOT NULL DEFAULT ''::character varying
 ) TABLESPACE pg_default;

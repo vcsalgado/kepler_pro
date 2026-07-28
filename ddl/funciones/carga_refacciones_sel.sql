@@ -35,7 +35,6 @@ declare
 	cadena_reemplazo text = '';
 	len_cadena int = 0;
 	refaccion_en_cadena text = '';
-	prod_original text = '';
 
 	expXml text = ''; 
 	contador_refs_necesarias int = 0;
@@ -45,7 +44,6 @@ declare
 	xml_necesarias text = ''; 
 	xml_cargadas text = '';
 
-	intValor int =0 ;
 
 begin
 	--raise notice '%', dataxml;	
@@ -69,22 +67,15 @@ begin
 					
 					expXml:= format('<document><clave_producto>%1$s</clave_producto><fecha>%2$s</fecha>
 					<criterio_fecha>%3$s</criterio_fecha></document>',clave_ref,current_date,'N');
-					--Validar que el producto existe como origina o reemplazo
-					select count(*) into intValor from keplersc.kdini where c1=clave_ref;
-					if intValor = 0 then --No esta como oiginal
-						select count(*) into intValor from keplersc.kdinr where c1=clave_ref;
-					end if;
-
-					if intValor > 0 then --Esta como original o reemplazo
-						select * into cve_original, cve_actual, cadena_reemplazo from keplersc.prod_cadena_reemplazo(expXml::xml);
-							
-						select xmlforest(clave_ref as articulo_necesario, cantidad as cantidad,  punto as punto,
-						cadena_reemplazo as cadena_reemplazo) into xml_refs_necesarias::text;
-							 				
-						xml_necesarias := concat(xml_necesarias, format('<r%1$s>%2$s</r%1$s>' ,contador_refs_necesarias, xml_refs_necesarias ));
+					select * into cve_original, cve_actual, cadena_reemplazo from keplersc.prod_cadena_reemplazo(expXml::xml);
 						
-						contador_refs_necesarias := contador_refs_necesarias + 1;
-					end if;
+					select xmlforest(clave_ref as articulo_necesario, cantidad as cantidad,  punto as punto,
+					cadena_reemplazo as cadena_reemplazo) into xml_refs_necesarias::text;
+						 				
+					xml_necesarias := concat(xml_necesarias, format('<r%1$s>%2$s</r%1$s>' ,contador_refs_necesarias, xml_refs_necesarias ));
+					
+					contador_refs_necesarias := contador_refs_necesarias + 1;
+					
 				end loop;
 		
 			end if;
@@ -93,9 +84,9 @@ begin
 			for clave_ref,cantidad, importe, folio in select c11,c13,c16,c9 from keplersc.kdref where c1=sucursal_id
 			and c2=tipo_orden and c3=orden and c4=punto
 			loop 
-				select * into prod_original from keplersc.prod_obtener_original(clave_ref);		
+							
 				select  xmlforest(clave_ref as articulo_cargado,cantidad as cantidad, 
-				importe as monto ,punto as punto, folio as folio, prod_original as k_partesel) into xml_refs_cargadas;
+				importe as monto ,punto as punto, folio as folio) into xml_refs_cargadas;
 							
 				xml_cargadas :=  concat(xml_cargadas,format('<r%1$s>%2$s</r%1$s>' ,contador_refs_cargadas, xml_refs_cargadas ));
 

@@ -124,26 +124,26 @@
 			if (frn.get("k_clave_suc_crud") &= "") {						
 				frn.setPos("k_clave_suc_crud");
 				resVal=0;
-				frn.message("Debe especificar el Anio, verificar","Error","Aceptar");
+				frn.message("Debe especificar el Añio, verificar","Error","Aceptar");
 				return;
 			}
 			if (frn.get("k_nom_suc_crud") &= "") {						
 				frn.setPos("k_nom_suc_crud");
 				resVal=0;
-				frn.message("Debe especificar descripcion del Anio, verificar","Error","Aceptar");
+				frn.message("Debe especificar descripcion del Añio, verificar","Error","Aceptar");
 				return;
 			}
 			if (frn.get("k_id_suc_crud") &= "") {						
 				frn.setPos("k_id_suc_crud");
 				resVal=0;
-				frn.message("Debe especificar descripcion del Anio, verificar","Error","Aceptar");
+				frn.message("Debe especificar descripcion del Añio, verificar","Error","Aceptar");
 				return;
 			}
 
 			if (frn.get("k_lugar_exp_crud") &= "") {						
 				frn.setPos("k_lugar_exp_crud");
 				resVal=0;
-				frn.message("Debe especificar descripcion del Anio, verificar","Error","Aceptar");
+				frn.message("Debe especificar descripcion del Añio, verificar","Error","Aceptar");
 				return;
 			}
 
@@ -156,7 +156,7 @@
 				return;
 			}
 			
-			var resultado_confirmacion = frn.message("Desea continuar?","Mensaje de Confirmacion", 2);
+			var resultado_confirmacion = frn.message("¿Desea continuar?","Mensaje de Confirmacion", 2);
 			if (resultado_confirmacion &! 1)  {
 				return;
 			}
@@ -291,7 +291,7 @@
 		
 		fun ConfiguraUI(){
 			if (frn.nParam() == 0){
-				frn.message("Accion no permitida.","Error","&Aceptar");
+				frn.message("Acción no permitida.","Error","&Aceptar");
 //				frn.open("redirect",2);
 				return;
 			}

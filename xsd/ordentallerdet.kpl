@@ -1,1 +1,245 @@
-<?xml version="1.0" encoding="UTF-8"?><pag xmlns="www.kepler.com.mx/2003/KSchema" roles="" tit="Ordenes Taller"><grp  brdr="0,0" clr="0,58,112" fnt="Arial,16"  dim="0,0,10,12" bclr="192,205,213" unfont="0"><br/>		<br/><tab/><hLine clr="0,0,0"/><br/><br/><tab/>		<grp bclr="236,240,243" fntClrBrdr="236,240,243" unfont="0" fntBrdr="Arial,18" hSpace="4" clrBrdr="0,58,112" dim="82,50,10,10" brdr="0,5" tit="Ordenes Taller" fnt="Arial,16">		<tab n="1"/><inp id="k_F0" clr="64,64,64"  dim="6,1" available="N" type="string" fnt="Arial,16">Orden:</inp>				<inp id="input_orden" dim="10,1" brdr="2,0" clr="64,64,64" bclr="255,255,255" clrBrdr="255,255,255" tooltip="Numero de orden"/><sp n="2"/>					<tab/><txt clr="0,58,112" hk="S">Tipo</txt>		<cmb id="tipo" clr="64,64,64" clrBrdr="255,255,255"  dim="15,1" bclr="255,255,255" brdr="2,0" fnt="Arial,16" Null="N" hk="S"  available="Y" tooltip="Tipo de orden"/><tab n="1"/>		<txt clr="0,58,112" hk="S">Sucursal</txt>		<cmb id="k_sucN" clr="64,64,64" clrBrdr="255,255,255"  dim="20,1" bclr="255,255,255" brdr="2,0" fnt="Arial,16" Null="N" hk="S"  available="Y" tooltip="Sucursal"/><tab n="1"/>				<img id="bot" dim="20,20" bPx="Y" brdr="0,1"  img="_20_Find.png" OnEnter="Buscar()" available="Y" clrBrdr="0,0,0" visible="Y" modify="Y" tooltip="Buscar"/>	<br/>			<tab/><tbl id="tabla" bclr="236,240,243" clr="64,64,64" OnEnter="Exit" OnMouseD="Exit" clrCur="255,255,255" clrHead="0,58,112" bclrHead="236,240,243" brdr="1,0" clrBrdr="64,64,64" fnt="Arial,16"  dim="76,22" modify="N" nren="fijo">		<col id="orden" name="Orden"/>		<col id="tipo" name="Tipo"/>		<col id="fecha" name="Fecha"/>		<col id="ident" name="Ident"/>		<col id="cliente" name="Cliente"/>		<col id="nombre" name="Nombre"/>		</tbl> 		<br/>		<tab n="1"/>		<inp id="reg_mostrados" dim="58,1" clr="0,0,0"  type="string" modify="N" available="N" fnt="Arial,16"/>		<br/>		<tab n="11"/>		<bot id="banterior"  dim="6,10" brdr="5" text="&lt;&lt;" fnt="Arial,16" OnEnter="Buscar(-100)" visible="N" tooltip="Anterior p&#225;gina de resultados" available="N" modify="N"/>		<tab/>		<bot id="bsiguiente"  dim="6,0" brdr="5" text="&gt;&gt;" fnt="Arial,16" OnEnter="Buscar(100)" visible="N" tooltip="Siguiente p&#225;gina de resultados" available="N" modify="N"/>		<tab n="7"/>		<br/>				</grp>		</grp>	<script>		InstallDriver("KDB75");		class Main {			var frn,frP,kdb,sys,suc_usuario,perfil_usuario ,asterisco, externo ;			var offset, cuboXml;			fun Main(){				frn=new FRNT;				kdb=new KDB;				frP=new FRNTP;				sys=new SYS;				kdb.connect();				kdb.open("s,KDMS");								externo = frn.param(0);								suc_usuario = frn.lib("libKepler","UserInfo(1)");				perfil_usuario = frn.lib("libKepler","UserInfo(2)");				asterisco = "*";				offset =0;				Inicializa();								if (externo &= "s"){					Buscar();				}									}						fun valida_offset(n_reg_tabla){				var txt = "Mostrando registros del " & (offset+1) & " al " & offset + 100 & " de " & n_reg_tabla;				if (offset <= 0) {											frn.setAtt("banterior", "available", "N" );					frn.setAtt("banterior", "modify", "N" );					frn.setAtt("banterior", "visible", "N" );				}else{					frn.setAtt("banterior", "available", "Y" );					frn.setAtt("banterior", "modify", "Y" );					frn.setAtt("banterior", "visible", "Y" );				}								if (offset+100 >= n_reg_tabla){					frn.setAtt("bsiguiente", "available", "N" );					frn.setAtt("bsiguiente", "modify", "N" );					frn.setAtt("bsiguiente", "visible", "N" );					txt = "Mostrando registros del " & (offset+1) & " al " & n_reg_tabla & " de " & n_reg_tabla;								}else{					frn.setAtt("bsiguiente", "available", "Y" );					frn.setAtt("bsiguiente", "modify", "Y" );					frn.setAtt("bsiguiente", "visible", "Y" );				}				frn.set("reg_mostrados", txt);			}			fun Inicializa(){							var cmd,cubo,ok,mensajeError ;																		//Llenar combo tipo orden				cmd = "select c1||'-'||c2 as descripcion, c1 as clave  from keplersc.kdcatcitasordenes";								cubo = frn.lib("libGeneral.kpl","EjecutarSqlSel",cmd,"ordentallerdet.Inicializa()");								ok=getXmlAtt(cubo,"ok");				if(ok &! "" && !ok){				   mensajeError = getXmlAtt(cubo,"native3");					frn.message(mensajeError,"Error","Aceptar");					return;				}						   var cmd_tipo_orden = "tipo";									llenar_cmb(cubo ,cmd_tipo_orden );								frn.set(cmd_tipo_orden ,descr_combo(cmd_tipo_orden ,1,frP.get("tipo_orden_bus")));							//Llenar combo sucursales								var combo_suc = "k_sucN";								cmd = "select '['||c1||'] '||c2 as descripcion, c1 as clave from keplersc.kdms";								if (perfil_usuario &! "ADMINISTRADOR"  && perfil_usuario &! "ADMINISTRATOR" && perfil_usuario &! "Administrador Kepler 8.0" && perfil_usuario &! ""){					cmd = cmd & " where c1='" & suc_usuario & "'";				}else {									if (suc_usuario &! asterisco && suc_usuario &! "" ){						cmd = cmd & " where c1='" & suc_usuario & "'";					}else{						frn.setX("", combo_suc ,0,0);						frn.setX("", combo_suc , 0, 1);					}				}											cubo = frn.lib("libGeneral.kpl","EjecutarSqlSel",cmd,"ordentallerdet.Inicializa()");								ok=getXmlAtt(cubo ,"ok");				if(ok &! "" && !ok){					mensajeError = getXmlAtt(cubo ,"native3");					frn.message(mensajeError,"Error","Aceptar");					return;				}										llenar_cmb(cubo ,combo_suc );								if (externo &= "s"){									frn.set("input_orden", frP.get("k_orden"));					frn.set(combo_suc , frP.get("k_sucN"));								}			}						fun Buscar(pag) {							var xmlRequest,cmd,ok,cuboResultados, totOrd , contOrd, ref_clave, ref_desc, n_reg_tabla;						var criterio = frn.get("input_orden");				var suc_bus = frn.get("k_sucN", -1, 1);				var tipo_bus = frn.get("tipo", -1, 1);				if (pag==0){					offset=0;				}				offset = offset+pag;							cmd= "select c3,c2,to_char(c4, 'dd/mm/yyyy')as fch ,c6,c10,c11 from keplersc.kdord where c3 like '%" & criterio & "%'";							if (suc_bus &! ""){										cmd = cmd & " and c1='" & suc_bus & "'";										}									if (tipo_bus &! ""){									cmd = cmd & " and c2='" & tipo_bus & "'";									}								cmd = cmd & " order by c3 desc,c4 desc ";				n_reg_tabla = "SELECT COUNT(*) FROM ("& cmd &") AS subconsulta";				cuboXml= frn.lib("libGeneral.kpl","EjecutarSqlSel",n_reg_tabla,"gencatalogoview.buscar_registros()");				frn.lib("libGeneral.kpl","FileSave",cuboXml,"C:\Basura\registros");				n_reg_tabla = getXmlAtt(cuboXml,"r0","count");				valida_offset(n_reg_tabla);				cmd = cmd & " LIMIT 100 OFFSET " & offset;									cuboResultados = frn.lib("libGeneral.kpl","EjecutarSqlSel",cmd,"ordentallerdet.Buscar()");								frn.lib("libGeneral.kpl","FileSave",cuboResultados,"C:\Basura\cuboResultados");								ok=getXmlAtt(cuboResultados,"ok");				if(ok &! "" && !ok){					var mensajeError = getXmlAtt(cuboResultados,"native3");					frn.message(mensajeError,"Error","Aceptar");					return;				}								totOrd = nXml(cuboResultados);							frn.rst("tabla");				for (contOrd=0; contOrd<totOrd ; contOrd++){								frn.setX( getXmlAtt(cuboResultados,"r"&contOrd,"c3"),"tabla",contOrd,"orden");					frn.setX( getXmlAtt(cuboResultados,"r"&contOrd,"c2"),"tabla",contOrd,"tipo");					frn.setX( getXmlAtt(cuboResultados,"r"&contOrd,"fch"),"tabla",contOrd,"fecha");					frn.setX( getXmlAtt(cuboResultados,"r"&contOrd,"c6"),"tabla",contOrd,"ident");					frn.setX( getXmlAtt(cuboResultados,"r"&contOrd,"c10"),"tabla",contOrd,"cliente");					frn.setX( getXmlAtt(cuboResultados,"r"&contOrd,"c11"),"tabla",contOrd,"nombre");				}							}													fun Exit(){							if (externo &= "s"){								frP.setX(frn.get("tabla", -1, "orden"),"folio_orden_bus"); 					frP.scriptElm("folio_orden_bus","OnChange");										frP.set("tipo_orden_bus",frn.get("tipo", -1, 1));					frP.scriptElm("tipo_orden_bus", "OnChange");									frP.set("k_sucN",descr_combo("k_sucN",1,frn.get("k_sucN", -1, 1) , "s"));					frP.scriptElm("k_sucN", "OnChange");									frn.exit();									}					}									fun llenar_cmb(cuboResultados, cmb){									var len_cubo = nXml(cuboResultados);								var pos_ini = frn.N(cmb);									for (var cont=0; cont<len_cubo ; cont++){								var desc= getXmlAtt(cuboResultados,"r"&cont,"descripcion");					var clave= getXmlAtt(cuboResultados,"r"&cont,"clave");										frn.setX(desc, cmb, cont+pos_ini ,0);					frn.setX(clave, cmb, cont+pos_ini ,1);								}				}						fun descr_combo(combo,posicion,valor,externo){				var descr, valor_actual;				var len_combo = frn.N(combo);				for (var cont=0; cont<len_combo ; cont++){									valor_actual = frn.get(combo,cont,posicion);					if (externo &= "s" ){						valor_actual= frP.get(combo,cont,posicion);					}									if (valor_actual &=  valor){						descr = frn.get(combo,cont,0);						if (externo &= "s" ){							descr = frP.get(combo,cont,0);						}						return descr;					}				}			}																}	</script></pag>
+<?xml version="1.0" encoding="UTF-8"?>
+<pag xmlns="www.kepler.com.mx/2003/KSchema" roles="" tit="Ordenes Taller">
+<grp  brdr="0,0" clr="0,58,112" fnt="Arial,16"  dim="0,0,10,12" bclr="192,205,213" unfont="0"><br/><br/><tab/>
+		<grp bclr="236,240,243" fntClrBrdr="255,206,0" unfont="0" fntBrdr="Arial,18" hSpace="4" clrBrdr="0,58,112" dim="82,50,10,10" brdr="0,5" tit="Ordenes Taller" fnt="Arial,16">
+		<tab n="1"/><inp id="k_F0" clr="64,64,64"  dim="6,1" available="N" type="string" fnt="Arial,16">Orden:</inp>
+		
+		<inp id="input_orden" dim="10,1" brdr="2,0" clr="64,64,64" bclr="255,255,255" clrBrdr="255,255,255"/><sp n="2"/>
+		
+	
+		<tab/><txt clr="0,58,112" hk="S">Tipo</txt>
+		<cmb id="tipo" clr="64,64,64" clrBrdr="255,255,255"  dim="15,1" bclr="255,255,255" brdr="2,0" fnt="Arial,16" Null="N" hk="S"  available="Y"/><tab n="1"/>
+		<txt clr="0,58,112" hk="S">Sucursal</txt>
+		<cmb id="k_sucN" clr="64,64,64" clrBrdr="255,255,255"  dim="20,1" bclr="255,255,255" brdr="2,0" fnt="Arial,16" Null="N" hk="S"  available="Y"/><tab n="1"/>
+		
+		<img id="bot" dim="20,20" bPx="Y" brdr="0,1"  img="_20_Find.png" OnEnter="Buscar()" available="Y" clrBrdr="0,0,0" visible="Y" modify="Y"/>
+	<br/>
+	
+		<tab/><tbl id="tabla" bclr="236,240,243" clr="64,64,64" OnEnter="Exit" OnMouseD="Exit" clrCur="255,255,255" clrHead="0,58,112" bclrHead="236,240,243" brdr="1,0" clrBrdr="64,64,64" fnt="Arial,16"  dim="76,22" modify="N" nren="fijo">
+		<col id="orden" name="Orden"/>
+		<col id="tipo" name="Tipo"/>
+		<col id="fecha" name="Fecha"/>
+		<col id="ident" name="Ident"/>
+		<col id="cliente" name="Cliente"/>
+		<col id="nombre" name="Nombre"/>
+		</tbl> 
+		<tab n="7"/>
+		<br/>
+		
+		</grp>
+	
+	
+</grp>
+	<script>
+		InstallDriver("KDB75");
+		class Main {
+			var frn,frP,kdb,sys,suc_usuario,perfil_usuario ,asterisco, externo ;
+
+			fun Main(){
+				frn=new FRNT;
+				kdb=new KDB;
+				frP=new FRNTP;
+				sys=new SYS;
+				kdb.connect();
+				kdb.open("s,KDMS");
+				
+				externo = frn.param(0);
+				
+				suc_usuario = frn.lib("libKepler","UserInfo(1)");
+				perfil_usuario = frn.lib("libKepler","UserInfo(2)");
+				asterisco = "*";
+				
+				Inicializa();
+				
+				if (externo &= "s"){
+					Buscar();
+				}
+			
+			
+			}
+			
+			fun Inicializa(){
+			
+				var cmd,cubo,ok,mensajeError ;
+			
+				
+				
+			
+				//Llenar combo tipo orden
+				cmd = "select '['||c1||'] '||c2 as descripcion, c1 as clave  from keplersc.kdcatcitasordenes";
+				
+				cubo = frn.lib("libGeneral.kpl","EjecutarSqlSel",cmd,"ordentallerdet.Inicializa()");
+				
+				ok=getXmlAtt(cubo,"ok");
+				if(ok &! "" && !ok){
+				   mensajeError = getXmlAtt(cubo,"native3");
+					frn.message(mensajeError,"Error","Aceptar");
+					return;
+				}
+			
+			   var cmd_tipo_orden = "tipo";
+					
+				llenar_cmb(cubo ,cmd_tipo_orden );
+				
+				frn.set(cmd_tipo_orden ,descr_combo(cmd_tipo_orden ,1,frP.get("tipo_orden_bus")));
+			
+				//Llenar combo sucursales
+				
+				var combo_suc = "k_sucN";
+				
+				cmd = "select '['||c1||'] '||c2 as descripcion, c1 as clave from keplersc.kdms";
+				
+				if (perfil_usuario &! "ADMINISTRADOR"  && perfil_usuario &! "ADMINISTRATOR" && perfil_usuario &! "Administrador Kepler 8.0" && perfil_usuario &! ""){
+					cmd = cmd & " where c1='" & suc_usuario & "'";
+				}else {
+				
+					if (suc_usuario &! asterisco && suc_usuario &! "" ){
+						cmd = cmd & " where c1='" & suc_usuario & "'";
+					}else{
+						frn.setX("", combo_suc ,0,0);
+						frn.setX("", combo_suc , 0, 1);
+					}
+				}
+				
+			
+				cubo = frn.lib("libGeneral.kpl","EjecutarSqlSel",cmd,"ordentallerdet.Inicializa()");
+				
+				ok=getXmlAtt(cubo ,"ok");
+				if(ok &! "" && !ok){
+					mensajeError = getXmlAtt(cubo ,"native3");
+					frn.message(mensajeError,"Error","Aceptar");
+					return;
+				}
+		
+				
+				llenar_cmb(cubo ,combo_suc );
+				
+				if (externo &= "s"){
+				
+					frn.set("input_orden", frP.get("k_orden"));
+					frn.set(combo_suc , frP.get("k_sucN"));
+				
+				}
+			}
+			
+			fun Buscar() {
+			
+				var xmlRequest,cmd,ok,cuboResultados, totOrd , contOrd, ref_clave, ref_desc;
+		
+				var criterio = frn.get("input_orden");
+				var suc_bus = frn.get("k_sucN", -1, 1);
+				var tipo_bus = frn.get("tipo", -1, 1);
+			
+				cmd= "select c3,c2,c4,c6,c10,c11 from keplersc.kdord where c3 like '%" & criterio & "%'";
+			
+				if (suc_bus &! ""){
+					
+					cmd = cmd & " and c1='" & suc_bus & "'";
+						
+				}
+					
+				if (tipo_bus &! ""){
+				
+					cmd = cmd & " and c2='" & tipo_bus & "'";
+					
+				}
+				
+				cmd = cmd & " order by c3 desc,c4 desc ";
+					
+				cuboResultados = frn.lib("libGeneral.kpl","EjecutarSqlSel",cmd,"ordentallerdet.Buscar()");
+				
+				frn.lib("libGeneral.kpl","FileSave",cuboResultados,"C:\Basura\cuboResultados");
+				
+				ok=getXmlAtt(cuboResultados,"ok");
+				if(ok &! "" && !ok){
+					var mensajeError = getXmlAtt(cuboResultados,"native3");
+					frn.message(mensajeError,"Error","Aceptar");
+					return;
+				}
+				
+				totOrd = nXml(cuboResultados);
+			
+				frn.rst("tabla");
+				for (contOrd=0; contOrd<totOrd ; contOrd++){
+			
+					frn.setX( getXmlAtt(cuboResultados,"r"&contOrd,"c3"),"tabla",contOrd,"orden");
+					frn.setX( getXmlAtt(cuboResultados,"r"&contOrd,"c2"),"tabla",contOrd,"tipo");
+					frn.setX( getXmlAtt(cuboResultados,"r"&contOrd,"c4"),"tabla",contOrd,"fecha");
+					frn.setX( getXmlAtt(cuboResultados,"r"&contOrd,"c6"),"tabla",contOrd,"ident");
+					frn.setX( getXmlAtt(cuboResultados,"r"&contOrd,"c10"),"tabla",contOrd,"cliente");
+					frn.setX( getXmlAtt(cuboResultados,"r"&contOrd,"c11"),"tabla",contOrd,"nombre");
+				}	
+		
+	
+			}
+			
+	
+
+			
+			
+			fun Exit(){
+			
+				if (externo &= "s"){
+			
+					frP.setX(frn.get("tabla", -1, "orden"),"folio_orden_bus"); 
+					frP.scriptElm("folio_orden_bus","OnChange");
+					
+					frP.set("tipo_orden_bus",frn.get("tipo", -1, 1));
+					frP.scriptElm("tipo_orden_bus", "OnChange");
+				
+					frP.set("k_sucN",descr_combo("k_sucN",1,frn.get("k_sucN", -1, 1) , "s"));
+					frP.scriptElm("k_sucN", "OnChange");
+				
+					frn.exit();
+					
+				}
+		
+			}
+			
+			
+			fun llenar_cmb(cuboResultados, cmb){
+					
+				var len_cubo = nXml(cuboResultados);
+				
+				var pos_ini = frn.N(cmb);
+					
+				for (var cont=0; cont<len_cubo ; cont++){
+			
+					var desc= getXmlAtt(cuboResultados,"r"&cont,"descripcion");
+					var clave= getXmlAtt(cuboResultados,"r"&cont,"clave");
+					
+					frn.setX(desc, cmb, cont+pos_ini ,0);
+					frn.setX(clave, cmb, cont+pos_ini ,1);
+				
+				}	
+			}
+			
+			fun descr_combo(combo,posicion,valor,externo){
+
+				var descr, valor_actual;
+				var len_combo = frn.N(combo);
+
+				for (var cont=0; cont<len_combo ; cont++){
+				
+					valor_actual = frn.get(combo,cont,posicion);
+					if (externo &= "s" ){
+						valor_actual= frP.get(combo,cont,posicion);
+					}
+				
+					if (valor_actual &=  valor){
+						descr = frn.get(combo,cont,0);
+						if (externo &= "s" ){
+							descr = frP.get(combo,cont,0);
+						}
+						return descr;
+					}
+				}
+			}
+			
+			
+			
+			
+		
+		}
+	</script>
+</pag>

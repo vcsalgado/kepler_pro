@@ -5,64 +5,40 @@ AS $function$
 --Descripcion: Cursores
 --Autor: Saltiel Rc
 --Fecha: 23/05/2022
---Bitacora de cambios
---Fecha: 13/11/2023 Revisado, Modificado y Probado por JMM 
---                  (Se desarrollo el KPL en K80 que corre este proceso)
+--Bitácora de cambios
 declare
-suc text = ''; --A1
-refer text = ''; --A6 
+v_sucursal_id text = ''; --A1
+v_referencia text = ''; --A6 
 
-totreg int = 0;
-pedst int;
+v_contador numeric = 0;
 
 resultado text= '';
 mensaje text = '0';
 adicionales text = '';
+totreg int = 0;
+strtTexto text ='';
+v_nocatalogo text =''; 
 
-begin
-	
-	suc := upper((xpath('//document/k_sucn/r1/text()', dataxml))[1]::text); 
-	refer := upper((xpath('//document/k_refer/text()', dataxml))[1]::text); --
-	
-	totreg := 0;
-	select count(*) into totreg from keplersc.kdpedref   
-	where c1 = suc and c2 = refer; 
-	if totreg = 0 then
-		raise exception '%', 'El Pedido Sugerido ' || '[ '|| refer || ' ]  No Existe ...';
-	else
-		pedst = -100;
-		select coalesce(c4,-1) into pedst from keplersc.kdpedref 
-		where c1 = suc and c2 = refer;
-		if pedst <> 10 then
-			raise exception '%', 'El Estatus del Pedido Sugerido ' || '[ '|| refer || ' , ' || pedst::text || ' ] No es Valido para realizar esta operacion ...';
-		end if;
-	end if;
-	
 
-	update keplersc.kdpedesp  
-	set c13 = 10,
+BEGIN
+	v_sucursal_id := upper((xpath('//document/k_sucn/text()', dataxml))[1]::text); --
+	v_referencia := upper((xpath('//document/k_numeropedido_a6/text()', dataxml))[1]::text); --
+	
+	update keplersc.KDPEDESP 
+	set c13=10,
 		c14 = '',
-		c15 = ''
-	where c14 = suc and c15 = refer;
+		c15= ''
+	where c14 = v_sucursal_id and c15 = v_referencia;
 	
-
-	delete from keplersc.kdpedrefmov  
-	where c1 = suc and c2 = refer;	
+	delete from keplersc.KDPEDREFMOV 
+	where c1 = v_sucursal_id and c2 = v_referencia;	
 	
-
-	update keplersc.kdpedref 
-	set c4 = 0	
-	WHERE c1 = suc and c2 = refer;
-
-
-	-- 4 Testing ...
-	/* 
-	raise exception '%', 'El Pedido Sugerido ' || '['|| refer || '] Sera Eliminado ...';
-	*/
-
+	update keplersc.KDPEDREF
+	set c4  = 0	
+	WHERE c1 = v_sucursal_id and c2 =v_referencia;
 
 	resultado ='1';
-	mensaje = refer;
+	mensaje ='Finalizado';
 	adicionales ='';
 	
 

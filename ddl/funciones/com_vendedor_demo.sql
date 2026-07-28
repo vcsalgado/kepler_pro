@@ -102,13 +102,13 @@ begin
 	end if; 
 	select count(*) into totReg from keplersc.kdcomismov2 where 
 		c1=rec_G_COMISMOV.c1 and c2=rec_G_COMISMOV.c2 and c3=rec_G_COMISMOV.c3 and
-		c4=rec_G_COMISMOV.c4 and c5=rec_G_COMISMOV.c5 and c6=rec_G_COMISMOV.c6; 
---		and c7=rec_G_COMISMOV.c7 and c10=rec_G_COMISMOV.c10; 
+		c4=rec_G_COMISMOV.c4 and c5=rec_G_COMISMOV.c5 and c6=rec_G_COMISMOV.c6 and
+		c7=rec_G_COMISMOV.c7 and c10=rec_G_COMISMOV.c10; 
 	if totReg>0 then
 		select * into rec_H_COMISMOV2 from keplersc.kdcomismov2 where 
 			c1=rec_G_COMISMOV.c1 and c2=rec_G_COMISMOV.c2 and c3=rec_G_COMISMOV.c3 and
-			c4=rec_G_COMISMOV.c4 and c5=rec_G_COMISMOV.c5 and c6=rec_G_COMISMOV.c6;
---			and c7=rec_G_COMISMOV.c7 and c10=rec_G_COMISMOV.c10; 
+			c4=rec_G_COMISMOV.c4 and c5=rec_G_COMISMOV.c5 and c6=rec_G_COMISMOV.c6 and
+			c7=rec_G_COMISMOV.c7 and c10=rec_G_COMISMOV.c10; 
 	else
 		raise exception 'No se encontró información del inventario(comismov2).';
 	end if; 		
@@ -387,7 +387,7 @@ begin
 	insert into tmpRows (orden,variable,valor1,valor2) values(60,'Inicio de corte:',to_char(fechaIni, 'DD/MM/YYYY'),'');
 	insert into tmpRows (orden,variable,valor1,valor2) values(65,'Fin de corte:',to_char(fechaFin, 'DD/MM/YYYY'),'');
 	insert into tmpRows (orden,variable,valor1,valor2) values(70,'Número de Operaciones:',n1_operaciones,'');
-	insert into tmpRows (orden,variable,valor1,valor2) values(75,'Importe:',to_char(b1_importe,'fm999999G990D00'),'');
+	insert into tmpRows (orden,variable,valor1,valor2) values(75,'Importe:',to_char(b1_importe,'fm999G990D00'),'');
 	insert into tmpRows (orden,variable,valor1,valor2) values(80,'IVA:',to_char(b2_iva,'fm999G990D00'),'');
 	insert into tmpRows (orden,variable,valor1,valor2) values(85,'ISAN:',to_char(b3_isan,'fm999G990D00'),'');
 	insert into tmpRows (orden,variable,valor1,valor2) values(90,'Subtotal:',to_char(b5_precioventa,'fm999G990D00'),'');

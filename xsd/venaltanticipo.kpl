@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <pag xmlns="www.kepler.com.mx/2003/KSchema" roles="" tit="T&#237;tulo">
-	<grp dim="1,-1,10,11" brdr="0,0" clr="0,58,112" bclr="192,205,213" fnt="Arial,16" unfont="0" OnEnter="Exit()">
-	<tab/><txt fnt=",22" clr="0,0,0">Anticipo</txt><br/><tab/>
-	<hLine clr="0,0,0"/> 
-	<br/> <br/><tab/>
+	<grp dim="1,-1,10,11" brdr="0,0" clr="0,58,112" bclr="192,205,213" fnt="Arial,16" unfont="0" OnEnter="Exit()"><txt fnt=",22" clr="0,0,0">Anticipo</txt><br/>
+	<hLine dim="81,0" clr="0,0,0"/> 
+	<br/> <br/>
 	
 		<grp dim="46,11,7,11" bclr="236,240,243" fntClrBrdr="236,240,243" fntBrdr="Arial,18" hSpace="4" clrBrdr="0,58,112" brdr="0,5" fnt="Arial,16" tit="Par&#225;metros">
 			<sp n="2"/>
@@ -24,13 +23,13 @@
 			<inp id="strfolio" clr="64,64,64" clrBrdr="255,255,255"  dim="7,1" bclr="255,255,255" brdr="2,0" fnt="Arial,16" type="capital" available = "N" modify="Y" visible="N"
 						OnChange="SeparaFolio()"/><br/>	
 			<txt id="textFolio" visible="N">  Folio :  </txt>
-			<edt id="k_folio" dim="30,1" brdr="2,0" bclr="255,255,255" clr="64,64,64" clrBrdr="255,255,255" type="capital" tooltip="Folio ( F9 b&#250;squeda )" modify="Y" available="N" visible="N" 
+			<edt id="k_folio" dim="30,1" brdr="2,0" bclr="255,255,255" clr="64,64,64" clrBrdr="255,255,255" type="string" tooltip="Folio ( F9 b&#250;squeda )" modify="Y" available="N" visible="N" 
 			OnF9="ObtenerFolio()" OnButton="ObtenerFolio()" OnChange="Formar_folio()"/>  <tab n="2"/>
 			<img id="BuscarFol" dim="20,20" bPx="1" brdr="0,1" available="Y" img="_20_Find.png" OnEnter="BuscarFolio()" visible="N"/> <br/>
 			<sp n="1"/>
 			<inp id="k_docto" dim="40,1" bclr="240,240,240" clr="64,64,64" clrBrdr="255,255,255" type="string" modify="N" fnt=",16b" just="C"/> <br/>
 			<txt>  Fecha : </txt> 
-			<edt id="k_fecha" dim="15,1" type="date" fmt="DD/MM/CCYY" brdr="2,0" bclr="255,255,255" clr="64,64,64" page="_ks_fecha,k_fecha" clrBrdr="255,255,255" available="Y" tooltip="Fecha" modify="N"/> 
+			<edt id="k_fecha" dim="15,1" type="date" fmt="DD/MM/CCYY" brdr="2,0" bclr="255,255,255" clr="64,64,64" page="_ks_fecha,k_fecha" OnF9="Dialog(3,_ks_fecha,k_fecha)" clrBrdr="255,255,255" available="Y" tooltip="Fecha"/> 
 			<sp n="1"/> 
 			<txt>  Hora : </txt> 
 			<sp n="1"/> 
@@ -38,14 +37,14 @@
 			<br/>
 		</grp>
 		<br/>
-		<br/><tab/>
+		<br/>
 		<grp dim="81,17,7,11" bclr="236,240,243" fntClrBrdr="236,240,243" fntBrdr="Arial,18" hSpace="4" clrBrdr="0,58,112" brdr="0,5" fnt="Arial,16" tit="Datos Cliente">	
 			<grp dim="115,15,7,11" bclr="236,240,243" fntClrBrdr="236,240,243" hSpace="4" clrBrdr="0,58,112" brdr="0,5" fnt="Arial,16">
 				<grp dim="39,11,7,11" bclr="236,240,243" fntClrBrdr="236,240,243" hSpace="4" clrBrdr="0,58,112" brdr="0,5" fnt="Arial,16">
 					<sp n="2"/>
 					<txt clr="0,58,112">Cliente : </txt><tab/><sp n="1"/>
 					<edt id="k_clave" clr="64,64,64" clrBrdr="255,255,255"  dim="20,36" bclr="255,255,255" brdr="2,0" fnt="Arial,16" 
-						OnF9="ObtenerCliente()" OnButton="ObtenerCliente()" OnF10="Dialog(3,cat_cli_crud,Nuevo,x,s,k_clave)" OnF11="Dialog(3,cat_cli_crud,Modificar,x,s,k_clave)"
+						OnF9="ObtenerCliente()" OnF10="Dialog(3,cat_cli_crud,Nuevo,x,s,k_clave)" OnF11="Dialog(3,cat_cli_crud,Modificar,x,s,k_clave)"
 						OnButton="ObtenerCliente()" OnChange="BuscarCliente()" 
 						type="capital" nc="7" tooltip="Cliente ( F9-B&#250;squeda, F10-Nuevo, F11-Modificar )" modify="Y" available="Y"/><tab n="1"/> 
 					<br/>
@@ -86,7 +85,7 @@
 			</grp>
 		</grp>
 		<br/>
-		<br/><tab/>
+		<br/>	
 		<grp dim="81,19,7,11" bclr="236,240,243" fntClrBrdr="236,240,243" fntBrdr="Arial,18" hSpace="4" clrBrdr="0,58,112" brdr="0,5" fnt="Arial,16" tit="Datos Anticipo">
 			<grp dim="45,9,7,11" bclr="236,240,243" fntClrBrdr="236,240,243" hSpace="4" clrBrdr="0,58,112" brdr="0,5" fnt="Arial,16">
 				<br/>
@@ -142,7 +141,7 @@
 		
 		class Main {
 			var frn,kdb, sys, rep, frP;
-			var usuario, rol_usuario, suc_usuario,asterisco,anio_contable;
+			var usuario, rol_usuario, suc_usuario, anio_contable;
 			// Variables de control
 			var cmdQuery, cuboQuery, ok, mensajeError, sucursal_id, cliente_id, refer_id, adenda_id,tiporden,desc_tipo, numorden, punto, descripcion, costo, resVal, porc_iva;
 			var segmento, variable,valor, tipo_id, m67, m77;
@@ -162,7 +161,6 @@
 			anio_contable = kdb.get("KDE","14");
 			usuario = frn.config("user","name");
 			rol_usuario = frn.config("user","role");
-			asterisco = "*";
 			suc_usuario = frn.lib("libKepler","UserInfo(1)");
 			fileSavePath = "C:\Basura";
 			Inicializa();				
@@ -221,7 +219,7 @@
 			if (metodoPago &="" || usoCfdi &="") {
 				frn.setPos("k_clave");
 				resVal=0;
-				frn.message("Es necesario actualizar los datos del cliente, falta metodo de pago o uso de CFDI","Error","Aceptar");
+				frn.message("Es necesario actualizar los datos del cliente, falta método de pago o uso de CFDI","Error","Aceptar");
 				return;			
 			}
 				
@@ -229,7 +227,7 @@
 			CalculaTotales();
 			total=frn.get("k_monto");
 			if (total <= 0){
-				frn.message("El total de la operacion no puede ser cero.","Error","Aceptar");
+				frn.message("El total de la operación no puede ser cero.","Error","Aceptar");
 				resVal=0;
 				return;
 			}								
@@ -246,7 +244,6 @@
 		fun Formar_folio(){
 			var xmlReqEst, cubofol, cmd, ok, mensajeError ;
 			CambiaFolio();
-			setXml(xmlReqEst,"document","k_sucn","r1",frn.get("k_sucn",-1,1));
 			setXml(xmlReqEst,"document","folio_id",frn.get("k_folio"));
 			setXml(xmlReqEst,"document","k_tipon","r1",frn.get("k_tipon",-1,1));
 			setXml(xmlReqEst,"document","k_tipon","r2",frn.get("k_tipon",-1,2));
@@ -270,7 +267,7 @@
 		fun ObtenerFolio() {
 			sucursal_id = frn.get("k_sucn",-1,1);
 			LimpiaEncabezado();
-			cmdQuery = "select c5 as tipo, c6 as folio, to_char(c9, 'DD/MM/YYYY') as fecha, c10 as cve_cliente, " &
+			cmdQuery = "select c5 as tipo, c6 as folio, substring(cast(c9 as VARCHAR),1,10) as fecha, c10 as cve_cliente, " &
 						"c11 as referencia, c100 as inventario, c16 as monto ,concat(c5,'~',c6) as llave " &
 						"from keplersc.kdm1 " &
 						"where c1='" &sucursal_id& "' and c2='" &gen_doc& "' and c3='" &nat_doc& "' and c4 =" & gpo_doc &
@@ -443,7 +440,7 @@
 				}
                 
 			} else {
-			frn.message("Esta accion no está permitida.","Estimado Usuario","&Aceptar");
+			frn.message("Esta acción no está permitida.","Estimado Usuario","&Aceptar");
 			frn.open("redirect",2);
 			return;
 			}
@@ -457,26 +454,22 @@
 					if(tip_ope &= "C"){ //Consulta
 						frn.set("operacion","CONSULTA");
 					} else {
-						frn.message("Operacion no valida ...", "Mensaje","&Aceptar");
+						frn.message("Operación no válida ...", "Mensaje","&Aceptar");
 						frn.open("index",4);
 						return;			
 					}
 				}
 			}
 				
-			//Llenar combo sucursales
-			cmdQuery = "select '['||c1||'] '||c2 as c2, c1 from keplersc.kdms";
-			if (rol_usuario &! "ADMINISTRADOR"  && rol_usuario &! "ADMINISTRATOR"){
-				cmdQuery = cmdQuery & " where c1='" & suc_usuario & "'";
-			}else {
-				if (suc_usuario &! asterisco && suc_usuario &! "" ){
-					cmdQuery = cmdQuery & " where c1='" & suc_usuario & "'";
-				}
-			}
+			// Fill Combo Sucursal (Con Query de PostgreSQL)
+			cmdQuery = "select '['||c1||'] '||c2 as c2, c1  from keplersc.kdms";
 			IniCombos("k_sucn",cmdQuery);
 			
 			// Fill Combo Tipo (Con Query FTO Kepler) 
-			LlenaCmbTipo();
+			cmdQuery = "select c5 as c0,c1,c2,c3,c4,c1||c2||lpad(c3::text,2,'0')||lpad(c4::text,3,'0')||'-'||'0000000' as c5,"&
+					   "c16 as c6,c7,c14,c47,c80,c86,c89,c67,c77 from keplersc.kdmm"&
+					   " where c1='" & gen_doc & "' and c2='" & nat_doc & "' and c3='" & gpo_doc & "' order by c4";
+			IniCombos("k_tipon",cmdQuery);
 
 			//Llena Combo Forma de pago
 			CmbFormaPago();
@@ -498,13 +491,6 @@
 			IniParams();
 			
 			frn.set("datcfdi","N");		//Pantalla validacion CFDI
-		}
-		
-		fun LlenaCmbTipo(){
-			cmdQuery = "select c5 as c0,c1,c2,c3,c4,c1||c2||lpad(c3::text,2,'0')||lpad(c4::text,3,'0')||'-'||'0000000' as c5,"&
-					   "c16 as c6,c7,c14,c47,c80,c86,c89,c67,c77 from keplersc.kdmm"&
-					   " where col_sucursal='" & frn.get("k_sucn",-1,1) & "' and c1='" & gen_doc & "' and c2='" & nat_doc & "' and c3='" & gpo_doc & "' order by c4";
-			IniCombos("k_tipon",cmdQuery);
 		}
 
 		fun fecha_config(){
@@ -537,8 +523,7 @@
 		fun Ajustes_doc() {
 			//se basa en k75 SUB DEFINE_CFD_LINKS y en SUB CFD_FOLIO
 			var cmd,cubo;
-			tip_doc = frn.get("k_tipon",-1,4);
-			cmd = "select c80 from keplersc.kdmm where col_sucursal='" & frn.get("k_sucn",-1,1) & "' and c1='" & gen_doc & "' and c2='" & nat_doc & "' and c3='" & gpo_doc & "' and c4='" & tip_doc & "'" ;
+			cmd = "select c80 from keplersc.kdmm where c1='" & gen_doc & "' and c2='" & nat_doc & "' and c3='" & gpo_doc & "' and c4='" & tip_doc & "'" ;
 			cubo = frn.lib("libGeneral.kpl","EjecutarSqlSel",cmd,"venaltanticipo.Ajustes_doc()");
 			//frn.lib("libGeneral.kpl","FileSave",cubo ,"C:\Basura\c80");
 			ok=getXmlAtt(cubo,"ok");
@@ -595,7 +580,6 @@
 		// Armado del Docto Referencia
 		fun ArmarRefDocto {
 			var cadena,tmpFolio, tmpGrupo, tmpTipo;
-			tip_doc = frn.get("k_tipon",-1,4);
 			tmpFolio = frn.get("k_folio");
 			tmpFolio = PadLeft(tmpFolio,"7","0");
 			tmpGrupo = PadLeft(gpo_doc,"2","0");
@@ -768,12 +752,8 @@
 		fun CambiaSucursal() {
 			LimpiaEncabezado();
 			frn.set("k_fecha",sys.date());
-			frn.set("k_hora",sys.time());
-			LlenaCmbTipo();
-			ArmarRefDocto();
-			if(tip_ope &= "A"){
-				fecha_config();
-			}				
+			frn.set("k_hora",sys.time());	
+			ArmarRefDocto();				
 		}
 			
 		fun CambiaTipo() {
@@ -812,7 +792,7 @@
 					"'['||uso.c1||'] '||uso.c2 as k_cfdi " &
 					"from keplersc.kdud cte "&
 					"left join keplersc.kdf3uso uso on uso.c1=cte.c53 " &
-					"where cte.c2='" & cliente_id & "'" ;
+					"where cte.c1='" & sucursal_id  & "' and cte.c2='" & cliente_id & "'" ;
 					
 			rstXml(cuboQuery);
 			cuboQuery = frn.lib("libGeneral.kpl","EjecutarSqlSel",cmdQuery,"venaltanticipo.BuscaCliente()");
@@ -860,8 +840,7 @@
 		}
 
 		fun ValidaFolioCancelado(folio){
-		var statusfolio;
-		tip_doc = frn.get("k_tipon",-1,4);	
+		var statusfolio;	
 		cmdQuery = "select c43 as status_folio " & 
 						"from keplersc.kdm1 " &
 						"where c1='" &sucursal_id& "' and c2='" &gen_doc& "' and c3='" &nat_doc& "' and c4 =" &gpo_doc& " and c5= " & tip_doc & " and c6= '" & folio & "'";
@@ -879,7 +858,7 @@
 			statusfolio = getXmlAtt(cuboQuery,"r0","status_folio");
 			if (statusfolio &= "C"){	// C=Cerrado
 				resVal=0;
-				frn.message("El Anticipo se encuentra cancelado","Error","Aceptar");
+				frn.message("El TOTs se encuentra cancelado","Error","Aceptar");
 				return;
 			}
 
@@ -891,7 +870,6 @@
 
 			// Guarda Datos para Busqueda 
 			sucursal_id = frn.get("k_sucn",-1,1);
-			tip_doc = frn.get("k_tipon",-1,4);
 			folio = nFolio;
 								
 			setXml(xmlRequest,"document","sucursal_id",sucursal_id);
@@ -928,7 +906,7 @@
 			tipo_id = frn.get("k_tipon",-1,4);
 			tip_doc = tipo_id;
 			if(nXml(tmpXml) == 0){
-				frn.message("El folio : " & folio & ", No se encontro ...","Error","Aceptar");
+				frn.message("El folio de la orden : " & folio & ", No se encontró ...","Error","Aceptar");
 				return;				
 			}					
 		} 

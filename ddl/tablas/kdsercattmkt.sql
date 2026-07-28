@@ -5,8 +5,7 @@ CREATE  TABLE keplersc.kdsercattmkt (
   c4 character varying NOT NULL DEFAULT ''::character varying,
   c5 character varying NOT NULL DEFAULT ''::character varying,
   c6 character varying NOT NULL DEFAULT ''::character varying,
-  c7 character varying NOT NULL DEFAULT ''::character varying,
-  col_sucursal character varying NOT NULL DEFAULT ''::character varying
+  c7 character varying NOT NULL DEFAULT ''::character varying
 ) TABLESPACE pg_default;
 ALTER TABLE ONLY keplersc.kdsercattmkt ADD CONSTRAINT pk_kdsercattmkt PRIMARY KEY (c1);
 COMMENT ON TABLE keplersc.kdsercattmkt IS 'Asesores de Telemarketing';

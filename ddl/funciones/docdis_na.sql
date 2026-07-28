@@ -10,7 +10,7 @@ DECLARE
 	--Autor: Victor Salgado
 	--Fecha: 27 Junio 2022
 	--13/03/2025 Victor Salgado: Se elimina validacions para obetncion de folio
-
+	
 	--Variables para xml
 	sucursal_id text;
 	tipo_desc text;
@@ -37,9 +37,6 @@ DECLARE
 	xmlResultado xml;
 	folio_id text;
 	uen text= '';
-	cmmnt text;
-
-	interfaz_planta text;
 
 	--Variables de retorno desde funciones externas
 	get_resultado text; --retorno
@@ -221,34 +218,7 @@ begin
 				raise exception '%',get_mensaje;
 			end if;
 		end if;
-
 	
-		cmmnt = coalesce((xpath('//document/k_coment/text()',dataxml))[1]::text,'')::text ;
-
-		---------------------------------------------------------------
-		--AJUSTE DIFERENCIAS. Ajusta diferencias inventario fisico.
-		--Resuelve: ALTA_INVR_FISICO---------------------------------------------------------------
-		if  ( genero = 'N' and naturaleza = 'A' and grupo = '30' ) and uen ='REF' and cmmnt = 'Ajuste de Refacciones' then 
-			paso:= 'docdis.invr_fisico_ajuste_sumas';	
-			select * into get_resultado, get_mensaje, get_adicionales from keplersc.invr_fisico_ajuste(dataxml, folio_operacion);
-			if get_resultado = '0' then
-				raise exception '%',get_mensaje;
-			end if;
-		end if;
-
-		---------------------------------------------------------------
-		--Envio de Reporte a Planta.
-		---------------------------------------------------------------
-		interfaz_planta := coalesce((xpath('//document/ambiente/interfaz_planta/text()',dataxml))[1],'');
-		if interfaz_planta <> '' then
-			if interfaz_planta = 'DDOA_RDR' then
-				select * into get_resultado, get_mensaje, get_adicionales from keplersc.ifz_ddoa_rdr(dataxml, folio_operacion);
-				if get_resultado = '0' then
-					raise exception '%',get_mensaje;
-				end if;
-			end if;
-		end if;	
-
 	end if;
 --raise exception 'ERROR INYECTADO 1';
 	get_resultado:=1;

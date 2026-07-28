@@ -1,190 +1,1 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<pag xmlns="www.kepler.com.mx/2003/KSchema" dim="0,0,10,10" tit="Busca monto">
-	<grp brdr="0,0" clr="0,58,112" fnt="Arial,16" dim="-1,-1,10,20" clrBrdr="0,97,181"  bclr="192,205,213" unfont="0" tit="Busca monto" OnPgUp="PgUp" OnPgDn="PgDn" OnCtrPgUp="CtrPgUp" OnCtrPgDn="CtrPgDn"  OnCtrIni="CtrIni" OnCtrEnd="CtrEnd" OnEnter="Exit"><br/>
-		<grp bclr="236,240,243" fntClrBrdr="255,206,0" fntBrdr="Arial,18" hSpace="4" clrBrdr="0,58,112" brdr="0,5" dim="30,16,7,12"  tit="Datos de la b&#250;squeda del monto"><tab/>
-			<txt fnt="Arial,16" clr="0,58,112" bclr="255,255,255">Cuenta inicial:</txt><tab/>
-				<edt id="cuenta1" clr="64,64,64" clrBrdr="255,255,255"  dim="22,1" bclr="255,255,255" brdr="2,0"  page="concatcuebus,cuenta1" OnF9="Ventana(concatcuebus,cuenta1)" OnF10="Ventana(concatcuepag,numero,,01111)" type="string" fnt="Arial,16" nc="20"/><br/><tab/>
-			<txt fnt="Arial,16" clr="0,58,112" bclr="255,255,255">Cuenta final:</txt><tab n="2"/>
-				<edt id="cuenta2" clr="64,64,64" clrBrdr="255,255,255"  dim="22,1" bclr="255,255,255" brdr="2,0"  page="concatcuebus,cuenta2" OnF9="Ventana(concatcuebus,cuenta2)" OnF10="Ventana(concatcuepag,numero,,01111)" type="string" fnt="Arial,16" nc="20"/><br/><br/><tab/>
-			<txt fnt="Arial,16" clr="0,58,112" bclr="255,255,255">Fecha inicial:</txt><tab n="2"/>
-				<edt id="fecha1" dim="14,1" fmt="DD/MM/CCYY" clr="64,64,64" clrBrdr="255,255,255"  bclr="255,255,255" brdr="2,0" OnChange="Cambio(2,descripcion)" nc="8" type="date" nd="2" visible="Y" page="_ks_fecha,fecha1" fnt="Arial,16"/><br/><tab/>
-			<txt fnt="Arial,16" clr="0,58,112" bclr="255,255,255">Fecha final:</txt><tab n="2"/>
-				<edt id="fecha2" dim="14,1" fmt="DD/MM/CCYY" clr="64,64,64" clrBrdr="255,255,255"  bclr="255,255,255" brdr="2,0" OnChange="Cambio(2,descripcion)" nc="8" type="date" nd="2" visible="Y" page="_ks_fecha,fecha2" fnt="Arial,16"/><br/><br/><tab/>
-			<txt fnt="Arial,16" clr="0,58,112" bclr="255,255,255">Monto a buscar:</txt><tab/>
-				<inp id="inpmonto" clr="64,64,64" clrBrdr="255,255,255"  dim="19,1" bclr="255,255,255" brdr="2,0" type="number" nc="15" nd="2" fnt="Arial,16"/><br/>
-		</grp><br/><br/><tab/><sp/><tab n="7"/>
-			<img id="k_ejecuta" dim="40,40" brdr="0,1" bPx="1" img="_60_ExecuteReport.png" OnEnter="Reporte()" tooltip="Ejecutar(Ctrl+T)" available="Y"/><br/>
-	</grp>
-	<script>
-		InstallDriver("KDB75");
-		class Main {
-			var frn,frP,kdb,rep,sys;
-			var tabla_base, tabla_mes;//Tabla base del catalogo (Se abre con el alias "a")
-			var camposDeseados;//Campos de la tabla que se requieren(Ej: a1...a4)
-			var year, aIni, aFin;
-			fun Main() { 
-				frn=new FRNT;
-				frP=new FRNTP;
-				rep=new REP;
-				sys= new SYS;
-				kdb=new KDB;
-				kdb.connect();
-				Inicializa();
-			}
-			
-			fun Inicializa() {
-				//Revisa si hay anio definido por la session
-				if(frn.config("temp","k_workDate")){
-					year=mid(frn.config("temp","k_workYear"),2,2);
-				}else {
-					kdb.kde("yr");kdb.exec();
-					year=kdb.get("yr",14);
-				}
-				tabla_base="kdc1" & year;//Cuentas
-				camposDeseados="a1...a2,a14";
-				kdb.open("a," & tabla_base);
-				setData();
-				IniParams();
-			}
-			
-			fun IniParams(){//Inicializa parametros de impresion, que pueden ser cambiados por el usuario final mediante: Archivo / Configurar Pagina
-				frn.set("param_paper","letter");//	"paper=letter|legal|size"
-				frn.set("param_sizeX","21.59","param_sizeY","27.94");//	"size=18,14cm"
-				frn.set("param_borderL","1.5","param_borderT","1.5","param_borderR","1.5","param_borderB","1.5");//	"border=1.5,1.5,1.5,1.5cm"
-				frn.set("param_Fx","1.0","param_Fy","1.0");//			"F=1,1"
-				frn.set("param_landscape","Y");//	"landscape=N|Y"
-				frn.set("param_emp","L");//			"@emp=L|R|C"
-			}
-			
-
-			fun camposLlave() {var llave=frn.get("proyecto");return llave;}//Campos que forman la llave. Puede ser una llave combinada
-			fun setData() { //Funcion que llena los campos en pantalla con la informacion de la base de datos
-				frn.set("fecha1",sys.date());
-				frn.set("fecha2",sys.date());
-			}
-			fun Reporte()//Ejecuta el Reporte
-			{
-				camposDeseados="m1,m2,m3,m5,m6,m7,m4";				
-				// Se define el formato a usar y se imprime el encabezado
-				kdb.readPage("datos","conemibmofto");//se define el formato a usar
-				kdb.exec();
-				rep.source(kdb.get("datos")); 
-				rep.rst(); 
-				setRepPage();
-				var montobus = frn.get("inpmonto");
-				rep.set("fechaSys",sys.date());
-				rep.set("horaSys",sys.time());
-				rep.set("monto",montobus);
-				rep.set("fIn",frn.get("fecha1"));
-				rep.set("fFn",frn.get("fecha2"));
-				rep.exe("encabezado");
-				Busca2();
-				rep.win(); 
-			}
-			
-			fun Busca2()
-			{
-				var fechaIni=frn.get("fecha1");
-				var fechaFin=frn.get("fecha2");
-				var mesI=fnDate("month",fechaIni);
-				var mesF=fnDate("month",fechaFin);
-				for (var j=mesI;j<=mesF;j++)
-				{
-					if (j <= 9)
-					{
-						tabla_mes="kdc2" & year & "0" & j;
-					}
-					else
-					{
-						tabla_mes="kdc2" & year & j;
-					}
-					kdb.open("m," & tabla_mes);
-					kdb.lim("m2>=" & fechaIni);
-					kdb.lim("m2<=" & fechaFin);
-					var montobus = frn.get("inpmonto");
-					kdb.lim("m5=" & montobus);
-					kdb.table("montos,m,2,&,m1,m2,m3,m5,m6,m7,m8,m4");
-					kdb.exec();
-					var nMon=kdb.N("montos"); //nos trae el numero total de agencias que hay en la tabla
-					for(var i=0;i<nMon;i++)
-					{
-						//Imprime la clave y nombre de la agencia en cuestion
-						var monto_debe, monto_haber;
-						monto_debe = " ";
-						monto_haber = " ";
-						rep.set("debe",monto_debe);
-						rep.set("haber",monto_haber);
-						var monto_poliza = kdb.get("montos","r" & i, "m1");
-						var monto_fecha = kdb.get("montos","r" & i, "m2");
-						var monto_descripcion = kdb.get("montos","r" & i, "m6");
-						var monto_referencia = kdb.get("montos","r" & i, "m7");
-						var monto_cuenta = kdb.get("montos","r" & i, "m3");
-						var tip_poliza = kdb.get("montos","r" & i, "m8");
-						rep.set("poliza",monto_poliza);
-						rep.set("tipo",tip_poliza);
-						rep.set("cuenta",monto_cuenta);
-						rep.set("fecha",monto_fecha);
-						rep.set("descripcion",monto_descripcion);
-						rep.set("referencia",monto_referencia);
-						rep.set("desccuenta",monto_descripcion);
-						var monto_cargoabono = kdb.get("montos","r" & i, "m5");
-						if(monto_cargoabono &= "C"){ 
-							monto_debe = kdb.get("montos","r" & i, "m5");
-							rep.set("debe",monto_debe);
-						}
-						else{
-							monto_haber = kdb.get("montos","r" & i, "m5");
-							rep.set("haber",monto_haber);
-						}
-						rep.exe("registros");
-					}
-				}
-			}
-
-			//Funciones Auxiliares Para Catalogos(Genericas). 
-			//Necesitan las variable globales tabla_base y camposDeseados. 
-			//tabla_base especifica el nombre de la tabla del catalogo que se esta editando
-			//camposDeseados indica los campos que se modificaran de la tabla. Ej a1...a70
-			//Ademas de una funcion camposLlave que devuleva los campos que forman la clave
-			//Una funcion setData que establece en pantalla los valores de la base de datos. (Cubo de informacion: "datos")
-			//Una funcion verifica_borrar() que regresa 1 si se puede borrar el registro, 0 si no se debe borrar.
-			fun set(objeto,campo) { frn.set(objeto,kdb.get("datos",campo));}//Establece el valor de un campo de la BD al objeto indicado
-			fun Busca() { Bus(0);}
-			fun PgUp() { Bus(6);}
-			fun PgDn() { Bus(5);}
-			fun CtrIni() { Bus(7);}
-			fun CtrEnd() { Bus(8);}
-			fun Ventana(arch,cmp) { frn.dialog(arch,cmp);}//Abre la pagina indicada como dialogo. 
-			
-			fun Error(string){frn.messageBar(string,1); frn.sound(1);}//Establece un mensaje de error en la barra de estado. Y emite un sonido de alerta.
-			fun Bus(relacional) { //1:>=	2:<=		3:>	 4:<		 5:Siguiente		6:Anterior		7:Primero		8:Ultimo
-				frn.messageBar("");
-				var cmd="datos,a,1," & relacional & "," & camposLlave() & ",&," & camposDeseados;
-				kdb.search(cmd); kdb.exec(); setData();
-			}
-			fun Cambio(numero_campo,objeto,desplazamiento) { //Realiza un cambio de valor en la BD
-					var cmd=tabla_base & ",1," & camposLlave() & ",&," & numero_campo & "," & frn.get(objeto,-1,desplazamiento); 
-					kdb.update(cmd); 
-			}
-			
-			fun setRepPage() {//Establece los parametros finales de impresion.
-				//Tipo de hoja, ancho, alto,margen iz, margen derecho, margen arriba, margen abajo, factor de escala en x, factor de escala en y,orientacion, color, ventana de ajuste, etc
-				//rep.page("paper=letter|legal|size","size=18,14cm","border=1.5,1.5,1.5,1.5cm","F=1,1","landscape=N|Y","color=Y|N","prompt=N|Y","@emp=L|R|C");
-				var paper="paper=" & frn.get("param_paper");var size="size=" & frn.get("param_sizeX") & "," & frn.get("param_sizeY") & "cm";
-				var brdr="border=" & frn.get("param_borderL") & "," & frn.get("param_borderT") & "," & frn.get("param_borderR") & "," & frn.get("param_borderB") & "cm";
-				var fact="F=" & frn.get("param_Fx") & "," & frn.get("param_Fy");
-				var lndsp="landscape=" & frn.get("param_landscape");
-				var emp="@emp=" & frn.get("param_emp");
-				rep.page(paper,size,brdr,fact,lndsp,"color=Y","collate=Y","copies=1","pages=1,999","prompt=N",emp);
-			}
-		}
-		/*
-		Autor				Fecha					Cambio
-		------------------------------------------------------------------
-		Carlos JAM		2009-11-30			-Se agrego el que se imprima el 'tipo de poliza', 'rangos de fechas', 'fecha de hoy' y 'hora' tanto en esta pagina de reporte como en el formato
-													-Se modifico el formato de impresion para que se imprima el 'tipo de poliza', 'rangos de fechas', 'fecha de hoy' y 'hora'
-													-Se modifico la pagina para que este acorde a la auditoria de opciones.
-		EFDA				19-oct-2011			Se hacen mas grande los objetos cuenta1 y cuenta2
-		*/
-	</script>
-</pag>
+<?xml version="1.0" encoding="UTF-8"?><pag xmlns="www.kepler.com.mx/2003/KSchema" dim="0,0,10,10" tit="Busca monto">	<grp brdr="0,0" clr="0,58,112" fnt="Arial,16" dim="-1,-1,10,20" clrBrdr="0,97,181"  bclr="192,205,213" unfont="0" tit="Busca monto" OnPgUp="PgUp" OnPgDn="PgDn" OnCtrPgUp="CtrPgUp" OnCtrPgDn="CtrPgDn"  OnCtrIni="CtrIni" OnCtrEnd="CtrEnd" OnEnter="Exit"><br/>		<grp bclr="236,240,243" fntClrBrdr="255,206,0" fntBrdr="Arial,18" hSpace="4" clrBrdr="0,58,112" brdr="0,5" dim="30,16,7,12"  tit="Datos de la b&#250;squeda del monto"><tab/>			<txt fnt="Arial,16" clr="0,58,112" bclr="255,255,255">Cuenta inicial:</txt><tab/>				<edt id="cuenta1" clr="64,64,64" clrBrdr="255,255,255"  dim="22,1" bclr="255,255,255" brdr="2,0"  page="concatcuebus,cuenta1" OnF9="Ventana(concatcuebus,cuenta1)" OnF10="Ventana(concatcuepag,numero,,01111)" type="string" fnt="Arial,16" nc="20"/><br/><tab/>			<txt fnt="Arial,16" clr="0,58,112" bclr="255,255,255">Cuenta final:</txt><tab n="2"/>				<edt id="cuenta2" clr="64,64,64" clrBrdr="255,255,255"  dim="22,1" bclr="255,255,255" brdr="2,0"  page="concatcuebus,cuenta2" OnF9="Ventana(concatcuebus,cuenta2)" OnF10="Ventana(concatcuepag,numero,,01111)" type="string" fnt="Arial,16" nc="20"/><br/><br/><tab/>			<txt fnt="Arial,16" clr="0,58,112" bclr="255,255,255">Fecha inicial:</txt><tab n="2"/>				<edt id="fecha1" dim="14,1" fmt="DD/MM/CCYY" clr="64,64,64" clrBrdr="255,255,255"  bclr="255,255,255" brdr="2,0" OnChange="Cambio(2,descripcion)" nc="8" type="date" nd="2" visible="Y" page="_ks_fecha,fecha1" fnt="Arial,16"/><br/><tab/>			<txt fnt="Arial,16" clr="0,58,112" bclr="255,255,255">Fecha final:</txt><tab n="2"/>				<edt id="fecha2" dim="14,1" fmt="DD/MM/CCYY" clr="64,64,64" clrBrdr="255,255,255"  bclr="255,255,255" brdr="2,0" OnChange="Cambio(2,descripcion)" nc="8" type="date" nd="2" visible="Y" page="_ks_fecha,fecha2" fnt="Arial,16"/><br/><br/><tab/>			<txt fnt="Arial,16" clr="0,58,112" bclr="255,255,255">Monto a buscar:</txt><tab/>				<inp id="inpmonto" clr="64,64,64" clrBrdr="255,255,255"  dim="19,1" bclr="255,255,255" brdr="2,0" type="number" nc="15" nd="2" fnt="Arial,16"/><br/>		</grp><br/><br/><tab/><sp/><tab n="6"/>			<img id="k_ejecuta" dim="60,60" brdr="0,1" bPx="1" img="_60_ExecuteReport.png" OnEnter="Reporte()" tooltip="Ejecutar(Ctrl+T)" available="Y"/><br/>	</grp>	<tools>		<tool name="ejecuta" OnMouseL="Reporte()" tooltip="Ejecutar(Ctrl+T)" scut="Ctrl+T" img="_TL_Execute.png"/>	</tools>	<script>		InstallDriver("KDB75");		class Main {			var frn,frP,kdb,rep,sys;			var tabla_base, tabla_mes;//Tabla base del catálogo (Se abre con el alias "a")			var camposDeseados;//Campos de la tabla que se requieren(Ej: a1...a4)			var year, aIni, aFin;			fun Main() { 				frn=new FRNT;				frP=new FRNTP;				rep=new REP;				sys= new SYS;				kdb=new KDB;				kdb.connect();				Inicializa();			}						fun Inicializa() {				//Revisa si hay año definido por la session				if(frn.config("temp","k_workDate")){					year=mid(frn.config("temp","k_workYear"),2,2);				}else {					kdb.kde("yr");kdb.exec();					year=kdb.get("yr",14);				}				tabla_base="kdc1" & year;//Cuentas				camposDeseados="a1...a2,a14";				kdb.open("a," & tabla_base);				setData();				IniParams();			}						fun IniParams(){//Inicializa parámetros de impresión, que pueden ser cambiados por el usuario final mediante: Archivo / Configurar Página				frn.set("param_paper","letter");//	"paper=letter|legal|size"				frn.set("param_sizeX","21.59","param_sizeY","27.94");//	"size=18,14cm"				frn.set("param_borderL","1.5","param_borderT","1.5","param_borderR","1.5","param_borderB","1.5");//	"border=1.5,1.5,1.5,1.5cm"				frn.set("param_Fx","1.0","param_Fy","1.0");//			"F=1,1"				frn.set("param_landscape","Y");//	"landscape=N|Y"				frn.set("param_emp","L");//			"@emp=L|R|C"			}						fun camposLlave() {var llave=frn.get("proyecto");return llave;}//Campos que forman la llave. Puede ser una llave combinada			fun setData() { //Funcion que llena los campos en pantalla con la información de la base de datos				frn.set("fecha1",sys.date());				frn.set("fecha2",sys.date());			}			fun Reporte()//Ejecuta el Reporte			{				camposDeseados="m1,m2,m3,m5,m6,m7,m4";								// Se define el formato a usar y se imprime el encabezado				kdb.readPage("datos","conemibmofto");//se define el formato a usar				kdb.exec();				rep.source(kdb.get("datos")); 				rep.rst(); 				setRepPage();				var montobus = frn.get("inpmonto");				rep.set("fechaSys",sys.date());				rep.set("horaSys",sys.time());				rep.set("monto",montobus);				rep.set("fIn",frn.get("fecha1"));				rep.set("fFn",frn.get("fecha2"));				rep.exe("encabezado");				Busca2();				rep.win(); 			}						fun Busca2()			{				var fechaIni=frn.get("fecha1");				var fechaFin=frn.get("fecha2");				var mesI=fnDate("month",fechaIni);				var mesF=fnDate("month",fechaFin);				for (var j=mesI;j<=mesF;j++)				{					if (j <= 9)					{						tabla_mes="kdc2" & year & "0" & j;					}					else					{						tabla_mes="kdc2" & year & j;					}					kdb.open("m," & tabla_mes);					kdb.lim("m2>=" & fechaIni);					kdb.lim("m2<=" & fechaFin);					var montobus = frn.get("inpmonto");					kdb.lim("m5=" & montobus);					kdb.table("montos,m,2,&,m1,m2,m3,m5,m6,m7,m8,m4");					kdb.exec();					var nMon=kdb.N("montos"); //nos trae el numero total de agencias que hay en la tabla					for(var i=0;i<nMon;i++)					{						//Imprime la clave y nombre de la agencia en cuestion						var monto_debe, monto_haber;						monto_debe = " ";						monto_haber = " ";						rep.set("debe",monto_debe);						rep.set("haber",monto_haber);						var monto_poliza = kdb.get("montos","r" & i, "m1");						var monto_fecha = kdb.get("montos","r" & i, "m2");						var monto_descripcion = kdb.get("montos","r" & i, "m6");						var monto_referencia = kdb.get("montos","r" & i, "m7");						var monto_cuenta = kdb.get("montos","r" & i, "m3");						var tip_poliza = kdb.get("montos","r" & i, "m8");						rep.set("poliza",monto_poliza);						rep.set("tipo",tip_poliza);						rep.set("cuenta",monto_cuenta);						rep.set("fecha",monto_fecha);						rep.set("descripcion",monto_descripcion);						rep.set("referencia",monto_referencia);						rep.set("desccuenta",monto_descripcion);						var monto_cargoabono = kdb.get("montos","r" & i, "m5");						if(monto_cargoabono &= "C"){ 							monto_debe = kdb.get("montos","r" & i, "m5");							rep.set("debe",monto_debe);						}						else{							monto_haber = kdb.get("montos","r" & i, "m5");							rep.set("haber",monto_haber);						}						rep.exe("registros");					}				}			}			//Funciones Auxiliares Para Catálogos(Genericas). 			//Necesitan las variable globales tabla_base y camposDeseados. 			//tabla_base especifíca el nombre de la tabla del catálogo que se está editando			//camposDeseados indica los campos que se modificaran de la tabla. Ej a1...a70			//Ademas de una funcion camposLlave que devuleva los campos que forman la clave			//Una funcion setData que establece en pantalla los valores de la base de datos. (Cubo de información: "datos")			//Una funcion verifica_borrar() que regresa 1 si se puede borrar el registro, 0 si no se debe borrar.			fun set(objeto,campo) { frn.set(objeto,kdb.get("datos",campo));}//Establece el valor de un campo de la BD al objeto indicado			fun Busca() { Bus(0);}			fun PgUp() { Bus(6);}			fun PgDn() { Bus(5);}			fun CtrIni() { Bus(7);}			fun CtrEnd() { Bus(8);}			fun Ventana(arch,cmp) { frn.dialog(arch,cmp);}//Abre la pagina indicada como dialogo. 						fun Error(string){frn.messageBar(string,1); frn.sound(1);}//Establece un mensaje de error en la barra de estado. Y emite un sonido de alerta.			fun Bus(relacional) { //1:>=	2:<=		3:>	 4:<		 5:Siguiente		6:Anterior		7:Primero		8:Ultimo				frn.messageBar("");				var cmd="datos,a,1," & relacional & "," & camposLlave() & ",&," & camposDeseados;				kdb.search(cmd); kdb.exec(); setData();			}			fun Cambio(numero_campo,objeto,desplazamiento) { //Realiza un cambio de valor en la BD					var cmd=tabla_base & ",1," & camposLlave() & ",&," & numero_campo & "," & frn.get(objeto,-1,desplazamiento); 					kdb.update(cmd); 			}						fun setRepPage() {//Establece los parámetros finales de impresión.				//Tipo de hoja, ancho, alto,margen iz, margen derecho, margen arriba, margen abajo, factor de escala en x, factor de escala en y,orientacion, color, ventana de ajuste, etc				//rep.page("paper=letter|legal|size","size=18,14cm","border=1.5,1.5,1.5,1.5cm","F=1,1","landscape=N|Y","color=Y|N","prompt=N|Y","@emp=L|R|C");				var paper="paper=" & frn.get("param_paper");var size="size=" & frn.get("param_sizeX") & "," & frn.get("param_sizeY") & "cm";				var brdr="border=" & frn.get("param_borderL") & "," & frn.get("param_borderT") & "," & frn.get("param_borderR") & "," & frn.get("param_borderB") & "cm";				var fact="F=" & frn.get("param_Fx") & "," & frn.get("param_Fy");				var lndsp="landscape=" & frn.get("param_landscape");				var emp="@emp=" & frn.get("param_emp");				rep.page(paper,size,brdr,fact,lndsp,"color=Y","collate=Y","copies=1","pages=1,999","prompt=N",emp);			}		}		/*		Autor				Fecha					Cambio		------------------------------------------------------------------		Carlos JAM		2009-11-30			-Se agrego el que se imprima el 'tipo de poliza', 'rangos de fechas', 'fecha de hoy' y 'hora' tanto en esta pagina de reporte como en el formato													-Se modifico el formato de impresion para que se imprima el 'tipo de poliza', 'rangos de fechas', 'fecha de hoy' y 'hora'													-Se modifico la pagina para que este acorde a la auditoria de opciones.		EFDA				19-oct-2011			Se hacen mas grande los objetos cuenta1 y cuenta2		*/	</script></pag>

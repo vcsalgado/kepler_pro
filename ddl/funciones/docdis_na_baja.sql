@@ -18,8 +18,6 @@ DECLARE
 	grupo text;
 	tipo text;
 	tipo_clave text;
-	uen text;
-
 
 	--xml Movimiento
 	xmlKDM1 xml;
@@ -35,7 +33,6 @@ DECLARE
 	referencia text;
 	xmlResultado xml;
 	folio_id text;
-	cmmnt text;
 		
 	--Variables de retorno desde funciones externas
 	get_resultado text; --retorno
@@ -56,7 +53,7 @@ begin
 	tipo := (xpath('//document/k_tipon/r4/text()', dataxml))[1];
 	tipo_clave := (xpath('//document/k_tipon/r5/text()', dataxml))[1];	
 	folio_operacion := (xpath('//document/k_folio/text()', dataxml))[1];
-	uen := coalesce((xpath('//document/ambiente/uen/text()',dataxml))[1],'');
+
 
 
 	if genero = 'N' and naturaleza = 'A' then --No genero, Acreedora
@@ -139,20 +136,6 @@ begin
 		---------------------------------------------------------------
 		--FIN CONTABILIDAD.
 		---------------------------------------------------------------	
-	
-	
-		cmmnt = coalesce((xpath('//document/k_coment/text()',dataxml))[1]::text,'')::text ;
-
-		---------------------------------------------------------------
-		--AJUSTE DIFERENCIAS. Ajusta diferencias inventario fisico.
-		--Resuelve: ALTA_INVR_FISICO---------------------------------------------------------------
-		if  ( genero = 'N' and naturaleza = 'A' and grupo = '30' ) and uen ='REF' and cmmnt = 'Ajuste de Refacciones' then 
-			paso:= 'docdis.invr_fisico_ajuste_sumas';	
-			select * into get_resultado, get_mensaje, get_adicionales from keplersc.invr_fisico_ajuste(dataxml, folio_operacion);
-			if get_resultado = '0' then
-				raise exception '%',get_mensaje;
-			end if;
-		end if;
 	
 	
 	end if;

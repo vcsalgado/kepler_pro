@@ -242,19 +242,6 @@ begin
 
 	xmlResultado :=   format('<fecha_inicial>%1$s</fecha_inicial><fecha_final>%2$s</fecha_final>',left(fecha_inicial::text, 10), left(fecha_final::text, 10));
 
-	select c5,c6,c7,c8,c9,c10,c11,c12,c13,c14,c15,c16,c17,c18,c19,c20,c21,c22,c23,c24
-	into primer_obj_entregas_nuevos,segundo_obj_entregas_nuevos, obj_margen_utilidad, 
-	obj_entregas_financiera_1,obj_entregas_financiera_2, obj_1_csi, obj_2_csi, 
-	obj_dias_atraso_max_autos_nuevos, obj_dias_atraso_max_autos_seminuevos
-	,obj_facturacion_autos_nuevos, obj_toma_autos_seminuevos, obj_entregas_garantia_extendida,
-	obj_utilidad_bruta_accesorios, obj_seguros_contado, libre, obj_facturacion_seminuevos,
-	primer_obj_entregas_seminuevos, segundo_obj_entregas_seminuevos
-	,obj_entregas_financiera_1_seminuevos, obj_entregas_financiera_2_seminuevos
-	from keplersc.kdobjgv where c1=sucursal_id and c2=coach and c3=mes and c4=anio;
-
-	num_dias_atrasados_nuevos = obj_dias_atraso_max_autos_nuevos;
-	num_dias_atrasados_seminuevos = obj_dias_atraso_max_autos_seminuevos;
-
 	--OBTENER PORCENTAJES(p) DE BONOS y DESCUENTOS (kdesqgv)
 	select  cat.c6, qgv.c2,qgv.c3,qgv.c4,qgv.c5,qgv.c6,qgv.c7,qgv.c8,qgv.c9,qgv.c10, qgv.c11, qgv.c12, qgv.c13, qgv.c14, qgv.c15,
 	qgv.c16, qgv.c17,qgv.c18, qgv.c19,qgv.c20, qgv.c21, qgv.c22, qgv.c23,qgv.c24 into esquema, p_primer_obj_entregas_nuevos,
@@ -443,6 +430,18 @@ begin
 	if found then
 		real_csi := csi_planta;	
 	end if;
+
+	--SUB DEFINE_OBJETIVOS
+	select c5,c6,c7,c8,c9,c10,c11,c12,c13,c14,c15,c16,c17,c18,c19,c20,c21,c22,c23,c24
+	into primer_obj_entregas_nuevos,segundo_obj_entregas_nuevos, obj_margen_utilidad, 
+	obj_entregas_financiera_1,obj_entregas_financiera_2, obj_1_csi, obj_2_csi, 
+	obj_dias_atraso_max_autos_nuevos, obj_dias_atraso_max_autos_seminuevos
+	,obj_facturacion_autos_nuevos, obj_toma_autos_seminuevos, obj_entregas_garantia_extendida,
+	obj_utilidad_bruta_accesorios, obj_seguros_contado, libre, obj_facturacion_seminuevos,
+	primer_obj_entregas_seminuevos, segundo_obj_entregas_seminuevos
+	,obj_entregas_financiera_1_seminuevos, obj_entregas_financiera_2_seminuevos
+	from keplersc.kdobjgv where c1=sucursal_id and c2=coach and c3=mes and c4=anio;
+
 
 	--SUB CALCULA_ALCANCE_OBJETIVOS
 	if esquema is not null and esquema <> '' then 

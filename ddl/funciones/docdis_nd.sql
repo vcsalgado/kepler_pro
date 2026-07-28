@@ -80,13 +80,13 @@ begin
 			--       ¿Como se procesan documentos donde no se les calcula el folio?
 --		end if;		
 		
+
 	
 		paso:= 'docdis.mov_prim_alta';
 		select * into get_resultado, get_mensaje, get_adicionales from keplersc.mov_prim_alta(dataxml, folio_operacion);
 		if get_resultado = '0' then
 			raise exception '%',get_mensaje;
 		end if;
-	
 	
 		---------------------------------------------------------------
 		--INVENTARIOS. Registro de movimiento en kdm2
@@ -160,10 +160,10 @@ begin
             end if;
         end if;	
 	
-       
+	
        	cmmnt = coalesce((xpath('//document/k_coment/text()',dataxml))[1]::text,'')::text ;
 
-	
+
 	---------------------------------------------------------------
 		--CONTABILIDAD. ALTA_CONT
 		---------------------------------------------------------------
@@ -189,7 +189,7 @@ begin
 							raise exception '%',get_mensaje;
 						end if;	
 						strResumen:=strResumen || get_adicionales;		
-					end if;
+					end if;	
 				end if;					
 			end if;
 		end if;	
@@ -207,7 +207,7 @@ begin
 				raise exception '%',get_mensaje;
 			end if;
 		end if;	
-	
+
 
 		---------------------------------------------------------------
 		--AJUSTE DIFERENCIAS. Ajusta diferencias inventario fisico.
@@ -221,7 +221,7 @@ begin
 		end if;
 	
 	end if;
---raise exception 'ERROR INYECTADO 1';
+--raise exception 'ERROR INYECTADO VCSS docdis_nd';
 	get_resultado:=1;
 	get_mensaje:=folio_operacion;
 	get_adicionales:=strResumen;

@@ -1,1 +1,781 @@
-<?xml version="1.0" encoding="UTF-8"?><pag xmlns="www.kepler.com.mx/2003/KSchema" roles="" tit="T&#237;tulo">	<grp dim="1,-1,10,15" brdr="0,0" clr="0,58,112" bclr="192,205,213" fnt="Arial,16" unfont="0" OnEnter="Exit()">		<sp/><txt fnt="Arial,22" clr="0,0,0">Asignaci&#243;n de contactos Telemarketing</txt><br/>		<sp/><hLine clr="0,0,0"/>		<br/><br/>		<sp/>		<grp bclr="236,240,243" fntClrBrdr="236,240,243" fntBrdr="Arial,18" hSpace="4" clrBrdr="0,58,112" brdr="0,5" dim="100,8,7,12" tit="Criterio de Selecci&#243;n"  fnt="Arial,16">			<sp/><txt fnt=",16">Sucursal:</txt>			<cmb id="k_sucn" clr="64,64,64" clrBrdr="255,255,255"  dim="50,36" bclr="255,255,255" 				brdr="0,2" fnt="Arial,16" Null="N" hk="S" available="Y" OnChange="" tooltip="Sucursal"/>			<tab n="2"/><txt>Contactos: </txt>			<cmb id="cmb_tipocontacto" dim="12,1" brdr="0,2" bclr="255,255,255" clr="64,64,64" clrBrdr="255,255,255" modify="Y" OnChange="ValContactosAsesor()" tooltip="Tipo de contactos"/>			<tab n="2"/><txt>Asesor: </txt>			<cmb id="cmb_asesor" dim="40,1" brdr="0,2" bclr="255,255,255" clr="64,64,64" clrBrdr="255,255,255" OnChange="ValAsesorContactos()" tooltip="Clave y nombre de asesor"/>			<br/>			<sp/><txt>Motivo: </txt><tab/>			<cmb id="cmb_motivo" dim="50,1" brdr="0,2" bclr="255,255,255" clr="64,64,64" clrBrdr="255,255,255" OnChange="" tooltip="Motivo del contacto"/>			<tab n="2"/><txt>Fec. prog.  inicial: </txt>			<edt id="inp_fini" clr="64,64,64"  dim="15,1" brdr="0,2" bclr="255,255,255" type="date" nc="-1" fnt="Arial,0" available="Y" fmt="DD/MM/CCYY" page="_ks_fecha,inp_fini" OnF9="Dialog(3,_ks_fecha,inp_fini)" clrBrdr="255,255,255" visible="Y" modify="Y" tooltip="Fecha inicial de programaci&#243;n"/>			<tab n="2"/><txt>Fec. prog. final: </txt>			<edt id="inp_ffin" clr="64,64,64"  dim="15,1" brdr="0,2" bclr="255,255,255" type="date" nc="-1" fnt="Arial,0" available="Y" fmt="DD/MM/CCYY" page="_ks_fecha,inp_ffin" OnF9="Dialog(3,_ks_fecha,inp_ffin)" clrBrdr="255,255,255" visible="Y" modify="Y" tooltip="Fecha final de programaci&#243;n"/>		<br/>		<sp/>		<txt>Tipo N:</txt><tab/>		<cmb id="tipo_n" clr="64,64,64" clrBrdr="255,255,255"  dim="18,36" bclr="255,255,255" brdr="0,2" fnt="Arial,16" Null="N" hk="S"  available="Y" modify="Y"/>		<sp/><tab n="2"/>		<txt>Fec. inicial vale/ult. serv:</txt>		<edt id="fecha_valeserv_ini" dim="15,1"  fmt="DD/MM/CCYY" page="_ks_fecha,fecha_valeserv_ini" OnF9="Dialog(3,_ks_fecha,fecha_valeserv_ini)"  bclr="255,255,255" clr="64,64,64" type="date" clrBrdr="255,255,255" type="string" brdr="0,2"/>		 		<sp/><tab/>		<txt>Fec. final vale/ult. serv:</txt>		<edt id="fecha_valeserv_fin" dim="15,1"  fmt="DD/MM/CCYY" page="_ks_fecha,fecha_valeserv_fin" OnF9="Dialog(3,_ks_fecha,fecha_valeserv_fin)"  bclr="255,255,255" clr="64,64,64" type="date" clrBrdr="255,255,255" type="string" brdr="0,2"/>		<tab n="9"/>		<img id="bot" dim="20,20" bPx="1" brdr="0,1"  img="_20_Find.png" OnEnter="MostrarContactos()" available="Y" clrBrdr="0,0,0" visible="Y" modify="Y"/>		</grp>		<br/><br/>		<sp/>		<grp id="grpContactos" dim="100,32,7,12" bclr="236,240,243" fntClrBrdr="236,240,243" fntBrdr="Arial,18" hSpace="4" clrBrdr="0,58,112" brdr="0,5" fnt="Arial,16" tit="Lista de contactos sin atender">			<br/>					<sp/>			<tbl id="tbl_contactos" dim="140,18" brdr="1,0" clr="64,64,64" bclr="236,240,243" clrCur="255,255,255" clrBrdr="64,64,64" clrHead="0,58,112" 				bclrHead="236,240,243" Reorder="Y" nren="fijo" insdel="N" modify="N">				<col id="Sel" name="Sel." type="string" OnMouseD="SoN(Sel)" OnChange="ValidaSoN(tbl_contactos,Sel)" tooltip="S &#243; N (Doble click para cambiar)"/>				<col id="folio_tmkt" name="Folio" type="string" tooltip="Folio telemarketing"/>				<col id="fecha" name="Fecha" type="string" nc="-1" tooltip="Fecha programaci&#243;n"/>				<col id="hora" name="Hora" type="string" nc="8" OnMouseD="SetOrder(hora)" tooltip="Hora programaci&#243;n"/>				<col id="cliente" name="Cliente" type="string" nc="35" OnMouseD="SetOrder(cliente)" tooltip="Clave y nombre de cliente"/>				<col id="serie" name="Serie Auto" type="string" nc="15" OnMouseD="SetOrder(serie)" tooltip="No. Serie del auto"/>				<col id="asesor" name="Asesor" type="string" nc="20" OnMouseD="SetOrder(asesor)" tooltip="Asesor asignado"/>				<col id="motivo" name="Motivo" type="string" OnMouseD="SetOrder(motivo)" tooltip="Motivo del contacto"/>				<col id="tipo_n" name="Tipo N" type="string" nc="10"/>				<col id="vale_salida_ult_srv" name="Vale_salida/Ult_serv" type="date" nc="-1" fmt="DD/MM/CCYY"/>				<col id="medio" name="Medio de contacto" type="string" nc="20" visible="N" OnMouseD="SetOrder(medio)" tooltip="Medio de contacto preferido"/>								<col id="estatus" name="Estatus" type="string" nc="12" OnMouseD="SetOrder(estatus)" tooltip="Estatus del contacto"/>				<col id="resultado" name="Resultado" type="string" nc="20" OnMouseD="SetOrder(resultado)" tooltip="Resultado del contacto"/>				<col id="accion" name="Acci&#243;n" type="string" nc="20" OnMouseD="SetOrder(accion)" tooltip="Siguiente acci&#243;n del contacto"/>				<col id="asesor_nuevo" name="Asesor Nuevo" type="string" nc="20" visible="N"/>				<col id="reasignado" name="Reasignado" type="string" nc="1" visible="N"/>			</tbl>			<br/>			<sp/><bot id="bot_sel" dim="12,0" brdr="5" text="Sel. Todos" OnEnter="SeleccTodos()" tooltip="Seleccionar todos los contactos"/>			<sp/><bot id="bot_des" dim="12,0" brdr="5" text="Des. Todos" OnEnter="DeseleccTodos()" tooltip="Deseleccionar todos los contactos"/>			<tab n="9"/><txt>Registros seleccionados:</txt><sp/>			<inp id="inp_contactos_sel" dim="10,1" brdr="2,0" bclr="255,255,255" clr="64,64,64" clrBrdr="255,255,255" type="number" just="R" modify="N" available="N" tooltip="No. contactos seleccionados"/>			<sp/>			<tbl id="tbl_paso" dim="20,5" brdr="1,0" clr="64,64,64" bclr="236,240,243" clrCur="255,255,255" clrBrdr="64,64,64" clrHead="0,58,112" 				bclrHead="236,240,243" Reorder="Y" nren="fijo" insdel="N" modify="N" visible="N">				<col id="Sel" name="Sel." type="string"/>				<col id="folio_tmkt" name="Folio" type="string"/>				<col id="asesor_nuevo" name="Asesor Nuevo" type="string"/>			</tbl>			<tab n="10"/>			<img id="Exportar" dim="40,40" bPx="Y" brdr="0,1" img="60_Save.png" OnEnter="guardar_tabla(tbl_contactos)" available="Y" clrBrdr="0,0,0" visible="Y" 						modify="Y" tooltip="Guardar tabla"/>						</grp>		<br/><br/>		<sp/>		<grp id="grpAcciones" dim="35,22,7,12" bclr="236,240,243" fntClrBrdr="236,240,243" fntBrdr="Arial,18" hSpace="4" clrBrdr="0,58,112" brdr="0,5" fnt="Arial,16" tit="Acciones sobre seleccionados">			<sp/>			<txt>Acci&#243;n:</txt>			<cmb id="cmb_accion" dim="16,1" brdr="2,0" bclr="255,255,255" clr="64,64,64" clrBrdr="255,255,255" OnChange="ValAccion()" tooltip="Acci&#243;n a realizar con los contactos seleccionados"/>			<tab n="2"/><txt>Factor:</txt>			<cmb id="cmb_factor" dim="13,1" brdr="2,0" bclr="255,255,255" clr="64,64,64" clrBrdr="255,255,255" OnChange="CambiaFactor()" tooltip="Factor a utilizar para la asignaci&#243;n" available="Y"/>			<br/><sp/>			<tbl id="tbl_asignar" dim="48,10" brdr="1,0" clr="64,64,64" bclr="236,240,243" clrCur="255,255,255" clrBrdr="64,64,64" clrHead="0,58,112" bclrHead="236,240,243" Reorder="N" nren="fijo" insdel="N" available="Y">				<col id="Sel" name="Sel." type="string" modify="N" available="Y" OnMouseD="SoN_generico(tbl_asignar,Sel,inp_asesores_sel)" OnChange="ValidaSoN(tbl_asignar,Sel)" tooltip="S &#243; N (Doble click para cambiar)"/>				<col id="asesor" name="Asesor" type="string" nc="-1" modify="N" available="Y" tooltip="Asesor a asignar"/>	<!--			<col id="porcentaje" name="%" type="number" modify="Y" available="Y" OnChange="ValSeleccion()" tooltip="% a utilizar para la asignaci&#243;n"/>		-->				<col id="cantidad" name="Cantidad" type="number" modify="S" available="S"  OnChange="ValCantidad()" tooltip="Cantidad a asignar"/>			</tbl>									<br/><sp/>			<txt>Total asignar:</txt><sp/>			<tab n="3"/><sp/>			<inp id="inp_cantidad_asignar" dim="9,1" brdr="2,0" bclr="255,255,255" clr="64,64,64" clrBrdr="255,255,255" type="number" just="R" modify="N" available="N" tooltip="Cantidad total de contactos a asignar"/>			<tab/>	<!--				<inp id="inp_porc_asignar" dim="6,1" brdr="2,0" bclr="255,255,255" clr="64,64,64" clrBrdr="255,255,255" type="number" just="R" modify="N" available="N" tooltip="% total de contactos a asignar"/>			<txt>%</txt>	-->					<br/><sp/>			<bot id="bot_asignar" dim="15,0" brdr="5" text="Reasignar" OnChange="ProcesaAsignar()" tooltip="Asignar contactos"/>			<tab n="4"/><txt>No. asesores sel:</txt><sp/>			<inp id="inp_asesores_sel" dim="6,1" brdr="2,0" bclr="255,255,255" clr="64,64,64" clrBrdr="255,255,255" type="number" just="R" modify="N" available="N" tooltip="No. asesores seleccionados"/>		</grp>					<sp/>		<grp id="grpResumen" dim="64,21,7,12" bclr="236,240,243" fntClrBrdr="236,240,243" fntBrdr="Arial,18" hSpace="4" clrBrdr="0,58,112" brdr="0,5" fnt="Arial,16" tit="Resumen de Asignaciones">			<sp/>			<cmb id="cmb_gost" dim="13,1" brdr="2,0" bclr="255,255,255" clr="64,64,64" clrBrdr="255,255,255" OnChange="" tooltip="" visible="N"/>			<br/><sp/>			<tbl id="tbl_resumen" dim="75,10" brdr="1,0" clr="64,64,64" bclr="236,240,243" clrCur="255,255,255" clrBrdr="64,64,64" clrHead="0,58,112" bclrHead="236,240,243" Reorder="N" nren="fijo" insdel="N">				<col id="asesor" name="Asesor" type="string" nc="-1" tooltip="Asesor"/>				<col id="num" name="# Asignados" type="number" nc="-1" tooltip="No. contactos asignados"/>				<col id="porcentaje" name="% Asig." type="number" nd="2" tooltip="% contactos asignados"/>				<col id="statcarga" name="Carga" type="string" nc="-1" tooltip="Estatus de Carga"/>				<col id="por_atender" name="Por Atender" type="number" nc="-1" tooltip="No. contactos por atender"/>			<!--	<col id="atendidos" name="Atendidos" type="number" nc="-1" tooltip="No. contactos Atendidos"/>			-->			</tbl>					<br/>				<sp/><txt>Total asignados:</txt>			<tab/><inp id="inp_totalasignados" dim="10,1" brdr="2,0" bclr="255,255,255" clr="64,64,64" clrBrdr="255,255,255" type="number" modify="N" tooltip="Total de contactos asignados"/>			<tab n="6"/><inp id="inp_totalsinatender" dim="10,1" brdr="2,0" bclr="255,255,255" clr="64,64,64" clrBrdr="255,255,255" type="number" modify="N" visible="N" tooltip="Total de contactos sin atender"/>			<tab/>			<inp id="inp_totalatendidos" dim="10,1" brdr="2,0" bclr="255,255,255" clr="64,64,64" clrBrdr="255,255,255" type="number" modify="N" visible="N" tooltip="Total de contactos atendidos"/>								</grp>				<br/><br/>		<br/><br/>		<tab/>					</grp>	<script>		InstallDriver("KDB75");		class Main {			var frn,kdb,sys;			var usuario,suc_usuario,rol_usuario,asterisco;			var resMensaje, cubo, cmd, ok,mensajeError;			var selOperacion, fileSavePath;			fun Main() {				frn=new FRNT;				kdb=new KDB;				sys=new SYS;				usuario = frn.config("user","name");				rol_usuario = frn.config("user","role");				suc_usuario = frn.lib("libKepler","UserInfo(1)");				asterisco = "*";					fileSavePath = "C:\Basura";							Inicializa();			}						fun SetOrder(opcion){				var	renglon, columna, orden;//				frn.message("Estableciendo orden","Mensaje","Aceptar");								renglon=frn.getJ("tbl_contactos");//				if (renglon != 0){//					return;//				}				if (opcion &= "fecha"){					orden = frn.get("tbl_contactos",0,"fecha");					if(orden &= ""){						frn.setX("ASC","tbl_contactos",0,"fecha");					}else if(orden &= "ASC"){						frn.setX("DESC","tbl_contactos",0,"fecha");					}else{						frn.setX("","tbl_contactos",0,"fecha");					}					orden = frn.get("tbl_contactos",0,"fecha");				}			}			fun SoN(campo) {				if (frn.get("tbl_contactos",-1,campo) &= "S"){					frn.setX("N","tbl_contactos",-1,campo);                } else {					frn.setX("S","tbl_contactos",-1,campo);                }				CuentaSel("tbl_contactos","Sel","inp_contactos_sel");            }			fun SoN_generico(tabla,campo,dato_actualiza) {				if (frn.get(tabla,-1,campo) &= "S"){					frn.setX("N",tabla,-1,campo);					frn.setX("",tabla,-1,"cantidad");					frn.setX("",tabla,-1,"porcentaje");                } else {					frn.setX("S",tabla,-1,campo);                }				CuentaSel(tabla,campo,dato_actualiza);				TotalesAsignar();            }			fun TotalesAsignar(){				var renglones, totCant, totPorc;				totCant=0;				totPorc=0;				renglones = frn.N("tbl_asignar");				for (var i=0; i<renglones; i++) {					if (frn.get("tbl_asignar",i,"Sel") &="S"){						if (frn.get("cmb_factor",-1,1) &= "C"){							totCant = totCant + frn.get("tbl_asignar",i,"cantidad");						}						if (frn.get("cmb_factor",-1,1) &= "P"){							totPorc = totPorc + frn.get("tbl_asignar",i,"porcentaje");						}					}				}				frn.set("inp_cantidad_asignar",totCant);				frn.set("inp_porc_asignar",totPorc);				if (frn.get("inp_cantidad_asignar") > frn.get("inp_contactos_sel")){					frn.message("La cantidad de contactos por asignar es mayor al No. contactos seleccionados|Verifique","Atención","Aceptar");					frn.setPos("tbl_asignar",-1,"cantidad");					return;				}			}			fun ValCantidad(){//Lo pase aqui, quitar si se habilita cmb_factor xq esta en ValSeleccion()				if (frn.get("tbl_asignar",-1,"cantidad") > 0){					if (frn.get("tbl_asignar",-1,"Sel") &= "N"){						frn.message("El registro debe estar seleccionado","Atención","Aceptar");						frn.setX("","tbl_asignar",-1,"cantidad");						frn.setPos("tbl_asignar",-1,"Sel");						return;					}				} else if (frn.get("tbl_asignar",-1,"cantidad") <= 0) {					frn.message("La cantidad debe ser mayor a 0","Atención","Aceptar");					return;				}				TotalesAsignar();			}   			fun ValidaSoN(tabla,campo){				if (frn.get(tabla,-1,campo) &! "S" && frn.get(tabla,-1,campo) &! "N"){					frn.setPos("tabla",-1,campo);					frn.message("Sólo puede ser S o N","Error","&Aceptar");				return;				}  			}    			fun SeleccTodos(){				var renglones, cuenta;				renglones = frn.N("tbl_contactos");				for (var i=0; i<renglones; i++) {					frn.setX("S","tbl_contactos",i,"Sel");					cuenta = cuenta + 1;									}				frn.set("inp_contactos_sel",cuenta);			}			fun DeseleccTodos(){				var renglones, cuenta;				renglones = frn.N("tbl_contactos");				for (var i=0; i<renglones; i++) {					frn.setX("N","tbl_contactos",i,"Sel");				}				frn.set("inp_contactos_sel",0);			}			fun CuentaSel(tabla,campo,actualiza){				var renglones, cuentaS, cuentaN;				cuentaS=0;				cuentaN=0;				renglones = frn.N(tabla);				for (var i=0; i<renglones; i++) {					if (frn.get(tabla,i,campo) &="S"){						cuentaS = cuentaS + 1;					}					if (frn.get(tabla,i,campo) &="N"){						cuentaN = cuentaN + 1;					}									}				frn.set(actualiza,cuentaS);							}					fun Inicializa(){				//Llenar combo sucursales				cmd = "select '['||c1||'] '||c2 as c2, c1 from keplersc.kdms";				if (rol_usuario &! "ADMINISTRADOR"  && rol_usuario &! "ADMINISTRATOR"){					cmd = cmd & " where c1='" & suc_usuario & "'";				}else {					if (suc_usuario &! asterisco && suc_usuario &! "" ){						cmd = cmd & " where c1='" & suc_usuario & "'";					}				}							cubo = frn.lib("libGeneral.kpl","EjecutarSqlSel",cmd,"sertmktview.Inicializa()");								ok=getXmlAtt(cubo,"ok");				if(ok &! "" && !ok){					mensajeError = getXmlAtt(cubo,"native3");					mensajeError = frn.lib("libGeneral.kpl","ErrorBD",mensajeError);					frn.message(mensajeError,"Error","Aceptar");					return;				}								frn.set("k_sucn",getXml(cubo));										//Llenar Combo asesores cmb_asesor				cmd = "select '['||c1||'] '||c2 as descripcion, c1 as clave from keplersc.kdsercattmkt where c3='A' and col_sucursal='" & frn.get("k_sucn",-1,1) & "' order by c1";									rstXml(cubo);				cubo = frn.lib("libGeneral.kpl","EjecutarSqlSel",cmd,"sertmktasignacion.Inicializa()");				frn.lib("libGeneral.kpl","FileSave",cubo,fileSavePath & "\xmlRes");																ok=getXmlAtt(cubo,"ok");				if(ok &! "" && !ok){					mensajeError = getXmlAtt(cubo,"native3");					mensajeError = frn.lib("libGeneral.kpl","ErrorBD",mensajeError);					frn.message(mensajeError,"Error","Aceptar");					return;				}					   frn.setX("","cmb_asesor",0,0);				llenar_cmb(cubo,"cmb_asesor" );								//Llena tabla asesores seccion acciones y resumen				var len_cubo = nXml(cubo);				frn.rst("tbl_asignar");					for (var cont=0; cont<len_cubo ; cont++){					var desc= getXmlAtt(cubo,"r"&cont,"descripcion");					var clave= getXmlAtt(cubo,"r"&cont,"clave");									frn.setX("N","tbl_asignar",cont,"Sel");					frn.setX(clave,"tbl_asignar",cont,"asesor");					frn.setX(clave,"tbl_resumen",cont,"asesor");										}									//Llenar cmb_tipocontacto				frn.setX("Todos","cmb_tipocontacto",0,0);				frn.setX("T","cmb_tipocontacto",0,1);				frn.setX("Sin Asignar","cmb_tipocontacto",1,0);				frn.setX("SA","cmb_tipocontacto",1,1);				frn.setX("Asignados","cmb_tipocontacto",2,0);				frn.setX("A","cmb_tipocontacto",2,1);																//Llenar cmb_motivo				cmd = "select '['||motivo_id||'] '||descripcion as descripcion, motivo_id as clave from keplersc.kdtmktmotivo order by motivo_id";				cubo = frn.lib("libGeneral.kpl","EjecutarSqlSel",cmd,"tmkt_view.Inicializa()");									ok=getXmlAtt(cubo,"ok");				if(ok &! "" && !ok){					mensajeError = getXmlAtt(cubo,"native3");					mensajeError = frn.lib("libGeneral.kpl","ErrorBD",mensajeError);					frn.message(mensajeError,"Error","Aceptar");					return;				}							frn.setX("","cmb_motivo",0,0);				llenar_cmb(cubo,"cmb_motivo");				//Llenar combo tipo_n				cmd = "select '['||c2||'] '||c3 as descripcion, c2 as clave from keplersc.kd_tipo_n where c1='" & frn.get("k_sucn",-1,1) & "'";							cubo = frn.lib("libGeneral.kpl","EjecutarSqlSel",cmd,"sertmktasignacion.Inicializa()");									ok=getXmlAtt(cubo,"ok");				if(ok &! "" && !ok){					mensajeError = getXmlAtt(cubo,"native3");					mensajeError = frn.lib("libGeneral.kpl","ErrorBD",mensajeError);					frn.message(mensajeError,"Error","Aceptar");					return;				}						frn.setX("","tipo_n" ,0,0);				llenar_cmb(cubo ,"tipo_n");				//Llenar cmb_accion				frn.setX("Reasignar","cmb_accion",0,0);				frn.setX("R","cmb_accion",0,1);				frn.setX("Desasignar","cmb_accion",1,0);				frn.setX("D","cmb_accion",1,1);				//Llenar cmb_factor				frn.setX("","cmb_factor",0,0);				frn.setX("Cantidad","cmb_factor",1,0);				frn.setX("C","cmb_factor",1,1);				/*	Se deja	preparado para mas adelante si lo requieren				frn.setX("%","cmb_factor",2,0);				frn.setX("P","cmb_factor",2,1);				frn.setX("Balanceado","cmb_factor",3,0);				frn.setX("B","cmb_factor",3,1);				*/								frn.set("cmb_factor","Cantidad");				ValAccion();			}											fun MostrarContactos(){				var xmlDetConv, xmlDetalle, strTmp, xmlCurDet, contDet, setXmlStr, val_asesor, val_contactos,val_motivo, fecha_prog_ini, fecha_prog_fin, suc_base,fecha_valeserv_ini,fecha_valeserv_fin,tipo_n,xmlParametros;				//Llenar lista de resultados de contactos				suc_base = frn.get("k_sucn",-1,1);				val_asesor = frn.get("cmb_asesor",-1,1);				val_contactos = frn.get("cmb_tipocontacto",-1,1);				val_motivo = frn.get("cmb_motivo",-1,1);				fecha_prog_ini = frn.get("inp_fini");				fecha_prog_fin = frn.get("inp_ffin");				fecha_valeserv_ini = frn.get("fecha_valeserv_ini");				fecha_valeserv_fin = frn.get("fecha_valeserv_fin");				tipo_n = frn.get("tipo_n",-1,1);				setXml(xmlParametros,"sucursal_id",suc_base);				setXml(xmlParametros,"asesor",val_asesor);				setXml(xmlParametros,"contactos",val_contactos);				setXml(xmlParametros,"motivo",val_motivo);				setXml(xmlParametros,"fec_prog_ini",fecha_prog_ini);				setXml(xmlParametros,"fec_prog_fin",fecha_prog_fin);				setXml(xmlParametros,"fecha_valeserv_ini",fecha_valeserv_ini);				setXml(xmlParametros,"fecha_valeserv_fin",fecha_valeserv_fin);				setXml(xmlParametros,"tipo_n",tipo_n);				cmd = "select * from keplersc.ser_tmkt_obtenercontactos('<document>" & getXmlStr(xmlParametros,"EOF:13_10") & "</document>')";					cubo = frn.lib("libGeneral.kpl","EjecutarSqlSel",cmd,"sertmktasignacion.MostrarContactos()");				frn.lib("libGeneral.kpl","FileSave",cubo,fileSavePath & "\cubocontactos");					ok=getXmlAtt(cubo,"ok");				if(ok &! "" && !ok){					mensajeError = getXmlAtt(cubo,"native3");					mensajeError = frn.lib("libGeneral.kpl","ErrorBD",mensajeError);					frn.message(mensajeError,"Error","Aceptar");					return;				}				rstXml(xmlDetConv);				strTmp=getXmlAtt(cubo,"r0","ser_tmkt_obtenercontactos");				rstXml(xmlDetalle);				strTmp=delScpScn(strTmp);				setXmlStr(xmlDetalle,strTmp);				contDet=nXml(xmlDetalle);				for(var y=0; y< contDet; y++){					rstXml(xmlCurDet);					xmlCurDet= getXmlX(xmlDetalle,3,y);						//setXml(xmlDetConv,"tbl_contactos","r"&y,xmlCurDet);					setXml(xmlDetConv,"r"&y,xmlCurDet);				}					frn.lib("libGeneral.kpl","FileSave",xmlDetConv,fileSavePath & "\cuboRowsContactos");									//Llena manual la tabla				contDet = nXml(xmlDetConv);				frn.rst("tbl_contactos");				//frn.setX("Orden","tbl_contactos",0,"Sel");				//frn.setX("Filtro","tbl_contactos",1,"Sel");				for (var contOrd=0; contOrd<contDet ; contOrd++){					frn.setX( getXml(xmlDetConv,"r"&contOrd,"folio_tmkt"),"tbl_contactos",contOrd,"folio_tmkt");					frn.setX( getXml(xmlDetConv,"r"&contOrd,"fecha"),"tbl_contactos",contOrd,"fecha");					frn.setX( getXml(xmlDetConv,"r"&contOrd,"hora"),"tbl_contactos",contOrd,"hora");					frn.setX( getXml(xmlDetConv,"r"&contOrd,"cliente"),"tbl_contactos",contOrd,"cliente");					frn.setX( getXml(xmlDetConv,"r"&contOrd,"serie"),"tbl_contactos",contOrd,"serie");					frn.setX( getXml(xmlDetConv,"r"&contOrd,"motivo"),"tbl_contactos",contOrd,"motivo");					frn.setX( getXml(xmlDetConv,"r"&contOrd,"asesor"),"tbl_contactos",contOrd,"asesor");					frn.setX( getXml(xmlDetConv,"r"&contOrd,"tipo_n"),"tbl_contactos",contOrd,"tipo_n");					frn.setX( getXml(xmlDetConv,"r"&contOrd,"vale_salida_ult_srv"),"tbl_contactos",contOrd,"vale_salida_ult_srv");					frn.setX( getXml(xmlDetConv,"r"&contOrd,"medio"),"tbl_contactos",contOrd,"medio");					frn.setX( getXml(xmlDetConv,"r"&contOrd,"estatus"),"tbl_contactos",contOrd,"estatus");					frn.setX( getXml(xmlDetConv,"r"&contOrd,"resultado"),"tbl_contactos",contOrd,"resultado");					frn.setX( getXml(xmlDetConv,"r"&contOrd,"accion"),"tbl_contactos",contOrd,"accion");				}					frn.set("inp_contactos_sel",0);				ResumenAsignaciones();			}			fun ResumenAsignaciones(){				var xmlDetConv, xmlDetalle, strTmp, xmlCurDet, contDet, setXmlStr, val_asesor, val_contactos,val_motivo, fecha_prog_ini, fecha_prog_fin, suc_base;				var pAsignados=0, totAtendidos=0,totAsignados=0,totXAtender=0, pbalance=0, pdif=0;				//Llenar tabla de resumen asignaciones				suc_base = frn.get("k_sucn",-1,1);				fecha_prog_ini = frn.get("inp_fini");				fecha_prog_fin = frn.get("inp_ffin");				cmd = "select * from keplersc.ser_tmkt_resumenasignaciones('" & suc_base &"','" & fecha_prog_ini & "','" & fecha_prog_fin &"')";				//frn.message(cmd);				cubo = frn.lib("libGeneral.kpl","EjecutarSqlSel",cmd,"sertmktasignacion.ResumenAsignaciones()");				frn.lib("libGeneral.kpl","FileSave",cubo,fileSavePath & "\cuboresumen");					ok=getXmlAtt(cubo,"ok");				if(ok &! "" && !ok){					mensajeError = getXmlAtt(cubo,"native3");					mensajeError = frn.lib("libGeneral.kpl","ErrorBD",mensajeError);					frn.message(mensajeError,"Error","Aceptar");					return;				}				rstXml(xmlDetConv);				strTmp=getXmlAtt(cubo,"r0","ser_tmkt_resumenasignaciones");				rstXml(xmlDetalle);				strTmp=delScpScn(strTmp);				setXmlStr(xmlDetalle,strTmp);				contDet=nXml(xmlDetalle);				for(var y=0; y< contDet; y++){					rstXml(xmlCurDet);					xmlCurDet= getXmlX(xmlDetalle,3,y);						setXml(xmlDetConv,"r"&y,xmlCurDet);				}					frn.lib("libGeneral.kpl","FileSave",xmlDetConv,fileSavePath & "\cuboRowsResumen");									//Llena manual la tabla				contDet = nXml(xmlDetConv);				frn.rst("tbl_resumen");				for (var contOrd=0; contOrd<contDet ; contOrd++){					frn.setX( getXml(xmlDetConv,"r"&contOrd,"asesor"),"tbl_resumen",contOrd,"asesor");					frn.setX( getXml(xmlDetConv,"r"&contOrd,"asignados"),"tbl_resumen",contOrd,"num");					frn.setX( getXml(xmlDetConv,"r"&contOrd,"cliente"),"tbl_resumen",contOrd,"statcarga");					frn.setX( getXml(xmlDetConv,"r"&contOrd,"sin_atender"),"tbl_resumen",contOrd,"por_atender");					//frn.setX( getXml(xmlDetConv,"r"&contOrd,"atendidos"),"tbl_resumen",contOrd,"atendidos");					//totAtendidos = totAtendidos + frn.get("tbl_resumen",contOrd,"atendidos");					totAsignados = totAsignados + frn.get("tbl_resumen",contOrd,"num");					totXAtender = totXAtender + frn.get("tbl_resumen",contOrd,"por_atender");				}					frn.set("inp_totalasignados",totAsignados); 				frn.set("inp_totalsinatender",totXAtender); 				//frn.set("inp_totalatendidos",totAtendidos);				pbalance= ((totAsignados/contDet)/totAsignados)*100;				for (var contOrd=0; contOrd<contDet ; contOrd++){					//calcular %asignados					pAsignados = (frn.get("tbl_resumen",contOrd,"num")/frn.get("inp_totalsinatender"))*100;					frn.setX(pAsignados,"tbl_resumen",contOrd,"porcentaje");					pAsignados = 0;					//calcular sobrecarga					pdif = frn.get("tbl_resumen",contOrd,"porcentaje") - pbalance;					if (pdif > 0.5){						frn.setX("Sobreasignado" ,"tbl_resumen",contOrd,"statcarga");					}					if ((pdif > -0.5) && (pdif <= 0.5)){						frn.setX("Normal" ,"tbl_resumen",contOrd,"statcarga");					}					if (pdif <= -0.5){						frn.setX("Subasignado" ,"tbl_resumen",contOrd,"statcarga");					}					pdif =0;				}																					//frn.set("inp_totalasignados",(frn.get("inp_totalsinatender") + frn.get("inp_totalatendidos")));							}			fun CambiaFactor(){				var renglones;				renglones=frn.N("tbl_asignar");				if (frn.get("cmb_factor",-1,1) &= "P"){					for (var i=0; i<renglones; i++) {						frn.setX("","tbl_asignar",i,"cantidad");					}					frn.setAtt("tbl_asignar", "available", "Y", "porcentaje");					frn.setAtt("tbl_asignar", "modify", "Y", "porcentaje");					frn.setAtt("tbl_asignar", "available", "N", "cantidad");					frn.setAtt("tbl_asignar", "modify", "N", "cantidad");				}				if (frn.get("cmb_factor",-1,1) &= "C"){					for (var i=0; i<renglones; i++) {						frn.setX("","tbl_asignar",i,"porcentaje");					}					frn.setAtt("tbl_asignar", "available", "N", "porcentaje");					frn.setAtt("tbl_asignar", "modify", "N", "porcentaje");					frn.setAtt("tbl_asignar", "available", "Y", "cantidad");					frn.setAtt("tbl_asignar", "modify", "Y", "cantidad");				}				if (frn.get("cmb_factor",-1,1) &= "B"){					for (var i=0; i<renglones; i++) {						frn.setX("","tbl_asignar",i,"cantidad");						frn.setX("","tbl_asignar",i,"porcentaje");					}					frn.setAtt("tbl_asignar", "available", "N", "porcentaje");					frn.setAtt("tbl_asignar", "modify", "N", "porcentaje");					frn.setAtt("tbl_asignar", "available", "N", "cantidad");					frn.setAtt("tbl_asignar", "modify", "N", "cantidad");				}			}			fun llenar_cmb(cuboResultados, cmb){				var len_cubo = nXml(cuboResultados);				var pos_ini = frn.N(cmb);				for (var cont=0; cont<len_cubo ; cont++){					var desc= getXmlAtt(cuboResultados,"r"&cont,"descripcion");					var clave= getXmlAtt(cuboResultados,"r"&cont,"clave");									frn.setX(desc, cmb, cont+pos_ini ,0);					frn.setX(clave, cmb, cont+pos_ini ,1);													}				}			fun ValContactosAsesor(){				if (frn.get("cmb_tipocontacto",-1,1) &= "SA"){	//Sin Asignar					frn.set("cmb_asesor","");				}				if (frn.get("cmb_tipocontacto",-1,1) &= "T"){	//Todos					frn.set("inp_fini","");					frn.set("inp_ffin","");					frn.set("cmb_asesor","");				}			}			fun ValAsesorContactos(){				if (frn.get("cmb_asesor",-1,1) &! ""){	//Tiene seleccionado un asesor					frn.set("cmb_tipocontacto","");				}			}			fun ValAccion(){				if (frn.get("cmb_accion",-1,1) &= "R"){	//Reasignar					frn.setAtt("cmb_factor", "available", "Y");					frn.setAtt("tbl_asignar", "available", "Y");					LimpiaTbl_asignar();					frn.set("inp_asesores_sel",0);					//frn.set("cmb_factor",""); //descomentariar linea si se habilitan las otras opciones del combo					frn.setAtt("tbl_asignar", "available", "Y", "Sel");					frn.setAtt("tbl_asignar", "available", "N", "porcentaje");					frn.setAtt("tbl_asignar", "modify", "N", "porcentaje");					frn.setAtt("tbl_asignar", "available", "S", "cantidad"); //Ponen en S si se habilitan las otras opciones del combo					frn.setAtt("tbl_asignar", "modify", "S", "cantidad");  //Ponen en N si se habilitan las otras opciones del combo					frn.set("cmb_factor","Cantidad"); //quitar si se habilita las otras opciones de combo					frn.setAtt("bot_asignar", "text", "Reasignar");									}				if (frn.get("cmb_accion",-1,1) &= "D"){	//Desasignar					LimpiaTbl_asignar();					frn.set("inp_asesores_sel",0);					frn.setAtt("cmb_factor", "available", "N");					frn.setAtt("tbl_asignar", "available", "N");					frn.setAtt("cmb_factor", "available", "N");					frn.set("cmb_factor","");					frn.setAtt("bot_asignar", "text", "Desasignar");				}			}			fun LimpiaTbl_asignar(){				var renglones;				renglones=frn.N("tbl_asignar");				for (var i=0; i<renglones; i++) {					frn.setX("N","tbl_asignar",i,"Sel");					frn.setX("","tbl_asignar",i,"porcentaje");					frn.setX("","tbl_asignar",i,"cantidad");				}				frn.set("inp_cantidad_asignar","");				frn.set("inp_asesores_sel","");			}			fun ValSeleccion(){				var pcant;				if (frn.get("tbl_asignar",-1,"cantidad") > 0){					if (frn.get("tbl_asignar",-1,"Sel") &= "N"){						frn.message("El registro debe estar seleccionado","Atención","Aceptar");						frn.setX("","tbl_asignar",-1,"cantidad");					}				}				if (frn.get("tbl_asignar",-1,"porcentaje") > 0){					if (frn.get("tbl_asignar",-1,"Sel") &= "N"){						frn.message("El registro debe estar seleccionado","Atención","Aceptar");						frn.setX("","tbl_asignar",-1,"porcentaje");					}					pcant = (frn.get("inp_contactos_sel") * frn.get("tbl_asignar",-1,"porcentaje"))/100;					frn.setX(pcant,"tbl_asignar",-1,"cantidad");					pcant = math("round",(frn.get("inp_contactos_sel") * frn.get("tbl_asignar",-1,"porcentaje"))/100,2);					//ver como se ajustara la cantidad pcant cuando se %					//frn.setX(pcant,"tbl_asignar",-1,"cantidad");				}				TotalesAsignar();			}		 			fun ProcesaAsignar(){				var renglones,totCant=0, regcont, totasig, strAsesor, valCant, valPorc,renpaso;				var xmlPantalla, strMsg, continua, resultado, mensaje;							renglones = frn.N("tbl_contactos");				if (frn.get("inp_contactos_sel") == 0) {					frn.message("No hay contactos selecionados|Verifique","Atención","Aceptar");					return;				}				renglones = frn.N("tbl_asignar");				if (frn.get("inp_asesores_sel") == 0) {					frn.message("Al menos debe selecionar un asesor para reasignar los contactos|Verifique","Atención","Aceptar");					return;				}				if (frn.get("inp_asesores_sel") > 1) {					if (frn.get("cmb_factor",-1,1) &="C"){	//Cantidad						for (var i=0; i<renglones; i++) {							if (frn.get("tbl_asignar",i,"Sel") &="S"){								totCant = totCant + frn.get("tbl_asignar",i,"cantidad");							}						}						if (totCant <=0){							frn.message("La cantidad de contactos por reasignar No puede ser 0 o cantidad negativa|Verifique","Atención","Aceptar");							return;						}						if (totCant < frn.get("inp_contactos_sel")){							frn.message("La cantidad de contactos por reasignar es menor al No. contactos seleccionados...|Verifique","Atención","Aceptar");							return;						}						if (totCant > frn.get("inp_contactos_sel")){							frn.message("La cantidad de contactos por reasignar es mayor al No. contactos seleccionados...|Verifique","Atención","Aceptar");							return;						}					}						if (frn.get("cmb_factor",-1,1) &="P"){	//Porcentaje						for (var i=0; i<renglones; i++) {							if (frn.get("tbl_asignar",i,"Sel") &="S"){								totCant = totCant + frn.get("tbl_asignar",i,"porcentaje");							}						}						if (totCant < 100){							frn.message("El % por reasignar es menor al 100%...|Verifique","Atención","Aceptar");							return;						}						if (totCant > 100){							frn.message("El % por reasignar es mayor al 100%...|Verifique","Atención","Aceptar");							return;						}					}				}				continua = frn.message("¿Desea continuar con la asignación?","Atención",2);				if (continua == 0){					return;				}				//Distribución				renpaso = 0;				totasig = 1;				renglones = frn.N("tbl_asignar");		//Asesores				regcont = frn.N("tbl_contactos");		//Contactos				for (var i=0; i<renglones; i++) {		//For Asesores					strAsesor = frn.get("tbl_asignar",i,"asesor");					valCant = frn.get("tbl_asignar",i,"cantidad");					valPorc = frn.get("tbl_asignar",i,"porcentaje");					if (frn.get("tbl_asignar",i,"Sel") &="S"){						for (var cont=0; cont<regcont; cont++){		//For Contactos							if (frn.get("tbl_contactos",cont,"Sel") &="S" && frn.get("tbl_contactos",cont,"reasignado") &="" ){								var stfol= frn.get("tbl_contactos",cont,"folio_tmkt");																if (frn.get("inp_asesores_sel") == 1){			//Un solo asesor nuevo									frn.setX(strAsesor,"tbl_contactos",cont,"asesor_nuevo");									frn.setX("S","tbl_contactos",cont,"reasignado");																		//Graba en tabla paso									frn.setX("S","tbl_paso",renpaso,"Sel");									frn.setX(stfol,"tbl_paso",renpaso,"folio_tmkt");									frn.setX(strAsesor,"tbl_paso",renpaso,"asesor_nuevo");									renpaso = renpaso +1;								} else {									if (frn.get("cmb_factor",-1,1) &= "C" || frn.get("cmb_factor",-1,1) &= "P"){										if (totasig <= valCant){											frn.setX(strAsesor,"tbl_contactos",cont,"asesor_nuevo");											frn.setX("S","tbl_contactos",cont,"reasignado");											//Graba en tabla paso											frn.setX("S","tbl_paso",renpaso,"Sel");											frn.setX(frn.get("tbl_contactos",cont,"folio_tmkt"),"tbl_paso",renpaso,"folio_tmkt");											frn.setX(strAsesor,"tbl_paso",renpaso,"asesor_nuevo");											totasig = totasig +1;											renpaso = renpaso +1;										} else {											totasig = 1;											break;											}									}												}								}						}					}				}				xmlPantalla = getXml(frn.dataPag()); //Obtener el xml de la pantalla;				setXml(xmlPantalla,"tbl_paso","no_partidas",frn.N("tbl_paso"));				setXml(xmlPantalla,"tbl_contactos","no_partidas",frn.N("tbl_contactos"));				setXml(xmlPantalla,"tbl_asignar","no_partidas",frn.N("tbl_asignar"));				frn.lib("libGeneral.kpl","FileSave",xmlPantalla,fileSavePath & "\XmlPantallaAsigManual");							cmd="SELECT * FROM keplersc.ser_tmkt_asignar_manual('<document>" & getXmlStr(xmlPantalla,"EOF:13_10") & "</document>')";				//kdb.rst(cuboQuery);				rstXml(cubo);									cubo= frn.lib("libGeneral.kpl","EjecutarSql",cmd,"sertmktasignacion.Ejecuta");								frn.lib("libGeneral.kpl","FileSave",cubo, fileSavePath & "\XmlResultadoAsigManual");									resultado = getXml(cubo,"resultado");				mensaje = getXml(cubo,"mensaje");									ok = getXmlAtt(cubo,"ok");				if(ok &! "" && !ok) {					mensajeError = getXmlAtt(cubo,"native3");					mensajeError = frn.lib("libGeneral.kpl","ErrorBD",mensajeError);					frn.message(mensajeError,"Error","Aceptar");					return;					}				if(resultado &= "1") {					frn.message("Contactos Asignados", "Mensaje", "Aceptar");					frn.rst("tbl_paso");						MostrarContactos();					LimpiaTbl_asignar();				} else {					frn.rst("tbl_paso");					frn.message(mensaje, "Error", "Aceptar");					return;				}								}			fun guardar_tabla(tabla){				var save = frn.saveFile("asignaciones","Todos los archivos,*.*","_C:","Para guardar archivo");				frn.dialog("guarda_tabla",tabla,save); 			}							fun Dialog(iModo,pag,par0,par1,par2,par3,par4,par5,par6,par7,par8,par9,par10,par11,par12,par13,par14,par15){				/*iModo: 0)No hace mayor validaci?n. Siempre despliega la ventana. NO CONCATENA PREFIJO							1)Solo concatena el prefijo de la carpeta del lenguaje, no hace mayor validaci?n. Siempre despliega la ventana							2)Modo especial. Se valida que el campo indicado en par0 se puede modificar(El par0 puede ser una tabla, y par1 la columna)							3)Modo especial para p?ginas de operacion:Solo si se est? en alta o modifica despliega la pagina. Simpre agrega el prefijo del lenguaje				*/				var prefix=frn.lib("libKepler","langPrefix");				var page=prefix&pag;				var b_valido=1;				if(iModo==0)page=pag;				else if(iModo==2&&(strlen(par0)>0)){//Se toma el par0 como el objeto (o grid) al que se devolver? el resultado.					if( frn.getAtt(par0,"modify",par1) &= "N" ) b_valido=0;					if( frn.getAtt(par0,"available",par1) &= "N" ) b_valido=0;					if( frn.getAtt(par0,"visible",par1) &= "N" ) b_valido=0;				}				if(iModo==3)frn.dialog(page,par0,par1,par2,par3,par4,par5,par6,par7,par8,par9,par10,par11,par12,par13,par14,par15);			}								}	</script></pag>
+<?xml version="1.0" encoding="UTF-8"?>
+<pag xmlns="www.kepler.com.mx/2003/KSchema" roles="" tit="T&#237;tulo">
+	<grp dim="1,-1,10,15" brdr="0,0" clr="0,58,112" bclr="192,205,213" fnt="Arial,16" unfont="0" OnEnter="Exit()">
+		<sp/><txt fnt="Arial,25" clr="0,0,0">Asignaci&#243;n de contactos Telemarketing</txt><br/>
+		<sp/><hLine clr="0,0,0"/>
+		<br/><br/>
+		<sp/>
+		<grp bclr="236,240,243" fntClrBrdr="236,240,243" fntBrdr="Arial,18" hSpace="4" clrBrdr="0,58,112" brdr="0,5" dim="90,8,7,12" tit="Criterio de Selecci&#243;n"  fnt="Arial,16">
+			<sp/><txt fnt=",16">Sucursal: </txt>
+			<cmb id="k_sucn" clr="64,64,64" clrBrdr="255,255,255"  dim="33,36" bclr="255,255,255" 
+				brdr="2,0" fnt="Arial,16" Null="N" hk="S" available="Y" OnChange="Buscar_Registros()" tooltip="Sucursal"/>
+			<tab n="2"/><txt>Contactos: </txt>
+			<cmb id="cmb_tipocontacto" dim="12,1" brdr="2,0" bclr="255,255,255" clr="64,64,64" clrBrdr="255,255,255" modify="Y" OnChange="ValContactosAsesor()" tooltip="Tipo de contactos"/>
+			<tab n="2"/><txt>Asesor: </txt>
+			<cmb id="cmb_asesor" dim="40,1" brdr="2,0" bclr="255,255,255" clr="64,64,64" clrBrdr="255,255,255" OnChange="ValAsesorContactos()" tooltip="Clave y nombre de asesor"/>
+			<br/><br/>
+			<sp/><txt>Motivo: </txt>
+			<cmb id="cmb_motivo" dim="30,1" brdr="2,0" bclr="255,255,255" clr="64,64,64" clrBrdr="255,255,255" OnChange="" tooltip="Motivo del contacto"/>
+			<tab n="2"/><sp n="2"/><txt>Fecha inicial:</txt>
+			<edt id="inp_fini" clr="64,64,64"  dim="15,1" brdr="2,0" bclr="255,255,255" type="date" nc="-1" fnt="Arial,0" available="Y" fmt="DD/MM/CCYY" page="_ks_fecha,inp_fini" OnF9="Dialog(3,_ks_fecha,inp_fini)" clrBrdr="255,255,255" visible="Y" modify="Y" tooltip="Fecha inicial de programaci&#243;n"/>
+			<tab n="2"/><txt>Fecha final:</txt>
+			<edt id="inp_ffin" clr="64,64,64"  dim="15,1" brdr="2,0" bclr="255,255,255" type="date" nc="-1" fnt="Arial,0" available="Y" fmt="DD/MM/CCYY" page="_ks_fecha,inp_ffin" OnF9="Dialog(3,_ks_fecha,inp_ffin)" clrBrdr="255,255,255" visible="Y" modify="Y" tooltip="Fecha final de programaci&#243;n"/>
+			<tab n="1"/>
+			<img id="bot" dim="20,20" bPx="1" brdr="0,1"  img="_20_Find.png" OnEnter="MostrarContactos()" available="Y" clrBrdr="0,0,0" visible="Y" modify="Y"/>
+		</grp>
+		<br/><br/>
+		<sp/>
+		<grp id="grpContactos" dim="90,31,7,12" bclr="236,240,243" fntClrBrdr="236,240,243" fntBrdr="Arial,18" hSpace="4" clrBrdr="0,58,112" brdr="0,5" fnt="Arial,16" tit="Lista de contactos sin atender">
+			<br/>		
+			<sp/>
+			<tbl id="tbl_contactos" dim="126,18" brdr="1,0" clr="64,64,64" bclr="236,240,243" clrCur="255,255,255" clrBrdr="64,64,64" clrHead="0,58,112" 
+				bclrHead="236,240,243" Reorder="Y" nren="fijo" insdel="N" modify="N">
+				<col id="Sel" name="Sel." type="string" OnMouseD="SoN(Sel)" OnChange="ValidaSoN(tbl_contactos,Sel)" tooltip="S &#243; N (Doble click para cambiar)"/>
+				<col id="folio_tmkt" name="Folio" type="string" tooltip="Folio telemarketing"/>
+				<col id="fecha" name="Fecha" type="string" nc="-1" tooltip="Fecha programaci&#243;n"/>
+				<col id="hora" name="Hora" type="string" nc="8" OnMouseD="SetOrder(hora)" tooltip="Hora programaci&#243;n"/>
+				<col id="cliente" name="Cliente" type="string" nc="35" OnMouseD="SetOrder(cliente)" tooltip="Clave y nombre de cliente"/>
+				<col id="serie" name="Serie Auto" type="string" nc="15" OnMouseD="SetOrder(serie)" tooltip="No. Serie del auto"/>
+				<col id="motivo" name="Motivo" type="string" nc="20" OnMouseD="SetOrder(motivo)" tooltip="Motivo del contacto"/>
+				<col id="asesor" name="Asesor" type="string" nc="20" OnMouseD="SetOrder(asesor)" tooltip="Asesor asignado"/>
+				<col id="medio" name="Medio de contacto" type="string" nc="20" visible="N" OnMouseD="SetOrder(medio)" tooltip="Medio de contacto preferido"/>				
+				<col id="estatus" name="Estatus" type="string" nc="12" OnMouseD="SetOrder(estatus)" tooltip="Estatus del contacto"/>
+				<col id="resultado" name="Resultado" type="string" nc="20" OnMouseD="SetOrder(resultado)" tooltip="Resultado del contacto"/>
+				<col id="accion" name="Acci&#243;n" type="string" nc="20" OnMouseD="SetOrder(accion)" tooltip="Siguiente acci&#243;n del contacto"/>
+				<col id="asesor_nuevo" name="Asesor Nuevo" type="string" nc="20" visible="N"/>
+				<col id="reasignado" name="Reasignado" type="string" nc="1" visible="N"/>
+			</tbl>
+			<br/>
+			<sp/><bot id="bot_sel" dim="12,0" brdr="5" text="Sel. Todos" OnEnter="SeleccTodos()" tooltip="Seleccionar todos los contactos"/>
+			<sp/><bot id="bot_des" dim="12,0" brdr="5" text="Des. Todos" OnEnter="DeseleccTodos()" tooltip="Deseleccionar todos los contactos"/>
+			<tab n="9"/><txt>Registros seleccionados:</txt><sp/>
+			<inp id="inp_contactos_sel" dim="10,1" brdr="2,0" bclr="255,255,255" clr="64,64,64" clrBrdr="255,255,255" type="number" just="R" modify="N" available="N" tooltip="No. contactos seleccionados"/>
+			<sp/>
+			<tbl id="tbl_paso" dim="20,5" brdr="1,0" clr="64,64,64" bclr="236,240,243" clrCur="255,255,255" clrBrdr="64,64,64" clrHead="0,58,112" 
+				bclrHead="236,240,243" Reorder="Y" nren="fijo" insdel="N" modify="N" visible="N">
+				<col id="Sel" name="Sel." type="string" />
+				<col id="folio_tmkt" name="Folio" type="string"/>
+				<col id="asesor_nuevo" name="Asesor Nuevo" type="string"/>
+			</tbl>			
+
+		</grp>
+		<br/><br/>
+		<sp/>
+		<grp id="grpAcciones" dim="35,22,7,12" bclr="236,240,243" fntClrBrdr="236,240,243" fntBrdr="Arial,18" hSpace="4" clrBrdr="0,58,112" brdr="0,5" fnt="Arial,16" tit="Acciones sobre seleccionados">
+			<sp/>
+			<txt>Acci&#243;n:</txt>
+			<cmb id="cmb_accion" dim="16,1" brdr="2,0" bclr="255,255,255" clr="64,64,64" clrBrdr="255,255,255" OnChange="ValAccion()" tooltip="Acci&#243;n a realizar con los contactos seleccionados"/>
+			<tab n="2"/><txt>Factor:</txt>
+			<cmb id="cmb_factor" dim="13,1" brdr="2,0" bclr="255,255,255" clr="64,64,64" clrBrdr="255,255,255" OnChange="CambiaFactor()" tooltip="Factor a utilizar para la asignaci&#243;n" available="Y"/>
+			<br/><sp/>
+			<tbl id="tbl_asignar" dim="48,10" brdr="1,0" clr="64,64,64" bclr="236,240,243" clrCur="255,255,255" clrBrdr="64,64,64" clrHead="0,58,112" bclrHead="236,240,243" Reorder="N" nren="fijo" insdel="N" available="Y">
+				<col id="Sel" name="Sel." type="string" modify="N" available="Y" OnMouseD="SoN_generico(tbl_asignar,Sel,inp_asesores_sel)" OnChange="ValidaSoN(tbl_asignar,Sel)" tooltip="S &#243; N (Doble click para cambiar)"/>
+				<col id="asesor" name="Asesor" type="string" nc="-1" modify="N" available="Y" tooltip="Asesor a asignar"/>
+	<!--			<col id="porcentaje" name="%" type="number" modify="Y" available="Y" OnChange="ValSeleccion()" tooltip="% a utilizar para la asignaci&#243;n"/>	
+	-->
+				<col id="cantidad" name="Cantidad" type="number" modify="S" available="S"  OnChange="ValCantidad()" tooltip="Cantidad a asignar"/>
+			</tbl>			
+			
+			<br/><sp/>
+			<txt>Total asignar:</txt><sp/>
+			<tab n="3"/><sp/>
+			<inp id="inp_cantidad_asignar" dim="9,1" brdr="2,0" bclr="255,255,255" clr="64,64,64" clrBrdr="255,255,255" type="number" just="R" modify="N" available="N" tooltip="Cantidad total de contactos a asignar"/>
+			<tab/>
+	<!--
+				<inp id="inp_porc_asignar" dim="6,1" brdr="2,0" bclr="255,255,255" clr="64,64,64" clrBrdr="255,255,255" type="number" just="R" modify="N" available="N" tooltip="% total de contactos a asignar"/>
+			<txt>%</txt>
+	-->		
+			<br/><sp/>
+			<bot id="bot_asignar" dim="15,0" brdr="5" text="Reasignar" OnChange="ProcesaAsignar()" tooltip="Asignar contactos"/>
+			<tab n="4"/><txt>No. asesores sel:</txt><sp/>
+			<inp id="inp_asesores_sel" dim="6,1" brdr="2,0" bclr="255,255,255" clr="64,64,64" clrBrdr="255,255,255" type="number" just="R" modify="N" available="N" tooltip="No. asesores seleccionados"/>
+		</grp>			
+		<sp/>
+		<grp id="grpResumen" dim="54,21,7,12" bclr="236,240,243" fntClrBrdr="236,240,243" fntBrdr="Arial,18" hSpace="4" clrBrdr="0,58,112" brdr="0,5" fnt="Arial,16" tit="Resumen de Asignaciones">
+			<sp/>
+			<cmb id="cmb_gost" dim="13,1" brdr="2,0" bclr="255,255,255" clr="64,64,64" clrBrdr="255,255,255" OnChange="" tooltip="" visible="N"/>
+			<br/><sp/>
+			<tbl id="tbl_resumen" dim="75,10" brdr="1,0" clr="64,64,64" bclr="236,240,243" clrCur="255,255,255" clrBrdr="64,64,64" clrHead="0,58,112" bclrHead="236,240,243" Reorder="N" nren="fijo" insdel="N">
+				<col id="asesor" name="Asesor" type="string" nc="-1" tooltip="Asesor"/>
+				<col id="num" name="# Asignados" type="number" nc="-1" tooltip="No. contactos asignados"/>
+				<col id="porcentaje" name="% Asig." type="number" nd="2" tooltip="% contactos asignados"/>
+				<col id="statcarga" name="Carga" type="string" nc="-1" tooltip="Estatus de Carga"/>
+				<col id="por_atender" name="Por Atender" type="number" nc="-1" tooltip="No. contactos por atender"/>
+			<!--	<col id="atendidos" name="Atendidos" type="number" nc="-1" tooltip="No. contactos Atendidos"/>
+			-->
+			</tbl>		
+			<br/>	
+			<sp/><txt>Total asignados:</txt>
+			<tab/><inp id="inp_totalasignados" dim="10,1" brdr="2,0" bclr="255,255,255" clr="64,64,64" clrBrdr="255,255,255" type="number" modify="N" tooltip="Total de contactos asignados"/>
+			<tab n="6"/><inp id="inp_totalsinatender" dim="10,1" brdr="2,0" bclr="255,255,255" clr="64,64,64" clrBrdr="255,255,255" type="number" modify="N" visible="N" tooltip="Total de contactos sin atender"/>
+			<tab/>
+			<inp id="inp_totalatendidos" dim="10,1" brdr="2,0" bclr="255,255,255" clr="64,64,64" clrBrdr="255,255,255" type="number" modify="N" visible="N" tooltip="Total de contactos atendidos"/>
+						
+		</grp>		
+		<br/><br/>
+
+
+		<br/><br/>
+		<tab/>		
+
+		
+	</grp>
+	<script>
+		InstallDriver("KDB75");
+		class Main {
+			var frn,kdb,sys;
+			var usuario,suc_usuario,rol_usuario,asterisco;
+			var resMensaje, cubo, cmd, ok,mensajeError;
+			var selOperacion, fileSavePath;
+			fun Main() {
+				frn=new FRNT;
+				kdb=new KDB;
+				sys=new SYS;
+				usuario = frn.config("user","name");
+				rol_usuario = frn.config("user","role");
+				suc_usuario = frn.lib("libKepler","UserInfo(1)");
+				asterisco = "*";	
+				fileSavePath = "C:\Basura";			
+				Inicializa();
+			}
+			
+			fun SetOrder(opcion){
+				var	renglon, columna, orden;
+//				frn.message("Estableciendo orden","Mensaje","Aceptar");				
+				renglon=frn.getJ("tbl_contactos");
+//				if (renglon != 0){
+//					return;
+//				}
+				if (opcion &= "fecha"){
+					orden = frn.get("tbl_contactos",0,"fecha");
+					if(orden &= ""){
+						frn.setX("ASC","tbl_contactos",0,"fecha");
+					}else if(orden &= "ASC"){
+						frn.setX("DESC","tbl_contactos",0,"fecha");
+					}else{
+						frn.setX("","tbl_contactos",0,"fecha");
+					}
+					orden = frn.get("tbl_contactos",0,"fecha");
+				}
+
+			}
+
+			fun SoN(campo) {
+				if (frn.get("tbl_contactos",-1,campo) &= "S"){
+					frn.setX("N","tbl_contactos",-1,campo);
+                } else {
+					frn.setX("S","tbl_contactos",-1,campo);
+                }
+				CuentaSel("tbl_contactos","Sel","inp_contactos_sel");
+            }
+
+			fun SoN_generico(tabla,campo,dato_actualiza) {
+				if (frn.get(tabla,-1,campo) &= "S"){
+					frn.setX("N",tabla,-1,campo);
+					frn.setX("",tabla,-1,"cantidad");
+					frn.setX("",tabla,-1,"porcentaje");
+                } else {
+					frn.setX("S",tabla,-1,campo);
+                }
+				CuentaSel(tabla,campo,dato_actualiza);
+				TotalesAsignar();
+            }
+
+			fun TotalesAsignar(){
+				var renglones, totCant, totPorc;
+				totCant=0;
+				totPorc=0;
+				renglones = frn.N("tbl_asignar");
+				for (var i=0; i<renglones; i++) {
+					if (frn.get("tbl_asignar",i,"Sel") &="S"){
+						if (frn.get("cmb_factor",-1,1) &= "C"){
+							totCant = totCant + frn.get("tbl_asignar",i,"cantidad");
+						}
+						if (frn.get("cmb_factor",-1,1) &= "P"){
+							totPorc = totPorc + frn.get("tbl_asignar",i,"porcentaje");
+						}
+					}
+				}
+				frn.set("inp_cantidad_asignar",totCant);
+				frn.set("inp_porc_asignar",totPorc);
+				if (frn.get("inp_cantidad_asignar") > frn.get("inp_contactos_sel")){
+					frn.message("La cantidad de contactos por asignar es mayor al No. contactos seleccionados|Verifique","Atención","Aceptar");
+					frn.setPos("tbl_asignar",-1,"cantidad");
+					return;
+				}
+			}
+
+			fun ValCantidad(){//Lo pase aqui, quitar si se habilita cmb_factor xq esta en ValSeleccion()
+				if (frn.get("tbl_asignar",-1,"cantidad") > 0){
+					if (frn.get("tbl_asignar",-1,"Sel") &= "N"){
+						frn.message("El registro debe estar seleccionado","Atención","Aceptar");
+						frn.setX("","tbl_asignar",-1,"cantidad");
+						frn.setPos("tbl_asignar",-1,"Sel");
+						return;
+					}
+				} else if (frn.get("tbl_asignar",-1,"cantidad") <= 0) {
+					frn.message("La cantidad debe ser mayor a 0","Atención","Aceptar");
+					return;
+				}
+				TotalesAsignar();
+			}   
+
+			fun ValidaSoN(tabla,campo){
+				if (frn.get(tabla,-1,campo) &! "S" && frn.get(tabla,-1,campo) &! "N"){
+					frn.setPos("tabla",-1,campo);
+					frn.message("Sólo puede ser S o N","Error","&Aceptar");
+				return;
+				}  
+			}    
+
+			fun SeleccTodos(){
+				var renglones, cuenta;
+				renglones = frn.N("tbl_contactos");
+				for (var i=0; i<renglones; i++) {
+					frn.setX("S","tbl_contactos",i,"Sel");
+					cuenta = cuenta + 1;					
+				}
+				frn.set("inp_contactos_sel",cuenta);
+			}
+
+			fun DeseleccTodos(){
+				var renglones, cuenta;
+				renglones = frn.N("tbl_contactos");
+				for (var i=0; i<renglones; i++) {
+					frn.setX("N","tbl_contactos",i,"Sel");
+				}
+				frn.set("inp_contactos_sel",0);
+			}
+
+			fun CuentaSel(tabla,campo,actualiza){
+				var renglones, cuentaS, cuentaN;
+				cuentaS=0;
+				cuentaN=0;
+				renglones = frn.N(tabla);
+				for (var i=0; i<renglones; i++) {
+					if (frn.get(tabla,i,campo) &="S"){
+						cuentaS = cuentaS + 1;
+					}
+					if (frn.get(tabla,i,campo) &="N"){
+						cuentaN = cuentaN + 1;
+					}
+					
+				}
+				frn.set(actualiza,cuentaS);
+				
+			}
+		
+			fun Inicializa(){
+				//Llenar combo sucursales
+				cmd = "select '['||c1||'] '||c2 as c2, c1 from keplersc.kdms";
+				if (rol_usuario &! "ADMINISTRADOR"  && rol_usuario &! "ADMINISTRATOR"){
+					cmd = cmd & " where c1='" & suc_usuario & "'";
+				}else {
+					if (suc_usuario &! asterisco && suc_usuario &! "" ){
+						cmd = cmd & " where c1='" & suc_usuario & "'";
+					}
+				}
+			
+				cubo = frn.lib("libGeneral.kpl","EjecutarSqlSel",cmd,"sertmktview.Inicializa()");
+				
+				ok=getXmlAtt(cubo,"ok");
+				if(ok &! "" && !ok){
+					mensajeError = getXmlAtt(cubo,"native3");
+					mensajeError = frn.lib("libGeneral.kpl","ErrorBD",mensajeError);
+					frn.message(mensajeError,"Error","Aceptar");
+					return;
+				}
+				
+				frn.set("k_sucn",getXml(cubo));
+
+				//Llenar Combo asesores cmb_asesor
+				cmd = "select '['||c1||'] '||c2 as descripcion, c1 as clave from keplersc.kdsercattmkt order by c1";
+					
+				rstXml(cubo);
+				cubo = frn.lib("libGeneral.kpl","EjecutarSqlSel",cmd,"sertmktasignacion.Inicializa()");
+				frn.lib("libGeneral.kpl","FileSave",cubo,fileSavePath & "\xmlRes");
+												
+				ok=getXmlAtt(cubo,"ok");
+				if(ok &! "" && !ok){
+					mensajeError = getXmlAtt(cubo,"native3");
+					mensajeError = frn.lib("libGeneral.kpl","ErrorBD",mensajeError);
+					frn.message(mensajeError,"Error","Aceptar");
+					return;
+				}
+		
+			   frn.setX("","cmb_asesor",0,0);
+				llenar_cmb(cubo,"cmb_asesor" );
+
+				//Llena tabla asesores seccion acciones y resumen
+				var len_cubo = nXml(cubo);
+				frn.rst("tbl_asignar");	
+				for (var cont=0; cont<len_cubo ; cont++){
+					var desc= getXmlAtt(cubo,"r"&cont,"descripcion");
+					var clave= getXmlAtt(cubo,"r"&cont,"clave");
+				
+					frn.setX("N","tbl_asignar",cont,"Sel");
+					frn.setX(clave,"tbl_asignar",cont,"asesor");
+					frn.setX(clave,"tbl_resumen",cont,"asesor");						
+				}
+					
+				//Llenar cmb_tipocontacto
+				frn.setX("Todos","cmb_tipocontacto",0,0);
+				frn.setX("T","cmb_tipocontacto",0,1);
+				frn.setX("Sin Asignar","cmb_tipocontacto",1,0);
+				frn.setX("SA","cmb_tipocontacto",1,1);
+				frn.setX("Asignados","cmb_tipocontacto",2,0);
+				frn.setX("A","cmb_tipocontacto",2,1);				
+								
+				//Llenar cmb_motivo
+				cmd = "select '['||motivo_id||'] '||descripcion as descripcion, motivo_id as clave from keplersc.kdtmktmotivo order by motivo_id";
+				cubo = frn.lib("libGeneral.kpl","EjecutarSqlSel",cmd,"tmkt_view.Inicializa()");
+					
+				ok=getXmlAtt(cubo,"ok");
+				if(ok &! "" && !ok){
+					mensajeError = getXmlAtt(cubo,"native3");
+					mensajeError = frn.lib("libGeneral.kpl","ErrorBD",mensajeError);
+					frn.message(mensajeError,"Error","Aceptar");
+					return;
+				}	
+		
+				frn.setX("","cmb_motivo",0,0);
+				llenar_cmb(cubo,"cmb_motivo");
+								
+				//Llenar cmb_accion
+				frn.setX("Reasignar","cmb_accion",0,0);
+				frn.setX("R","cmb_accion",0,1);
+				frn.setX("Desasignar","cmb_accion",1,0);
+				frn.setX("D","cmb_accion",1,1);
+
+				//Llenar cmb_factor
+				frn.setX("","cmb_factor",0,0);
+				frn.setX("Cantidad","cmb_factor",1,0);
+				frn.setX("C","cmb_factor",1,1);
+				/*	Se deja	preparado para mas adelante si lo requieren
+				frn.setX("%","cmb_factor",2,0);
+				frn.setX("P","cmb_factor",2,1);
+				frn.setX("Balanceado","cmb_factor",3,0);
+				frn.setX("B","cmb_factor",3,1);
+				*/				
+				frn.set("cmb_factor","Cantidad");
+				ValAccion();
+			}
+			
+			fun MostrarContactos(){
+				var xmlDetConv, xmlDetalle, strTmp, xmlCurDet, contDet, setXmlStr, val_asesor, val_contactos,val_motivo, fecha_prog_ini, fecha_prog_fin, suc_base ;
+				//Llenar lista de resultados de contactos
+				suc_base = frn.get("k_sucn",-1,1);
+				val_asesor = frn.get("cmb_asesor",-1,1);
+				val_contactos = frn.get("cmb_tipocontacto",-1,1);
+				val_motivo = frn.get("cmb_motivo",-1,1);
+				fecha_prog_ini = frn.get("inp_fini");
+				fecha_prog_fin = frn.get("inp_ffin");
+				cmd = "select * from keplersc.ser_tmkt_obtener_contactos('" & suc_base &"','" & val_asesor & "','" & val_contactos & "','" & val_motivo & "','" & fecha_prog_ini & "','" & fecha_prog_fin &"')";
+				//frn.message(cmd);
+				cubo = frn.lib("libGeneral.kpl","EjecutarSqlSel",cmd,"sertmktasignacion.MostrarContactos()");
+				frn.lib("libGeneral.kpl","FileSave",cubo,fileSavePath & "\cubocontactos");	
+				ok=getXmlAtt(cubo,"ok");
+				if(ok &! "" && !ok){
+					mensajeError = getXmlAtt(cubo,"native3");
+					mensajeError = frn.lib("libGeneral.kpl","ErrorBD",mensajeError);
+					frn.message(mensajeError,"Error","Aceptar");
+					return;
+				}
+				rstXml(xmlDetConv);
+				strTmp=getXmlAtt(cubo,"r0","ser_tmkt_obtener_contactos");
+				rstXml(xmlDetalle);
+				strTmp=delScpScn(strTmp);
+				setXmlStr(xmlDetalle,strTmp);
+				contDet=nXml(xmlDetalle);
+				for(var y=0; y< contDet; y++){
+					rstXml(xmlCurDet);
+					xmlCurDet= getXmlX(xmlDetalle,3,y);	
+					//setXml(xmlDetConv,"tbl_contactos","r"&y,xmlCurDet);
+					setXml(xmlDetConv,"r"&y,xmlCurDet);
+				}	
+				frn.lib("libGeneral.kpl","FileSave",xmlDetConv,fileSavePath & "\cuboRowsContactos");	
+				
+				//Llena manual la tabla
+				contDet = nXml(xmlDetConv);
+				frn.rst("tbl_contactos");
+				//frn.setX("Orden","tbl_contactos",0,"Sel");
+				//frn.setX("Filtro","tbl_contactos",1,"Sel");
+				for (var contOrd=0; contOrd<contDet ; contOrd++){
+					frn.setX( getXml(xmlDetConv,"r"&contOrd,"folio_tmkt"),"tbl_contactos",contOrd,"folio_tmkt");
+					frn.setX( getXml(xmlDetConv,"r"&contOrd,"fecha"),"tbl_contactos",contOrd,"fecha");
+					frn.setX( getXml(xmlDetConv,"r"&contOrd,"hora"),"tbl_contactos",contOrd,"hora");
+					frn.setX( getXml(xmlDetConv,"r"&contOrd,"cliente"),"tbl_contactos",contOrd,"cliente");
+					frn.setX( getXml(xmlDetConv,"r"&contOrd,"serie"),"tbl_contactos",contOrd,"serie");
+					frn.setX( getXml(xmlDetConv,"r"&contOrd,"motivo"),"tbl_contactos",contOrd,"motivo");
+					frn.setX( getXml(xmlDetConv,"r"&contOrd,"asesor"),"tbl_contactos",contOrd,"asesor");
+					frn.setX( getXml(xmlDetConv,"r"&contOrd,"medio"),"tbl_contactos",contOrd,"medio");
+					frn.setX( getXml(xmlDetConv,"r"&contOrd,"estatus"),"tbl_contactos",contOrd,"estatus");
+					frn.setX( getXml(xmlDetConv,"r"&contOrd,"resultado"),"tbl_contactos",contOrd,"resultado");
+					frn.setX( getXml(xmlDetConv,"r"&contOrd,"accion"),"tbl_contactos",contOrd,"accion");
+				}	
+				frn.set("inp_contactos_sel",0);
+				ResumenAsignaciones();
+			}
+
+			fun ResumenAsignaciones(){
+				var xmlDetConv, xmlDetalle, strTmp, xmlCurDet, contDet, setXmlStr, val_asesor, val_contactos,val_motivo, fecha_prog_ini, fecha_prog_fin, suc_base;
+				var pAsignados=0, totAtendidos=0,totAsignados=0,totXAtender=0, pbalance=0, pdif=0;
+				//Llenar tabla de resumen asignaciones
+				suc_base = frn.get("k_sucn",-1,1);
+				fecha_prog_ini = frn.get("inp_fini");
+				fecha_prog_fin = frn.get("inp_ffin");
+				cmd = "select * from keplersc.ser_tmkt_resumen_asignaciones('" & suc_base &"','" & fecha_prog_ini & "','" & fecha_prog_fin &"')";
+				//frn.message(cmd);
+				cubo = frn.lib("libGeneral.kpl","EjecutarSqlSel",cmd,"sertmktasignacion.ResumenAsignaciones()");
+				frn.lib("libGeneral.kpl","FileSave",cubo,fileSavePath & "\cuboresumen");	
+				ok=getXmlAtt(cubo,"ok");
+				if(ok &! "" && !ok){
+					mensajeError = getXmlAtt(cubo,"native3");
+					mensajeError = frn.lib("libGeneral.kpl","ErrorBD",mensajeError);
+					frn.message(mensajeError,"Error","Aceptar");
+					return;
+				}
+				rstXml(xmlDetConv);
+				strTmp=getXmlAtt(cubo,"r0","ser_tmkt_resumen_asignaciones");
+				rstXml(xmlDetalle);
+				strTmp=delScpScn(strTmp);
+				setXmlStr(xmlDetalle,strTmp);
+				contDet=nXml(xmlDetalle);
+				for(var y=0; y< contDet; y++){
+					rstXml(xmlCurDet);
+					xmlCurDet= getXmlX(xmlDetalle,3,y);	
+					setXml(xmlDetConv,"r"&y,xmlCurDet);
+				}	
+				frn.lib("libGeneral.kpl","FileSave",xmlDetConv,fileSavePath & "\cuboRowsResumen");	
+				
+				//Llena manual la tabla
+				contDet = nXml(xmlDetConv);
+				frn.rst("tbl_resumen");
+				for (var contOrd=0; contOrd<contDet ; contOrd++){
+					frn.setX( getXml(xmlDetConv,"r"&contOrd,"asesor"),"tbl_resumen",contOrd,"asesor");
+					frn.setX( getXml(xmlDetConv,"r"&contOrd,"asignados"),"tbl_resumen",contOrd,"num");
+					frn.setX( getXml(xmlDetConv,"r"&contOrd,"cliente"),"tbl_resumen",contOrd,"statcarga");
+					frn.setX( getXml(xmlDetConv,"r"&contOrd,"sin_atender"),"tbl_resumen",contOrd,"por_atender");
+					//frn.setX( getXml(xmlDetConv,"r"&contOrd,"atendidos"),"tbl_resumen",contOrd,"atendidos");
+					//totAtendidos = totAtendidos + frn.get("tbl_resumen",contOrd,"atendidos");
+					totAsignados = totAsignados + frn.get("tbl_resumen",contOrd,"num");
+					totXAtender = totXAtender + frn.get("tbl_resumen",contOrd,"por_atender");
+				}	
+
+				frn.set("inp_totalasignados",totAsignados); 
+				frn.set("inp_totalsinatender",totXAtender); 
+				//frn.set("inp_totalatendidos",totAtendidos);
+				pbalance= ((totAsignados/contDet)/totAsignados)*100;
+				for (var contOrd=0; contOrd<contDet ; contOrd++){
+					//calcular %asignados
+					pAsignados = (frn.get("tbl_resumen",contOrd,"num")/frn.get("inp_totalsinatender"))*100;
+					frn.setX(pAsignados,"tbl_resumen",contOrd,"porcentaje");
+					pAsignados = 0;
+
+					//calcular sobrecarga
+					pdif = frn.get("tbl_resumen",contOrd,"porcentaje") - pbalance;
+					if (pdif > 0.5){
+						frn.setX("Sobreasignado" ,"tbl_resumen",contOrd,"statcarga");
+					}
+					if ((pdif > -0.5) && (pdif <= 0.5)){
+						frn.setX("Normal" ,"tbl_resumen",contOrd,"statcarga");
+					}
+					if (pdif <= -0.5){
+						frn.setX("Subasignado" ,"tbl_resumen",contOrd,"statcarga");
+					}
+					pdif =0;
+				}					
+
+				
+				
+				
+				//frn.set("inp_totalasignados",(frn.get("inp_totalsinatender") + frn.get("inp_totalatendidos")));
+				
+			}
+
+			fun CambiaFactor(){
+				var renglones;
+				renglones=frn.N("tbl_asignar");
+				if (frn.get("cmb_factor",-1,1) &= "P"){
+					for (var i=0; i<renglones; i++) {
+						frn.setX("","tbl_asignar",i,"cantidad");
+					}
+					frn.setAtt("tbl_asignar", "available", "Y", "porcentaje");
+					frn.setAtt("tbl_asignar", "modify", "Y", "porcentaje");
+					frn.setAtt("tbl_asignar", "available", "N", "cantidad");
+					frn.setAtt("tbl_asignar", "modify", "N", "cantidad");
+				}
+				if (frn.get("cmb_factor",-1,1) &= "C"){
+					for (var i=0; i<renglones; i++) {
+						frn.setX("","tbl_asignar",i,"porcentaje");
+					}
+					frn.setAtt("tbl_asignar", "available", "N", "porcentaje");
+					frn.setAtt("tbl_asignar", "modify", "N", "porcentaje");
+					frn.setAtt("tbl_asignar", "available", "Y", "cantidad");
+					frn.setAtt("tbl_asignar", "modify", "Y", "cantidad");
+				}
+				if (frn.get("cmb_factor",-1,1) &= "B"){
+					for (var i=0; i<renglones; i++) {
+						frn.setX("","tbl_asignar",i,"cantidad");
+						frn.setX("","tbl_asignar",i,"porcentaje");
+					}
+					frn.setAtt("tbl_asignar", "available", "N", "porcentaje");
+					frn.setAtt("tbl_asignar", "modify", "N", "porcentaje");
+					frn.setAtt("tbl_asignar", "available", "N", "cantidad");
+					frn.setAtt("tbl_asignar", "modify", "N", "cantidad");
+				}
+
+			}
+
+			fun llenar_cmb(cuboResultados, cmb){
+				var len_cubo = nXml(cuboResultados);
+				var pos_ini = frn.N(cmb);
+				for (var cont=0; cont<len_cubo ; cont++){
+					var desc= getXmlAtt(cuboResultados,"r"&cont,"descripcion");
+					var clave= getXmlAtt(cuboResultados,"r"&cont,"clave");
+				
+					frn.setX(desc, cmb, cont+pos_ini ,0);
+					frn.setX(clave, cmb, cont+pos_ini ,1);
+									
+				}	
+			}
+
+			fun ValContactosAsesor(){
+				if (frn.get("cmb_tipocontacto",-1,1) &= "SA"){	//Sin Asignar
+					frn.set("cmb_asesor","");
+				}
+				if (frn.get("cmb_tipocontacto",-1,1) &= "T"){	//Todos
+					frn.set("inp_fini","");
+					frn.set("inp_ffin","");
+					frn.set("cmb_asesor","");
+				}
+			}
+
+			fun ValAsesorContactos(){
+				if (frn.get("cmb_asesor",-1,1) &! ""){	//Tiene seleccionado un asesor
+					frn.set("cmb_tipocontacto","");
+				}
+			}
+
+			fun ValAccion(){
+				if (frn.get("cmb_accion",-1,1) &= "R"){	//Reasignar
+					frn.setAtt("cmb_factor", "available", "Y");
+					frn.setAtt("tbl_asignar", "available", "Y");
+					LimpiaTbl_asignar();
+					frn.set("inp_asesores_sel",0);
+					//frn.set("cmb_factor",""); //descomentariar linea si se habilitan las otras opciones del combo
+					frn.setAtt("tbl_asignar", "available", "Y", "Sel");
+					frn.setAtt("tbl_asignar", "available", "N", "porcentaje");
+					frn.setAtt("tbl_asignar", "modify", "N", "porcentaje");
+					frn.setAtt("tbl_asignar", "available", "S", "cantidad"); //Ponen en S si se habilitan las otras opciones del combo
+					frn.setAtt("tbl_asignar", "modify", "S", "cantidad");  //Ponen en N si se habilitan las otras opciones del combo
+					frn.set("cmb_factor","Cantidad"); //quitar si se habilita las otras opciones de combo
+					frn.setAtt("bot_asignar", "text", "Reasignar");
+					
+				}
+				if (frn.get("cmb_accion",-1,1) &= "D"){	//Desasignar
+					LimpiaTbl_asignar();
+					frn.set("inp_asesores_sel",0);
+					frn.setAtt("cmb_factor", "available", "N");
+					frn.setAtt("tbl_asignar", "available", "N");
+					frn.setAtt("cmb_factor", "available", "N");
+					frn.set("cmb_factor","");
+					frn.setAtt("bot_asignar", "text", "Desasignar");
+				}
+			}
+
+			fun LimpiaTbl_asignar(){
+				var renglones;
+				renglones=frn.N("tbl_asignar");
+				for (var i=0; i<renglones; i++) {
+					frn.setX("N","tbl_asignar",i,"Sel");
+					frn.setX("","tbl_asignar",i,"porcentaje");
+					frn.setX("","tbl_asignar",i,"cantidad");
+				}
+				frn.set("inp_cantidad_asignar","");
+				frn.set("inp_asesores_sel","");
+			}
+
+			fun ValSeleccion(){
+				var pcant;
+				if (frn.get("tbl_asignar",-1,"cantidad") > 0){
+					if (frn.get("tbl_asignar",-1,"Sel") &= "N"){
+						frn.message("El registro debe estar seleccionado","Atención","Aceptar");
+						frn.setX("","tbl_asignar",-1,"cantidad");
+					}
+
+				}
+				if (frn.get("tbl_asignar",-1,"porcentaje") > 0){
+					if (frn.get("tbl_asignar",-1,"Sel") &= "N"){
+						frn.message("El registro debe estar seleccionado","Atención","Aceptar");
+						frn.setX("","tbl_asignar",-1,"porcentaje");
+					}
+					pcant = (frn.get("inp_contactos_sel") * frn.get("tbl_asignar",-1,"porcentaje"))/100;
+					frn.setX(pcant,"tbl_asignar",-1,"cantidad");
+					pcant = math("round",(frn.get("inp_contactos_sel") * frn.get("tbl_asignar",-1,"porcentaje"))/100,2);
+					//ver como se ajustara la cantidad pcant cuando se %
+					//frn.setX(pcant,"tbl_asignar",-1,"cantidad");
+
+				}
+				TotalesAsignar();
+			}
+		 
+			fun ProcesaAsignar(){
+				var renglones,totCant=0, regcont, totasig, strAsesor, valCant, valPorc,renpaso;
+				var xmlPantalla, strMsg, continua, resultado, mensaje;
+			
+				renglones = frn.N("tbl_contactos");
+				if (frn.get("inp_contactos_sel") == 0) {
+					frn.message("No hay contactos selecionados|Verifique","Atención","Aceptar");
+					return;
+				}
+				renglones = frn.N("tbl_asignar");
+				if (frn.get("inp_asesores_sel") == 0) {
+					frn.message("Al menos debe selecionar un asesor para reasignar los contactos|Verifique","Atención","Aceptar");
+					return;
+				}
+				if (frn.get("inp_asesores_sel") > 1) {
+					if (frn.get("cmb_factor",-1,1) &="C"){	//Cantidad
+						for (var i=0; i<renglones; i++) {
+							if (frn.get("tbl_asignar",i,"Sel") &="S"){
+								totCant = totCant + frn.get("tbl_asignar",i,"cantidad");
+							}
+						}
+						if (totCant <=0){
+							frn.message("La cantidad de contactos por reasignar No puede ser 0 o cantidad negativa|Verifique","Atención","Aceptar");
+							return;
+						}
+						if (totCant < frn.get("inp_contactos_sel")){
+							frn.message("La cantidad de contactos por reasignar es menor al No. contactos seleccionados...|Verifique","Atención","Aceptar");
+							return;
+						}
+						if (totCant > frn.get("inp_contactos_sel")){
+							frn.message("La cantidad de contactos por reasignar es mayor al No. contactos seleccionados...|Verifique","Atención","Aceptar");
+							return;
+						}
+					}	
+					if (frn.get("cmb_factor",-1,1) &="P"){	//Porcentaje
+						for (var i=0; i<renglones; i++) {
+							if (frn.get("tbl_asignar",i,"Sel") &="S"){
+								totCant = totCant + frn.get("tbl_asignar",i,"porcentaje");
+							}
+						}
+						if (totCant < 100){
+							frn.message("El % por reasignar es menor al 100%...|Verifique","Atención","Aceptar");
+							return;
+						}
+						if (totCant > 100){
+							frn.message("El % por reasignar es mayor al 100%...|Verifique","Atención","Aceptar");
+							return;
+						}
+					}
+				}
+				continua = frn.message("¿Desea continuar con la asignación?","Atención",2);
+				if (continua == 0){
+					return;
+				}
+				//Distribución
+				renpaso = 0;
+				totasig = 1;
+				renglones = frn.N("tbl_asignar");		//Asesores
+				regcont = frn.N("tbl_contactos");		//Contactos
+				for (var i=0; i<renglones; i++) {		//For Asesores
+					strAsesor = frn.get("tbl_asignar",i,"asesor");
+					valCant = frn.get("tbl_asignar",i,"cantidad");
+					valPorc = frn.get("tbl_asignar",i,"porcentaje");
+					if (frn.get("tbl_asignar",i,"Sel") &="S"){
+						for (var cont=0; cont<regcont; cont++){		//For Contactos
+							if (frn.get("tbl_contactos",cont,"Sel") &="S" && frn.get("tbl_contactos",cont,"reasignado") &="" ){
+								var stfol= frn.get("tbl_contactos",cont,"folio_tmkt");
+								
+								if (frn.get("inp_asesores_sel") == 1){			//Un solo asesor nuevo
+									frn.setX(strAsesor,"tbl_contactos",cont,"asesor_nuevo");
+									frn.setX("S","tbl_contactos",cont,"reasignado");
+									
+									//Graba en tabla paso
+									frn.setX("S","tbl_paso",renpaso,"Sel");
+									frn.setX(stfol,"tbl_paso",renpaso,"folio_tmkt");
+									frn.setX(strAsesor,"tbl_paso",renpaso,"asesor_nuevo");
+									renpaso = renpaso +1;
+								} else {
+									if (frn.get("cmb_factor",-1,1) &= "C" || frn.get("cmb_factor",-1,1) &= "P"){
+										if (totasig <= valCant){
+											frn.setX(strAsesor,"tbl_contactos",cont,"asesor_nuevo");
+											frn.setX("S","tbl_contactos",cont,"reasignado");
+
+											//Graba en tabla paso
+											frn.setX("S","tbl_paso",renpaso,"Sel");
+											frn.setX(frn.get("tbl_contactos",cont,"folio_tmkt"),"tbl_paso",renpaso,"folio_tmkt");
+											frn.setX(strAsesor,"tbl_paso",renpaso,"asesor_nuevo");
+											totasig = totasig +1;
+											renpaso = renpaso +1;
+										} else {
+											totasig = 1;
+											break;	
+										}
+									}				
+								}	
+							}
+						}
+					}
+				}
+
+				xmlPantalla = getXml(frn.dataPag()); //Obtener el xml de la pantalla;
+				setXml(xmlPantalla,"tbl_paso","no_partidas",frn.N("tbl_paso"));
+				setXml(xmlPantalla,"tbl_contactos","no_partidas",frn.N("tbl_contactos"));
+				setXml(xmlPantalla,"tbl_asignar","no_partidas",frn.N("tbl_asignar"));
+				frn.lib("libGeneral.kpl","FileSave",xmlPantalla,fileSavePath & "\XmlPantallaAsigManual");
+			
+				cmd="SELECT * FROM keplersc.ser_tmkt_asignar_manual('<document>" & getXmlStr(xmlPantalla,"EOF:13_10") & "</document>')";
+				//kdb.rst(cuboQuery);
+				rstXml(cubo);
+					
+				cubo= frn.lib("libGeneral.kpl","EjecutarSql",cmd,"sertmktasignacion.Ejecuta");				
+				frn.lib("libGeneral.kpl","FileSave",cubo, fileSavePath & "\XmlResultadoAsigManual");
+					
+				resultado = getXml(cubo,"resultado");
+				mensaje = getXml(cubo,"mensaje");
+					
+				ok = getXmlAtt(cubo,"ok");
+				if(ok &! "" && !ok) {
+					mensajeError = getXmlAtt(cubo,"native3");
+					mensajeError = frn.lib("libGeneral.kpl","ErrorBD",mensajeError);
+					frn.message(mensajeError,"Error","Aceptar");
+					return;	
+				}
+
+				if(resultado &= "1") {
+					frn.message("Contactos Asignados", "Mensaje", "Aceptar");
+					frn.rst("tbl_paso");	
+					MostrarContactos();
+					LimpiaTbl_asignar();
+				} else {
+					frn.rst("tbl_paso");
+					frn.message(mensaje, "Error", "Aceptar");
+					return;
+				}
+					
+			}
+			
+		 fun Dialog(iModo,pag,par0,par1,par2,par3,par4,par5,par6,par7,par8,par9,par10,par11,par12,par13,par14,par15){
+				/*iModo: 0)No hace mayor validaci?n. Siempre despliega la ventana. NO CONCATENA PREFIJO
+							1)Solo concatena el prefijo de la carpeta del lenguaje, no hace mayor validaci?n. Siempre despliega la ventana
+							2)Modo especial. Se valida que el campo indicado en par0 se puede modificar(El par0 puede ser una tabla, y par1 la columna)
+							3)Modo especial para p?ginas de operacion:Solo si se est? en alta o modifica despliega la pagina. Simpre agrega el prefijo del lenguaje
+				*/
+				var prefix=frn.lib("libKepler","langPrefix");
+				var page=prefix&pag;
+				var b_valido=1;
+				if(iModo==0)page=pag;
+				else if(iModo==2&&(strlen(par0)>0)){//Se toma el par0 como el objeto (o grid) al que se devolver? el resultado.
+					if( frn.getAtt(par0,"modify",par1) &= "N" ) b_valido=0;
+					if( frn.getAtt(par0,"available",par1) &= "N" ) b_valido=0;
+					if( frn.getAtt(par0,"visible",par1) &= "N" ) b_valido=0;
+				}
+				if(iModo==3)frn.dialog(page,par0,par1,par2,par3,par4,par5,par6,par7,par8,par9,par10,par11,par12,par13,par14,par15);
+			}			
+			
+		}
+
+	</script>
+</pag>

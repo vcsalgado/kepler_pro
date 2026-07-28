@@ -6,9 +6,6 @@ AS $function$
 --Autor: Gad Miranda
 --Fecha: 23/08/2023
 --Bitacora de cambios
-	--Fecha: 06/09/2023
-	-- Modificado metodo para realizar la rutina de estatico a dinamico 
-	-- con un bucle for
 declare
 	--Variables de definicion de documento
 	k_sucursal text = '';
@@ -22,10 +19,9 @@ declare
 	k_fecha date;
 	k_hora time;
 	k_contacto text = '';
-	usuario text ;
 
-	k_n_renglon int;
-	indice int;
+
+
 	totReg numeric(3);
 	
    --Variables de retorno
@@ -34,43 +30,353 @@ declare
     adicionales text = '';
 	
 begin 
-	k_n_renglon := (xpath('//document/k_n_renglon/text()', dataxml))[1];
+	
 	k_sucursal := (xpath('//document/k_suc_crud/text()', dataxml))[1];
 	k_tipo_actividad := (xpath('//document/k_tipo_actividad_crud/text()', dataxml))[1];
 	k_tipo_orden := (xpath('//document/k_tipo_orden_crud/text()', dataxml))[1];
 	k_folio_orden := (xpath('//document/k_orden_crud/text()', dataxml))[1];
-	usuario := (xpath('//document/usuario/text()', dataxml))[1];
 
-
-	select count(*) into totReg from keplersc.kdordcuest where col_sucursal=k_sucursal
-		and col_tipo_actividad=k_tipo_actividad and col_tipo_orden=k_tipo_orden and col_folio_orden=k_folio_orden;
+	
+	select count(*) into totReg from keplersc.kdordcuest where sucursal=k_sucursal
+		and tipo_actividad=k_tipo_actividad and tipo_orden=k_tipo_orden and folio_orden=k_folio_orden;
 	if totReg > 0 then
-		DELETE FROM keplersc.kdordcuest WHERE col_sucursal=k_sucursal and col_tipo_actividad=k_tipo_actividad
-		and col_tipo_orden=k_tipo_orden and col_folio_orden=k_folio_orden;
+		DELETE FROM keplersc.kdordcuest WHERE sucursal=k_sucursal and tipo_actividad=k_tipo_actividad
+		and tipo_orden=k_tipo_orden and folio_orden=k_folio_orden;
 	end if;
 
-    FOR indice IN 0.. k_n_renglon LOOP
-        k_clave_actividad := (xpath('//document/tbl_cuestionario/r' || indice || '/clave/text()', dataxml))[1];
-        k_descripcion := (xpath('//document/tbl_cuestionario/r' || indice || '/pregunta/text()', dataxml))[1];
-        k_resultado := (xpath('//document/tbl_cuestionario/r' || indice || '/respuesta/text()', dataxml))[1];
-        k_comentario := COALESCE((xpath('//document/tbl_cuestionario/r' || indice || '/comentario/text()', dataxml))[1], '');
-       
-       if k_clave_actividad is null and k_descripcion is null then 
-       	continue;
-       end if;
-		       
-        INSERT INTO keplersc.kdordcuest
-            (col_sucursal, col_tipo_actividad, col_tipo_orden, col_folio_orden, col_clave_actividad, col_descripcion, col_resultado, col_comentario)
-        VALUES
-            (k_sucursal, k_tipo_actividad, k_tipo_orden, k_folio_orden, k_clave_actividad, k_descripcion, k_resultado, k_comentario);
-    END LOOP;
-   
-   
-    if k_tipo_actividad = 'PSFU' then
-      update keplersc.kdencprog set c6=20, c7=current_date, c8= left(current_time::text, 8) , c9=usuario 
-      where c1=k_sucursal and c2=k_tipo_orden and c3=k_folio_orden;
-    end if;
+	if k_tipo_actividad = 'PRE' then
 
+		k_clave_actividad := (xpath('//document/tbl_cuestionario/r0/clave/text()', dataxml))[1];
+		k_descripcion     := (xpath('//document/tbl_cuestionario/r0/pregunta/text()', dataxml))[1];
+		k_resultado       := (xpath('//document/tbl_cuestionario/r0/respuesta/text()', dataxml))[1];
+		k_comentario := COALESCE((xpath('//document/tbl_cuestionario/r0/comentario/text()', dataxml))[1], '');
+
+		insert into keplersc.kdordcuest
+			(sucursal, tipo_actividad, tipo_orden, folio_orden
+			,clave_actividad, descripcion, resultado, comentario)
+		values (k_sucursal, k_tipo_actividad, k_tipo_orden, k_folio_orden
+				,k_clave_actividad, k_descripcion, k_resultado, k_comentario);
+
+		k_clave_actividad := (xpath('//document/tbl_cuestionario/r1/clave/text()', dataxml))[1];
+		k_descripcion     := (xpath('//document/tbl_cuestionario/r1/pregunta/text()', dataxml))[1];
+		k_resultado       := (xpath('//document/tbl_cuestionario/r1/respuesta/text()', dataxml))[1];
+		k_comentario := COALESCE((xpath('//document/tbl_cuestionario/r1/comentario/text()', dataxml))[1], '');
+
+		insert into keplersc.kdordcuest
+			(sucursal, tipo_actividad, tipo_orden, folio_orden
+			,clave_actividad, descripcion, resultado, comentario)
+		values (k_sucursal, k_tipo_actividad, k_tipo_orden, k_folio_orden
+				,k_clave_actividad, k_descripcion, k_resultado, k_comentario);
+
+		k_clave_actividad := (xpath('//document/tbl_cuestionario/r2/clave/text()', dataxml))[1];
+		k_descripcion     := (xpath('//document/tbl_cuestionario/r2/pregunta/text()', dataxml))[1];
+		k_resultado       := (xpath('//document/tbl_cuestionario/r2/respuesta/text()', dataxml))[1];
+		k_comentario := COALESCE((xpath('//document/tbl_cuestionario/r2/comentario/text()', dataxml))[1], '');
+
+		insert into keplersc.kdordcuest
+			(sucursal, tipo_actividad, tipo_orden, folio_orden
+			,clave_actividad, descripcion, resultado, comentario)
+		values (k_sucursal, k_tipo_actividad, k_tipo_orden, k_folio_orden
+				,k_clave_actividad, k_descripcion, k_resultado, k_comentario);
+
+		k_clave_actividad := (xpath('//document/tbl_cuestionario/r3/clave/text()', dataxml))[1];
+		k_descripcion     := (xpath('//document/tbl_cuestionario/r3/pregunta/text()', dataxml))[1];
+		k_resultado       := (xpath('//document/tbl_cuestionario/r3/respuesta/text()', dataxml))[1];
+		k_comentario := COALESCE((xpath('//document/tbl_cuestionario/r3/comentario/text()', dataxml))[1], '');
+
+		insert into keplersc.kdordcuest
+			(sucursal, tipo_actividad, tipo_orden, folio_orden
+			,clave_actividad, descripcion, resultado, comentario)
+		values (k_sucursal, k_tipo_actividad, k_tipo_orden, k_folio_orden
+				,k_clave_actividad, k_descripcion, k_resultado, k_comentario);
+
+		k_clave_actividad := (xpath('//document/tbl_cuestionario/r4/clave/text()', dataxml))[1];
+		k_descripcion     := (xpath('//document/tbl_cuestionario/r4/pregunta/text()', dataxml))[1];
+		k_resultado       := (xpath('//document/tbl_cuestionario/r4/respuesta/text()', dataxml))[1];
+		k_comentario := COALESCE((xpath('//document/tbl_cuestionario/r4/comentario/text()', dataxml))[1], '');
+
+		insert into keplersc.kdordcuest
+			(sucursal, tipo_actividad, tipo_orden, folio_orden
+			,clave_actividad, descripcion, resultado, comentario)
+		values (k_sucursal, k_tipo_actividad, k_tipo_orden, k_folio_orden
+				,k_clave_actividad, k_descripcion, k_resultado, k_comentario);
+
+		k_clave_actividad := (xpath('//document/tbl_cuestionario/r5/clave/text()', dataxml))[1];
+		k_descripcion     := (xpath('//document/tbl_cuestionario/r5/pregunta/text()', dataxml))[1];
+		k_resultado       := (xpath('//document/tbl_cuestionario/r5/respuesta/text()', dataxml))[1];
+		k_comentario := COALESCE((xpath('//document/tbl_cuestionario/r5/comentario/text()', dataxml))[1], '');
+
+		insert into keplersc.kdordcuest
+			(sucursal, tipo_actividad, tipo_orden, folio_orden
+			,clave_actividad, descripcion, resultado, comentario)
+		values (k_sucursal, k_tipo_actividad, k_tipo_orden, k_folio_orden
+				,k_clave_actividad, k_descripcion, k_resultado, k_comentario);
+
+		k_clave_actividad := (xpath('//document/tbl_cuestionario/r6/clave/text()', dataxml))[1];
+		k_descripcion     := (xpath('//document/tbl_cuestionario/r6/pregunta/text()', dataxml))[1];
+		k_resultado       := (xpath('//document/tbl_cuestionario/r6/respuesta/text()', dataxml))[1];
+		k_comentario := COALESCE((xpath('//document/tbl_cuestionario/r6/comentario/text()', dataxml))[1], '');
+
+		insert into keplersc.kdordcuest
+			(sucursal, tipo_actividad, tipo_orden, folio_orden
+			,clave_actividad, descripcion, resultado, comentario)
+		values (k_sucursal, k_tipo_actividad, k_tipo_orden, k_folio_orden
+				,k_clave_actividad, k_descripcion, k_resultado, k_comentario);
+
+		k_clave_actividad := (xpath('//document/tbl_cuestionario/r7/clave/text()', dataxml))[1];
+		k_descripcion     := (xpath('//document/tbl_cuestionario/r7/pregunta/text()', dataxml))[1];
+		k_resultado       := (xpath('//document/tbl_cuestionario/r7/respuesta/text()', dataxml))[1];
+		k_comentario := COALESCE((xpath('//document/tbl_cuestionario/r7/comentario/text()', dataxml))[1], '');
+
+		insert into keplersc.kdordcuest
+			(sucursal, tipo_actividad, tipo_orden, folio_orden
+			,clave_actividad, descripcion, resultado, comentario)
+		values (k_sucursal, k_tipo_actividad, k_tipo_orden, k_folio_orden
+				,k_clave_actividad, k_descripcion, k_resultado, k_comentario);
+
+		k_clave_actividad := (xpath('//document/tbl_cuestionario/r8/clave/text()', dataxml))[1];
+		k_descripcion     := (xpath('//document/tbl_cuestionario/r8/pregunta/text()', dataxml))[1];
+		k_resultado       := (xpath('//document/tbl_cuestionario/r8/respuesta/text()', dataxml))[1];
+		k_comentario := COALESCE((xpath('//document/tbl_cuestionario/r8/comentario/text()', dataxml))[1], '');
+
+		insert into keplersc.kdordcuest
+			(sucursal, tipo_actividad, tipo_orden, folio_orden
+			,clave_actividad, descripcion, resultado, comentario)
+		values (k_sucursal, k_tipo_actividad, k_tipo_orden, k_folio_orden
+				,k_clave_actividad, k_descripcion, k_resultado, k_comentario);
+
+		k_clave_actividad := (xpath('//document/tbl_cuestionario/r9/clave/text()', dataxml))[1];
+		k_descripcion     := (xpath('//document/tbl_cuestionario/r9/pregunta/text()', dataxml))[1];
+		k_resultado       := (xpath('//document/tbl_cuestionario/r9/respuesta/text()', dataxml))[1];
+		k_comentario := COALESCE((xpath('//document/tbl_cuestionario/r9/comentario/text()', dataxml))[1], '');
+
+		insert into keplersc.kdordcuest
+			(sucursal, tipo_actividad, tipo_orden, folio_orden
+			,clave_actividad, descripcion, resultado, comentario)
+		values (k_sucursal, k_tipo_actividad, k_tipo_orden, k_folio_orden
+				,k_clave_actividad, k_descripcion, k_resultado, k_comentario);
+
+
+		k_clave_actividad := (xpath('//document/tbl_cuestionario/r10/clave/text()', dataxml))[1];
+		k_descripcion     := (xpath('//document/tbl_cuestionario/r10/pregunta/text()', dataxml))[1];
+		k_resultado       := (xpath('//document/tbl_cuestionario/r10/respuesta/text()', dataxml))[1];
+		k_comentario := COALESCE((xpath('//document/tbl_cuestionario/r10/comentario/text()', dataxml))[1], '');
+
+		insert into keplersc.kdordcuest
+			(sucursal, tipo_actividad, tipo_orden, folio_orden
+			,clave_actividad, descripcion, resultado, comentario)
+		values (k_sucursal, k_tipo_actividad, k_tipo_orden, k_folio_orden
+				,k_clave_actividad, k_descripcion, k_resultado, k_comentario);
+
+	end if;
+
+
+	if k_tipo_actividad = 'ENT' then
+
+		k_clave_actividad := (xpath('//document/tbl_cuestionario/r0/clave/text()', dataxml))[1];
+		k_descripcion     := (xpath('//document/tbl_cuestionario/r0/pregunta/text()', dataxml))[1];
+		k_resultado       := (xpath('//document/tbl_cuestionario/r0/respuesta/text()', dataxml))[1];
+		k_comentario := COALESCE((xpath('//document/tbl_cuestionario/r0/comentario/text()', dataxml))[1], '');
+
+		insert into keplersc.kdordcuest
+			(sucursal, tipo_actividad, tipo_orden, folio_orden
+			,clave_actividad, descripcion, resultado, comentario)
+		values (k_sucursal, k_tipo_actividad, k_tipo_orden, k_folio_orden
+				,k_clave_actividad, k_descripcion, k_resultado, k_comentario);
+
+		k_clave_actividad := (xpath('//document/tbl_cuestionario/r1/clave/text()', dataxml))[1];
+		k_descripcion     := (xpath('//document/tbl_cuestionario/r1/pregunta/text()', dataxml))[1];
+		k_resultado       := (xpath('//document/tbl_cuestionario/r1/respuesta/text()', dataxml))[1];
+		k_comentario := COALESCE((xpath('//document/tbl_cuestionario/r1/comentario/text()', dataxml))[1], '');
+
+		insert into keplersc.kdordcuest
+			(sucursal, tipo_actividad, tipo_orden, folio_orden
+			,clave_actividad, descripcion, resultado, comentario)
+		values (k_sucursal, k_tipo_actividad, k_tipo_orden, k_folio_orden
+				,k_clave_actividad, k_descripcion, k_resultado, k_comentario);
+
+		k_clave_actividad := (xpath('//document/tbl_cuestionario/r2/clave/text()', dataxml))[1];
+		k_descripcion     := (xpath('//document/tbl_cuestionario/r2/pregunta/text()', dataxml))[1];
+		k_resultado       := (xpath('//document/tbl_cuestionario/r2/respuesta/text()', dataxml))[1];
+		k_comentario := COALESCE((xpath('//document/tbl_cuestionario/r2/comentario/text()', dataxml))[1], '');
+
+		insert into keplersc.kdordcuest
+			(sucursal, tipo_actividad, tipo_orden, folio_orden
+			,clave_actividad, descripcion, resultado, comentario)
+		values (k_sucursal, k_tipo_actividad, k_tipo_orden, k_folio_orden
+				,k_clave_actividad, k_descripcion, k_resultado, k_comentario);
+
+		k_clave_actividad := (xpath('//document/tbl_cuestionario/r3/clave/text()', dataxml))[1];
+		k_descripcion     := (xpath('//document/tbl_cuestionario/r3/pregunta/text()', dataxml))[1];
+		k_resultado       := (xpath('//document/tbl_cuestionario/r3/respuesta/text()', dataxml))[1];
+		k_comentario := COALESCE((xpath('//document/tbl_cuestionario/r3/comentario/text()', dataxml))[1], '');
+
+		insert into keplersc.kdordcuest
+			(sucursal, tipo_actividad, tipo_orden, folio_orden
+			,clave_actividad, descripcion, resultado, comentario)
+		values (k_sucursal, k_tipo_actividad, k_tipo_orden, k_folio_orden
+				,k_clave_actividad, k_descripcion, k_resultado, k_comentario);
+
+		k_clave_actividad := (xpath('//document/tbl_cuestionario/r4/clave/text()', dataxml))[1];
+		k_descripcion     := (xpath('//document/tbl_cuestionario/r4/pregunta/text()', dataxml))[1];
+		k_resultado       := (xpath('//document/tbl_cuestionario/r4/respuesta/text()', dataxml))[1];
+		k_comentario := COALESCE((xpath('//document/tbl_cuestionario/r4/comentario/text()', dataxml))[1], '');
+
+		insert into keplersc.kdordcuest
+			(sucursal, tipo_actividad, tipo_orden, folio_orden
+			,clave_actividad, descripcion, resultado, comentario)
+		values (k_sucursal, k_tipo_actividad, k_tipo_orden, k_folio_orden
+				,k_clave_actividad, k_descripcion, k_resultado, k_comentario);
+
+		k_clave_actividad := (xpath('//document/tbl_cuestionario/r5/clave/text()', dataxml))[1];
+		k_descripcion     := (xpath('//document/tbl_cuestionario/r5/pregunta/text()', dataxml))[1];
+		k_resultado       := (xpath('//document/tbl_cuestionario/r5/respuesta/text()', dataxml))[1];
+		k_comentario := COALESCE((xpath('//document/tbl_cuestionario/r5/comentario/text()', dataxml))[1], '');
+
+		insert into keplersc.kdordcuest
+			(sucursal, tipo_actividad, tipo_orden, folio_orden
+			,clave_actividad, descripcion, resultado, comentario)
+		values (k_sucursal, k_tipo_actividad, k_tipo_orden, k_folio_orden
+				,k_clave_actividad, k_descripcion, k_resultado, k_comentario);
+
+		k_clave_actividad := (xpath('//document/tbl_cuestionario/r6/clave/text()', dataxml))[1];
+		k_descripcion     := (xpath('//document/tbl_cuestionario/r6/pregunta/text()', dataxml))[1];
+		k_resultado       := (xpath('//document/tbl_cuestionario/r6/respuesta/text()', dataxml))[1];
+		k_comentario := COALESCE((xpath('//document/tbl_cuestionario/r6/comentario/text()', dataxml))[1], '');
+
+		insert into keplersc.kdordcuest
+			(sucursal, tipo_actividad, tipo_orden, folio_orden
+			,clave_actividad, descripcion, resultado, comentario)
+		values (k_sucursal, k_tipo_actividad, k_tipo_orden, k_folio_orden
+				,k_clave_actividad, k_descripcion, k_resultado, k_comentario);
+
+		k_clave_actividad := (xpath('//document/tbl_cuestionario/r7/clave/text()', dataxml))[1];
+		k_descripcion     := (xpath('//document/tbl_cuestionario/r7/pregunta/text()', dataxml))[1];
+		k_resultado       := (xpath('//document/tbl_cuestionario/r7/respuesta/text()', dataxml))[1];
+		k_comentario := COALESCE((xpath('//document/tbl_cuestionario/r7/comentario/text()', dataxml))[1], '');
+
+		insert into keplersc.kdordcuest
+			(sucursal, tipo_actividad, tipo_orden, folio_orden
+			,clave_actividad, descripcion, resultado, comentario)
+		values (k_sucursal, k_tipo_actividad, k_tipo_orden, k_folio_orden
+				,k_clave_actividad, k_descripcion, k_resultado, k_comentario);
+
+		k_clave_actividad := (xpath('//document/tbl_cuestionario/r8/clave/text()', dataxml))[1];
+		k_descripcion     := (xpath('//document/tbl_cuestionario/r8/pregunta/text()', dataxml))[1];
+		k_resultado       := (xpath('//document/tbl_cuestionario/r8/respuesta/text()', dataxml))[1];
+		k_comentario := COALESCE((xpath('//document/tbl_cuestionario/r8/comentario/text()', dataxml))[1], '');
+
+		insert into keplersc.kdordcuest
+			(sucursal, tipo_actividad, tipo_orden, folio_orden
+			,clave_actividad, descripcion, resultado, comentario)
+		values (k_sucursal, k_tipo_actividad, k_tipo_orden, k_folio_orden
+				,k_clave_actividad, k_descripcion, k_resultado, k_comentario);
+
+		k_clave_actividad := (xpath('//document/tbl_cuestionario/r9/clave/text()', dataxml))[1];
+		k_descripcion     := (xpath('//document/tbl_cuestionario/r9/pregunta/text()', dataxml))[1];
+		k_resultado       := (xpath('//document/tbl_cuestionario/r9/respuesta/text()', dataxml))[1];
+		k_comentario := COALESCE((xpath('//document/tbl_cuestionario/r9/comentario/text()', dataxml))[1], '');
+
+		insert into keplersc.kdordcuest
+			(sucursal, tipo_actividad, tipo_orden, folio_orden
+			,clave_actividad, descripcion, resultado, comentario)
+		values (k_sucursal, k_tipo_actividad, k_tipo_orden, k_folio_orden
+				,k_clave_actividad, k_descripcion, k_resultado, k_comentario);
+
+
+		k_clave_actividad := (xpath('//document/tbl_cuestionario/r10/clave/text()', dataxml))[1];
+		k_descripcion     := (xpath('//document/tbl_cuestionario/r10/pregunta/text()', dataxml))[1];
+		k_resultado       := (xpath('//document/tbl_cuestionario/r10/respuesta/text()', dataxml))[1];
+		k_comentario := COALESCE((xpath('//document/tbl_cuestionario/r10/comentario/text()', dataxml))[1], '');
+
+		insert into keplersc.kdordcuest
+			(sucursal, tipo_actividad, tipo_orden, folio_orden
+			,clave_actividad, descripcion, resultado, comentario)
+		values (k_sucursal, k_tipo_actividad, k_tipo_orden, k_folio_orden
+				,k_clave_actividad, k_descripcion, k_resultado, k_comentario);
+
+		k_clave_actividad := (xpath('//document/tbl_cuestionario/r11/clave/text()', dataxml))[1];
+		k_descripcion     := (xpath('//document/tbl_cuestionario/r11/pregunta/text()', dataxml))[1];
+		k_resultado       := (xpath('//document/tbl_cuestionario/r11/respuesta/text()', dataxml))[1];
+		k_comentario := COALESCE((xpath('//document/tbl_cuestionario/r11/comentario/text()', dataxml))[1], '');
+
+		insert into keplersc.kdordcuest
+			(sucursal, tipo_actividad, tipo_orden, folio_orden
+			,clave_actividad, descripcion, resultado, comentario)
+		values (k_sucursal, k_tipo_actividad, k_tipo_orden, k_folio_orden
+				,k_clave_actividad, k_descripcion, k_resultado, k_comentario);
+
+		k_clave_actividad := (xpath('//document/tbl_cuestionario/r12/clave/text()', dataxml))[1];
+		k_descripcion     := (xpath('//document/tbl_cuestionario/r12/pregunta/text()', dataxml))[1];
+		k_resultado       := (xpath('//document/tbl_cuestionario/r12/respuesta/text()', dataxml))[1];
+		k_comentario := COALESCE((xpath('//document/tbl_cuestionario/r12/comentario/text()', dataxml))[1], '');
+
+		insert into keplersc.kdordcuest
+			(sucursal, tipo_actividad, tipo_orden, folio_orden
+			,clave_actividad, descripcion, resultado, comentario)
+		values (k_sucursal, k_tipo_actividad, k_tipo_orden, k_folio_orden
+				,k_clave_actividad, k_descripcion, k_resultado, k_comentario);
+
+		k_clave_actividad := (xpath('//document/tbl_cuestionario/r13/clave/text()', dataxml))[1];
+		k_descripcion     := (xpath('//document/tbl_cuestionario/r13/pregunta/text()', dataxml))[1];
+		k_resultado       := (xpath('//document/tbl_cuestionario/r13/respuesta/text()', dataxml))[1];
+		k_comentario := COALESCE((xpath('//document/tbl_cuestionario/r13/comentario/text()', dataxml))[1], '');
+
+		insert into keplersc.kdordcuest
+			(sucursal, tipo_actividad, tipo_orden, folio_orden
+			,clave_actividad, descripcion, resultado, comentario)
+		values (k_sucursal, k_tipo_actividad, k_tipo_orden, k_folio_orden
+				,k_clave_actividad, k_descripcion, k_resultado, k_comentario);
+
+	end if;
+
+	if k_tipo_actividad = 'PSFU' then
+
+		k_clave_actividad := (xpath('//document/tbl_cuestionario/r0/clave/text()', dataxml))[1];
+		k_descripcion     := (xpath('//document/tbl_cuestionario/r0/pregunta/text()', dataxml))[1];
+		k_resultado       := (xpath('//document/tbl_cuestionario/r0/respuesta/text()', dataxml))[1];
+		k_comentario := COALESCE((xpath('//document/tbl_cuestionario/r0/comentario/text()', dataxml))[1], '');
+
+		insert into keplersc.kdordcuest
+			(sucursal, tipo_actividad, tipo_orden, folio_orden
+			,clave_actividad, descripcion, resultado, comentario)
+		values (k_sucursal, k_tipo_actividad, k_tipo_orden, k_folio_orden
+				,k_clave_actividad, k_descripcion, k_resultado, k_comentario);
+
+		k_clave_actividad := (xpath('//document/tbl_cuestionario/r1/clave/text()', dataxml))[1];
+		k_descripcion     := (xpath('//document/tbl_cuestionario/r1/pregunta/text()', dataxml))[1];
+		k_resultado       := (xpath('//document/tbl_cuestionario/r1/respuesta/text()', dataxml))[1];
+		k_comentario := COALESCE((xpath('//document/tbl_cuestionario/r1/comentario/text()', dataxml))[1], '');
+
+		insert into keplersc.kdordcuest
+			(sucursal, tipo_actividad, tipo_orden, folio_orden
+			,clave_actividad, descripcion, resultado, comentario)
+		values (k_sucursal, k_tipo_actividad, k_tipo_orden, k_folio_orden
+				,k_clave_actividad, k_descripcion, k_resultado, k_comentario);
+
+		k_clave_actividad := (xpath('//document/tbl_cuestionario/r2/clave/text()', dataxml))[1];
+		k_descripcion     := (xpath('//document/tbl_cuestionario/r2/pregunta/text()', dataxml))[1];
+		k_resultado       := (xpath('//document/tbl_cuestionario/r2/respuesta/text()', dataxml))[1];
+		k_comentario := COALESCE((xpath('//document/tbl_cuestionario/r2/comentario/text()', dataxml))[1], '');
+
+		insert into keplersc.kdordcuest
+			(sucursal, tipo_actividad, tipo_orden, folio_orden
+			,clave_actividad, descripcion, resultado, comentario)
+		values (k_sucursal, k_tipo_actividad, k_tipo_orden, k_folio_orden
+				,k_clave_actividad, k_descripcion, k_resultado, k_comentario);
+
+		k_clave_actividad := (xpath('//document/tbl_cuestionario/r3/clave/text()', dataxml))[1];
+		k_descripcion     := (xpath('//document/tbl_cuestionario/r3/pregunta/text()', dataxml))[1];
+		k_resultado       := (xpath('//document/tbl_cuestionario/r3/respuesta/text()', dataxml))[1];
+		k_comentario := COALESCE((xpath('//document/tbl_cuestionario/r3/comentario/text()', dataxml))[1], '');
+
+		insert into keplersc.kdordcuest
+			(sucursal, tipo_actividad, tipo_orden, folio_orden
+			,clave_actividad, descripcion, resultado, comentario)
+		values (k_sucursal, k_tipo_actividad, k_tipo_orden, k_folio_orden
+				,k_clave_actividad, k_descripcion, k_resultado, k_comentario);
+
+	end if;
 
 	resultado := 1;
 	mensaje := 'Registro modificado: ';

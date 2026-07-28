@@ -15,5 +15,4 @@ COMMENT ON COLUMN keplersc.kdordceros.c4 IS 'Usuario';
 COMMENT ON COLUMN keplersc.kdordceros.c3 IS 'Orden';
 COMMENT ON COLUMN keplersc.kdordceros.c2 IS 'Tipo de Orden';
 COMMENT ON COLUMN keplersc.kdordceros.c1 IS 'Sucursal';
-CREATE TRIGGER kdordceros_notif AFTER INSERT ON keplersc.kdordceros FOR EACH ROW EXECUTE FUNCTION keplersc.notif_registrar_movto();
 

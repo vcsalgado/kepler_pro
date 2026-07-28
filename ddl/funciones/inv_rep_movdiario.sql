@@ -40,7 +40,7 @@ raise notice '%',1;
 	case when inm.c6 = 'A' then inm.c11 else 0 end as entrada,
 	case when inm.c6 <> 'A' then inm.c11 else 0  end as salida
 	from keplersc.kdinm inm, keplersc.kdini ini, keplersc.kdmm mm
-	where inm.c2 = ini.c1 and inm.c1=mm.col_sucursal and inm.c5 = mm.c1 and inm.c6 = mm.c2 and inm.c7 = mm.c3 and inm.c8 = mm.c4
+	where inm.c2 = ini.c1 and inm.c5 = mm.c1 and inm.c6 = mm.c2 and inm.c7 = mm.c3 and inm.c8 = mm.c4
 	and inm.c1 = sucursal_id
 	and inm.c5 = genero and inm.c6 = naturaleza and inm.c7 = grupo::numeric and inm.c8= tipo::numeric
 	and inm.c3 between to_date(fecha_ini,'YYYY-MM-DD') and to_date( fecha_fin,'YYYY-MM-DD');

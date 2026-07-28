@@ -211,8 +211,8 @@ begin
 			where c1 = sucursal_id and c2 = genero and c3 = clave_cteprov and c4 = ref_doc /*referencia*/;
 	
 			if totReg = 0 then
-				mensaje = concat('No se encuentra la cuenta ', ref_doc ,' [TBL kduxg] ...');
-				raise exception '%', mensaje;
+			
+				raise exception 'No se encuentra la cuenta [TBL kduxg] ...';
 			
 			else
 			

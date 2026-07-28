@@ -55,21 +55,17 @@ begin
 		sum(cantent) as cantent, sum(cantsal) as cantsal, 
 		sum(montoent) as montoent, sum(montosal) as montosal
 		from 
-		(select m.c1 as sucursal, m.c2 as producto,
-			case when m.c6='A' then sum(m.c11) end as cantent,
-			case when m.c6='D' then sum(m.c11) end as cantsal,
-			case when m.c6='A' then sum(m.c12) end as montoent,
-			case when m.c6='D' then sum(m.c12) end as montosal
-			/*case when (m.c5='U' and m.c6='A') or (m.c5='X' and m.c6='A') or (m.c5='N' and m.c6='A') then sum(m.c11) end as cantent,
+		(select m.c1 as sucursal, m.c2 as producto, 
+			case when (m.c5='U' and m.c6='A') or (m.c5='X' and m.c6='A') or (m.c5='N' and m.c6='A') then sum(m.c11) end as cantent,
 			case when (m.c5='U' and m.c6='D') or (m.c5='X' and m.c6='D') or (m.c5='N' and m.c6='D') then sum(m.c11) end as cantsal,
 			case when (m.c5='U' and m.c6='A') or (m.c5='X' and m.c6='A') or (m.c5='N' and m.c6='A') then sum(m.c12) end as montoent,
-			case when (m.c5='U' and m.c6='D') or (m.c5='X' and m.c6='D') or (m.c5='N' and m.c6='D') then sum(m.c12) end as montosal*/
+			case when (m.c5='U' and m.c6='D') or (m.c5='X' and m.c6='D') or (m.c5='N' and m.c6='D') then sum(m.c12) end as montosal
 		from keplersc.kdinm m
 		where m.c1=sucursal_id and m.c2 between producto_ini and producto_fin and c3 <=fecha_corte
 		group by m.c1,m.c2, m.c5,m.c6,m.c11 
 		order by m.c1,m.c2) as res1
 	group by sucursal, producto) as res2, keplersc.kdini prod
-	where  prod.c1 = res2.producto and (COALESCE(cantent,0)-COALESCE(cantsal,0) <> 0 or montoent-montosal <>0 )
+	where  prod.c1 = res2.producto and COALESCE(cantent,0)-COALESCE(cantsal,0) > 0
 	order by sucursal, prod.c1;
 
 	--return query select 0 as k_clave, '' as k_descripcion, 0 as k_existencias, 0 as k_valor, 

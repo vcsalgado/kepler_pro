@@ -86,5 +86,4 @@ COMMENT ON COLUMN keplersc.kdicom.c12 IS 'Status 0-Alta Compra 10-Baja Compra';
 COMMENT ON COLUMN keplersc.kdicom.c11 IS 'Numero CDO';
 COMMENT ON COLUMN keplersc.kdicom.c10 IS 'Proveedor';
 COMMENT ON COLUMN keplersc.kdicom.c1 IS 'Sucursal';
-CREATE TRIGGER kdicom_notif AFTER INSERT OR DELETE OR UPDATE ON keplersc.kdicom FOR EACH ROW EXECUTE FUNCTION keplersc.notif_registrar_movto();
 

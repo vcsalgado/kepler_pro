@@ -55,8 +55,7 @@ raise notice 'Actualizando KDINM Reemplazo:%, Origen:%', rec_KDINM.c2,producto_o
 
 	producto_ant = '';
 	for sucursal_id, producto_act, anio_actual  in 
-		select distinct c1,c2,extract(year from c3 )::text from keplersc.kdinm inm 
-		where c2<>'' order by c1,c2 
+		select distinct c1,c2,extract(year from c3 )::text from keplersc.kdinm inm order by c1,c2 
 	loop
 raise notice 'Procesando parte:%', rec_KDINM.c2;
 raise notice 'PASO 1 en Suc:%, Prod.:%, Fecha:%',sucursal_id,producto_act,anio_actual;	
@@ -227,8 +226,8 @@ raise notice 'PASO 2 en Suc:%, Prod.:%, Fecha:%',sucursal_id,producto_act,fecha_
 					rec_KDINL.c9=rec_KDINL.c9+rec_KDINM.c12;
 				end if;
 				if mes_actual=11 then
-					rec_KDINK.c50=rec_KDINK.c50+rec_KDINM.c11;
-					rec_KDINK.c62=rec_KDINK.c62+rec_KDINM.c12;
+					rec_KDINK.c50=rec_KDINK.c20+rec_KDINM.c11;
+					rec_KDINK.c62=rec_KDINK.c32+rec_KDINM.c12;
 					rec_KDINL.c6=rec_KDINL.c6+rec_KDINM.c11;
 					rec_KDINL.c9=rec_KDINL.c9+rec_KDINM.c12;
 				end if;

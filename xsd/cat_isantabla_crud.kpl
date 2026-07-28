@@ -1,151 +1,1 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<pag xmlns="www.kepler.com.mx/2003/KSchema" roles="" tit="Tabla de Porcentajes">
-<grp  brdr="0,0" clr="0,58,112" fnt="Arial,14"  dim="0,0,20,20" bclr="192,205,213" unfont="0">
-	<tab/><txt fnt=",22" clr="0,0,0">Configuraci&#243;n Tabla de ISAN</txt><tab/>
-	<br/>
-		<tab/><hLine clr="0,0,0"	dim="45,0,0,0"/>
-	<br/>
-	<br/><tab/>
-	<grp id="gpo_2" bclr="236,240,243" fntClrBrdr="255,255,255" unfont="0" fntBrdr="Arial,18" hSpace="4" clrBrdr="0,58,112" 
-		dim="45,25,10,17" brdr="0,5" tit="Tabla de ISAN" fnt="Arial,16">
-	
-		<sp/><txt>Tipo de ISAN:</txt>
-		<cmb id="tipo_calculo" dim="25,1" brdr="0,0" bclr="255,255,255" clr="64,64,64" clrBrdr="255,255,255" modify="Y" available="Y" fnt="Arial,0" Null="N" OnChange="ResetDetalle()"/>	<tab/>
-		<img id="img_buscar" dim="20,20" bPx="1" brdr="0,1" available="Y" img="_20_Find.png" OnEnter="ObtenerTipoISAN"/>	
-		<br/>
-		<sp/>
-		
-		<tbl id="k_mov" clr="64,64,64" clrBrdr="64,64,64" bclr="236,240,243" brdr="1,0" dim="85,20" modify="Y" Reorder="Y" available="Y" insdel="Y">
-			<col name="C&#243;digo" id="codigo"  type="capital"  nc="5" visible="Y"/>
-			<col name="Descripci&#243;n" id="descripcion"  type="capital"  nc="30" visible="Y"/>
-			<col name="Inferior" id="limite_inferior"  type="number"  nc="15" visible="Y" nd="2"/>
-			<col name="Superior" id="limite_superior"  type="number"  nc="15" visible="Y" nd="2"/>
-			<col name="Porcentaje" id="porcentaje" type="number" visible="Y" nc="15" nd="2"/>
-			<col name="Tarifa" id="tarifa" type="number"  nc="15" visible="Y" nd="2"/>
-			<col name="Reducci&#243;n" id="reducion" type="number"  nc="15" visible="Y" nd="2"/>
-			<col name="Excedente" id="excedente" type="number"  nc="15" visible="Y" nd="2"/>
-			<col name="Restador" id="restador" type="number"  nc="15" visible="Y" nd="2"/>
-		</tbl>
-		<br/><sp/>
-		<bot id="k_btn_cons" dim="10,10" brdr="5" text="Guardar" hk="K" default="1" step="0"  OnEnter="Guardar()" fnt="Arial,16"/>
-	</grp>
-</grp>
-<script>
-	InstallDriver("KDB75");
-	class Main {
-		var frn,frP,kdb,sys,suc_usuario,perfil_usuario,rol_usuario, tipo_calculo ;
-		var cmdQuery, cuboQuery, ok, mensajeError;
-		fun Main(){
-			frn=new FRNT;
-			kdb=new KDB;
-			frP=new FRNTP;
-			sys=new SYS;
-			kdb.connect();
-			
-			suc_usuario = frn.lib("libKepler","UserInfo(1)");
-			perfil_usuario = frn.lib("libKepler","UserInfo(2)");
-			rol_usuario = frn.config("user","role");
-			
-			
-			llena_combos();
-			ConfiguraUI();
-			Inicializa();
-		}
-            
-		fun llena_combos(){
-				
-			//tipo comision
-			cmdQuery = "select '[' || c1 || '] ' || c2 as descripcion,c1 as clave from keplersc.kdtisan";
-			rstXml(cuboQuery);
-			cuboQuery = frn.lib("libGeneral.kpl","EjecutarSqlSel",cmdQuery,"cat_isantabla_crud.llena_combos()");
-			ok=getXmlAtt(cuboQuery,"ok");
-			if(ok &! "" && !ok){
-				mensajeError = getXmlAtt(cuboQuery,"native3");
-				mensajeError = frn.lib("libGeneral.kpl","ErrorBD",mensajeError);
-				frn.message(mensajeError,"Error","Aceptar");
-				return;
-			}
-			
-			llenar_cmb(cuboQuery ,"tipo_calculo");	
-
-			ResetDetalle();
-		}
-		
-		fun ResetDetalle(){
-			frn.rst("k_mov");
-			tipo_calculo = frn.get("tipo_calculo", -1, 1);
-		}
-		
-		fun ObtenerTipoISAN{
-			var xmlPantalla;
-			xmlPantalla = getXml(frn.dataPag()); //Obtener el xml de la pantalla;
-			tipo_calculo = frn.get("tipo_calculo", -1, 1);
-			cmdQuery = "select c2 as codigo, c3 as descripcion, c4 as limite_inferior, c5 as limite_superior, c6 as porcentaje, c7 as tarifa, c8 redencion ";
-			cmdQuery  = cmdQuery  & " , c9 as excedente, c10 as restador from keplersc.kdisan where c1='" & tipo_calculo & "' order by c1,c2";
-		
-			rstXml(cuboQuery);
-			
-			cuboQuery = frn.lib("libGeneral.kpl","EjecutarSqlSel",cmdQuery,"cat_isantabla_crud.ObtenerTipoISAN");
-			ok=getXmlAtt(cuboQuery,"ok");
-			if(ok &! "" && !ok){
-				mensajeError = getXmlAtt(cuboQuery,"native3");
-				mensajeError = frn.lib("libGeneral.kpl","ErrorBD",mensajeError);
-				frn.message(mensajeError,"Error","Aceptar");
-				return;
-			}
-			frn.set("k_mov",cuboQuery);			
-		}
-		
-		fun Guardar(){
-			var xmlPantalla,no_partidas,resultado,mensaje,adicionales;
-			//Validaciones
-			no_partidas=frn.N("k_mov")-1;
-			if (no_partidas==0) {
-				frn.message("Error, no se tiene registros de configuracion","Error","Aceptar");
-				return;
-			}
-			xmlPantalla = getXml(frn.dataPag()); //Obtener el xml de la pantalla;
-			
-			setXml(xmlPantalla ,"k_partidas","no_partidas",no_partidas);			
-			frn.lib("libGeneral.kpl","FileSave",xmlPantalla,"C:\Basura\xmlPantallaisan");
-			cmdQuery="select * from keplersc.cat_isantabla_crud('<document>" & getXmlStr(xmlPantalla,"EOF:13_10") & "</document>')";			
-			kdb.rst(cuboQuery);
-			cuboQuery = frn.lib("libGeneral.kpl","EjecutarSql",cmdQuery,"cat_isantabla_crud.Guardar");
-			resultado= getXml(cuboQuery,"resultado");
-			mensaje= getXml(cuboQuery,"mensaje");
-				
-			if(resultado &= "0"){
-				frn.message(mensaje,"Error","Aceptar");
-				return;
-			}
-			frn.message("Comision registrada","Mensaje","Aceptar");
-		}
-		
-		fun ConfiguraUI(){
-			if (frn.nParam() == 0){
-				frn.message("Accion no permitida.","Error","&Aceptar");
-//				frn.open("redirect",2);
-				return;
-			}
-		}		
-
-		fun Inicializa(){
-			frn.rst("gpo_2");	
-			ObtenerTipoISAN();
-		}
-		
-		fun llenar_cmb(cuboResultados, cmb){
-			var len_cubo = nXml(cuboResultados);
-			var pos_ini = frn.N(cmb);
-			for (var cont=0; cont<len_cubo ; cont++){
-				var desc= getXmlAtt(cuboResultados,"r"&cont,"descripcion");
-				var clave= getXmlAtt(cuboResultados,"r"&cont,"clave");
-				frn.setX(desc, cmb, cont+pos_ini ,0);
-				frn.setX(clave, cmb, cont+pos_ini ,1);
-			}	
-		}
-	}
-	
-		
-	</script>
-</pag>
+<?xml version="1.0" encoding="UTF-8"?><pag xmlns="www.kepler.com.mx/2003/KSchema" roles="" tit="Tabla de Porcentajes"><grp  brdr="0,0" clr="0,58,112" fnt="Arial,14"  dim="0,0,20,20" bclr="192,205,213" unfont="0">	<tab/><txt fnt=",22" clr="0,0,0">Configuraci&#243;n Tabla de ISAN</txt><tab/>	<br/>		<tab/><hLine clr="0,0,0"	dim="45,0,0,0"/>	<br/>	<br/><tab/>	<grp id="gpo_2" bclr="236,240,243" fntClrBrdr="255,255,255" unfont="0" fntBrdr="Arial,18" hSpace="4" clrBrdr="0,58,112" 		dim="45,25,10,17" brdr="0,5" tit="Tabla de ISAN" fnt="Arial,16">			<sp/><txt>Tipo de ISAN:</txt>		<cmb id="tipo_calculo" dim="25,1" brdr="0,0" bclr="255,255,255" clr="64,64,64" clrBrdr="255,255,255" modify="Y" available="Y" fnt="Arial,0" Null="N" OnChange="ResetDetalle()"/>	<tab/>		<img id="img_buscar" dim="20,20" bPx="1" brdr="0,1" available="Y" img="_20_Find.png" OnEnter="ObtenerTipoISAN"/>			<br/>		<sp/>				<tbl id="k_mov" clr="64,64,64" clrBrdr="64,64,64" bclr="236,240,243" brdr="1,0" dim="85,20" modify="Y" Reorder="Y" available="Y" insdel="Y">			<col name="C&#243;digo" id="codigo"  type="capital"  nc="5" visible="Y"/>			<col name="Descripci&#243;n" id="descripcion"  type="capital"  nc="30" visible="Y"/>			<col name="Inferior" id="limite_inferior"  type="number"  nc="15" visible="Y" nd="2"/>			<col name="Superior" id="limite_superior"  type="number"  nc="15" visible="Y" nd="2"/>			<col name="Porcentaje" id="porcentaje" type="number" visible="Y" nc="15" nd="2"/>			<col name="Tarifa" id="tarifa" type="number"  nc="15" visible="Y" nd="2"/>			<col name="Reducci&#243;n" id="reducion" type="number"  nc="15" visible="Y" nd="2"/>			<col name="Excedente" id="excedente" type="number"  nc="15" visible="Y" nd="2"/>			<col name="Restador" id="restador" type="number"  nc="15" visible="Y" nd="2"/>		</tbl>		<br/><sp/>		<bot id="k_btn_cons" dim="10,10" brdr="5" text="Guardar" hk="K" default="1" step="0"  OnEnter="Guardar()" fnt="Arial,16"/>	</grp></grp><script>	InstallDriver("KDB75");	class Main {		var frn,frP,kdb,sys,suc_usuario,perfil_usuario,rol_usuario, tipo_calculo ;		var cmdQuery, cuboQuery, ok, mensajeError;		fun Main(){			frn=new FRNT;			kdb=new KDB;			frP=new FRNTP;			sys=new SYS;			kdb.connect();						suc_usuario = frn.lib("libKepler","UserInfo(1)");			perfil_usuario = frn.lib("libKepler","UserInfo(2)");			rol_usuario = frn.config("user","role");									llena_combos();			ConfiguraUI();			Inicializa();		}            		fun llena_combos(){							//tipo comision			cmdQuery = "select '[' || c1 || '] ' || c2 as descripcion,c1 as clave from keplersc.kdtisan";			rstXml(cuboQuery);			cuboQuery = frn.lib("libGeneral.kpl","EjecutarSqlSel",cmdQuery,"cat_isantabla_crud.llena_combos()");			ok=getXmlAtt(cuboQuery,"ok");			if(ok &! "" && !ok){				mensajeError = getXmlAtt(cuboQuery,"native3");				mensajeError = frn.lib("libGeneral.kpl","ErrorBD",mensajeError);				frn.message(mensajeError,"Error","Aceptar");				return;			}						llenar_cmb(cuboQuery ,"tipo_calculo");				ResetDetalle();		}				fun ResetDetalle(){			frn.rst("k_mov");			tipo_calculo = frn.get("tipo_calculo", -1, 1);		}				fun ObtenerTipoISAN{			var xmlPantalla;			xmlPantalla = getXml(frn.dataPag()); //Obtener el xml de la pantalla;			tipo_calculo = frn.get("tipo_calculo", -1, 1);			cmdQuery = "select c2 as codigo, c3 as descripcion, c4 as limite_inferior, c5 as limite_superior, c6 as porcentaje, c7 as tarifa, c8 redencion ";			cmdQuery  = cmdQuery  & " , c9 as excedente, c10 as restador from keplersc.kdisan where c1='" & tipo_calculo & "' order by c1,c2";					rstXml(cuboQuery);						cuboQuery = frn.lib("libGeneral.kpl","EjecutarSqlSel",cmdQuery,"cat_isantabla_crud.ObtenerTipoISAN");			ok=getXmlAtt(cuboQuery,"ok");			if(ok &! "" && !ok){				mensajeError = getXmlAtt(cuboQuery,"native3");				mensajeError = frn.lib("libGeneral.kpl","ErrorBD",mensajeError);				frn.message(mensajeError,"Error","Aceptar");				return;			}			frn.set("k_mov",cuboQuery);					}				fun Guardar(){			var xmlPantalla,no_partidas,resultado,mensaje,adicionales;			//Validaciones			no_partidas=frn.N("k_mov")-1;			if (no_partidas==0) {				frn.message("Error, no se tiene registros de configuración","Error","Aceptar");				return;			}			xmlPantalla = getXml(frn.dataPag()); //Obtener el xml de la pantalla;						setXml(xmlPantalla ,"k_partidas","no_partidas",no_partidas);						frn.lib("libGeneral.kpl","FileSave",xmlPantalla,"C:\Basura\xmlPantallaisan");			cmdQuery="select * from keplersc.cat_isantabla_crud('<document>" & getXmlStr(xmlPantalla,"EOF:13_10") & "</document>')";						kdb.rst(cuboQuery);			cuboQuery = frn.lib("libGeneral.kpl","EjecutarSql",cmdQuery,"cat_isantabla_crud.Guardar");			resultado= getXml(cuboQuery,"resultado");			mensaje= getXml(cuboQuery,"mensaje");							if(resultado &= "0"){				frn.message(mensaje,"Error","Aceptar");				return;			}			frn.message("Comision registrada","Mensaje","Aceptar");		}				fun ConfiguraUI(){			if (frn.nParam() == 0){				frn.message("Acción no permitida.","Error","&Aceptar");//				frn.open("redirect",2);				return;			}		}				fun Inicializa(){			frn.rst("gpo_2");				ObtenerTipoISAN();		}				fun llenar_cmb(cuboResultados, cmb){			var len_cubo = nXml(cuboResultados);			var pos_ini = frn.N(cmb);			for (var cont=0; cont<len_cubo ; cont++){				var desc= getXmlAtt(cuboResultados,"r"&cont,"descripcion");				var clave= getXmlAtt(cuboResultados,"r"&cont,"clave");				frn.setX(desc, cmb, cont+pos_ini ,0);				frn.setX(clave, cmb, cont+pos_ini ,1);			}			}	}				</script></pag>

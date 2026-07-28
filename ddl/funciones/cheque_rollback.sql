@@ -172,7 +172,7 @@ begin
 	strValor := (xpath('//row/c90/text()', xmlKDMM))[1];
 	if strValor is not null then
 		if strValor = 'S' then
-			mensajeError := 'Documento no v�lido ...';
+			mensajeError := 'Documento no v?lido ...';
 			raise exception '%',mensajeError;			
 		end if;
 	end if;

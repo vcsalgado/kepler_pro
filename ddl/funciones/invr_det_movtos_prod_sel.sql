@@ -42,7 +42,7 @@ begin
 		else '----' end as tipo,
 	inm.c12 as monto
 	from keplersc.kdinm inm, keplersc.kdmm mm, keplersc.kdini ini 
-	where ini.c1 = inm.c2 and mm.col_sucursal = inm.c1 and mm.c1 = inm.c5 and mm.c2=inm.c6 and mm.c3=inm.c7
+	where ini.c1 = inm.c2 and mm.c1 = inm.c5 and mm.c2=inm.c6 and mm.c3=inm.c7
 	and mm.c4=inm.c8
 	and inm.c1=sucursal_id and  inm.c2 between producto_ini and producto_fin 
 	and inm.c3 between to_date(fecha_ini,'YYYY-MM-DD') and to_date(fecha_fin,'YYYY-MM-DD')

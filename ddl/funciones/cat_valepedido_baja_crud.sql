@@ -53,9 +53,9 @@ BEGIN
 				usuario := (xpath('//document/usuario/text()', dataxml))[1]::text;
 				
 	  			--raise notice  '1 %' , v_sucursal_id;	  		
-				expSql = 'select * from keplersc.kdmm where col_sucursal='|| E'\'' || sucursal_id || E'\'' || ' and  c1='  || E'\'' || genero || E'\'' ||
+				expSql = 'select * from keplersc.kdmm where c1='  || E'\'' || genero || E'\'' ||
 				' and c2=' || E'\'' || naturaleza || E'\'' || ' and c3=' || grupo || ' and c4=' || tipo_clave;	
---raise notice 'expSql: %', expSql;		
+--raise notice 'expSql: %', expSql;			
 				select query_to_xml(expSql, true, false, '') into xmlKDMM;
 --				strValor := (xpath('//row/c8/text()', xmlKDMM))[1];
 --				if strValor is not null then
@@ -75,7 +75,7 @@ BEGIN
 				select query_to_xml(expSql, true, false, '') into xmlKDM1;
 				strValor:=substring(v_fecha,9,2) || '/' || substring(v_fecha,6,2) || '/' || substring(v_fecha,1,4) ; 
 
-/* TO DO: Eliminar, estos pasos no son necesarios
+/*
 				paso:= 'docdis.caja_baja';
 				select * into get_resultado, get_mensaje, get_adicionales from keplersc.caja_baja(dataxml,xmlKDMM,folio_operacion);
 				if get_resultado = '0' then
@@ -94,7 +94,7 @@ BEGIN
 				if get_resultado = '0' then
 					raise exception '%',get_mensaje;
 				end if;
-	*/			
+*/				
 				paso:= 'invlib_baja_invent';
 	  			select * into get_resultado, get_mensaje, get_adicionales from keplersc.invlib_baja_invent(dataxml,xmlkdmm, folio_operacion);
 				if get_resultado = '0' then

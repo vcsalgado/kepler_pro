@@ -61,7 +61,7 @@ begin
 			select c22 into estado_anterior_tab from keplersc.kdpun where c1=sucursal_id and c2=tipo_orden and c3=folio_orden and c4=numero_punto;
 		
 			if estado_anterior_tab <> tabulacion then
-raise notice 'estado_anterior_tab:% tabulacion:%',estado_anterior_tab,tabulacion;			
+			
 				if tabulacion = 'C' then
 				
 					update keplersc.kdpun set c22='C', c28=left(current_time::text, 8),c33=current_date
@@ -82,14 +82,13 @@ raise notice 'estado_anterior_tab:% tabulacion:%',estado_anterior_tab,tabulacion
 						raise exception 'Imposible abrir punto número % porque no esta cerrado todavía.', numero_punto;
 					end if;
 						
-					select c5::numeric into estado_pago_ope from keplersc.kdhorpag where c1=sucursal_id and c2=tipo_orden and c3=folio_orden and c4=numero_punto;
-raise notice 'If tab A sucursal_id:% tipo_orden:% folio_orden:% numero_punto:% estado_pago_ope:%',sucursal_id,tipo_orden,folio_orden,numero_punto,estado_pago_ope;				
+					select c5::numeric into estado_pago_ope from keplersc.kdhorpag where c1=sucursal_id and c2=tipo_orden and c3=folio_orden and c4=numero_punto; 
 					if estado_pago_ope is not null then 
 						if estado_pago_ope > 0 then
 							raise exception 'Imposible abrir punto número % porque ya fue pagado al operario ', numero_punto;
 						else
 							delete from keplersc.kdhorpag where c1=sucursal_id and c2=tipo_orden and c3=folio_orden and c4=numero_punto;
-					
+						
 							update keplersc.kdpun set c22='A', c28='',c33='1800-01-01'::date
 							where c1=sucursal_id and c2=tipo_orden and c3=folio_orden and c4=numero_punto; 
 						

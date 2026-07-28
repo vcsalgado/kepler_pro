@@ -7,7 +7,7 @@ CREATE  TABLE keplersc.kdtmktcomis_det (
   contacto character varying(10) NOT NULL DEFAULT ''::character varying,
   tipo_cita character varying(1) NOT NULL,
   folio_cita character varying(10) NOT NULL DEFAULT ''::character varying,
-  asesor_tmkt character varying(12) NOT NULL DEFAULT ''::character varying,
+  asesor_tmkt character varying(10) NOT NULL DEFAULT ''::character varying,
   tipo_orden character varying(10) NOT NULL,
   folio_orden character varying(10) NOT NULL,
   fecha_ord_ent timestamp without time zone NULL,

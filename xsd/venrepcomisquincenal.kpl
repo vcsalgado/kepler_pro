@@ -1,516 +1,1 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<pag xmlns="www.kepler.com.mx/2003/KSchema" tit="Comisiones Quincenales">
-	<grp dim="1,-1,10,20" brdr="2,1" bclr="192,205,213" clr="0,58,112" fnt="Arial,16" unfont="0"
-		OnF1="Ventana(rep_Hlp)"><br/><tab/><txt fnt=",22" clr="0,0,0">Comisiones Quincenales</txt><br/>
-		<!--	<br/> <hLine dim="50,0" g="2" type="1"/> -->
-		<tab/><hLine clr="0,0,0"/>
-		<br/><br/>
-		<!-- <grp dim="50,20,7,12" bclr="236,240,243" tit="Par&#225;metros" brdr="0,5" clrBrdr="0,58,112" fntClrBrdr="255,206,0" fntBrdr="Arial,18" hSpace="4"><br/><tab/><txt>Sucursal</txt><tab n="2"/> -->
-		<tab/>
-		<grp dim="50,22,7,12" bclr="236,240,243" tit="Par&#225;metros" brdr="0,5" clrBrdr="0,58,112" fntClrBrdr="236,240,243" fntBrdr="Arial,18" hSpace="4">
-		
-			<br/> <tab/> <txt>Sucursal </txt> <tab n="2"/>
-			<!-- <cmb id="cmb_sucursal" dim="43,1" brdr="2,0" bclr="255,255,255" clr="64,64,64" clrBrdr="255,255,255" OnChange="Fill_Data_Suc()"/> -->
-			<cmb id="cmb_sucursal" dim="43,1" brdr="2,0" bclr="255,255,255" clr="64,64,64" clrBrdr="255,255,255"/>
-			<br/>
-			<br/> 
-			<tab/> <txt>Vendedor Inicial  </txt> <sp n="2"/>
-			<inp id="vend_ini" clr="64,64,64" clrBrdr="255,255,255"  dim="7,1" fnt="Arial,16" type="string" modify="Y" available="Y" nc="5" visible="Y" OnF9="Get_Cat(1)" OnChange="Valida_Vend(1)" bclr="250,250,250"/>
-			<br/>
-			<tab/> <txt>Vendedor Final  </txt> <sp n="3"/>
-			<inp id="vend_fin" clr="64,64,64" clrBrdr="255,255,255"  dim="7,1" fnt="Arial,16" type="string" modify="Y" available="Y" nc="5" visible="Y" OnF9="Get_Cat(2)" OnChange="Valida_Vend(2)" bclr="250,250,250"/>
-			<br/>
-			<br/>
-			<tab/> <txt>Mes  </txt> <sp n="2"/>
-			<inp id="p_mes" clr="64,64,64" clrBrdr="255,255,255"  dim="3,1" fnt="Arial,16" type="number" modify="Y" available="Y" nc="2" visible="Y" bclr="250,250,250" min="1" max="12" nd="0" OnChange="Calcula_Fechas()"/>
-			<br/>
-			<tab/> <txt>A&#241;o  </txt> <sp n="2"/>
-			<inp id="p_anio" clr="64,64,64" clrBrdr="255,255,255"  dim="3,1" fnt="Arial,16" type="number" modify="Y" available="Y" nc="2" visible="Y" bclr="250,250,250" min="10" max="99" nd="0" OnChange="Calcula_Fechas()"/>
-			<br/>
-			<br/>
-			<tab/><txt>Fecha Quincena 1</txt> <sp n="2"/>
-			<edt id="k_fech_q1" dim="14,1" type="date" fmt="DD-MM-CCYY" brdr="2,0" bclr="255,255,255" clr="64,64,64" page="_ks_fecha,k_fech_ini" OnF9="Ventana(_ks_fecha,k_fech_ini)" clrBrdr="255,255,255" modify="N" available="N"/>
-			<br/>
-			<tab/><txt>Fecha Quincena 2</txt> <sp n="2"/>
-			<edt id="k_fech_q2" dim="14,1" type="date" fmt="DD-MM-CCYY" brdr="2,0" bclr="255,255,255" clr="64,64,64" page="_ks_fecha,k_fech_fin" OnF9="Ventana(_ks_fecha,k_fech_fin)" clrBrdr="255,255,255" modify="N" available="N"/>
-			<br/>
-			
-		</grp>
-		
-		<br/><br/><tab n="5"/>
-		<bot id="Ejecutar" dim="10,0" brdr="5" default="0" text="Ejecutar" tooltip="Generar Reporte" OnEnter="Ejecuta()"/><tab/>
-		<bot id="Salir" dim="10,0" brdr="5" default="0" text="Finalizar" tooltip="Generar Reporte" OnEnter="Exit()"/>
-		<br/><tab n="9"/>
-		
-		<!--	<img id="k_ejecuta" dim="60,60" brdr="0,1" bPx="1" available="Y" tooltip="Generar reporte" img="_60_Execute.png" default="1" OnEnter="Ejecuta()"/> --> 
-		<!--	<br/> --> 
-		
-	</grp>
-
-	<script>
-	
-		InstallDriver("KDB75");
-		class Main {
-			var frn,kdb,rep,sys;
-		
-			// Our Vars
-			var cmd, cuboQuery, ok, mensajeError, strTmp;
-			var sucursal, vend_ini, vend_fin, mes, anio, fech_ini, fech_fin;
-			var xmlPar, xmlResQuery, xmlPar2, xmlResQuery2;
-			var fileSavePath, suc_usuario,perfil_usuario,usuario ,rol_usuario  ,asterisco;
-			
-			fun Main() {
-				frn=new FRNT;
-				kdb=new KDB;
-				rep=new REP;
-				sys=new SYS;
-				kdb.connect();
-				//kdb.open("m,kdm1");
-				
-					
-				suc_usuario = frn.lib("libKepler","UserInfo(1)");
-				perfil_usuario = frn.lib("libKepler","UserInfo(2)");
-				usuario = frn.config("user","name");
-				rol_usuario = frn.config("user","role");
-				asterisco = "*";
-				
-				fileSavePath = "C:\KE\JMM\TEST_DEVELOPS\K80";
-				//fileSavePath = "C:\Basura";
-				
-				Inicializa();
-			}	
-	
-			fun Exit() {
-				// frn.open("anuncios",4);
-				frn.open("index",4);		
-			}
-			
-			
-			fun Get_Cat(imodo) {
-            
-				var suc_id, dato_id;
-				var win_tit, field_key, field_col, cmdQuery;
-            
-				if ( imodo <= 0 || imodo > 2 ) {
-					// No es opcion de CAT Valida ...
-					return;
-				}
-				
-				win_tit = "";
-				field_key = "";
-				field_col = "";
-				cmdQuery = "";
-					
-				if (imodo == 1) {
-					win_tit = "CAT Vendedores";
-					field_key = "clavevend";
-					field_col = "vend_ini";
-					cmdQuery = "select c2 as clavevend, c3 as nombre from keplersc.kduv order by c2";
-				}				
-
-				if (imodo == 2) {
-					win_tit = "CAT Vendedores";
-					field_key = "clavevend";
-					field_col = "vend_fin";
-					cmdQuery = "select c2 as clavevend, c3 as nombre from keplersc.kduv order by c2";
-				}
-							          
-            if ( strlen(win_tit) > 0 && strlen(field_key) > 0 && strlen(field_col) > 0 && strlen(cmdQuery) > 0 /*&& strlen(objeto) > 0*/ ) {
-                                        
-					//frn.dialog("genlistasel", win_tit,cmdQuery, field_key, "k_mov",-1, field_col,"S");  * * *  USADO EN GRIDS
-					//frn.dialog("genlistasel","Catálogo de Proveedores",cmdQuery,"k_claveprov","k_clave","0","","N");  * * *  USADO EN CTRLS SIMPLES
-					
-					frn.dialog("genlistasel", win_tit,cmdQuery, field_key, field_col /*objeto*/, 0, "","N");
-				}
-				
-			} /*END Func Get_Cat()*/
-
-	
-			fun Valida_Vend(imodo) {
-			
-				var dato_id, campo;
-			
-				dato_id = "";
-				campo = "";
-				
-				if ( imodo == 1 ) { campo = "vend_ini"; }
-				if ( imodo == 2 ) { campo = "vend_fin"; } 
-				
-				cmd = "select V.c2 as cve_vend from keplersc.kduv V where V.c2 = '" & frn.get(campo) & "'";
-				rstXml(cuboQuery);
-				cuboQuery = frn.lib("libGeneral.kpl","EjecutarSqlSel",cmd,"venrepcomisquinc.Valida_Vend()");
-				//frn.lib("libGeneral.kpl","FileSave",cuboQuery, fileSavePath & "\venrepcomismens_Valida_Vend");
-				ok=getXmlAtt(cuboQuery,"ok");
-				if(ok &! "" && !ok){
-					mensajeError = getXmlAtt(cuboQuery,"native3");
-					mensajeError = frn.lib("libGeneral.kpl","ErrorBD",mensajeError);
-					frn.message(mensajeError,"Error","Aceptar");
-					return;
-				}
-				dato_id = getXmlAtt(cuboQuery,"r0", "cve_vend");
-				
-				if ( strlen(dato_id) > 0 ) {
-					//OK
-					return;
-				} else {
-					frn.setX("", campo);
-					frn.message("Clave de Vendedor No Existe ... ","Error","Aceptar");
-					return;
-				}
-				
-			}	// END -	Fun - Valida_Vend 
-	
-			
-			fun Inicializa(){ //Inicializa los valores en Pantalla
-			
-				var fechI, fechF;
-			
-				var v_anio, v_mes;
-				var strFecha;
-
-
-				//Llenar combo sucursales
-				cmd = "select '['||c1||'] '||c2 as c2, c1 from keplersc.kdms";
-				if (rol_usuario &! "ADMINISTRADOR"  && rol_usuario &! "ADMINISTRATOR"){
-					cmd = cmd & " where c1='" & suc_usuario & "'";
-				}else {
-					if (suc_usuario &! asterisco && suc_usuario &! "" ){
-						cmd = cmd & " where c1='" & suc_usuario & "'";
-					}
-				}
-				
-				var cubo = frn.lib("libGeneral.kpl","EjecutarSqlSel",cmd,"srvcitacrud.Inicializa()");		
-				ok=getXmlAtt(cubo,"ok");
-				if(ok &! "" && !ok){
-					mensajeError = getXmlAtt(cubo,"native3");
-					mensajeError = frn.lib("libGeneral.kpl","ErrorBD",mensajeError);
-					frn.message(mensajeError,"Error","Aceptar");
-					return;
-				}
-					
-				frn.set("cmb_sucursal",getXml(cubo));
-			
-				
-				
-				
-						
-				// Fill Combo Nivel (Manual)
-				frn.setX("Si ","cmb_detalle",0,0);
-				frn.setX("S","cmb_detalle",0,1);
-				frn.setX("No ","cmb_detalle",1,0);
-				frn.setX("N","cmb_detalle",1,1);		
-				// End Our Code
-				
-				// Fill Combo Nivel (Manual)
-				frn.setX("Si ","cmb_comsnegceros",0,0);
-				frn.setX("S","cmb_comsnegceros",0,1);
-				frn.setX("No ","cmb_comsnegceros",1,0);
-				frn.setX("N","cmb_comsnegceros",1,1);		
-				// End Our Code
-				
-				frn.set("cmb_detalle","No ");
-				frn.set("cmb_comsnegceros","No ");
-		
-		
-				cmd = "select min(V.c2) as vend_ini, max(V.c2) as vend_fin from keplersc.kduv V";
-				rstXml(cuboQuery);
-				cuboQuery = frn.lib("libGeneral.kpl","EjecutarSqlSel",cmd,"venrepcomisquinc.inicializa_get_vendedores()");
-				//frn.lib("libGeneral.kpl","FileSave",cuboQuery, fileSavePath & "\venrepcomisquinc_inicializa");
-				ok=getXmlAtt(cuboQuery,"ok");
-				if(ok &! "" && !ok){
-					mensajeError = getXmlAtt(cuboQuery,"native3");
-					mensajeError = frn.lib("libGeneral.kpl","ErrorBD",mensajeError);
-				   frn.message(mensajeError,"Error","Aceptar");
-					//return;
-				}
-				frn.setX(getXmlAtt(cuboQuery,"r0", "vend_ini"),"vend_ini");
-				frn.setX(getXmlAtt(cuboQuery,"r0", "vend_fin"),"vend_fin");
-				
-		
-				v_mes = sys.date("month");
-				v_anio = sys.date("year");
-				
-				v_anio = mid(v_anio,2,2);
-			
-				frn.set("p_mes", v_mes );
-				frn.set("p_anio", v_anio );
-				
-				fechI = fnDate(sys.date("year"),sys.date("month"),"15");
-				fechF = fnDate(sys.date("year"),sys.date("month"),"31");
-			
-				frn.set("k_fech_q1", fechI );
-				frn.set("k_fech_q2", fechF);
-				
-				//... (Llena Combos, e inputs en pantalla)
-				
-			} // END -	Fun - Inicializa
-			
-			fun Calcula_Fechas {
-			
-				var fechI, fechF;
-				var v_anio, v_mes;
-				
-				v_mes = frn.get("p_mes");
-				if ( strlen(v_mes) == 1	) { v_mes = "0" & v_mes; }
-				v_anio = "20" & frn.get("p_anio");
-				
-				fechI = fnDate(v_anio, v_mes, "15");
-				fechF = fnDate(v_anio, v_mes, "31");
-				
-				frn.set("k_fech_q1", fechI );
-				frn.set("k_fech_q2", fechF);
-			
-			} // END -	Fun - Calcula_Fechas
-			
-			fun Ejecuta(){//Prepara datos del reporte 
-					
-				if ( strlen(frn.get("vend_ini")) == 0	) {
-					frn.message("Debe capturar el vendedor inicial para completar el rango ...","Info","Aceptar");
-					return;
-				}
-	
-				if ( strlen(frn.get("vend_fin")) == 0	) {
-					frn.message("Debe capturar el vendedor final para completar el rango ...","Info","Aceptar");
-					return;
-				}							
-					
-				rstXml(xmlPar);
-				
-				sucursal = frn.get("cmb_sucursal",-1,1);
-				
-				vend_ini = frn.get("vend_ini");
-				vend_fin = frn.get("vend_fin");			
-							
-				mes = frn.get("p_mes");
-				anio = frn.get("p_anio");
-				
-				fech_ini = frn.get("k_fech_q1");
-				fech_fin = frn.get("k_fech_q2");
-				
-				setXml(xmlPar,"document","sucursal",sucursal);
-				setXml(xmlPar,"document","anio",anio);
-				setXml(xmlPar,"document","mes",mes);
-				setXml(xmlPar,"document","vend_ini",vend_ini);
-				setXml(xmlPar,"document","vend_fin",vend_fin);
-				setXml(xmlPar,"document","fech_ini",fech_ini);
-				setXml(xmlPar,"document","fech_fin",fech_fin); 
-				frn.lib("libGeneral.kpl","FileSave",xmlPar, fileSavePath & "\venrepcomisquinc_rpt_xmlPar");				
-				
-				cmd="select * from keplersc.rep_vencomis_quin_sel('"& getXmlStr(xmlPar,"EOF:13_10") &"')";
-				rstXml(xmlResQuery);
-				xmlResQuery = frn.lib("libGeneral.kpl","EjecutarSqlSel",cmd,"venrepcomisquinc.Ejecuta()");
-				ok=getXmlAtt(xmlResQuery ,"ok");
-				if(ok &! "" && !ok){
-					mensajeError = getXmlAtt(xmlResQuery ,"native3");
-					mensajeError = frn.lib("libGeneral.kpl","ErrorBD",mensajeError);
-					frn.message(mensajeError,"Error","Aceptar");
-					return;
-				}		
-				frn.lib("libGeneral.kpl","FileSave",xmlResQuery, fileSavePath & "\venrepcomisquinc_rpt_xmlResQuery");				
-				
-				//frn.message("Se procedera a procesar el Reporte { venrepcomisquinc } ...","Info","Aceptar");
-				//return;
-				
-				Reporte();
-				
-			}
-
-
-			fun Get_Sucursal(CveSuc) {
-				var dato_id, cmdQuery;
-			
-				dato_id = "";
-				
-				cmdQuery = "select c2 as campo from keplersc.kdms where c1 = '" & CveSuc & "'";
-				rstXml(cuboQuery);
-				cuboQuery = frn.lib("libGeneral.kpl","EjecutarSqlSel",cmdQuery,"venrepcomisquinc_rpt.Get_Suc()");
-				//frn.lib("libGeneral.kpl","FileSave",cuboQuery, fileSavePath & "\venrepcomisquinc_rpt_get_Suc");
-				ok=getXmlAtt(cuboQuery,"ok");
-				if(ok &! "" && !ok){
-					mensajeError = getXmlAtt(cuboQuery,"native3");
-					mensajeError = frn.lib("libGeneral.kpl","ErrorBD",mensajeError);
-					frn.message(mensajeError,"Error","Aceptar");
-					return "";
-				}
-				dato_id = getXmlAtt(cuboQuery,"r0", "campo");
-				
-				if ( strlen(dato_id) > 0 ) {
-					return dato_id;
-				} else {
-					return "Descripcion No encontrada ...";
-				}
-				
-			}	// END -	Fun - Get_Sucursal
-
-
-			fun IniParams(){//Inicializa parámetros de impresión. Pueden ser cambiados por el usuario final mediante menú: Archivo -> Configurar Página
-				frn.set("param_paper","letter");	//Tamaño de papel predefinido:	"paper=letter|legal|size"
-				frn.set("param_sizeX","21.59","param_sizeY","27.94");	//Tamaño de papel personalizado	"size=21.59,27.94cm"
-				frn.set("param_borderL","1.5","param_borderT","1.5","param_borderR","1.5","param_borderB","1.5");	//Márgenes Izq,Arr,Der,Aba:	"border=1.5,1.5,1.5,1.5cm"
-				frn.set("param_Fx","1.0");	//Escala de impresión (1=100 por ciento)	"F=1,1"
-				frn.set("param_landscape","Y");	//Orientación	de la hoja (Vertical="N", Horizontal="Y")	"landscape=N|Y"
-				frn.set("param_emp","L");	//Posición de "Razón social"(izq,der,cen)	@emp=L|R|C"
-			}
-	
-			fun setRepPage() {//Establece los parámetros finales de impresión.
-				var paper="paper=" & frn.get("param_paper");
-				var size="size=" & frn.get("param_sizeX") & "," & frn.get("param_sizeY") & "cm";
-				var brdr="border=" & frn.get("param_borderL") & "," & frn.get("param_borderT") & "," & frn.get("param_borderR") & "," & frn.get("param_borderB") & "cm";
-				var fact="F=" & frn.get("param_Fx") & "," & frn.get("param_Fx");
-				var lndsp="landscape=" & frn.get("param_landscape");
-				var emp="@emp=" & frn.get("param_emp");
-				rep.page(paper,size,brdr,fact,lndsp,"color=Y","collate=Y","copies=1","pages=1,999","prompt=N",emp);
-			}
-			
-			
-			fun Reporte(){ //Ejecuta el Reporte
-			
-				// Our Vars
-				var compania,titulorpt, contVend, contDet, tmpStr ,xmlDet, xmlCurDocto;
-				var p_fecha, var_fecha, var_po, var_pc;
-				
-				var v_base, v_q1, v_q2, v_tot_comis, v_vend_desc, v_sch;
-				var gt_base, gt_q1, gt_q2, gt_comis; 
-	
-				//Obtener datos generales
-				kdb.kde("KDE");//Configuraci??el servidor
-				kdb.exec();
-				compania = kdb.get("KDE","1");		
-				titulorpt = "Reporte de Comisiones Quincenales";
-			
-				rep.rst(); // 20121212 
-				IniParams(); // 20121212
-				kdb.readPage("datFto","venrepcomisquincenalfto.kpl");
-				
-				// Se define el formato a usar y se liga a la variable del reporte "rep"
-				//kdb.readPage("datFto","venrepcomismensfto.kpl");
-				
-				kdb.exec();
-				rep.source(kdb.get("datFto")); 
-				//rep.rst(); // 20121212 
-				setRepPage();//Establece los parámetros finales de impresión(rep.page(...);), pues pueden haber cambiado por el usuario 
-				//Da valor a los inputs del reporte(rep.set();), e indica la ejecución de "grupos de renglones de impresión" (rep.exe();)
-				
-				rep.set("fecha",sys.date());
-				rep.set("hora",sys.time());
-				rep.set("nombreempresa",compania);
-				rep.set("titulorpt",titulorpt);
-				rep.set("anio",anio);
-				rep.set("mes",mes);
-				
-				rep.set("fech_q1",fech_ini);
-				rep.set("fech_q2",fech_fin);
-
-				contVend=nXml(xmlResQuery);
-
-				rep.exe("encabezado");
-				
-				gt_base = 0;
-				gt_q1 = 0;
-				gt_q2 = 0;
-				gt_comis = 0; 
-					
-				for(var x=0; x < contVend; x++){
-				
-					/*
-					rep.set("vend",getXmlAtt(xmlResQuery,"r"&x,"vendedor"));
-					rep.set("descvend",getXmlAtt(xmlResQuery,"r"&x,"nombre"));
-					rep.set("basevend",getXmlAtt(xmlResQuery,"r"&x,"basevendedor"));
-					*/
-
-					//rep.exe("gp_vend");
-					
-					/*
-					if(nivel_detalle &= "S"){
-					
-						rep.exe("gp_vend");
-					
-						tmpStr=getXmlAtt(xmlResQuery,"r"&x,"detalle");
-						rstXml(xmlDet);
-						tmpStr=delScpScn(tmpStr);
-						setXmlStr(xmlDet,tmpStr);
-						contDet=nXml(xmlDet);
-
-						for(var y=0; y < contDet; y++){
-						
-							rstXml(xmlCurDocto);
-							xmlCurDocto = getXmlX(xmlDet,3,y);
-							
-							rep.set("tipo",getXml(xmlCurDocto,"tipo"));
-							rep.set("inventario",getXml(xmlCurDocto,"inventario"));
-							rep.set("ab",getXml(xmlCurDocto,"ab"));
-							rep.set("fecha_det",getXml(xmlCurDocto,"fecha"));									
-							rep.set("oper",getXml(xmlCurDocto,"oper"));
-							rep.set("modelo",getXml(xmlCurDocto,"modelo"));
-							rep.set("linea",getXml(xmlCurDocto,"linea"));
-							rep.set("edad",getXml(xmlCurDocto,"edad"));
-							
-							rep.set("utilidad",getXml(xmlCurDocto,"utilidad"));
-							rep.set("c_base",getXml(xmlCurDocto,"c_base"));
-							rep.set("c_traslado",getXml(xmlCurDocto,"c_traslado"));
-							rep.set("c_edad",getXml(xmlCurDocto,"c_edad"));									
-							rep.set("c_gastos",getXml(xmlCurDocto,"c_gastos"));
-							rep.set("c_seguro",getXml(xmlCurDocto,"c_seguro"));
-							rep.set("c_extras",getXml(xmlCurDocto,"c_extras"));
-							rep.set("c_accesorios",getXml(xmlCurDocto,"c_accesorios"));
-							rep.set("c_semana",getXml(xmlCurDocto,"c_semana"));
-							rep.set("c_subtotal",getXml(xmlCurDocto,"c_total_sub"));
-							rep.set("c_tmkt",getXml(xmlCurDocto,"c_dcto_tmkt"));
-							rep.set("c_total",getXml(xmlCurDocto,"tot_comis"));			
-													
-							rep.exe("detalle");
-						}						
-					}
-					*/
-									
-									
-					v_base = 0;
-					v_q1 = 0;
-					v_q2 = 0;
-					v_tot_comis = 0;
-					v_vend_desc = "";
-					v_sch = "";
-														
-					v_vend_desc = getXmlAtt(xmlResQuery,"r"&x,"nombre");
-					v_sch = getXmlAtt(xmlResQuery,"r"&x,"esquema");		
-					v_base = getXmlAtt(xmlResQuery,"r"&x,"base");
-					v_q1 = getXmlAtt(xmlResQuery,"r"&x,"net_q1");
-					v_q2 = getXmlAtt(xmlResQuery,"r"&x,"net_q2");
-					v_tot_comis = getXmlAtt(xmlResQuery,"r"&x,"total_comis");
-				
-					rep.set("tp_venddesc", v_vend_desc);
-					rep.set("tp_c_esquema", v_sch);
-					rep.set("tp_c_base", v_base);
-					rep.set("tp_c_q1", v_q1);
-					rep.set("tp_c_q2", v_q2);
-					rep.set("tp_c_total", v_tot_comis);					
-		
-					gt_base = gt_base + v_base;
-					gt_q1 = gt_q1 + v_q1;
-					gt_q2 = gt_q2 + v_q2;
-					gt_comis = gt_comis + v_tot_comis; 
-
-					rep.exe("totalvend");
-					
-				}
-							
-				// Print Grand Total ...
-
-				rep.set("gt_c_base", gt_base);
-				rep.set("gt_c_q1", gt_q1);
-				rep.set("gt_c_q2", gt_q2);
-				rep.set("gt_c_total", gt_comis);
-		
-				rep.exe("total");
-				
-				//Modos de impresión 
-				rep.win(); //Muestra la vista previa de la impresión. A partir de la vista previa (Preprint) se decide si se imprime o no.
-				//rep.print("\\192.168.1.100\HPLaserJet"); //Envía el reporte directamente a una impresora, sin mostrar la vista previa.
-				//frn.dialog("_ks_printdlg"); //Permite seleccionar impresora destino y manda el reporte a impresión. No muestra la vista previa.
-				//rep.export("file:Reportes\\reporteHTML.html","format:html","inputs:N");//Guardará el reporte en la carpeta local k80\Reportes, con el nombre reporteHTML.html
-			}
-			
-			
-		} // END FUNC MAIN 
-	</script>
-</pag>
+<?xml version="1.0" encoding="UTF-8"?><pag xmlns="www.kepler.com.mx/2003/KSchema" tit="Comisiones Quincenales">	<grp dim="1,-1,10,20" brdr="2,1" bclr="192,205,213" clr="0,58,112" fnt="Arial,16" unfont="0"		OnF1="Ventana(rep_Hlp)"><br/><txt fnt=",25">Comisiones Quincenales</txt> 		<!--	<br/> <hLine dim="50,0" g="2" type="1"/> -->		<br/><br/>		<!-- <grp dim="50,20,7,12" bclr="236,240,243" tit="Par&#225;metros" brdr="0,5" clrBrdr="0,58,112" fntClrBrdr="255,206,0" fntBrdr="Arial,18" hSpace="4"><br/><tab/><txt>Sucursal</txt><tab n="2"/> -->		<grp dim="50,22,7,12" bclr="236,240,243" tit="Par&#225;metros" brdr="0,5" clrBrdr="0,58,112" fntClrBrdr="236,240,243" fntBrdr="Arial,18" hSpace="4">					<br/> <tab/> <txt>Sucursal </txt> <tab n="2"/>			<!-- <cmb id="cmb_sucursal" dim="43,1" brdr="2,0" bclr="255,255,255" clr="64,64,64" clrBrdr="255,255,255" OnChange="Fill_Data_Suc()"/> -->			<cmb id="cmb_sucursal" dim="43,1" brdr="2,0" bclr="255,255,255" clr="64,64,64" clrBrdr="255,255,255"/>			<br/>			<br/> 			<tab/> <txt>Vendedor Inicial  </txt> <sp n="2"/>			<inp id="vend_ini" clr="64,64,64" clrBrdr="255,255,255"  dim="7,1" fnt="Arial,16" type="string" modify="Y" available="Y" nc="5" visible="Y" OnF9="Get_Cat(1)" OnChange="Valida_Vend(1)" bclr="250,250,250"/>			<br/>			<tab/> <txt>Vendedor Final  </txt> <sp n="3"/>			<inp id="vend_fin" clr="64,64,64" clrBrdr="255,255,255"  dim="7,1" fnt="Arial,16" type="string" modify="Y" available="Y" nc="5" visible="Y" OnF9="Get_Cat(2)" OnChange="Valida_Vend(2)" bclr="250,250,250"/>			<br/>			<br/>			<tab/> <txt>Mes  </txt> <sp n="2"/>			<inp id="p_mes" clr="64,64,64" clrBrdr="255,255,255"  dim="3,1" fnt="Arial,16" type="number" modify="Y" available="Y" nc="2" visible="Y" bclr="250,250,250" min="1" max="12" nd="0" OnChange="Calcula_Fechas()"/>			<br/>			<tab/> <txt>A&#241;o  </txt> <sp n="2"/>			<inp id="p_anio" clr="64,64,64" clrBrdr="255,255,255"  dim="3,1" fnt="Arial,16" type="number" modify="Y" available="Y" nc="2" visible="Y" bclr="250,250,250" min="10" max="99" nd="0" OnChange="Calcula_Fechas()"/>			<br/>			<br/>			<tab/><txt>Fecha Quincena 1</txt> <sp n="2"/>			<edt id="k_fech_q1" dim="14,1" type="date" fmt="DD-MM-CCYY" brdr="2,0" bclr="255,255,255" clr="64,64,64" page="_ks_fecha,k_fech_ini" OnF9="Ventana(_ks_fecha,k_fech_ini)" clrBrdr="255,255,255" modify="N" available="N"/>			<br/>			<tab/><txt>Fecha Quincena 2</txt> <sp n="2"/>			<edt id="k_fech_q2" dim="14,1" type="date" fmt="DD-MM-CCYY" brdr="2,0" bclr="255,255,255" clr="64,64,64" page="_ks_fecha,k_fech_fin" OnF9="Ventana(_ks_fecha,k_fech_fin)" clrBrdr="255,255,255" modify="N" available="N"/>			<br/>					</grp>				<br/><br/><tab n="5"/>		<bot id="Ejecutar" dim="10,0" brdr="5" default="0" text="Ejecutar" tooltip="Generar Reporte" OnEnter="Ejecuta()"/><tab/>		<bot id="Salir" dim="10,0" brdr="5" default="0" text="Finalizar" tooltip="Generar Reporte" OnEnter="Exit()"/>		<br/><tab n="9"/>				<!--	<img id="k_ejecuta" dim="60,60" brdr="0,1" bPx="1" available="Y" tooltip="Generar reporte" img="_60_Execute.png" default="1" OnEnter="Ejecuta()"/> --> 		<!--	<br/> --> 			</grp>	<tools>		<tool name="ejecuta" OnMouseL="Ejecuta()" tooltip="Ejecutar(Ctrl+T)" scut="Ctrl+T" img="_TL_execute.png"/>	</tools>	<script>			InstallDriver("KDB75");		class Main {			var frn,kdb,rep,sys;					// Our Vars			var cmd, cuboQuery, ok, mensajeError, strTmp;			var sucursal, vend_ini, vend_fin, mes, anio, fech_ini, fech_fin;			var xmlPar, xmlResQuery, xmlPar2, xmlResQuery2;			var fileSavePath;						fun Main() {				frn=new FRNT;				kdb=new KDB;				rep=new REP;				sys=new SYS;				kdb.connect();				//kdb.open("m,kdm1");								fileSavePath = "C:\KE\JMM\TEST_DEVELOPS\K80";				//fileSavePath = "C:\Basura";								Inicializa();			}					fun Exit() {				// frn.open("anuncios",4);				frn.open("index",4);					}									fun Get_Cat(imodo) {            				var suc_id, dato_id;				var win_tit, field_key, field_col, cmdQuery;            				if ( imodo <= 0 || imodo > 2 ) {					// No es opcion de CAT Valida ...					return;				}								win_tit = "";				field_key = "";				field_col = "";				cmdQuery = "";									if (imodo == 1) {					win_tit = "CAT Vendedores";					field_key = "clavevend";					field_col = "vend_ini";					cmdQuery = "select c2 as clavevend, c3 as nombre from keplersc.kduv order by c2";				}								if (imodo == 2) {					win_tit = "CAT Vendedores";					field_key = "clavevend";					field_col = "vend_fin";					cmdQuery = "select c2 as clavevend, c3 as nombre from keplersc.kduv order by c2";				}							                      if ( strlen(win_tit) > 0 && strlen(field_key) > 0 && strlen(field_col) > 0 && strlen(cmdQuery) > 0 /*&& strlen(objeto) > 0*/ ) {                                        					//frn.dialog("genlistasel", win_tit,cmdQuery, field_key, "k_mov",-1, field_col,"S");  * * *  USADO EN GRIDS					//frn.dialog("genlistasel","Catálogo de Proveedores",cmdQuery,"k_claveprov","k_clave","0","","N");  * * *  USADO EN CTRLS SIMPLES										frn.dialog("genlistasel", win_tit,cmdQuery, field_key, field_col /*objeto*/, 0, "","N");				}							} /*END Func Get_Cat()*/				fun Valida_Vend(imodo) {							var dato_id, campo;							dato_id = "";				campo = "";								if ( imodo == 1 ) { campo = "vend_ini"; }				if ( imodo == 2 ) { campo = "vend_fin"; } 								cmd = "select V.c2 as cve_vend from keplersc.kduv V where V.c2 = '" & frn.get(campo) & "'";				rstXml(cuboQuery);				cuboQuery = frn.lib("libGeneral.kpl","EjecutarSqlSel",cmd,"venrepcomisquinc.Valida_Vend()");				//frn.lib("libGeneral.kpl","FileSave",cuboQuery, fileSavePath & "\venrepcomismens_Valida_Vend");				ok=getXmlAtt(cuboQuery,"ok");				if(ok &! "" && !ok){					mensajeError = getXmlAtt(cuboQuery,"native3");					mensajeError = frn.lib("libGeneral.kpl","ErrorBD",mensajeError);					frn.message(mensajeError,"Error","Aceptar");					return;				}				dato_id = getXmlAtt(cuboQuery,"r0", "cve_vend");								if ( strlen(dato_id) > 0 ) {					//OK					return;				} else {					frn.setX("", campo);					frn.message("Clave de Vendedor No Existe ... ","Error","Aceptar");					return;				}							}	// END -	Fun - Valida_Vend 							fun Inicializa(){ //Inicializa los valores en Pantalla							var fechI, fechF;							var v_anio, v_mes;				var strFecha;				// Our code 								// Fill Combo Sucursal (Con Query de PostgreSQL)				cmd = "select '['||c1||'] '||c2 as c2, c1  from keplersc.kdms";				rstXml(cuboQuery);				cuboQuery = frn.lib("libGeneral.kpl","EjecutarSqlSel",cmd,"venrepcomisquinc.IniCombos()");				ok=getXmlAtt(cuboQuery,"ok");				if(ok &! "" && !ok){					mensajeError = getXmlAtt(cuboQuery,"native3");					mensajeError = frn.lib("libGeneral.kpl","ErrorBD",mensajeError);					frn.message(mensajeError,"Error","Aceptar");					return;				}				frn.set("cmb_sucursal",cuboQuery);										// Fill Combo Nivel (Manual)				frn.setX("Si ","cmb_detalle",0,0);				frn.setX("S","cmb_detalle",0,1);				frn.setX("No ","cmb_detalle",1,0);				frn.setX("N","cmb_detalle",1,1);						// End Our Code								// Fill Combo Nivel (Manual)				frn.setX("Si ","cmb_comsnegceros",0,0);				frn.setX("S","cmb_comsnegceros",0,1);				frn.setX("No ","cmb_comsnegceros",1,0);				frn.setX("N","cmb_comsnegceros",1,1);						// End Our Code								frn.set("cmb_detalle","No ");				frn.set("cmb_comsnegceros","No ");								cmd = "select min(V.c2) as vend_ini, max(V.c2) as vend_fin from keplersc.kduv V";				rstXml(cuboQuery);				cuboQuery = frn.lib("libGeneral.kpl","EjecutarSqlSel",cmd,"venrepcomisquinc.inicializa_get_vendedores()");				//frn.lib("libGeneral.kpl","FileSave",cuboQuery, fileSavePath & "\venrepcomisquinc_inicializa");				ok=getXmlAtt(cuboQuery,"ok");				if(ok &! "" && !ok){					mensajeError = getXmlAtt(cuboQuery,"native3");					mensajeError = frn.lib("libGeneral.kpl","ErrorBD",mensajeError);				   frn.message(mensajeError,"Error","Aceptar");					//return;				}				frn.setX(getXmlAtt(cuboQuery,"r0", "vend_ini"),"vend_ini");				frn.setX(getXmlAtt(cuboQuery,"r0", "vend_fin"),"vend_fin");										v_mes = sys.date("month");				v_anio = sys.date("year");								v_anio = mid(v_anio,2,2);							frn.set("p_mes", v_mes );				frn.set("p_anio", v_anio );								fechI = fnDate(sys.date("year"),sys.date("month"),"15");				fechF = fnDate(sys.date("year"),sys.date("month"),"31");							frn.set("k_fech_q1", fechI );				frn.set("k_fech_q2", fechF);								//... (Llena Combos, e inputs en pantalla)							} // END -	Fun - Inicializa						fun Calcula_Fechas {							var fechI, fechF;				var v_anio, v_mes;								v_mes = frn.get("p_mes");				if ( strlen(v_mes) == 1	) { v_mes = "0" & v_mes; }				v_anio = "20" & frn.get("p_anio");								fechI = fnDate(v_anio, v_mes, "15");				fechF = fnDate(v_anio, v_mes, "31");								frn.set("k_fech_q1", fechI );				frn.set("k_fech_q2", fechF);						} // END -	Fun - Calcula_Fechas						fun Ejecuta(){//Prepara datos del reporte 									if ( strlen(frn.get("vend_ini")) == 0	) {					frn.message("Debe capturar el vendedor inicial para completar el rango ...","Info","Aceptar");					return;				}					if ( strlen(frn.get("vend_fin")) == 0	) {					frn.message("Debe capturar el vendedor final para completar el rango ...","Info","Aceptar");					return;				}																rstXml(xmlPar);								sucursal = frn.get("cmb_sucursal",-1,1);								vend_ini = frn.get("vend_ini");				vend_fin = frn.get("vend_fin");														mes = frn.get("p_mes");				anio = frn.get("p_anio");								fech_ini = frn.get("k_fech_q1");				fech_fin = frn.get("k_fech_q2");								setXml(xmlPar,"document","sucursal",sucursal);				setXml(xmlPar,"document","anio",anio);				setXml(xmlPar,"document","mes",mes);				setXml(xmlPar,"document","vend_ini",vend_ini);				setXml(xmlPar,"document","vend_fin",vend_fin);				setXml(xmlPar,"document","fech_ini",fech_ini);				setXml(xmlPar,"document","fech_fin",fech_fin); 				frn.lib("libGeneral.kpl","FileSave",xmlPar, fileSavePath & "\venrepcomisquinc_rpt_xmlPar");												cmd="select * from keplersc.rep_vencomis_quin_sel('"& getXmlStr(xmlPar,"EOF:13_10") &"')";				rstXml(xmlResQuery);				xmlResQuery = frn.lib("libGeneral.kpl","EjecutarSqlSel",cmd,"venrepcomisquinc.Ejecuta()");				ok=getXmlAtt(xmlResQuery ,"ok");				if(ok &! "" && !ok){					mensajeError = getXmlAtt(xmlResQuery ,"native3");					mensajeError = frn.lib("libGeneral.kpl","ErrorBD",mensajeError);					frn.message(mensajeError,"Error","Aceptar");					return;				}						frn.lib("libGeneral.kpl","FileSave",xmlResQuery, fileSavePath & "\venrepcomisquinc_rpt_xmlResQuery");												//frn.message("Se procedera a procesar el Reporte { venrepcomisquinc } ...","Info","Aceptar");				//return;								Reporte();							}			fun Get_Sucursal(CveSuc) {				var dato_id, cmdQuery;							dato_id = "";								cmdQuery = "select c2 as campo from keplersc.kdms where c1 = '" & CveSuc & "'";				rstXml(cuboQuery);				cuboQuery = frn.lib("libGeneral.kpl","EjecutarSqlSel",cmdQuery,"venrepcomisquinc_rpt.Get_Suc()");				//frn.lib("libGeneral.kpl","FileSave",cuboQuery, fileSavePath & "\venrepcomisquinc_rpt_get_Suc");				ok=getXmlAtt(cuboQuery,"ok");				if(ok &! "" && !ok){					mensajeError = getXmlAtt(cuboQuery,"native3");					mensajeError = frn.lib("libGeneral.kpl","ErrorBD",mensajeError);					frn.message(mensajeError,"Error","Aceptar");					return "";				}				dato_id = getXmlAtt(cuboQuery,"r0", "campo");								if ( strlen(dato_id) > 0 ) {					return dato_id;				} else {					return "Descripcion No encontrada ...";				}							}	// END -	Fun - Get_Sucursal			fun IniParams(){//Inicializa parámetros de impresión. Pueden ser cambiados por el usuario final mediante menú: Archivo -> Configurar Página				frn.set("param_paper","letter");	//Tamaño de papel predefinido:	"paper=letter|legal|size"				frn.set("param_sizeX","21.59","param_sizeY","27.94");	//Tamaño de papel personalizado	"size=21.59,27.94cm"				frn.set("param_borderL","1.5","param_borderT","1.5","param_borderR","1.5","param_borderB","1.5");	//Márgenes Izq,Arr,Der,Aba:	"border=1.5,1.5,1.5,1.5cm"				frn.set("param_Fx","1.0");	//Escala de impresión (1=100 por ciento)	"F=1,1"				frn.set("param_landscape","Y");	//Orientación	de la hoja (Vertical="N", Horizontal="Y")	"landscape=N|Y"				frn.set("param_emp","L");	//Posición de "Razón social"(izq,der,cen)	@emp=L|R|C"			}				fun setRepPage() {//Establece los parámetros finales de impresión.				var paper="paper=" & frn.get("param_paper");				var size="size=" & frn.get("param_sizeX") & "," & frn.get("param_sizeY") & "cm";				var brdr="border=" & frn.get("param_borderL") & "," & frn.get("param_borderT") & "," & frn.get("param_borderR") & "," & frn.get("param_borderB") & "cm";				var fact="F=" & frn.get("param_Fx") & "," & frn.get("param_Fx");				var lndsp="landscape=" & frn.get("param_landscape");				var emp="@emp=" & frn.get("param_emp");				rep.page(paper,size,brdr,fact,lndsp,"color=Y","collate=Y","copies=1","pages=1,999","prompt=N",emp);			}									fun Reporte(){ //Ejecuta el Reporte							// Our Vars				var compania,titulorpt, contVend, contDet, tmpStr ,xmlDet, xmlCurDocto;				var p_fecha, var_fecha, var_po, var_pc;								var v_base, v_q1, v_q2, v_tot_comis, v_vend_desc, v_sch;				var gt_base, gt_q1, gt_q2, gt_comis; 					//Obtener datos generales				kdb.kde("KDE");//Configuraci??el servidor				kdb.exec();				compania = kdb.get("KDE","1");						titulorpt = "Reporte de Comisiones Quincenales";							rep.rst(); // 20121212 				IniParams(); // 20121212				kdb.readPage("datFto","venrepcomisquincenalfto.kpl");								// Se define el formato a usar y se liga a la variable del reporte "rep"				//kdb.readPage("datFto","venrepcomismensfto.kpl");								kdb.exec();				rep.source(kdb.get("datFto")); 				//rep.rst(); // 20121212 				setRepPage();//Establece los parámetros finales de impresión(rep.page(...);), pues pueden haber cambiado por el usuario 				//Da valor a los inputs del reporte(rep.set();), e indica la ejecución de "grupos de renglones de impresión" (rep.exe();)								rep.set("fecha",sys.date());				rep.set("hora",sys.time());				rep.set("nombreempresa",compania);				rep.set("titulorpt",titulorpt);				rep.set("anio",anio);				rep.set("mes",mes);								rep.set("fech_q1",fech_ini);				rep.set("fech_q2",fech_fin);				contVend=nXml(xmlResQuery);				rep.exe("encabezado");								gt_base = 0;				gt_q1 = 0;				gt_q2 = 0;				gt_comis = 0; 									for(var x=0; x < contVend; x++){									/*					rep.set("vend",getXmlAtt(xmlResQuery,"r"&x,"vendedor"));					rep.set("descvend",getXmlAtt(xmlResQuery,"r"&x,"nombre"));					rep.set("basevend",getXmlAtt(xmlResQuery,"r"&x,"basevendedor"));					*/					//rep.exe("gp_vend");										/*					if(nivel_detalle &= "S"){											rep.exe("gp_vend");											tmpStr=getXmlAtt(xmlResQuery,"r"&x,"detalle");						rstXml(xmlDet);						tmpStr=delScpScn(tmpStr);						setXmlStr(xmlDet,tmpStr);						contDet=nXml(xmlDet);						for(var y=0; y < contDet; y++){													rstXml(xmlCurDocto);							xmlCurDocto = getXmlX(xmlDet,3,y);														rep.set("tipo",getXml(xmlCurDocto,"tipo"));							rep.set("inventario",getXml(xmlCurDocto,"inventario"));							rep.set("ab",getXml(xmlCurDocto,"ab"));							rep.set("fecha_det",getXml(xmlCurDocto,"fecha"));																rep.set("oper",getXml(xmlCurDocto,"oper"));							rep.set("modelo",getXml(xmlCurDocto,"modelo"));							rep.set("linea",getXml(xmlCurDocto,"linea"));							rep.set("edad",getXml(xmlCurDocto,"edad"));														rep.set("utilidad",getXml(xmlCurDocto,"utilidad"));							rep.set("c_base",getXml(xmlCurDocto,"c_base"));							rep.set("c_traslado",getXml(xmlCurDocto,"c_traslado"));							rep.set("c_edad",getXml(xmlCurDocto,"c_edad"));																rep.set("c_gastos",getXml(xmlCurDocto,"c_gastos"));							rep.set("c_seguro",getXml(xmlCurDocto,"c_seguro"));							rep.set("c_extras",getXml(xmlCurDocto,"c_extras"));							rep.set("c_accesorios",getXml(xmlCurDocto,"c_accesorios"));							rep.set("c_semana",getXml(xmlCurDocto,"c_semana"));							rep.set("c_subtotal",getXml(xmlCurDocto,"c_total_sub"));							rep.set("c_tmkt",getXml(xmlCurDocto,"c_dcto_tmkt"));							rep.set("c_total",getXml(xmlCurDocto,"tot_comis"));																							rep.exe("detalle");						}											}					*/																							v_base = 0;					v_q1 = 0;					v_q2 = 0;					v_tot_comis = 0;					v_vend_desc = "";					v_sch = "";																			v_vend_desc = getXmlAtt(xmlResQuery,"r"&x,"nombre");					v_sch = getXmlAtt(xmlResQuery,"r"&x,"esquema");							v_base = getXmlAtt(xmlResQuery,"r"&x,"base");					v_q1 = getXmlAtt(xmlResQuery,"r"&x,"net_q1");					v_q2 = getXmlAtt(xmlResQuery,"r"&x,"net_q2");					v_tot_comis = getXmlAtt(xmlResQuery,"r"&x,"total_comis");									rep.set("tp_venddesc", v_vend_desc);					rep.set("tp_c_esquema", v_sch);					rep.set("tp_c_base", v_base);					rep.set("tp_c_q1", v_q1);					rep.set("tp_c_q2", v_q2);					rep.set("tp_c_total", v_tot_comis);												gt_base = gt_base + v_base;					gt_q1 = gt_q1 + v_q1;					gt_q2 = gt_q2 + v_q2;					gt_comis = gt_comis + v_tot_comis; 					rep.exe("totalvend");									}											// Print Grand Total ...				rep.set("gt_c_base", gt_base);				rep.set("gt_c_q1", gt_q1);				rep.set("gt_c_q2", gt_q2);				rep.set("gt_c_total", gt_comis);						rep.exe("total");								//Modos de impresión 				rep.win(); //Muestra la vista previa de la impresión. A partir de la vista previa (Preprint) se decide si se imprime o no.				//rep.print("\\192.168.1.100\HPLaserJet"); //Envía el reporte directamente a una impresora, sin mostrar la vista previa.				//frn.dialog("_ks_printdlg"); //Permite seleccionar impresora destino y manda el reporte a impresión. No muestra la vista previa.				//rep.export("file:Reportes\\reporteHTML.html","format:html","inputs:N");//Guardará el reporte en la carpeta local k80\Reportes, con el nombre reporteHTML.html			}								} // END FUNC MAIN 	</script></pag>

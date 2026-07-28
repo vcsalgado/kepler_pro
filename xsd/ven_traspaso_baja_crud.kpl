@@ -11,11 +11,11 @@
 		<grp id="grpDatosGenerales" bclr="236,240,243" fntClrBrdr="236,240,243" fntBrdr="Arial,18" hSpace="4" clrBrdr="0,58,112" brdr="0,5" dim="50,11,7,12" tit="Datos generales"  fnt="Arial,16" available="Y" modify="Y">
 		<sp/><txt clr="0,58,112" hk="S">Sucursal</txt><tab/>
 			<cmb id="k_sucn" clr="64,64,64" clrBrdr="255,255,255"  dim="50,36" bclr="255,255,255" 
-				brdr="2,0" fnt="Arial,16" Null="N" hk="S" available="Y" OnChange="CambiaSucursal()"/>
+				brdr="2,0" fnt="Arial,16" Null="N" hk="S" available="N"/>
 			<br/>				
 			<br/>
 			<sp/><txt clr="0,58,112">Tipo docto</txt><tab/>
-			<cmb id="k_tipon" clr="64,64,64" clrBrdr="255,255,255" dim="50,36" bclr="255,255,255" brdr="2,0" fnt="Arial,16" Null="N" OnChange="Valida_Tipo_Docto()" available="Y"/>
+			<cmb id="k_tipon" clr="64,64,64" clrBrdr="255,255,255" dim="50,36" bclr="255,255,255" brdr="2,0" fnt="Arial,16" Null="N" OnChange="Valida_Tipo_Docto()" available="N"/>
 			<br/> <br/> 
 			
 			<txt id="textFolio_ref" visible="Y">  Factura :  </txt> <sp n="2"/>
@@ -26,7 +26,7 @@
 			<tab n="2"/><inp id="operacion" clr="64,64,64"  dim="18,1" brdr="0,1" fnt=",18b" available="N" type="string"/><br/><tab/>
 			<txt id="foliotxt"  visible="N" hk="F" clr="0,58,112">Folio</txt><tab n="2"/>
 			<edt id="k_folio" clr="64,64,64" clrBrdr="255,255,255"  dim="15,1" bclr="255,255,255" brdr="2,0" fnt="Arial,16" visible="N" hk="F" type="string" nc="10"
-				OnF9="ObtenerFolio()" OnButton="ObtenerFolio()" OnChange = "Formar_folio()"	modify="N" available="Y"/>
+				OnF9="ObtenerFolio()" OnChange = "Formar_folio()"	modify="N" available="Y"/>
 				<sp n="1"/>			
 				<img id="buscar_folio" dim="20,20"  brdr="0,1" bPx="Y" img="_20_Find.png" OnEnter="ConsultarFolio()" clrBrdr="0,0,0" visible="N" modify="N" available="Y"/>
 				<br/><tab/>
@@ -36,11 +36,10 @@
 			<inp id="statusDoc" clr="64,64,64"  dim="25,1" brdr="0,1" fnt=",16b" available="N"/><br/><tab n="2"/>			
 		</grp><br/><br/><br/>
 		<tab/>
-		<grp id="grpDetalle" bclr="236,240,243" fntClrBrdr="236,240,243" fntBrdr="Arial,18"  clrBrdr="0,58,112" brdr="0,5" dim="76,31,7,12" tit="Detalle"  fnt="Arial,16" available="N" modify="Y">
+		<grp id="grpDetalle" bclr="236,240,243" fntClrBrdr="236,240,243" fntBrdr="Arial,18"  clrBrdr="0,58,112" brdr="0,5" dim="76,32,7,12" tit="Detalle"  fnt="Arial,16" available="N" modify="Y">
 			<grp id="grpInventario" dim="165,40,7,12" hSpace="4" available="N" modify="Y">
 				
 				<br/>
-				<sp/>
 				<txt>Inventario</txt>
 				<inp id="k_inventario" clr="64,64,64" clrBrdr="255,255,255"  dim="15,1" bclr="255,255,255" brdr="2,0" fnt="Arial,16" type="capital" nc="10" available = "Y" tooltip="Inventario ..." modify="Y" 
 				OnF9="BusquedaInventario()"
@@ -52,16 +51,15 @@
 				
 				<tab/><txt> Importe :</txt><tab n="1"/>
 				<inp id="k_importeprevio" clr="64,64,64" dim="10,1" visible="Y" fnt="Arial,16" type="number" modify="N" available="N" nd="2" just="R"/>
-				<br/>
-				<sp/><txt>Descripci&#243;n: </txt><tab n="1"/>
+				
+				<br/><txt>Descripci&#243;n: </txt><tab n="1"/>
 				<inp id="k_desc_inv" clr="64,64,64"  dim="30,1" visible="Y" fnt="Arial,16" type="string" nc="16" modify="N" available="N"/>				
 				<tab n="2"/><txt>Cliente</txt>
 				<inp id="k_clave" clr="64,64,64" clrBrdr="255,255,255" tooltip="Seleccionar F9,Nuevo F10,Modificar F11" dim="15,1" bclr="255,255,255" brdr="2,0" fnt="Arial,16" type="capital" nc="10" available = "Y" modify="N" 
 					OnChange="MostrarCliente()"
 					OnF9="Dialog(3,cat_cli_view,s,k_clave)" OnF10="Dialog(3,cat_cli_crud,Nuevo,x,s,k_clave)" OnF11 = "Dialog(3,cat_cli_crud,Modificar,x,s,k_clave)"/> <tab/>
 				<br/>
-				<sp/>
-				<grp id="grpDatosClientes" bclr="255,255,255" fntClrBrdr="240,220,200" fntBrdr="Arial,18" hSpace="4" clrBrdr="0,58,112" brdr="0,5" dim="106,6,7,12" fnt="Arial,16" available="Y" modify="Y">				
+				<grp id="grpDatosClientes" bclr="255,255,255" fntClrBrdr="240,220,200" fntBrdr="Arial,18" hSpace="4" clrBrdr="0,58,112" brdr="0,5" dim="120,6,7,12" fnt="Arial,16" available="Y" modify="Y">				
 				<inp id="k_rfccli" clr="64,64,64" clrBrdr="255,255,255" dim="15,1" bclr="255,255,255" fnt="Arial,16" nr="3,60" modify="Y" available="N" type="string"/>
 				<tab/><inp id="k_nombreimprfact" clr="64,64,64" clrBrdr="255,255,255"  dim="80,1" bclr="255,255,255" fnt="Arial,16" nr="3,60" modify="Y" available="N" type="string"/>
 				<br/>
@@ -69,7 +67,7 @@
 				<inp id="k_callecli" clr="64,64,64" clrBrdr="255,255,255"  dim="50,1" bclr="255,255,255" fnt="Arial,16" nr="3,60" modify="Y" available="N" type="string"/>
 				<br/>
 				<inp id="k_coloniacli" clr="64,64,64" clrBrdr="255,255,255"  dim="50,1" bclr="255,255,255"  fnt="Arial,16" nr="3,60" modify="Y" available="N" type="string"/>				
-				<inp id="k_poblacioncli" clr="64,64,64" clrBrdr="255,255,255"  dim="48,1" bclr="255,255,255" fnt="Arial,16" nr="3,60" modify="Y" available="N" type="string"/>
+				<inp id="k_poblacioncli" clr="64,64,64" clrBrdr="255,255,255"  dim="50,1" bclr="255,255,255" fnt="Arial,16" nr="3,60" modify="Y" available="N" type="string"/>
 				<inp id="k_cpcli" clr="64,64,64" clrBrdr="255,255,255"  dim="8,1" bclr="255,255,255" fnt="Arial,16" nr="3,60" modify="Y" available="N" type="string"/>
 				<br/>
 				</grp><sp/>
@@ -105,25 +103,26 @@
 				<br/>
 				
 				<tab n="1"/><txt clr="0,58,112">Comentarios:</txt><br/><tab n="2"/>
-				<inp id="k_coment" clr="64,64,64" clrBrdr="255,255,255"  dim="60,1" bclr="255,255,255" brdr="2,0" fnt="Arial,16" nr="3,60" modify="N" available="N" type="capital"/>
-				<br/><tab n="2"/><inp id="k_coment2" clr="64,64,64" clrBrdr="255,255,255"  dim="60,1" bclr="255,255,255" brdr="2,0" fnt="Arial,16" nr="3,60" modify="N" available="N" type="capital"/>
-				<br/><tab n="2"/><inp id="k_coment3" clr="64,64,64" clrBrdr="255,255,255"  dim="60,1" bclr="255,255,255" brdr="2,0" fnt="Arial,16" nr="3,60" modify="N" available="N" type="capital"/>				
-		  	
+				<inp id="k_coment" clr="64,64,64" clrBrdr="255,255,255"  dim="60,1" bclr="255,255,255" brdr="2,0" fnt="Arial,16" nr="3,60" modify="N" available="N"/>
+				<br/><tab n="2"/><inp id="k_coment2" clr="64,64,64" clrBrdr="255,255,255"  dim="60,1" bclr="255,255,255" brdr="2,0" fnt="Arial,16" nr="3,60" modify="N" available="N"/>
+				<br/><tab n="2"/><inp id="k_coment3" clr="64,64,64" clrBrdr="255,255,255"  dim="60,1" bclr="255,255,255" brdr="2,0" fnt="Arial,16" nr="3,60" modify="N" available="N"/>				
 			</grp>
 		</grp>
-		<br/><tab/>
-		<grp dim="76,4,7,12" bclr="236,240,243" fntClrBrdr="236,240,243" fntBrdr="Arial,18"  clrBrdr="0,58,112">
-			<tab n="30"/>
-			<img id="Cancelar" dim="40,40" bPx="Y" brdr="0,1"  img="_60_DocRst.png" OnEnter="BorraDatos()" tooltip="Borrar datos" available="Y" clrBrdr="0,0,0" visible="Y"/><tab/>
-			<img id="Aceptar" dim="40,40" bPx="Y" brdr="0,1"  img="_60_DocNew.png" OnEnter="Ejecuta()" tooltip="Aceptar documento &lt;Ctrl&gt;&lt;T&gt;" available="Y" clrBrdr="0,0,0" visible="Y" modify="Y"/><tab/>		
-		</grp>
-</grp>
+		<br/> 
+		<br/> 
+		<tab n="17"/>
+		<img id="Cancelar" dim="40,40" bPx="Y" brdr="0,1"  img="_60_DocRst.png" OnEnter="BorraDatos()" tooltip="Borrar datos" available="Y" clrBrdr="0,0,0" visible="Y"/><tab/>
+		<img id="Aceptar" dim="40,40" bPx="Y" brdr="0,1"  img="_60_DocNew.png" OnEnter="Ejecuta()" tooltip="Aceptar documento &lt;Ctrl&gt;&lt;T&gt;" available="Y" clrBrdr="0,0,0" visible="Y" modify="Y"/><tab/>		
+	</grp>
+	<tools>
+		<tool OnMouseL="Ejecuta()" tooltip="Aceptar documento(Ctrl+T)" scut="Ctrl+T" img="_TL_Execute.png"/>
+	</tools>
 	<script>
 		InstallDriver("KDB75");
 		class Main {
 			var gen_doc, nat_doc, gpo_doc, tip_doc, fija_doc,usuario,sucursal_id,suc_usuario,rol_usuario,asterisco, v_inventario,valorRetorno,v_IvaAuto,v_correo,v_uso_cfdi;
 			var frn,kdb,rep,frP,sys;
-			var tip_ope;//Tipo de operacion. "0" indica Alta; "1" indica consulta;
+			var tip_ope;//Tipo de operaci�n. "0" indica Alta; "1" indica consulta;
 			var uen,v_KDM1_iva,v_KDM1_precio, v_KDM1_precio_vehiculo, fileSavePath;
 			var anio_contable;
 
@@ -176,9 +175,9 @@
 					win_tit = "Traspasos de Autos";
 					field_key = "folio";
 					field_col = "k_folio_ref";
-					cmdQuery = "select tdm1.c10 as cve_cliente, txd.c3 as nomb_cliente, tdm1.c6 as folio, to_char(tdm1.c9, 'dd/mm/yyyy') as fecha " &
+					cmdQuery = "select tdm1.c10 as cve_cliente, txd.c3 as nomb_cliente, tdm1.c6 as folio, tdm1.c9 as fecha " &
 						", tdm1.c11 as referencia from keplersc.kdm1 as tdm1 " & 
-						"inner join keplersc.kdud as txd on txd.c2 = tdm1.c10 " & 
+						"inner join keplersc.kdud as txd on txd.c2 = tdm1.c10 and txd.c1 = tdm1.c1 " & 
 						"inner join keplersc.kdinf as inf on inf.c1 = tdm1.c1 and inf.c2 = tdm1.c100 " &
 						"where tdm1.c2 = 'U' and tdm1.c3 = 'D' and tdm1.c4 = 21 and tdm1.c5 = " & frn.get("k_tipon",-1,4) & " and tdm1.c1 = '" & frn.get("k_sucn",-1,1) & "' " & 
 						"and inf.c32 = 70 /*20*/ " &
@@ -190,7 +189,7 @@
             if ( strlen(win_tit) > 0 && strlen(field_key) > 0 && strlen(field_col) > 0 && strlen(cmdQuery) > 0 /*&& strlen(objeto) > 0*/ ) {
                                         
 					//frn.dialog("genlistasel", win_tit,cmdQuery, field_key, "k_mov",-1, field_col,"S");  * * *  USADO EN GRIDS
-					//frn.dialog("genlistasel","Catalogo de Proveedores",cmdQuery,"k_claveprov","k_clave","0","","N");  * * *  USADO EN CTRLS SIMPLES
+					//frn.dialog("genlistasel","Cat�logo de Proveedores",cmdQuery,"k_claveprov","k_clave","0","","N");  * * *  USADO EN CTRLS SIMPLES
 					
 					frn.dialog("genlistasel", win_tit,cmdQuery, field_key, field_col /*objeto*/, 0, "","N");
 				}
@@ -253,7 +252,7 @@
 				
 		
 			
-				//seccion de KDINF				
+				//secci�n de KDINF				
 				cmd = "select c3,c4,c5 from keplersc.kdinf where c1 = '" & sucursal_id &  "' and c2 = '" & frn.get("k_inventario") &  "' ";
 				cuboResultados = frn.lib("libGeneral.kpl","EjecutarSqlSel",cmd,"ven_traspaso_crud.ConsultarFolio()");
 				ok = getXmlAtt(cuboResultados ,"ok");
@@ -274,8 +273,8 @@
 				   var cmdQuery ="",v_tipo_n;
 					v_tipo_n = frn.get("k_tipon",-1,4);
 					sucursal_id = frn.get("k_sucn",-1,1);
-					cmdQuery = "select c1 as tip, c6 as folio, to_char(c9, 'dd/mm/yyyy') as fecha,c11 as referencia, c16 as monto from keplersc.kdm1  where c1 = '" & sucursal_id &  "' and c2 = '" & gen_doc&  "' and c3 = '" & nat_doc&  "' and c4 = '" & gpo_doc&  "' and c5 = '" & v_tipo_n &  "' ";
-					cmdQuery = cmdQuery & " order by c9 desc ";
+					cmdQuery = "select c1 as tip, c6 as folio, c9 as fecha,c11 as referencia, c16 as monto from keplersc.kdm1  where c1 = '" & sucursal_id &  "' and c2 = '" & gen_doc&  "' and c3 = '" & nat_doc&  "' and c4 = '" & gpo_doc&  "' and c5 = '" & v_tipo_n &  "' ";
+					cmdQuery = cmdQuery & " order by c6 asc ";
 					frn.dialog("genlistasel","Documentos de Traspasos",cmdQuery,"folio","k_folio","0","","N");
 			}
 			
@@ -283,7 +282,6 @@
 			
 			fun Formar_folio(){
 				var xmlReqEst, cubofol, cmd, ok, mensajeError ;
-				setXml(xmlReqEst,"document","k_sucn","r1",frn.get("k_sucn",-1,1));
 				setXml(xmlReqEst,"document","folio_id",frn.get("k_folio"));
 				setXml(xmlReqEst,"document","k_tipon","r1",frn.get("k_tipon",-1,1));
 				setXml(xmlReqEst,"document","k_tipon","r2",frn.get("k_tipon",-1,2));
@@ -436,7 +434,7 @@
 			}
 	
 			
-			fun inicializa(){//Da valor a los combos y prepara la pagina dependiendo del tipo de Operacion a realizar
+			fun inicializa(){//Da valor a los combos y prepara la p�gina dependiendo del tipo de Operaci�n a realizar
 				var resValidacion, 
 						resMensaje, 
 						cubo, 
@@ -446,11 +444,11 @@
 						sucursal_id,
 						v_cliente,
 						v_tipoOperacion;
-				kdb.kde("KDE");//								Configuracion del servidor
+				kdb.kde("KDE");//								Configuraci�n del servidor
 				kdb.exec();
 				anio_contable = kdb.get("KDE","14");
 				frn.set("k_fecha",sys.date());								
-				if(frn.nParam()>0 ){//Se han mandado parametros a la pagina
+				if(frn.nParam()>0 ){//Se han mandado par�metros a la p�gina
 					gen_doc=trim(frn.param(0)); 
 					nat_doc=trim(frn.param(1)); 
 					gpo_doc=trim(frn.param(2));
@@ -461,7 +459,7 @@
 				}
 				else
 				{
-					frn.message("Esta accion no esta permitida.","Estimado Usuario","&Aceptar");
+					frn.message("Esta acci�n no est� permitida.","Estimado Usuario","&Aceptar");
 					frn.open("redirect",2);
 					return;
 				}
@@ -477,18 +475,11 @@
 				}
 				frn.set("k_titulo_inicial",v_tipoOperacion);
 			
-			
 				//Llenar combo sucursales
 				cmd = "select '['||c1||'] '||c2 as c2, c1 from keplersc.kdms";
-				if (rol_usuario &! "ADMINISTRADOR"  && rol_usuario &! "ADMINISTRATOR"){
-					cmd = cmd & " where c1='" & suc_usuario & "'";
-				}else {
-					if (suc_usuario &! asterisco && suc_usuario &! "" ){
-						cmd = cmd & " where c1='" & suc_usuario & "'";
-					}
-				}
+			
+				cubo = frn.lib("libGeneral.kpl","EjecutarSqlSel",cmd,"ven_traspaso_crud.Inicializa()");
 				
-				cubo = frn.lib("libGeneral.kpl","EjecutarSqlSel",cmd,"srvcitacrud.Inicializa()");		
 				ok=getXmlAtt(cubo,"ok");
 				if(ok &! "" && !ok){
 					mensajeError = getXmlAtt(cubo,"native3");
@@ -496,11 +487,21 @@
 					frn.message(mensajeError,"Error","Aceptar");
 					return;
 				}
-					
-				frn.set("k_sucn",getXml(cubo));
-			
-				//Llena combo tipo
-				LlenaCmbTipo();
+				
+				frn.set("k_sucn",getXml(cubo));									
+				cmd = "select c5 as c0,c1,c2,c3,c4,c1||c2||lpad(c3::text,2,'0')||lpad(c4::text,3,'0')||'-'||'0000000' as c5, c16 as c6 from keplersc.kdmm where c1='" & gen_doc & "' and c2='" & nat_doc & "' and c3='" & gpo_doc & "'" ;
+				
+				cubo = frn.lib("libGeneral.kpl","EjecutarSqlSel",cmd,"ven_traspaso_crud.Inicializa()");
+				frn.lib("libGeneral.kpl","FileSave",cubo,"C:\Basura\cuboTipoDocto");		
+				ok=getXmlAtt(cubo,"ok");
+				if(ok &! "" && !ok){
+					mensajeError = getXmlAtt(cubo,"native3");
+					mensajeError = frn.lib("libGeneral.kpl","ErrorBD",mensajeError);
+					frn.message(mensajeError,"Error","Aceptar");
+					return;
+				}
+
+				frn.set("k_tipon",getXml(cubo));
 				
 				// Fill Combo forma de pago(Con Query de PostgreSQL)
 				cmd = "select '['||c1||'] '||c2 as c2, c1 from keplersc.kdf3fp";
@@ -517,7 +518,7 @@
 				
 			
 				Fecha();//Indica fecha correcta, y trae monedas y paridades de esa fecha. 
-				if (strlen(tip_doc)>0) frn.setPos("k_tipon",-1,4,"internal:Y","val:" & tip_doc);//Posiciona el combo de Tipo de documento al especificado como parametro
+				if (strlen(tip_doc)>0) frn.setPos("k_tipon",-1,4,"internal:Y","val:" & tip_doc);//Posiciona el combo de Tipo de documento al especificado como par�metro
 				
 				//
 				if(tip_ope==0){//Alta
@@ -531,31 +532,7 @@
 				
 			}
 			
-			fun LlenaCmbTipo(){
-				var cubo,cmd,ok,mensajeError;
-				sucursal_id=frn.get("k_sucn",-1,1);		
-							
-				cmd = "select c5 as c0,c1,c2,c3,c4,c1||c2||lpad(c3::text,2,'0')||lpad(c4::text,3,'0')||'-'||'0000000' as c5, c16 as c6 from keplersc.kdmm where c1='" & gen_doc & "' and c2='" & nat_doc & "' and c3='" & gpo_doc & "' and col_sucursal='" & sucursal_id & "'";
-				
-				cubo = frn.lib("libGeneral.kpl","EjecutarSqlSel",cmd,"ven_traspaso_crud.Inicializa()");
-				frn.lib("libGeneral.kpl","FileSave",cubo,"C:\Basura\cuboTipoDocto");		
-				ok=getXmlAtt(cubo,"ok");
-				if(ok &! "" && !ok){
-					mensajeError = getXmlAtt(cubo,"native3");
-					mensajeError = frn.lib("libGeneral.kpl","ErrorBD",mensajeError);
-					frn.message(mensajeError,"Error","Aceptar");
-					return;
-				}
 
-				frn.set("k_tipon",getXml(cubo));
-			}
-			
-			fun CambiaSucursal(){
-				sucursal_id = frn.get("k_sucn",-1,1);
-				LlenaCmbTipo();
-				Valida_Tipo_Docto();
-			
-			}
 		
 			fun ConfiguraControlesOff()
 			{
@@ -627,8 +604,8 @@
 						*/
 						
 						frn.setAtt("grpDatosGenerales","available",strValAtr);
-		//				frn.setAtt("k_sucn","available","N");
-		//				frn.setAtt("k_tipon","available","N");
+						frn.setAtt("k_sucn","available","N");
+						frn.setAtt("k_tipon","available","N");
 						frn.setAtt("k_folio_ref","available",strValAtr);
 						
 						frn.setAtt("Aceptar","available",strValAtr);
@@ -694,7 +671,7 @@
 				frn.rst("results");				
 				if( frn.get("k_monto") <= 0 )
 				{
-					frn.message("Monto cero o negativo","Error","&Aceptar");return;
+					frn.message("Monto cero � negativo","Error","&Aceptar");return;
 				}
 
 				xmlPantalla = getXml(frn.dataPag()); //Obtener el xml de la pantalla;
@@ -808,7 +785,7 @@
 				tip_doc=frn.get("k_tipon",-1,4);
 				kdb.rst();
 				
-				cmd= "select * from keplersc.verify_valid_document('" & frn.get("k_sucn",-1,1) & "','" & gen_doc & "','" & nat_doc & "'," & gpo_doc & "," & frn.get("k_tipon",-1,4) & ")"; //suc text, genero text, naturaleza text, grupo integer, tipo_movto integer
+				cmd= "select * from keplersc.verify_valid_document('" & gen_doc & "','" & nat_doc & "'," & gpo_doc & "," & tip_doc & ")"; //genero text, naturaleza text, grupo integer, tipo_movto integer
 				cubo = frn.lib("libGeneral.kpl","ValidarCondicion",cmd,"comopecompras.Valida_Tipo_Docto()");				
 				resValidacion= getXml(cubo,"validacion","resultado");
 				resMensaje = getXml(cubo,"validacion","mensaje");
@@ -820,7 +797,7 @@
 			
 			
 			
-			fun Fecha(){//Verifica que la fecha del documento sea correcta. Ademas trae monedas y paridades de esa fecha. 
+			fun Fecha(){//Verifica que la fecha del documento sea correcta. Adem�s trae monedas y paridades de esa fecha. 
 				var cubo, cmd, resValidacion, resMensaje, fecha;
 				var validDate=frn.lib("libKepler","ValidOpDate",frn.get("k_fecha"));
 				
@@ -849,16 +826,16 @@
 
 			
 			fun Dialog(iModo,pag,par0,par1,par2,par3,par4,par5,par6,par7,par8,par9,par10,par11,par12,par13,par14,par15){
-				/*iModo: 0)No hace mayor validacion. Siempre despliega la ventana. NO CONCATENA PREFIJO
-							1)Solo concatena el prefijo de la carpeta del lenguaje, no hace mayor validacion. Siempre despliega la ventana
+				/*iModo: 0)No hace mayor validaci�n. Siempre despliega la ventana. NO CONCATENA PREFIJO
+							1)Solo concatena el prefijo de la carpeta del lenguaje, no hace mayor validaci�n. Siempre despliega la ventana
 							2)Modo especial. Se valida que el campo indicado en par0 se puede modificar(El par0 puede ser una tabla, y par1 la columna)
-							3)Modo especial para paginas de operacion:Solo si se esta en alta o modifica despliega la pagina. Simpre agrega el prefijo del lenguaje
+							3)Modo especial para p�ginas de operacion:Solo si se est� en alta o modifica despliega la pagina. Simpre agrega el prefijo del lenguaje
 				*/
 				var prefix=frn.lib("libKepler","langPrefix");
 				var page=prefix&pag;
 				var b_valido=1;
 				if(iModo==0)page=pag;
-				else if(iModo==2&&(strlen(par0)>0)){//Se toma el par0 como el objeto (o grid) al que se devolvera el resultado.
+				else if(iModo==2&&(strlen(par0)>0)){//Se toma el par0 como el objeto (o grid) al que se devolver� el resultado.
 					if( frn.getAtt(par0,"modify",par1) &= "N" ) b_valido=0;
 					if( frn.getAtt(par0,"available",par1) &= "N" ) b_valido=0;
 					if( frn.getAtt(par0,"visible",par1) &= "N" ) b_valido=0;

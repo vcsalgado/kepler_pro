@@ -286,7 +286,7 @@ begin
 			estatus,subestatus,nombre_referencia,parentesco_refer_cte) 
 		values(
 			clave,nombre_razon,nombre_impresion,apellido_paterno,apellido_materno,
-			nombres,sucursal ,calle ,No_exterior ,No_interior,
+			nombres,'01' ,calle ,No_exterior ,No_interior,
 			colonia ,ciudad ,municipio,estado, pais ,
 			codigo_postal ,rfc ,correo,tel_casa,tel_oficina ,
 			tel_extension,tel_movil,tel_referencia,metodo_de_pago,uso_cfdi,
@@ -302,7 +302,7 @@ begin
 			c33=apellido_paterno,
 			c34=apellido_materno,
 			c35=nombres,
-			c1=sucursal,
+			c1='01',
 			c4=calle,
 			c45=No_exterior,
 			c46=No_interior,

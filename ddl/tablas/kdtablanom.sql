@@ -5,7 +5,7 @@ CREATE  TABLE keplersc.kdtablanom (
   c4 numeric NOT NULL DEFAULT 0,
   c5 numeric NOT NULL DEFAULT 0,
   c6 character varying(10) NOT NULL DEFAULT ''::character varying,
-  c7 character varying(6) NOT NULL DEFAULT ''::character varying,
+  c7 character varying(5) NOT NULL DEFAULT ''::character varying,
   c8 numeric(6,2) NOT NULL DEFAULT 0,
   c9 numeric(6,2) NOT NULL DEFAULT 0,
   c10 numeric(6,2) NOT NULL DEFAULT 0,

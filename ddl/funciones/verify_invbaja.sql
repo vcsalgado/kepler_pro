@@ -45,23 +45,24 @@ BEGIN
 				grupo := (xpath('//document/k_tipon/r3/text()', dataxml))[1];
 				tipo_clave := (xpath('//document/k_tipon/r4/text()', dataxml))[1];
 				v_rol_usuario := (xpath('//document/k_rol_usuario/text()', dataxml))[1];
-				get_resultado := (xpath('//document/k_b11001/text()', dataxml))[1]; --siempre se inicializa en 1 para realizar validaciones --v�ase lib MOVLIB
+				get_resultado := (xpath('//document/k_b11001/text()', dataxml))[1]; --siempre se inicializa en 1 para realizar validaciones --véase lib MOVLIB
 				strValor:=(xpath('//document/k_fecha/text()', dataxml))[1];
 				v_fecha := (xpath('//document/k_fecha/text()', dataxml))[1];
    				v_inventario := upper((xpath('//document/k_inventario/text()', dataxml))[1]::text);
 				usuario := (xpath('//document/usuario/text()', dataxml))[1]::text;
 	  			--raise notice  '1 %' , v_sucursal_id;	  		
-				expSql = 'select * from keplersc.kdmm where col_sucursal='  || E'\'' || v_sucursal_id || E'\'' || ' and c1='  || E'\'' || genero || E'\'' ||
+				expSql = 'select * from keplersc.kdmm where c1='  || E'\'' || genero || E'\'' ||
 				' and c2=' || E'\'' || naturaleza || E'\'' || ' and c3=' || grupo || ' and c4=' || tipo_clave;	
 --raise notice 'expSql: %', expSql;			
 				select query_to_xml(expSql, true, false, '') into xmlKDMM;
 --				strValor := (xpath('//row/c8/text()', xmlKDMM))[1];
 --				if strValor is not null then
 --					if strValor = 'S' then
---						mensaje := 'Documento no v�lido';
+--						mensaje := 'Documento no válido';
 --						raise exception '%',mensaje;			
 --					end if;
 --				end if;
+
 
 				strValor:=substring(v_fecha,9,2) || '/' || substring(v_fecha,6,2) || '/' || substring(v_fecha,1,4) ; --2023-01-01
 --raise notice 'strValor: %', strValor;				

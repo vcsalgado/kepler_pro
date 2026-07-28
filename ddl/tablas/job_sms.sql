@@ -13,7 +13,6 @@ CREATE  TABLE keplersc.job_sms (
   sucursal character varying NOT NULL DEFAULT ''::character varying,
   imagen character varying NOT NULL DEFAULT ''::character varying
 ) TABLESPACE pg_default;
-CREATE UNIQUE INDEX IF NOT EXISTS job_sms_job_sms_idx ON keplersc.job_sms USING btree (job_sms) TABLESPACE pg_default;
 COMMENT ON TABLE keplersc.job_sms IS 'mensajes de SMS';
 COMMENT ON COLUMN keplersc.job_sms.estatus IS '0 pendiente, 10 enviado , 20 error';
 

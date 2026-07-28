@@ -12,7 +12,7 @@ CREATE  TABLE keplersc.kdbom (
   c11 character varying(8) NOT NULL DEFAULT ''::character varying,
   c12 numeric NOT NULL DEFAULT 0
 ) TABLESPACE pg_default;
-ALTER TABLE ONLY keplersc.kdbom ADD CONSTRAINT pk_kdbom PRIMARY KEY (c1, c2, c3, c4, c5, c6, c7, c12);
+ALTER TABLE ONLY keplersc.kdbom ADD CONSTRAINT pk_kdbom PRIMARY KEY (c1, c2, c3, c4, c5, c6, c7);
 CREATE INDEX IF NOT EXISTS sindkdbom02 ON keplersc.kdbom USING btree (c1, c10, c11, c8, c1, c2, c3, c4, c5, c6, c7) TABLESPACE pg_default;
 COMMENT ON TABLE keplersc.kdbom IS 'Backorder moviemientos';
 COMMENT ON COLUMN keplersc.kdbom.c9 IS 'Cantidad';

@@ -3,7 +3,7 @@ CREATE  TABLE keplersc.kdtmktcomis_trabajo (
   anio character varying(4) NOT NULL,
   mes character varying(2) NOT NULL,
   periodo character varying(1) NOT NULL DEFAULT ''::character varying,
-  asesor_tmkt character varying(12) NOT NULL DEFAULT ''::character varying,
+  asesor_tmkt character varying(10) NOT NULL DEFAULT ''::character varying,
   tipo_trabajo character varying NOT NULL DEFAULT ''::character varying,
   inferior integer NOT NULL DEFAULT 0,
   superior integer NOT NULL DEFAULT 0,

@@ -1,1 +1,307 @@
-<?xml version="1.0" encoding="UTF-8"?><pag xmlns="www.kepler.com.mx/2003/KSchema" roles="" tit="Reporte Pedido Sugerido">	<grp dim="1,-1,15,30" brdr="0,0" clr="0,58,112" bclr="192,205,213" fnt="Arial,16" unfont="0" OnEnter="Exit()">		<grp dim="45,30,10,12" bclr="236,240,243" fntClrBrdr="255,206,0" fntBrdr="Arial,18" hSpace="4" clrBrdr="0,58,112" brdr="0,5" fnt="Arial,16" tit="Reporte Pedido Sugerido">			<tab/><txt>Sucursal:</txt><sp n="2"/><cmb id="cmb_sucursal" dim="50,36" brdr="2,1" bclr="255,255,255" clr="64,64,64" clrBrdr="255,255,255"  brdr="2,0" fnt="Arial,16" 			      Null="N" modify="Y" available="Y"/><tab/><br/><br/>            <tab/><txt>Referencia Pedido: </txt>			<edt id="ref_pedido" clr="64,64,64" clrBrdr="255,255,255" dim="25,1" brdr="2,0" bclr="255,255,255" type="string" OnChange="cambia_val()" OnEnter="ref_pedidos()" OnF9="ref_pedidos()"/>			            <br/><br/>			<tab/><txt>Fecha inicial: </txt>			<inp id="fecha" clr="64,64,64" clrBrdr="255,255,255" dim="25,1" brdr="2,0" bclr="255,255,255" modify="N" type="string"/>			            <br/><br/>			<tab/><txt>Estatus Pedido: </txt>			<inp id="estatus" clr="64,64,64" clrBrdr="255,255,255" dim="25,1" brdr="2,0" bclr="255,255,255" modify="N" type="string"/>			            <br/><br/>			<tab/><txt>Información pedidos especiales:</txt><sp/>            <chck id="ch_inf_ped_esp" dim="3,16" brdr="2,0" clr="64,64,64" bclr="255,255,255" clrBrdr="255,255,255"/><br/><br/>                        <tab/><txt>Información compras:</txt><sp/>            <chck id="ch_inf_comp" dim="3,16" brdr="2,0" clr="64,64,64" bclr="255,255,255" clrBrdr="255,255,255"/><br/><br/>            <tab/><txt>Piezas no solicitadas:</txt><sp/>			<chck id="ch_pz_no_sol" dim="3,16" brdr="2,0" clr="64,64,64" bclr="255,255,255" clrBrdr="255,255,255"/><br/><br/>						<tab n="8"/><bot id="bot_ejecutar" dim="20,0" brdr="5" text="Ejecutar" OnEnter="Ejecuta()" default="1"/><br/>		</grp><br/><br/>	</grp>	<script>		InstallDriver("KDB75");		class Main {			var frn,kdb,rep,sys, cubo;			var suc_usuario,perfil_usuario,usuario ,rol_usuario  ,asterisco;			fun Main() {				frn=new FRNT;				kdb=new KDB;				rep=new REP;				sys=new SYS;								kdb.connect();				kdb.open("s,kdms,p,kdpedref");				suc_usuario = frn.lib("libKepler","UserInfo(1)");				perfil_usuario = frn.lib("libKepler","UserInfo(2)");				usuario = frn.config("user","name");				rol_usuario = frn.config("user","role");				asterisco = "*";				Inicializa();							}						fun Inicializa(){//Inicializa los valores en Pantalla				IniCombos();				IniParams();//Inicializa parámtros de impresión entre otros				frn.set("ch_inf_ped_esp","1");                frn.set("ch_inf_comp","1");                frn.set("ch_pz_no_sol","1");			}									fun IniCombos(){				var cmd, cubo , ok, mensajeError;											//Llenar combo sucursales				cmd = "select '['||c1||'] '||c2 as c2, c1 from keplersc.kdms";				if (rol_usuario &! "ADMINISTRADOR"  && rol_usuario &! "ADMINISTRATOR"){					cmd = cmd & " where c1='" & suc_usuario & "'";				}else {					if (suc_usuario &! asterisco && suc_usuario &! "" ){						cmd = cmd & " where c1='" & suc_usuario & "'";					}				}									cubo = frn.lib("libGeneral.kpl","EjecutarSqlSel",cmd,"srvcitacrud.Inicializa()");						ok=getXmlAtt(cubo,"ok");				if(ok &! "" && !ok){					mensajeError = getXmlAtt(cubo,"native3");					mensajeError = frn.lib("libGeneral.kpl","ErrorBD",mensajeError);					frn.message(mensajeError,"Error","Aceptar");					return;				}									frn.set("cmb_sucursal",getXml(cubo));												            //var cmd2, cuboQuery2, xmlResQuery2, ok2, mensajeError2, strTmp2;				//cuboQuery2="datDoc";											//cmd2 = "select c2 as clave, c3 as fecha, c4 as estatus from keplersc.kdpedref";				//frn.dialog("genlistasel","Pedidos",cmd2,"clave","ref_pedido","");				//cuboQuery2 = frn.lib("libGeneral.kpl","EjecutarSqlSel",cmd2,"invreppedidosug.comboPedido()");				//frn.lib("libGeneral.kpl","FileSave",cuboQuery2 ,"C:\Basura\cuboQuery2");				//ok2=getXmlAtt(cuboQuery2,"ok");				//if(ok2 &! "" && !ok2){				//	mensajeError2 = getXmlAtt(cuboQuery2,"native3");				//	frn.message(mensajeError2,"Error","Aceptar");				//	return;				//}								//frn.set("ref_pedido",cuboQuery2);				//cambia_val();			}			fun ref_pedidos(){				var cmd2;				cmd2 = "select c2 as clave, c3 as fecha, c4 as estatus from keplersc.kdpedref";				frn.dialog("genlistasel","Pedidos",cmd2,"clave","ref_pedido","");				//cambia_val();			}			fun cambia_val(){			   var str_estatus;				var fecha = frn.get("ref_pedido",-1,1);				frn.set("fecha",fecha);				var estatus = frn.get("ref_pedido",-1,2);				if(estatus == 0){					str_estatus = "Eliminado";				}				else if(estatus == 10){					str_estatus = "Editable";				}				else if(estatus == 20){					str_estatus = "Solicitado";				}				frn.set("estatus",str_estatus);			}			fun Ejecuta(){//Prepara datos del reporte 				var pedido, inf_ped_esp, inf_comp, pz_no_sol, cmd, ok, mensajeError,prod_fin, sucursal;				sucursal = frn.get("cmb_sucursal",-1,1);				pedido = frn.get("ref_pedido",-1,0);				inf_ped_esp = frn.get("ch_inf_ped_esp");				inf_comp = frn.get("ch_inf_comp");				pz_no_sol = frn.get("ch_pz_no_sol");				cmd = "select ini.c2 as descrip_prod, 						ini.c1 as clave_prod,						mov.c12 as sug_stock,						mov.c11 as pedi_esp,						mov.c17 as sol_stock,						mov.c18 as cantidad_sol,						mov.c19 as cantidad_surt,						mov.c2 as pedido						from keplersc.kdini ini						inner join keplersc.kdpedrefmov mov						on ini.c1=mov.c3 WHERE						mov.c1='"& sucursal & "' and mov.c2='" & pedido &"'";				if(frn.get("ch_pz_no_sol")==1){					cmd = cmd & " ORDER BY mov.c2";				}				else if(frn.get("ch_pz_no_sol")==0){					cmd = cmd & "and mov.c18>0 ORDER BY mov.c2";				}				frn.rst(cubo);				cubo = frn.lib("libGeneral.kpl","EjecutarSqlSel",cmd,"vcssprod.Ejecuta()");				frn.lib("libGeneral.kpl","FileSave",cubo,"C:\Basura\cuboPrueba");				ok=getXmlAtt(cubo,"ok");				if(ok &! "" && !ok){					mensajeError = getXmlAtt(cubo,"native3");					mensajeError = frn.lib("libGeneral.kpl","ErrorBD",mensajeError);					frn.message(mensajeError,"Error","Aceptar");					return;				}				Reporte();			}			fun Reporte(){//Ejecuta el Reporte				var clave_prod,cantidad_sol, descrip_prod, k_titulo, k_total, n_pedido, sug_stock, pedi_esp, sol_stock, cantidad_surt;				var compania, usuario, strValor, fechaImpresion, horaImpresion;				// Se define el formato a usar y se liga a la variable del reporte "rep"				kdb.readPage("datFto","invreppedidosugfto.kpl");				kdb.exec();				rep.source(kdb.get("datFto")); 				compania = kdb.get("KDE","1");				usuario = kdb.get("KDE","14");				strValor = sys.date();					fechaImpresion = sys.date();				horaImpresion = sys.time();				rep.rst();				setRepPage();//Establece los par�metros finales de impresi�n(rep.page(...);), pues pueden haber cambiado por el usuario 				rep.set("k_empresa",compania);				rep.set("k_sucursal","[" & frn.get("cmb_sucursal",-1,1) & "] " & frn.get("cmb_sucursal",-1,0)); 				rep.set("k_fecha",frn.get("edt_fecha"));				rep.set("k_fecha_imp",fechaImpresion);				rep.set("K_hora_imp",horaImpresion);				k_titulo=frn.get("inp_titulo");				n_pedido=frn.get("ref_pedido",-1,0);				rep.set("inp_titulo",k_titulo);				rep.set("n_pedido",n_pedido);				rep.exe("encabezado");				k_total = 0;				for(var ren=0;ren<nXml(cubo);ren++){					clave_prod = getXmlAtt(cubo,"r"&ren,"clave_prod");					descrip_prod= getXmlAtt(cubo,"r"&ren,"descrip_prod");					sug_stock= getXmlAtt(cubo,"r"&ren,"sug_stock");					pedi_esp= getXmlAtt(cubo,"r"&ren,"pedi_esp");					sol_stock= getXmlAtt(cubo,"r"&ren,"sol_stock");					cantidad_surt=getXmlAtt(cubo,"r"&ren,"cantidad_surt");					cantidad_sol= getXmlAtt(cubo,"r"&ren,"cantidad_sol");					rep.set("clave_prod",clave_prod);					rep.set("descrip_prod", descrip_prod);					rep.set("sug_stock", sug_stock);					rep.set("pedi_esp", pedi_esp);					rep.set("sol_stock", sol_stock);					rep.set("cantidad_surt", cantidad_surt);					rep.set("cantidad_sol", cantidad_sol);					rep.set("conversion", "Ejemplo conversion");					rep.set("notas", "Ejemplo de notas");					rep.set("operacion_com", "eje_com 02-XA04003-0000007");					rep.set("documento_com", "Eje_com de documento toyota");					rep.set("fecha_com", "Eje_com 09-03-22");					rep.set("cantidad_com", "Eje_com cantidad");					rep.set("operacion_esp", "eje_esp 02-XA04003-0000007");					rep.set("documento_esp", "Eje_esp de documento toyota");					rep.set("fecha_esp", "Eje_esp 09-03-22");					rep.set("cantidad_esp", "Eje_esp cantidad");					rep.exe("detalle");										if(frn.get("ch_inf_ped_esp")==1){						rep.exe("ped_esp");						}															if(frn.get("ch_inf_comp")==1){						rep.exe("inf_comp");						}				}					rep.set("inp_total",k_total);				rep.exe("total");				//Da valor a los inputs del reporte(rep.set();), e indica la ejecuci�n de "grupos de renglones de impresi�n" (rep.exe();)//				rep.set("fecha",sys.date());rep.set("hora",sys.time());//				rep.exe("encabezado");								//Modos de impresi�n 				rep.win(); //Muestra la vista previa de la impresi�n. A partir de la vista previa (Preprint) se decide si se imprime o no.				//rep.print("\\192.168.1.100\HPLaserJet"); //Env�a el reporte directamente a una impresora, sin mostrar la vista previa.				//frn.dialog("_ks_printdlg"); //Permite seleccionar impresora destino y manda el reporte a impresi�n. No muestra la vista previa.				//rep.export("file:Reportes\\reporteHTML.html","format:html","inputs:N");//Guardar� el reporte en la carpeta local k80\Reportes, con el nombre reporteHTML.html			}			fun IniParams(){//Inicializa parámetros de impresión, que pueden ser cambiados por el usuario final mediante: Archivo / Configurar Página				frn.set("param_paper","letter");//	"paper=letter|legal|size"				frn.set("param_sizeX","21.59","param_sizeY","27.94");//	"size=18,14cm"				frn.set("param_borderL","1.5","param_borderT","1.5","param_borderR","1.5","param_borderB","1.5");//	"border=1.5,1.5,1.5,1.5cm"				frn.set("param_Fx","1.0","param_Fy","1.0");//			"F=1,1"				frn.set("param_landscape","Y");//	"landscape=N|Y"				frn.set("param_emp","L");//			"@emp=L|R|C"				frn.set("param_header",1);			}			fun setRepPage() {//Establece los parámetros finales de impresión.				//Tipo de hoja, ancho, alto,margen iz, margen derecho, margen arriba, margen abajo, factor de escala en x, factor de escala en y,orientacion, color, ventana de ajuste, etc				//rep.page("paper=letter|legal|size","size=18,14cm","border=1.5,1.5,1.5,1.5cm","F=1,1","landscape=N|Y","color=Y|N","prompt=N|Y","@emp=L|R|C");				var paper="paper=" & frn.get("param_paper");var size="size=" & frn.get("param_sizeX") & "," & frn.get("param_sizeY") & "cm";				var brdr="border=" & frn.get("param_borderL") & "," & frn.get("param_borderT") & "," & frn.get("param_borderR") & "," & frn.get("param_borderB") & "cm";				var fact="F=" & frn.get("param_Fx") & "," & frn.get("param_Fy");				var lndsp="landscape=" & frn.get("param_landscape");				var emp="@emp=" & frn.get("param_emp");				rep.page(paper,size,brdr,fact,lndsp,"color=Y","collate=Y","copies=1","pages=1,999","prompt=N",emp);			}						fun Dialog(iModo,pag,par0,par1,par2,par3,par4,par5,par6,par7,par8,par9,par10,par11,par12,par13,par14,par15){				/*iModo: 0)No hace mayor validación. Siempre despliega la ventana. NO CONCATENA PREFIJO							1)Solo concatena el prefijo de la carpeta del lenguaje, no hace mayor validación. Siempre despliega la ventana							2)Modo especial. Se valida que el campo indicado en par0 se puede modificar(El par0 puede ser una tabla, y par1 la columna)							3)Modo especial para páginas de operacion:Solo si se está en alta o modifica despliega la pagina. Simpre agrega el prefijo del lenguaje				*/				var prefix=frn.lib("libKepler","langPrefix");				var page=prefix&pag;				var b_valido=1;				if(iModo==0)page=pag;				else if(iModo==2&&(strlen(par0)>0)){//Se toma el par0 como el objeto (o grid) al que se devolverá el resultado.					if( frn.getAtt(par0,"modify",par1) &= "N" ) b_valido=0;					if( frn.getAtt(par0,"available",par1) &= "N" ) b_valido=0;					if( frn.getAtt(par0,"visible",par1) &= "N" ) b_valido=0;				}				else if(iModo==3)b_valido=0;				if(b_valido==1)frn.dialog(page,par0,par1,par2,par3,par4,par5,par6,par7,par8,par9,par10,par11,par12,par13,par14,par15);			}						fun ValFecha(){				if(frn.get("edt_fecha_ini")&="")					frn.set("edt_fecha_ini",sys.date(sys.date("year"),sys.date("month"),1));				if(frn.get("edt_fecha_fin")&="")					frn.set("edt_fecha_fin",sys.date(sys.date("year"),sys.date("month"),31));			}												fun Execute() {				if (ValidarInfo() == 0){					return;				};								//var val=frn.get("input");				//frn.message("Valor proporcionado:" & val,"Notificación","Aceptar");			}									fun ValidarInfo(){				var fecha_ini, fecha_fin;				//Validacion de fechas				ValFecha();				fecha_ini = frn.get("edt_fecha_ini");				fecha_fin = frn.get("edt_fecha_fin");								if (fnDate("dif",fecha_fin,fecha_ini ) < 0) {					frn.message("La fecha de inicio no puede ser mayor a la final.","Error","Aceptar");					return 0;				}				return 1;			}											}	</script></pag>
+<?xml version="1.0" encoding="UTF-8"?>
+<pag xmlns="www.kepler.com.mx/2003/KSchema" roles="" tit="Reporte Pedido Sugerido">
+	<grp dim="1,-1,15,30" brdr="0,0" clr="0,58,112" bclr="192,205,213" fnt="Arial,16" unfont="0" OnEnter="Exit()">
+		<grp dim="45,30,10,12" bclr="236,240,243" fntClrBrdr="255,206,0" fntBrdr="Arial,18" hSpace="4" clrBrdr="0,58,112" brdr="0,5" fnt="Arial,16" tit="Reporte Pedido Sugerido">
+			<tab/><txt>Sucursal:</txt><sp n="2"/><cmb id="cmb_sucursal" dim="50,36" brdr="2,1" bclr="255,255,255" clr="64,64,64" clrBrdr="255,255,255"  brdr="2,0" fnt="Arial,16" 
+			      Null="N" modify="Y" available="Y"/><tab/><br/><br/>
+
+
+            <tab/><txt>Referencia Pedido: </txt>
+			<edt id="ref_pedido" clr="64,64,64" clrBrdr="255,255,255" dim="25,1" brdr="2,0" bclr="255,255,255" type="string" OnChange="cambia_val()" OnEnter="ref_pedidos()" OnF9="ref_pedidos()"/>			
+            <br/><br/>
+
+			<tab/><txt>Fecha inicial: </txt>
+			<inp id="fecha" clr="64,64,64" clrBrdr="255,255,255" dim="25,1" brdr="2,0" bclr="255,255,255" modify="N" type="string"/>			
+            <br/><br/>
+
+			<tab/><txt>Estatus Pedido: </txt>
+			<inp id="estatus" clr="64,64,64" clrBrdr="255,255,255" dim="25,1" brdr="2,0" bclr="255,255,255" modify="N" type="string"/>			
+            <br/><br/>
+
+			<tab/><txt>Información pedidos especiales:</txt><sp/>
+            <chck id="ch_inf_ped_esp" dim="3,16" brdr="2,0" clr="64,64,64" bclr="255,255,255" clrBrdr="255,255,255"/><br/><br/>
+            
+            <tab/><txt>Información compras:</txt><sp/>
+            <chck id="ch_inf_comp" dim="3,16" brdr="2,0" clr="64,64,64" bclr="255,255,255" clrBrdr="255,255,255"/><br/><br/>
+
+            <tab/><txt>Piezas no solicitadas:</txt><sp/>
+			<chck id="ch_pz_no_sol" dim="3,16" brdr="2,0" clr="64,64,64" bclr="255,255,255" clrBrdr="255,255,255"/><br/><br/>			
+			<tab n="8"/><bot id="bot_ejecutar" dim="20,0" brdr="5" text="Ejecutar" OnEnter="Ejecuta()" default="1"/><br/>
+		</grp><br/><br/>
+	</grp>
+	<script>
+		InstallDriver("KDB75");
+		class Main {
+			var frn,kdb,rep,sys, cubo;
+			fun Main() {
+				frn=new FRNT;
+				kdb=new KDB;
+				rep=new REP;
+				sys=new SYS;				
+				kdb.connect();
+				kdb.open("s,kdms,p,kdpedref");
+				Inicializa();				
+			}
+			
+			fun Inicializa(){//Inicializa los valores en Pantalla
+				IniCombos();
+				IniParams();//Inicializa parámtros de impresión entre otros
+				frn.set("ch_inf_ped_esp","1");
+                frn.set("ch_inf_comp","1");
+                frn.set("ch_pz_no_sol","1");
+			}			
+			
+			fun IniCombos(){
+				var cmd, cuboQuery, xmlResQuery, ok, mensajeError, strTmp;
+				cuboQuery="datDoc";			
+				//Llenar combo de Sucursales				
+				cmd = "select '['||c1||'] '||c2 as c2, c1  from keplersc.kdms";
+				cuboQuery = frn.lib("libGeneral.kpl","EjecutarSqlSel",cmd,"invreppedidosug.IniCombos()");
+				
+				ok=getXmlAtt(cuboQuery,"ok");
+				if(ok &! "" && !ok){
+					mensajeError = getXmlAtt(cuboQuery,"native3");
+					frn.message(mensajeError,"Error","Aceptar");
+					return;
+				}
+				
+				frn.set("cmb_sucursal",cuboQuery);				
+				
+            //var cmd2, cuboQuery2, xmlResQuery2, ok2, mensajeError2, strTmp2;
+				//cuboQuery2="datDoc";			
+				
+				//cmd2 = "select c2 as clave, c3 as fecha, c4 as estatus from keplersc.kdpedref";
+				//frn.dialog("genlistasel","Pedidos",cmd2,"clave","ref_pedido","");
+
+				//cuboQuery2 = frn.lib("libGeneral.kpl","EjecutarSqlSel",cmd2,"invreppedidosug.comboPedido()");
+				//frn.lib("libGeneral.kpl","FileSave",cuboQuery2 ,"C:\Basura\cuboQuery2");
+				//ok2=getXmlAtt(cuboQuery2,"ok");
+				//if(ok2 &! "" && !ok2){
+				//	mensajeError2 = getXmlAtt(cuboQuery2,"native3");
+				//	frn.message(mensajeError2,"Error","Aceptar");
+				//	return;
+				//}
+				
+				//frn.set("ref_pedido",cuboQuery2);
+				//cambia_val();
+			}
+
+			fun ref_pedidos(){
+				var cmd2;
+				cmd2 = "select c2 as clave, c3 as fecha, c4 as estatus from keplersc.kdpedref";
+				frn.dialog("genlistasel","Pedidos",cmd2,"clave","ref_pedido","");
+				//cambia_val();
+
+			}
+
+			fun cambia_val(){
+			   var str_estatus;
+				var fecha = frn.get("ref_pedido",-1,1);
+				frn.set("fecha",fecha);
+				var estatus = frn.get("ref_pedido",-1,2);
+				if(estatus == 0){
+					str_estatus = "Eliminado";
+				}
+				else if(estatus == 10){
+					str_estatus = "Editable";
+				}
+				else if(estatus == 20){
+					str_estatus = "Solicitado";
+				}
+				frn.set("estatus",str_estatus);
+			}
+
+			fun Ejecuta(){//Prepara datos del reporte 
+				var pedido, inf_ped_esp, inf_comp, pz_no_sol, cmd, ok, mensajeError,prod_fin, sucursal;
+				sucursal = frn.get("cmb_sucursal",-1,1);
+				pedido = frn.get("ref_pedido",-1,0);
+				inf_ped_esp = frn.get("ch_inf_ped_esp");
+				inf_comp = frn.get("ch_inf_comp");
+				pz_no_sol = frn.get("ch_pz_no_sol");
+				cmd = "select ini.c2 as descrip_prod, 
+						ini.c1 as clave_prod,
+						mov.c12 as sug_stock,
+						mov.c11 as pedi_esp,
+						mov.c17 as sol_stock,
+						mov.c18 as cantidad_sol,
+						mov.c19 as cantidad_surt,
+						mov.c2 as pedido
+						from keplersc.kdini ini
+						inner join keplersc.kdpedrefmov mov
+						on ini.c1=mov.c3 WHERE
+						mov.c1='"& sucursal & "' and mov.c2='" & pedido &"'";
+				if(frn.get("ch_pz_no_sol")==1){
+					cmd = cmd & " ORDER BY mov.c2";
+				}
+				else if(frn.get("ch_pz_no_sol")==0){
+					cmd = cmd & "and mov.c18>0 ORDER BY mov.c2";
+				}
+				frn.rst(cubo);
+				cubo = frn.lib("libGeneral.kpl","EjecutarSqlSel",cmd,"vcssprod.Ejecuta()");
+				frn.lib("libGeneral.kpl","FileSave",cubo,"C:\Basura\cuboPrueba");
+				ok=getXmlAtt(cubo,"ok");
+				if(ok &! "" && !ok){
+					mensajeError = getXmlAtt(cubo,"native3");
+					mensajeError = frn.lib("libGeneral.kpl","ErrorBD",mensajeError);
+					frn.message(mensajeError,"Error","Aceptar");
+					return;
+				}
+				Reporte();
+			}
+
+			fun Reporte(){//Ejecuta el Reporte
+				var clave_prod,cantidad_sol, descrip_prod, k_titulo, k_total, n_pedido, sug_stock, pedi_esp, sol_stock, cantidad_surt;
+				var compania, usuario, strValor, fechaImpresion, horaImpresion;
+				// Se define el formato a usar y se liga a la variable del reporte "rep"
+				kdb.readPage("datFto","invreppedidosugfto.kpl");
+				kdb.exec();
+				rep.source(kdb.get("datFto")); 
+
+				compania = kdb.get("KDE","1");
+				usuario = kdb.get("KDE","14");
+				strValor = sys.date();	
+				fechaImpresion = sys.date();
+				horaImpresion = sys.time();
+
+				rep.rst();
+				setRepPage();//Establece los par�metros finales de impresi�n(rep.page(...);), pues pueden haber cambiado por el usuario 
+
+				rep.set("k_empresa",compania);
+				rep.set("k_sucursal","[" & frn.get("cmb_sucursal",-1,1) & "] " & frn.get("cmb_sucursal",-1,0)); 
+				rep.set("k_fecha",frn.get("edt_fecha"));
+				rep.set("k_fecha_imp",fechaImpresion);
+				rep.set("K_hora_imp",horaImpresion);
+
+				k_titulo=frn.get("inp_titulo");
+				n_pedido=frn.get("ref_pedido",-1,0);
+				rep.set("inp_titulo",k_titulo);
+				rep.set("n_pedido",n_pedido);
+				rep.exe("encabezado");
+				k_total = 0;
+				for(var ren=0;ren<nXml(cubo);ren++){
+					clave_prod = getXmlAtt(cubo,"r"&ren,"clave_prod");
+					descrip_prod= getXmlAtt(cubo,"r"&ren,"descrip_prod");
+					sug_stock= getXmlAtt(cubo,"r"&ren,"sug_stock");
+					pedi_esp= getXmlAtt(cubo,"r"&ren,"pedi_esp");
+					sol_stock= getXmlAtt(cubo,"r"&ren,"sol_stock");
+					cantidad_surt=getXmlAtt(cubo,"r"&ren,"cantidad_surt");
+					cantidad_sol= getXmlAtt(cubo,"r"&ren,"cantidad_sol");
+					rep.set("clave_prod",clave_prod);
+					rep.set("descrip_prod", descrip_prod);
+					rep.set("sug_stock", sug_stock);
+					rep.set("pedi_esp", pedi_esp);
+					rep.set("sol_stock", sol_stock);
+					rep.set("cantidad_surt", cantidad_surt);
+					rep.set("cantidad_sol", cantidad_sol);
+					rep.set("conversion", "Ejemplo conversion");
+					rep.set("notas", "Ejemplo de notas");
+					rep.set("operacion_com", "eje_com 02-XA04003-0000007");
+					rep.set("documento_com", "Eje_com de documento toyota");
+					rep.set("fecha_com", "Eje_com 09-03-22");
+					rep.set("cantidad_com", "Eje_com cantidad");
+
+					rep.set("operacion_esp", "eje_esp 02-XA04003-0000007");
+					rep.set("documento_esp", "Eje_esp de documento toyota");
+					rep.set("fecha_esp", "Eje_esp 09-03-22");
+					rep.set("cantidad_esp", "Eje_esp cantidad");
+
+					rep.exe("detalle");
+					
+					if(frn.get("ch_inf_ped_esp")==1){
+						rep.exe("ped_esp");	
+					}
+					
+					
+					if(frn.get("ch_inf_comp")==1){
+						rep.exe("inf_comp");	
+					}
+				}	
+				rep.set("inp_total",k_total);
+				rep.exe("total");
+
+				//Da valor a los inputs del reporte(rep.set();), e indica la ejecuci�n de "grupos de renglones de impresi�n" (rep.exe();)
+//				rep.set("fecha",sys.date());rep.set("hora",sys.time());
+//				rep.exe("encabezado");
+				
+				//Modos de impresi�n 
+				rep.win(); //Muestra la vista previa de la impresi�n. A partir de la vista previa (Preprint) se decide si se imprime o no.
+				//rep.print("\\192.168.1.100\HPLaserJet"); //Env�a el reporte directamente a una impresora, sin mostrar la vista previa.
+				//frn.dialog("_ks_printdlg"); //Permite seleccionar impresora destino y manda el reporte a impresi�n. No muestra la vista previa.
+				//rep.export("file:Reportes\\reporteHTML.html","format:html","inputs:N");//Guardar� el reporte en la carpeta local k80\Reportes, con el nombre reporteHTML.html
+			}
+
+
+
+			fun IniParams(){//Inicializa parámetros de impresión, que pueden ser cambiados por el usuario final mediante: Archivo / Configurar Página
+				frn.set("param_paper","letter");//	"paper=letter|legal|size"
+				frn.set("param_sizeX","21.59","param_sizeY","27.94");//	"size=18,14cm"
+				frn.set("param_borderL","1.5","param_borderT","1.5","param_borderR","1.5","param_borderB","1.5");//	"border=1.5,1.5,1.5,1.5cm"
+				frn.set("param_Fx","1.0","param_Fy","1.0");//			"F=1,1"
+				frn.set("param_landscape","Y");//	"landscape=N|Y"
+				frn.set("param_emp","L");//			"@emp=L|R|C"
+				frn.set("param_header",1);
+			}
+
+			fun setRepPage() {//Establece los parámetros finales de impresión.
+				//Tipo de hoja, ancho, alto,margen iz, margen derecho, margen arriba, margen abajo, factor de escala en x, factor de escala en y,orientacion, color, ventana de ajuste, etc
+				//rep.page("paper=letter|legal|size","size=18,14cm","border=1.5,1.5,1.5,1.5cm","F=1,1","landscape=N|Y","color=Y|N","prompt=N|Y","@emp=L|R|C");
+				var paper="paper=" & frn.get("param_paper");var size="size=" & frn.get("param_sizeX") & "," & frn.get("param_sizeY") & "cm";
+				var brdr="border=" & frn.get("param_borderL") & "," & frn.get("param_borderT") & "," & frn.get("param_borderR") & "," & frn.get("param_borderB") & "cm";
+				var fact="F=" & frn.get("param_Fx") & "," & frn.get("param_Fy");
+				var lndsp="landscape=" & frn.get("param_landscape");
+				var emp="@emp=" & frn.get("param_emp");
+				rep.page(paper,size,brdr,fact,lndsp,"color=Y","collate=Y","copies=1","pages=1,999","prompt=N",emp);
+			}
+			
+			fun Dialog(iModo,pag,par0,par1,par2,par3,par4,par5,par6,par7,par8,par9,par10,par11,par12,par13,par14,par15){
+				/*iModo: 0)No hace mayor validación. Siempre despliega la ventana. NO CONCATENA PREFIJO
+							1)Solo concatena el prefijo de la carpeta del lenguaje, no hace mayor validación. Siempre despliega la ventana
+							2)Modo especial. Se valida que el campo indicado en par0 se puede modificar(El par0 puede ser una tabla, y par1 la columna)
+							3)Modo especial para páginas de operacion:Solo si se está en alta o modifica despliega la pagina. Simpre agrega el prefijo del lenguaje
+				*/
+				var prefix=frn.lib("libKepler","langPrefix");
+				var page=prefix&pag;
+				var b_valido=1;
+				if(iModo==0)page=pag;
+				else if(iModo==2&&(strlen(par0)>0)){//Se toma el par0 como el objeto (o grid) al que se devolverá el resultado.
+					if( frn.getAtt(par0,"modify",par1) &= "N" ) b_valido=0;
+					if( frn.getAtt(par0,"available",par1) &= "N" ) b_valido=0;
+					if( frn.getAtt(par0,"visible",par1) &= "N" ) b_valido=0;
+				}
+				else if(iModo==3)b_valido=0;
+				if(b_valido==1)frn.dialog(page,par0,par1,par2,par3,par4,par5,par6,par7,par8,par9,par10,par11,par12,par13,par14,par15);
+			}
+			
+			fun ValFecha(){
+				if(frn.get("edt_fecha_ini")&="")
+					frn.set("edt_fecha_ini",sys.date(sys.date("year"),sys.date("month"),1));
+				if(frn.get("edt_fecha_fin")&="")
+					frn.set("edt_fecha_fin",sys.date(sys.date("year"),sys.date("month"),31));
+			}
+			
+						
+			fun Execute() {
+				if (ValidarInfo() == 0){
+					return;
+				};
+				
+				//var val=frn.get("input");
+				//frn.message("Valor proporcionado:" & val,"Notificación","Aceptar");
+			}
+						
+			fun ValidarInfo(){
+				var fecha_ini, fecha_fin;
+				//Validacion de fechas
+				ValFecha();
+				fecha_ini = frn.get("edt_fecha_ini");
+				fecha_fin = frn.get("edt_fecha_fin");				
+				if (fnDate("dif",fecha_fin,fecha_ini ) < 0) {
+					frn.message("La fecha de inicio no puede ser mayor a la final.","Error","Aceptar");
+					return 0;
+				}
+				return 1;
+			}
+									
+		}
+	</script>
+</pag>

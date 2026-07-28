@@ -128,7 +128,7 @@ begin
 			from keplersc.cont_format_account_smov(xmlKDM1, xmlKDMM,folio_operacion,varcont);	
 			cuenta_cargo := split_part(adicionales, '|', 1);	
 			nombre_cteprov :=  split_part(adicionales, '|', 3); --Descripcion de la cuenta
-			
+		
 			select '<varcont><n5>26</n5><n6>20</n6><inventario>' || inventario || '</inventario></varcont>' into strvarcont;
 			varcont := strvarcont ::xml;
 			select * into resultado, mensaje, adicionales 
@@ -303,7 +303,7 @@ begin
 
 		cuenta_extra := split_part(adicionales, '|', 1);	
 		nombre_cteprov :=  split_part(adicionales, '|', 3); --Desripcion de la cuenta
-		
+	
 		monto_extra :=  format('//document/k_monto_extra_%1$s/text()', (i-8)+ 1);
 		monto_extra := (xpath(monto_extra,dataxml))[1];
 			

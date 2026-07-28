@@ -124,16 +124,16 @@ begin
 
 	totalReg := 0;
 
-    select count(*) into totalReg from keplersc.kdmm where col_sucursal=sucursal_id and c1=genero and c2=naturaleza and c3=grupo::int and c4=tipo::int;
+    select count(*) into totalReg from keplersc.kdmm where c1=genero and c2=naturaleza and c3=grupo::int and c4=tipo::int;
 
 	if totalReg = 0 then
 		mensajeError := 'Documento no definido en BD';
 		raise exception '%',mensajeError;			
 	end if;
 
-	expSql = 'select * from keplersc.kdmm where col_sucursal=' || E'\'' || sucursal_id || E'\'' || ' and c1='  || E'\'' || genero || E'\'' ||
+	expSql = 'select * from keplersc.kdmm where c1='  || E'\'' || genero || E'\'' ||
 	' and c2=' || E'\'' || naturaleza || E'\'' || ' and c3=' || grupo || ' and c4=' || tipo;
-
+	
 	select query_to_xml(expSql, true, false, '') into xmlKDMM;
 	strValor := (xpath('//row/c90/text()', xmlKDMM))[1];
 	if strValor is not null then
@@ -276,7 +276,7 @@ begin
  */
 	resultado := 1;
 	mensaje := concat('Folio operación: ',folio_operacion, '; póliza: ',folio_poliza_kdc);
-	adicionales := folio_poliza_kdc;
+	adicionales := '';
 
 	return query select resultado, mensaje, adicionales;	
 

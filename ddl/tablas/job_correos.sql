@@ -16,7 +16,6 @@ CREATE  TABLE keplersc.job_correos (
   sucursal character varying NOT NULL DEFAULT ''::character varying,
   imagen character varying NOT NULL DEFAULT ''::character varying
 ) TABLESPACE pg_default;
-CREATE UNIQUE INDEX IF NOT EXISTS job_correos_job_correo_idx ON keplersc.job_correos USING btree (job_correo) TABLESPACE pg_default;
 COMMENT ON TABLE keplersc.job_correos IS 'correos';
 COMMENT ON COLUMN keplersc.job_correos.estatus IS '0 pendiente, 10 enviado , 20 error';
 

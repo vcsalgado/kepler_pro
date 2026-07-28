@@ -55,9 +55,6 @@ declare
 		anio text;
 		partida numeric = 0;
 		cuenta_abono text;
-	
-		--borrar
-		cont_horas numeric = 0;
 		
 		strValor text;
 	   	xml_partidas text = '';
@@ -80,7 +77,7 @@ begin
 		fecha_final := (xpath('//document/fecha_final/text()', dataxml))[1];
 	
 		costo_hr_general := nomina/horas_reales_trabajadas;
-					
+			
 		strValor := (xpath('//document/ctd_pagos/text()',dataxml))[1];
 		no_pagos := strValor::integer;		
 	
@@ -145,8 +142,6 @@ begin
 					if tipo_punto = 'P' then				
 						hrs_puntos_p = hrs_puntos_p + horas;
 					end if;
-				
-					cont_horas := cont_horas + horas;
 
 				end loop;
 			
@@ -154,13 +149,10 @@ begin
 
 		end loop ;
 	
-	
 		-----CONT_PAGO_OPERARIOS
-		anio := substring(current_date::text, 3, 2);                                                    --LGLG 10/07/24 
-		for tipo_orden, cuenta_cargo_m_obra in select c1, c10 from keplersc.kdtallcont where c3=anio and c2=sucursal_id
+		anio := substring(current_date::text, 3, 2);
+		for tipo_orden, cuenta_cargo_m_obra in select c1, c10 from keplersc.kdtallcont where c3=anio
 		loop 
-			--LGLG 10/07/24 
-			cargo := 0;
 			
 			if tipo_orden = 'S' then 
 				cargo := costo_hr_general * hrs_puntos_s;
@@ -189,8 +181,7 @@ begin
 			if tipo_orden = 'P' then 
 				cargo := costo_hr_general * hrs_puntos_p;
 			end if;
-		
-						
+				
 			--CARGOS
 			if cargo > 0 then
 				partida := partida + 1;
@@ -201,14 +192,13 @@ begin
 				<referencia>%7$s</referencia></partida_%1$s>', 
 				partida, cuenta_cargo_m_obra,'C',round(cargo,2), descripcion_pol, 'Cuenta creada por el sistema', referencia_pol ));
 			end if;
-			
-			total_abono := total_abono + cargo;
 		
+			total_abono := total_abono + round(cargo,2);
 		
 		end loop;	
 	
 		--ABONO
-		select c20 into cuenta_abono from keplersc.kdmm where col_sucursal=sucursal_id and c1='N' and c2='A' and c3=19 and c4=1;
+		select c20 into cuenta_abono from keplersc.kdmm where c1='N' and c2='A' and c3=19 and c4=1;
 		partida := partida + 1;
 		xml_partidas := concat(xml_partidas,format('<partida_%1$s><cuenta>%2$s</cuenta>
 		<tipo_asiento>%3$s</tipo_asiento><monto>%4$s</monto>
@@ -216,8 +206,6 @@ begin
 		<descripcion_cuenta>%6$s</descripcion_cuenta>
 		<referencia>%7$s</referencia></partida_%1$s>', 
 		partida, cuenta_abono,'A',total_abono, descripcion_pol, 'Cuenta creada por el sistema', referencia_pol ));
-	
-		--raise exception 'nomina: %, total_abono: %, resta: %', nomina, total_abono, nomina-total_abono;
 	
 		if abs(nomina-total_abono) < .5  then
 			xml_poliza := concat(
@@ -233,7 +221,7 @@ begin
 			'</poliza>');
 		
 		else 
-			raise exception '%  UI Sistema:%; Contabilidad:%' , 'Error, montos no cuadran.',nomina,total_abono;
+			raise exception '%' , 'Error, montos no cuadran';
 		end if;
 			
 		return xml_poliza::xml;	

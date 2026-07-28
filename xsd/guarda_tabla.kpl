@@ -1,1 +1,92 @@
-<?xml version="1.0" encoding="UTF-8"?><pag xmlns="www.kepler.com.mx/2003/KSchema" roles="" tit="Procesando informacion">	<grp dim="1,-1,9,8" brdr="0,0" clr="0,58,112" bclr="192,205,213" fnt="Arial,16" unfont="0" OnEnter="Exit()">		<grp id="grupo_crud" dim="50,20,20,8" bclr="236,240,243" fntClrBrdr="255,255,255" fntBrdr="Arial,18" hSpace="4" clrBrdr="0,58,112" brdr="0,5" fnt="Arial,16" tit="Procesando...">			<tab/>			<inp id="texto" clr="64,64,64" clrBrdr="255,255,255" dim="16,1" brdr="2,0" bclr="255,255,255" hk="B" type="string" modify="N"/>			<br/>			<tab n="3"/>			<img id="img" dim="100,100" bPx="1" brdr="0,1" available="Y" img="_loading2.gif"/>			<br/>			<tab/>					</grp><br/><br/>	</grp>	<script>		InstallDriver("KDB75");		class Main {			var frn,kdb,frP,nom_tabla,nRen,pagina_xml;			fun Main() {				frn=new FRNT;				frP=new FRNTP;				kdb=new KDB;				kdb.connect();				frn.set("texto", "Procesando informacion,  espere por favor...");				guardar_tabla_csv();			}						fun guardar_tabla_csv(){				var raw_tags_xml,raw_tag_xml,str_tag_xml,str_tag,nombres_columnas,text_csv,str_tag_raw1,str_tag_raw2, num_colum, num_colum, nom_tabla, save;				var titulo, subtitulo, criterio,columnas;				nom_tabla = frn.param(0);				save = frn.param(1);				titulo = frn.param(2);				subtitulo = frn.param(3);				criterio = frn.param(4);				columnas = frn.param(5);				nRen = frP.N(nom_tabla);					pagina_xml =getXml(frP.dataPag());					num_colum = getXmlX(pagina_xml,nom_tabla,3,0);				num_colum = getXmlX(num_colum,"r0",2);				if (columnas) {					if(columnas > 0){						num_colum=columnas;					}				}				frn.lib("libGeneral.kpl","FileSave",pagina_xml,"C:\Basura\pagina_xml");				frn.lib("libGeneral.kpl","FileSave",num_colum,"C:\Basura\tabla_xml");				raw_tags_xml = getXmlX(pagina_xml,nom_tabla,3,0);								//crea un string con los nombres de las columnas de la tabla				for (var cont=0; cont<num_colum ; cont++){					raw_tag_xml = getXmlX(raw_tags_xml,"r0",3,cont);					str_tag_xml = getXmlStr(raw_tag_xml);					str_tag_raw1 = strSplit(str_tag_xml,">",0);					str_tag_raw2 = strSplit(str_tag_raw1,"<",1);					str_tag = strSplit(str_tag_raw2,"/",0);					if (nombres_columnas &! ""){						nombres_columnas = nombres_columnas &","&str_tag ;					}else{						nombres_columnas = str_tag;					}				}								//recorre la tabla y sacar valor por valor para agregarlo a un str				for(var ren=0;ren<nRen;ren++){					for( var col=0;col<num_colum;col++){						var num_col = strSplit(nombres_columnas,",",col);						var val = frP.get(nom_tabla,ren,num_col);						val = "\""&val&"\"";						val = delScpScn(val);//						val = frn.lib("libGeneral","StrReplace",val,"'","");						if (text_csv&=""){				//se debe respetar esta identacion							text_csv = nombres_columnas& "" &val & ",";						}else if(col+1==num_colum){							text_csv = text_csv & val & "," & "";								}else{							text_csv = text_csv & val & ",";						}					}				}				text_csv = criterio & "" & text_csv;				text_csv = subtitulo & "" & text_csv;				text_csv = titulo & "" & text_csv;				kdb.save("_"&save&".csv", text_csv);				frn.message("Proceso Terminado", "Aceptar");				frn.exit();			}		}	</script></pag>
+<?xml version="1.0" encoding="UTF-8"?>
+<pag xmlns="www.kepler.com.mx/2003/KSchema" roles="" tit="Procesando informacion">
+	<grp dim="1,-1,9,8" brdr="0,0" clr="0,58,112" bclr="192,205,213" fnt="Arial,16" unfont="0" OnEnter="Exit()">
+		<grp id="grupo_crud" dim="50,20,20,8" bclr="236,240,243" fntClrBrdr="255,255,255" fntBrdr="Arial,18" hSpace="4" clrBrdr="0,58,112" brdr="0,5" fnt="Arial,16" tit="Procesando...">
+			<tab/>
+			<inp id="texto" clr="64,64,64" clrBrdr="255,255,255" dim="16,1" brdr="2,0" bclr="255,255,255" hk="B" type="string" modify="N"/>
+			<br/>
+			<tab n="3"/>
+			<img id="img" dim="100,100" bPx="1" brdr="0,1" available="Y" img="_loading2.gif"/>
+			<br/>
+			<tab/>
+			
+		</grp><br/><br/>
+	</grp>
+	<script>
+		InstallDriver("KDB75");
+		class Main {
+			var frn,kdb,frP,nom_tabla,nRen,pagina_xml;
+			fun Main() {
+				frn=new FRNT;
+				frP=new FRNTP;
+				kdb=new KDB;
+				kdb.connect();
+				frn.set("texto", "Procesando informacion,  espere por favor...");
+				guardar_tabla_csv();
+
+			}
+			
+			fun guardar_tabla_csv(){
+				var raw_tags_xml,raw_tag_xml,str_tag_xml,str_tag,nombres_columnas,text_csv,str_tag_raw1,str_tag_raw2, num_colum,nRen, num_colum, nom_tabla, save;
+				var titulo, subtitulo, criterio;
+				nom_tabla = frn.param(0);
+				save = frn.param(1);
+				titulo = frn.param(2);
+				subtitulo = frn.param(3);
+				criterio = frn.param(4);
+				nRen = frP.N(nom_tabla);			
+				pagina_xml =getXml(frP.dataPag());
+	
+				num_colum = getXmlX(pagina_xml,nom_tabla,3,2);
+				num_colum = getXmlX(num_colum,"r0",2);
+				raw_tags_xml = getXmlX(pagina_xml,nom_tabla,3,0);
+				
+				//crea un string con los nombres de las columnas de la tabla
+				for (var cont=0; cont<num_colum ; cont++){
+					raw_tag_xml = getXmlX(raw_tags_xml,"r0",3,cont);
+					str_tag_xml = getXmlStr(raw_tag_xml);
+					str_tag_raw1 = strSplit(str_tag_xml,">",0);
+					str_tag_raw2 = strSplit(str_tag_raw1,"<",1);
+					str_tag = strSplit(str_tag_raw2,"/",0);
+					if (nombres_columnas &! ""){
+						nombres_columnas = nombres_columnas &","&str_tag ;
+					}else{
+						nombres_columnas = str_tag;
+					}
+				}
+				
+				//recorre la tabla y sacar valor por valor para agregarlo a un str
+				for(var ren=0;ren<nRen;ren++){
+					for( var col=0;col<num_colum;col++){
+						var num_col = strSplit(nombres_columnas,",",col);
+						var val = frP.get(nom_tabla,ren,num_col);
+						val = "\""&val&"\"";
+						val = delScpScn(val);
+//						val = frn.lib("libGeneral","StrReplace",val,"'","");
+						if (text_csv&=""){
+				//se debe respetar esta identacion
+							text_csv = nombres_columnas& "
+" &val & ",";
+						}else if(col+1==num_colum){
+							text_csv = text_csv & val & "," & "
+";		
+						}else{
+							text_csv = text_csv & val & ",";
+						}
+					}
+				}
+
+				text_csv = criterio & "
+" & text_csv;
+				text_csv = subtitulo & "
+" & text_csv;
+				text_csv = titulo & "
+" & text_csv;
+
+				kdb.save("_"&save&".csv", text_csv);
+				frn.message("Proceso Terminado", "Aceptar");
+				frn.exit();
+			}
+		}
+	</script>
+</pag>

@@ -384,6 +384,81 @@ begin
 		raise exception '%',get_mensaje;
 	end if;
 			
+--raise notice 'PASO 11, xmlPolizaVta:%',xmlValor;	
+--raise exception 'Error inyectado...';
+	
+/*
+ * 
+select vta.c100 as inventario, vta.c2||'-'||vta.c3||'-'||vta.c4||'-'||vta.c5||'-'||vta.c6 as movvta,vta.c9 as fecha_vta,vta.c16 as importe_venta, vta.c14 as iva_venta,
+mc.c2||'-'||mc.c3||'-'||mc.c4||'-'||mc.c5||'-'||mc.c6 as movcompra,mc.c9 as fecha_compra, mc.c16 as importe_compra, mc.c14 as iva_compra,
+val.c2||'-'||val.c3||'-'||val.c4||'-'||val.c5||'-'||val.c6 as movvale,val.c9 as fecha_vale
+from keplersc.kdm1 vta 
+left outer join keplersc.kdm1 mc on vta.c1=mc.c1 and vta.c100=mc.c100
+and mc.c2='X' and mc.c3='A' and (mc.c4=6 or mc.c4=7) 
+left outer join keplersc.kdm1 val on vta.c1=val.c1 and vta.c100=val.c100
+and val.c2='N' and val.c3='A' and val.c4=13 
+where vta.c1='01' and vta.c2='U' and vta.c3='D' and vta.c4=6 
+and vta.c6 not in (select mexv.c39 from keplersc.kdm1 mexv where vta.c1=mexv.c1 and vta.c6=mexv.c39)
+and mc.c6 not in(select kexc.c39 from keplersc.kdm1 kexc where kexc.c1=mc.c1 and mc.c6=kexc.c39)
+and val.c43 <>'C'
+
+inventario	movvta	fecha_vta	importe_venta	iva_venta	movcompra	fecha_compra	importe_compra	iva_compra	movvale	fecha_vale
+0020-IRN21	U-D-6-1-VAA0000006	2021-05-04 00:00:00.000	539,899.99	74,468.96	X-A-6-2-VXX0000009	2021-05-04 00:00:00.000	454,084.16	62,632.3	N-A-13-1-VXX0000018	2021-06-04 00:00:00.000
+
+select * from keplersc.autos_com_costo_upd('
+<document>
+<sucursal_id>01</sucursal_id>
+<inventario>0020-IRN21</inventario>
+<movvta>U-D-6-1-VAA0000006</movvta>
+<fecha_vta>2021-05-04</fecha_vta>
+<importe_venta>539899.99</importe_venta>
+<iva_venta>74468.96</iva_venta>
+<movcompra>X-A-6-2-VXX0000009</movcompra>
+<fecha_compra>2021-05-04</fecha_compra>
+<subt>454084.16</subt>
+<k_iva>454084.16</k_iva>
+<k_monto>62632.3</k_monto>
+<movvale>N-A-13-1-VXX0000018</movvale>
+<fecha_vale>2021-06-04</fecha_vale>
+</document>')
+
+
+
+<document>
+	<fecha>2023-04-24</fecha>
+	<hora>19:04:48</hora>
+	<sucursal>01</sucursal>
+	<genero>U</genero>
+	<naturaleza>D</naturaleza>
+	<grupo>6</grupo>
+	<tipo>1</tipo>
+	<folio>VAA0000735</folio>
+	<tipo_movto>REGCOSUNI</tipo_movto>
+	<detalle_movto>movcompra:X-A-6-1-VXX0000262; movvta:U-D-6-1-VAA0000735; Sub ant.:485976.00; IVA ant.:77756.16 Importe ant.:563732.16; Sub nvo.:485976.00; IVA nvo.:77756.16; Importe nvo.:563732.16; 
+	</detalle_movto>
+</document>
+
+select * from keplersc.autos_com_costo_upd('
+<document>
+<sucursal_id>01</sucursal_id>
+<inventario>0064-IRN23</inventario>
+<movvta>U-D-6-1-VAA0000735</movvta>
+<fecha_vta>2023-02-09</fecha_vta>
+<importe_venta>669900.00</importe_venta>
+<iva_venta>92400.00</iva_venta>
+<movcompra>X-A-6-1-VXX0000262</movcompra>
+<fecha_compra>2023-01-27</fecha_compra>
+<subt>485976.00</subt>
+<k_iva>77756.16</k_iva>
+<k_monto>563732.16</k_monto>
+<movvale>N-A-13-1-VXX0000534</movvale>
+<fecha_vale>2023-02-17</fecha_vale>
+</document>')
+
+
+select * from keplersc.cont_actualizar_saldos()
+ *  * 
+ */	
 			
 	resultado := 1;
 	mensaje := 'Costo actualizado';

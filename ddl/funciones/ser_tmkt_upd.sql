@@ -18,7 +18,6 @@ declare
 	nombre_atendio text = '';
 	folio_cita text ='';
 	coment_resultado text ='';
-	fecha_vale date;
 
 	--Variables de uso general 
 	strValor text = '';
@@ -47,6 +46,7 @@ begin
 	serie := (xpath('//document/serie/text()', dataxml))[1];
 	tipo_servicio := (xpath('//document/tipo_servicio/text()', dataxml))[1];
 	motivo_original := (xpath('//document/motivo_original/text()', dataxml))[1];
+	cliente_id := (xpath('//document/cliente_id/text()', dataxml))[1];
 	nombre_atendio := (xpath('//document/nombre_atendio/text()', dataxml))[1];
 	folio_cita := (xpath('//document/folio_cita/text()', dataxml))[1];
 	coment_resultado := (xpath('//document/coment_resultado/text()', dataxml))[1];
@@ -54,42 +54,38 @@ begin
 	--Obtener si accion implica nuevo registro de contacto
 	select crear_contacto, crear_motivo into _crear_contacto, _crear_motivo 
 		from keplersc.kdtmktaccion where accion_id = accion::numeric;
-	select c20,c26 into cliente_id,fecha_vale 
-		from keplersc.kdtmktser2 where c1=sucursal_id and c2=folio;
+
 	--Actualizar registro de contacto
 	--MSS:Actualizar el asesor real solamente
 	update keplersc.kdtmktser2 
 	set c4=10, c8=resultado_contacto::int, c9=accion::numeric, c10=now(),
-		c11 = coalesce(observaciones,''),c21=nombre_atendio, c27=asesor, c29=coment_resultado
+		c11 = coalesce(observaciones,''), c20=cliente_id, c21=nombre_atendio, c27=asesor, c29=coment_resultado
 	where c1=sucursal_id and c2=folio;
 
 	--Si se trata de una confirmacion, actualizar cita
 	if resultado_contacto = '50' then		--Se confirma cita de servicio
-		update keplersc.kdctasser set c20=10, c26 =current_date, c27=substring(current_time::text,1,5), c28=nombre_atendio
+		update keplersc.kdctasser set c26 =current_date, c27=substring(current_time::text,1,5), c28=nombre_atendio
 			where c1=sucursal_id and c2=folio_cita;
 	end if;
 	--Cancelar recordatorios posteriores 
-		--c8=21 Cancelado, c9=50 Terminado
-	if resultado_contacto = '41' then		--El cliente ya tiene cita 
+	if resultado_contacto = '41' then		--El cliente ya tiene cita
+		--c8=21 Cancelado, c9=50 Terminado 
 		update keplersc.kdtmktser2 
-			set c8=21, c9=50, c10=now(), c29='Se agendo previamente una cita'
-		where c1=sucursal_id and c14=serie and c7<>30 and c5 > (select c5 from keplersc.kdtmktser2 where c1=sucursal_id and c2=folio);	
+			set c8=21, c9=50, c29='Se agendo previamente una cita'
+		where c1=sucursal_id and c14=vin and c7<>30 and c5 > (select c5 from keplersc.kdtmktser2 where c1=sucursal_id and c2=folio_tmkt);	
+	end if;
+	if resultado_contacto = '80'  or resultado_contacto = '81' or resultado_contacto = '82' then	--Cliente reporto el auto como vendido,Cliente reporto el auto como robado,Cliente reporto el auto como perdida total
+		--c8=21 Cancelado, c9=20 No contactar mas 
+		update keplersc.kdtmktser2 
+			set c8=21, c9=20, c29='Por resultado anterior'
+		where c1=sucursal_id and c14=vin and c5 > (select c5 from keplersc.kdtmktser2 where c1=sucursal_id and c2=folio_tmkt);		
 	end if;
 	if resultado_contacto = '90' or resultado_contacto = '91' then	--Servicio realizado en otra agencia Toyota,Servicio realizado en otro taller
+		--c8=21 Cancelado, c9=50 Terminado
 		update keplersc.kdtmktser2 
-			set c8=21, c9=50, c10=now(), c29='Por resultado anterior'
-		where c1=sucursal_id and c14=serie and c5 > (select c5 from keplersc.kdtmktser2 where c1=sucursal_id and c2=folio);			
-	end if;
-	if resultado_contacto = '100' then	--Servicio realizado
-		update keplersc.kdtmktser2 
-			set c8=21, c9=50, c10=now(), c29='Por resultado anterior'
-		where c1=sucursal_id and c14=serie and c8=0;		
-	end if;
-	--Si la accion es No contactar mas cancelar sus contactos
-	if accion = '20' then		--No contactar mas
-		update keplersc.kdtmktser2 
-			set c8=21, c9=20, c10=now(), c29='Por resultado anterior'
-		where c1=sucursal_id and c14=serie and c8=0;		
+			set c8=21, c9=50, c29='Por resultado anterior'
+		where c1=sucursal_id and c14=vin and c5 > (select c5 from keplersc.kdtmktser2 where c1=sucursal_id and c2=folio_tmkt);		
+	
 	end if;
 	if _crear_contacto='S' then
 		--Definir el motivo del nuevo contacto
@@ -106,9 +102,9 @@ begin
 		--select asesor_base_tmkt into asesor 
 		--	from keplersc.kdserie where c1=serie;				
 		insert into keplersc.kdtmktser2(c1,c2,c3,c5,c6,
-		c7,c14,c18,c19,c20,c23,c24,c26) 
+		c7,c14,c18,c19,c20) 
 		values(sucursal_id,nuevo_folio,asesor,to_date(fecha_accion,'YYYY-MM-DD'),0,
-		_crear_motivo,serie,tipo_servicio::numeric,'P',cliente_id,0,now(),fecha_vale);
+		_crear_motivo,serie,tipo_servicio::numeric,'P',cliente_id);
 		
 	end if;
 

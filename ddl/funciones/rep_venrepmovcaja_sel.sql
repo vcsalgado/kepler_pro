@@ -70,7 +70,7 @@ begin
 	where table_name = tablakdc1;
 
 	if totReg = 0 then
-		raise exception 'No se tiene informacion contable para el a�o %, tabla(%)', substring(fecha_ini, 3, 2), tablakdc1;
+		raise exception 'No se tiene información contable para el año %, tabla(%)', substring(fecha_ini, 3, 2), tablakdc1;
 	--else
 	--	raise notice '% %', 'Tabla KDC1 ', tablakdc1;
 	end if;
@@ -82,7 +82,7 @@ begin
 		select count(*) into totReg from information_schema.tables
 		where table_name  = curTabla;
 		if totReg = 0 then
-			raise exception 'No se tiene informacion contable para la tabla del periodo %', curTabla;
+			raise exception 'No se tiene información contable para la tabla del periodo %', curTabla;
 			/*
 			expSql:=format('insert into tmpkdc2 select * from keplersc.%1$s 
 				where c3 >= %2$L and c3 <= %3$L and c2<%4$L'
@@ -103,7 +103,7 @@ begin
 	
 		curTabla := concat('kdc2', str_anio, lpad(cont::text,2,'0'));
 
-
+		--/*
 		expSql = format(
 		'
 		insert into tmpDoctos 
@@ -112,33 +112,13 @@ begin
 			, (T.c15 || T.c16 || lpad(T.c17::text,2,''0'') || lpad(T.c18::text,3,''0'') || ''-'' || T.c19) as polfolio 
 			, left(M.C5, 20) as docdescr, T.c5 as polmonto  
 		from keplersc.%6$s T 
-		inner join keplersc.kdmm M on T.c14 = M.col_sucursal and T.c15 = M.c1 and T.c16 = M.c2 and T.c17 = M.c3 and T.c18 = M.c4 
+		inner join keplersc.kdmm M on T.c15 = M.c1 and T.c16 = M.c2 and T.c17 = M.c3 and T.c18 = M.c4 
 		where T.c3 = %5$L  
 			and ( T.c2 >= to_date(%3$L,%7$L) and T.c2 <= to_date(%4$L,%7$L) )
 			and ( T.c14 >= %1$L and T.c14 <= %2$L )
 		order by T.c2, T.c1, T.c4; 
 		'
 		,sucursal_ini, sucursal_fin, fech_ini, fech_fin, cta_cont, curTabla, strValor);
-	
-	
-	
-		expSql = format(
-		'
-		insert into tmpDoctos 
-		select 
-			T.c1 as polnum, T.c4 as poltipmov, T.c2 as polfech, T.c7 as polref, T.c14 as polsuc, left(T.c6, 35) as poldescr 
-			, (T.c15 || T.c16 || lpad(T.c17::text,2,''0'') || lpad(T.c18::text,3,''0'') || ''-'' || T.c19) as polfolio 
-			, left(M.C5, 20) as docdescr, T.c5 as polmonto  
-		from keplersc.%6$s T 
-		inner join keplersc.kdmm M on T.c14 = M.col_sucursal and T.c15 = M.c1 and T.c16 = M.c2 and T.c17 = M.c3 and T.c18 = M.c4 
-		where T.c3 in (''200-002'',''201-002'',''201-003'',''203-001'')   
-			and ( T.c2 >= to_date(%3$L,%7$L) and T.c2 <= to_date(%4$L,%7$L) )
-			and ( T.c14 >= %1$L and T.c14 <= %2$L )
-		order by T.c2, T.c1, T.c4; 
-		'
-		,sucursal_ini, sucursal_fin, fech_ini, fech_fin, '200-002,201-002,201-003,203-001', curTabla, strValor);	
-	
-	
 		--*/
 	
 		--raise notice '%', expSql;

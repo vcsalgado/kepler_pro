@@ -6,8 +6,6 @@ AS $function$
 --Autor: Luis Leal
 --Fecha: 26/01/2022
 --Bitacora de cambios
---08/Ago/2024 Miriam Santana: Registrar en bitacora movimientos autorizados con precio menor al calculado
---30/Dic/2025 Miriam Santana: Registrar en bitacora movimientos con modificacion en las refacciones del paquete
 declare
 
 	sucursal_id text;
@@ -40,30 +38,6 @@ declare
 	total_cte decimal = 0.00;	--cfdi no calculos
 	iva_default decimal = 0.00; --cfdi no calculos
 	
-	--MSS 080824 Registro en bitacora precio menor al calculado
-	usuario text = '';
-	fecha_movto text = '';
-	hora_movto text = '';
-	strBitacora text = '';
-	operacion text = '';
-	strValor text = '';
-	cantidad_unidades text = '';
-	importe_partida text = '';
-	parte text = '';
-	autorizado text = '';
-	get_resultado text = '';
-	get_mensaje text = '';
-	get_adicionales text = '';	
-	deccantidad_partida decimal = 0.00;
-	no_partidas integer;
-	precio_ini decimal = 0.00;
-	precio decimal = 0.00;
-	xmlUsr xml;
-
-	--MSS 30122025 Registro en bitacora movimientos con cambios en las refacciones del paquete
-	mod_refacc_paquete text = '';
-	tipo_mod_paquete text = '';
-	
 begin 
 
 	sucursal_id := (xpath('//document/k_sucn/r1/text()', dataxml))[1];
@@ -71,11 +45,9 @@ begin
 	naturaleza := (xpath('//document/k_tipon/r2/text()', dataxml))[1];
 	grupo := (xpath('//document/k_tipon/r3/text()', dataxml))[1];
 	tipo := (xpath('//document/k_tipon/r4/text()', dataxml))[1];
-	mod_refacc_paquete := (xpath('//document/mod_paquete/text()', dataxml))[1];
-	tipo_mod_paquete := (xpath('//document/tipo_mod_paquete/text()', dataxml))[1];
 	
 	select m1.c9,m1.c121,m1.c122,mm.c67 into fecha_mov,tipo_orden,orden,M67 from keplersc.kdm1 as m1
-	inner join keplersc.kdmm as mm on mm.col_sucursal=m1.c1 and mm.c1= m1.c2 and  mm.c2= m1.c3 and mm.c3= m1.c4 and mm.c4= m1.c5 
+	inner join keplersc.kdmm as mm on mm.c1= m1.c2 and  mm.c2= m1.c3 and mm.c3= m1.c4 and mm.c4= m1.c5 
 	where m1.c1=sucursal_id and m1.c2=genero and m1.c3=naturaleza and m1.c4=grupo and m1.c5=tipo 
 	and m1.c6=folio_operacion;
 	
@@ -112,60 +84,7 @@ begin
 			importe,0.00,'I',monto,to_date(fecha_mov,'YYYY-MM-DD'),iva_cte,total_cte);
 		
 		end loop;
-
-		--MSS 080824 
-		--Registro en bitacora precio menor al calculado
-		strValor := (xpath('//document/k_mov/no_partidas/text()',dataxml))[1];
-		usuario := (xpath('//document/movimiento/usuario/text()',dataxml))[1];
-		no_partidas := strValor::integer;	
-		operacion = 'AUT PRECIO';
-		for cont in 0..no_partidas - 1 loop
-			deccantidad_partida := 0;
-			
-			cantidad_unidades := coalesce((xpath('//document/k_mov/r'||cont||'/k_q/text()',dataxml))[1],
-									  (xpath('//document/k_mov/r'||cont||'/k_Q/text()',dataxml))[1]);
-			deccantidad_partida := cantidad_unidades::decimal;
-			importe_partida := (xpath('//document/k_mov/r' ||cont||'/k_monto/text()',dataxml))[1];
-			parte := (xpath('//document/k_mov/r'||cont||'/k_parte/text()',dataxml))[1];
-			autorizado := (xpath('//document/k_mov/r'||cont||'/k_autoriza/text()',dataxml))[1];
-			precio_ini := (xpath('//document/k_mov/r'||cont||'/k_precio_ini/text()',dataxml))[1];
-			precio := (xpath('//document/k_mov/r'||cont||'/k_precio/text()',dataxml))[1];
-			if deccantidad_partida > 0 or importe_partida::decimal > 0 then	
-				if autorizado = '1' then
-					strBitacora = 'AUTORIZACION PRECIO MENOR ORDEN: ' || tipo_orden || '-' || orden || ' REFACC: ' || parte || ' P.CALC: ' || precio_ini || ' P.AUT: ' || precio;
-					fecha_movto :=  current_date::text;
-					hora_movto := left(current_time::text, 8);
-					select xmlforest(usuario, fecha_movto as fecha, hora_movto as hora,sucursal_id as sucursal, genero, naturaleza, 
-									grupo, tipo, folio_operacion as folio,
-									'AUT PRECIO' as tipo_movto, strBitacora as detalle_movto) :: text into strValor;		
-									select '<document>'||strValor||'</document>' into strValor;
-					xmlUsr := strValor::xml;
-					--raise notice 'Bitacora:%',xmlUsr;
-					select * into get_resultado, get_mensaje, get_adicionales from keplersc.usr_kdusraccess_alta(xmlUsr);
-					if get_resultado = '0' then
-						raise exception '%',get_mensaje;
-					end if;	
-				
-				end if;
-			end if;
-		end loop;
-		--MSS 30122025 Registro en bitacora movimientos con cambios en las refacciones del paquete	
-		if mod_refacc_paquete = 'S' then
-			strBitacora = tipo_mod_paquete || ' ' ||' EN PAQUETE MODIFICADAS DE LA ORDEN: ' || tipo_orden || '-' || orden;
-			fecha_movto :=  current_date::text;
-			hora_movto := left(current_time::text, 8);
-			select xmlforest(usuario, fecha_movto as fecha, hora_movto as hora,sucursal_id as sucursal, genero, naturaleza, 
-							grupo, tipo, folio_operacion as folio,
-							'MODIF REFACC PAQ' as tipo_movto, strBitacora as detalle_movto) :: text into strValor;		
-			select '<document>'||strValor||'</document>' into strValor;
-			xmlUsr := strValor::xml;
-			--raise notice 'Bitacora:%',xmlUsr;
-			select * into get_resultado, get_mensaje, get_adicionales from keplersc.usr_kdusraccess_alta(xmlUsr);
-			if get_resultado = '0' then
-				raise exception '%',get_mensaje;
-			end if;	
-			
-		end if;
+	
 	end if;
 
 	resultado := 1;

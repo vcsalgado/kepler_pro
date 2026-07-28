@@ -16,8 +16,7 @@ declare
 
 		no_partidas int;
 		numero_partida int ;
-		tipo_precio text;
-	
+
 		--refacciones---
 		refaccion text;
 		cantidad_ref numeric;
@@ -28,7 +27,6 @@ declare
 		entradas numeric;
 		salidas numeric;
 		existencias numeric;
-		deccantidad_partida decimal = 0.00;
 
 		resultado text= '';
 		mensaje text = '0';
@@ -43,16 +41,13 @@ begin
 		naturaleza := (xpath('//document/k_tipon/r2/text()', dataxml))[1];
 		grupo := (xpath('//document/k_tipon/r3/text()', dataxml))[1];
 		tipo_clave := (xpath('//document/k_tipon/r4/text()', dataxml))[1];				
-		tipo_precio := upper((xpath('//document/k_tipoprecio/r1/text()', dataxml))[1]::text);
+	
 		--Partidas
 		strValor := (xpath('//document/k_mov/no_partidas/text()',dataxml))[1];
 		no_partidas := strValor::integer;	
 	
 		numero_partida := 0;
 
-		if (tipo_precio = '' or tipo_precio is null) and naturaleza ='D' then 
-			raise exception 'Imposible continuar, Debe especificar Tipo de Precio';
-		end if;
 		for cont in 0..no_partidas - 1 loop
 		
 			refaccion := (xpath('//document/k_mov/r' ||cont||'/k_parte/text()',dataxml))[1];
@@ -60,47 +55,41 @@ begin
 			unidad_ref := (xpath('//document/k_mov/r' ||cont||'/k_unidad/text()',dataxml))[1];
 			precio_ref := (xpath('//document/k_mov/r' ||cont||'/k_precio/text()',dataxml))[1];
 			monto_ref := (xpath('//document/k_mov/r' ||cont||'/k_monto/text()',dataxml))[1];
-	
-			deccantidad_partida := 0;
-			cantidad_ref := (xpath('//document/k_mov/r' ||cont||'/k_q/text()',dataxml))[1];
-			deccantidad_partida := cantidad_ref::decimal;
-
-			if deccantidad_partida > 0 then
-
-				if cantidad_ref <= 0 then
-					raise exception '%' , 'Imposible continuar cantidades invalidas';
+				
+			if cantidad_ref <= 0 then
+				raise exception '%' , 'Imposible continuar cantidades invalidas';
+			end if;
+		
+			select c19 into unidad_default from keplersc.kdini where c1=refaccion;
+			if found then
+						
+				if unidad_ref = '0' or unidad_ref <> unidad_default then 
+					raise exception '%' , 'Imposible continuar, Unidades invalidas';
 				end if;
 			
-				select c19 into unidad_default from keplersc.kdini where c1=refaccion;
-				if found then
-							
-					if unidad_ref = '0' or unidad_ref <> unidad_default then 
-						raise exception '%' , 'Imposible continuar, Unidades invalidas';
-					end if;
-				
-					if naturaleza = 'D' then
-						select c5,c6 into entradas,salidas from keplersc.kdinl where c1=sucursal_id and c2=refaccion;
-						if found then
-						
-							existencias := entradas - salidas;
-											
-							if existencias <= 0 then
-								raise exception 'Imposible continuar, % , Salida en Rojo' , refaccion;
-							end if;
-						
-							if cantidad_ref > existencias then
-								raise exception 'Imposible continuar, % , Salida en Rojo' , refaccion;
-							end if;
-						else
+				if naturaleza = 'D' then
+					select c5,c6 into entradas,salidas from keplersc.kdinl where c1=sucursal_id and c2=refaccion;
+					if found then
+					
+						existencias := entradas - salidas;
+										
+						if existencias <= 0 then
 							raise exception 'Imposible continuar, % , Salida en Rojo' , refaccion;
 						end if;
+					
+						if cantidad_ref > existencias then
+							raise exception 'Imposible continuar, % , Salida en Rojo' , refaccion;
+						end if;
+					else
+						raise exception 'Imposible continuar, % , Salida en Rojo' , refaccion;
 					end if;
-				else
-					raise exception '%' , 'Imposible continuar, el numero de producto no existe';
 				end if;
+			else
+				raise exception '%' , 'Imposible continuar, el numero de producto no existe';
 			end if;
-		end loop ;		
 
+		end loop ;		
+	
 		resultado ='1';
 		mensaje ='Finalizado';
 		adicionales ='';						

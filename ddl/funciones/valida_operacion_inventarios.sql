@@ -111,7 +111,7 @@ begin
 			var_suc := '';
 	   	var_prod := '';
 	   	var_exist := 0;
-		/* 
+		
 		  	select Q1.sucursal, Q1.producto, coalesce(sum(Q1.cantent),0) - coalesce(sum(Q1.cantsal),0) existencias 
 			into var_suc, var_prod, var_exist  from  
 				(select tinm.c1 as sucursal, tinm.c2 as producto, 
@@ -121,19 +121,12 @@ begin
 		 		where tinm.c1 = sucursal_id and  tinm.c2 = clave_producto 
 	 	 		group by tinm.c1, tinm.c2, tinm.c5, tinm.c6, tinm.c11) as Q1
 			Group by Q1.sucursal, Q1.producto;
-	*/
-		
-			select tinl.c1, tinl.c2, coalesce(tinl.c5 - tinl.c6,0)  
-			into var_suc, var_prod, var_exist
-	 		from keplersc.kdinl tinl
-	 		where tinl.c1=sucursal_id and tinl.c2 = clave_producto;
 	
-		
 			if (coalesce(var_prod,'') = '') or (coalesce(var_exist,-1) < 0) then
-				msg_prod := msg_prod || clave_producto || ' Producto no encontrado o cantidad invalida ; ';
+				msg_prod := msg_prod || clave_producto || ' Not found or Quantity Issue ; ';
 			else
 				if var_exist - deccantidad_partida < 0 then
-					msg_prod := msg_prod || clave_producto || ' No hay suficiente inventario ; ';
+					msg_prod := msg_prod || clave_producto || ' Not enough inventory ; ';
 				end if;
 			end if;
 	

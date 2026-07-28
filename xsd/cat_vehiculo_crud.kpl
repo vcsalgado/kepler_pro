@@ -5,7 +5,7 @@
 				type="string" modify="N" available="N" fnt="Arial,22"/>
 		<br/>
 		<br/>
-		<tab/><hLine clr="0,0,0"/>
+		<hLine clr="0,0,0"/>
 		<br/><br/>
 		<tab/>
         <grp id="grupo_crud" dim="105,55,7,11" bclr="236,240,243" fntClrBrdr="236,240,243" fntBrdr="Arial,18" hSpace="4" clrBrdr="0,58,112" brdr="0,5" fntBrdr="Arial,18" tit="Nuevo" available="Y"><tab/>
@@ -14,7 +14,7 @@
 			<inp id="k_clave" dim="23,1" brdr="2,0" clr="64,64,64" bclr="255,255,255" clrBrdr="255,255,255" type="capital" nc="18" available="Y" tooltip="Clave del Veh&#237;culo" modify="Y"/><br/><sp/><tab/>
 			<txt>Descripci&#243;n :</txt><tab/>
 			<inp id="k_descripcion" dim="60,1" brdr="2,0" clr="64,64,64" bclr="255,255,255" clrBrdr="255,255,255" type="capital" nc="50" available="Y" tooltip="Descripci&#243;n del Veh&#237;culo" available="N"/><tab n="2"/>
-			<bot id="btn_paquete" text="Paquete" dim="12,0" brdr="5" OnEnter="EjecutaPaquetes()" available="N"/><tab/><br/><tab/><br/><tab/>
+			<bot id="btn_paquete" text="Paquete" dim="12,0" brdr="5" OnEnter="EjecutaPaquetes()"/><tab/><br/><tab/><br/><tab/>
 			<txt>Clase : </txt>
 			<inp id="k_clase" dim="10,1" brdr="2,0" clr="64,64,64" bclr="255,255,255" type="capital" nc="5" clrBrdr="255,255,255" OnF9="ObtenerClase()" OnChange="BuscarClase()" tooltip="Clase (Automovil o Comercial) ( F9 b&#250;squeda )"/><sp n="1"/>
 			<inp id="k_desc_clase" dim="35,1" brdr="2,0" clr="64,64,64" bclr="255,255,255" type="capital" clrBrdr="255,255,255" available="N" tooltip="Clase (Automovil o Comercial)"/><tab n="3"/><br/><tab/>
@@ -28,13 +28,13 @@
 			<inp id="k_linea" dim="15,1" brdr="2,0" clr="64,64,64" bclr="255,255,255" type="capital" nc="10" clrBrdr="255,255,255" OnF9="ObtenerLinea()" OnChange="BuscarLinea()" tooltip="L&#237;nea de Veh&#237;culos ( F9 b&#250;squeda )"/><sp n="1"/>
             <inp id="k_desc_linea" dim="35,1" brdr="2,0" clr="64,64,64" bclr="255,255,255" type="capital" clrBrdr="255,255,255" available="N" tooltip="Clase (Automovil o Comercial)"/><tab n="3"/><br/><tab/><br/><tab/>
 			<txt>Nuevo o Usado :</txt>
-			<inp id="k_nou" dim="3,1" brdr="2,0" clr="64,64,64" bclr="255,255,255" type="capital" nc="1" clrBrdr="255,255,255" OnMouseD="NoU()" OnChange="ValidaNoU()" tooltip="(N)uevo &#243; (U)sado (Doble Click para cambiar)"/><sp/><tab/><txt>(N)uevo &#243; (U)sado (Doble Click para cambiar)</txt>
+			<inp id="k_nou" dim="3,1" brdr="2,0" clr="64,64,64" bclr="255,255,255" type="capital" nc="1" clrBrdr="255,255,255" OnMouseD="NoU()" OnChange="ValidaNoU()" tooltip="(N)uevo ó (U)sado (Doble Click para cambiar)"/><sp/><tab/><txt>(N)uevo ó (U)sado (Doble Click para cambiar)</txt>
 			<br/><br/><tab/>
 			<txt>Meses Promedio para Entrega :</txt>
 			<inp id="k_mesesprom" dim="10,1" brdr="2,0" clr="64,64,64" bclr="255,255,255" type="number" nd="2" clrBrdr="255,255,255" tooltip="Meses Promedio para Entrega" just="R"/><txt> Usar numeros negativos para Toyotas que lleguen en barco</txt><br/><sp/><tab/>
 			<txt>Veh&#237;culo todav&#237;a se produce :</txt><tab/>
-			<inp id="k_produce" dim="3,1" brdr="2,0" clr="64,64,64" bclr="255,255,255" type="capital" nc="1" clrBrdr="255,255,255" OnChange="ValidaSoN(k_produce)" OnMouseD="SoN(k_produce)" tooltip="Unidades todav&#237;a en producci&#243;n, S &#243; N (Doble Click para cambiar)"/>
-			<sp/><tab/><txt>S &#243; N (Doble Click para cambiar)</txt><br/><sp/><tab/><br/><tab/>
+			<inp id="k_produce" dim="3,1" brdr="2,0" clr="64,64,64" bclr="255,255,255" type="capital" nc="1" clrBrdr="255,255,255" OnChange="ValidaSoN(k_produce)" OnMouseD="SoN(k_produce)" tooltip="Unidades todav&#237;a en producci&#243;n, S ó N (Doble Click para cambiar)"/>
+			<sp/><tab/><txt>S ó N (Doble Click para cambiar)</txt><br/><sp/><tab/><br/><tab/>
 			<txt>Precio de Lista :</txt><tab n="1"/>
 			<inp id="k_precio" dim="20,1" brdr="2,0" clr="64,64,64" bclr="255,255,255" type="number" nd="2" clrBrdr="255,255,255" tooltip="Precio de Lista del Veh&#237;culo" just="R"/><br/><sp/><tab/><br/><tab/>
 			<txt>Cilindros :</txt><tab/>
@@ -52,8 +52,8 @@
 			<txt>Veh&#237;culo que Reemplaza : </txt>
 			<inp id="k_reemplaza" dim="23,1" brdr="2,0" clr="64,64,64" bclr="255,255,255" type="capital" nc="18" clrBrdr="255,255,255" tooltip="Clave del Veh&#237;culo que Reemplaza"/><br/><sp/><tab/>
 			<txt>No usar Regla 3 meses :   </txt>
-			<inp id="k_regla3" dim="3,1" brdr="2,0" clr="64,64,64" bclr="255,255,255" type="capital" nc="1" clrBrdr="255,255,255" OnChange="ValidaSoN(k_regla3)" OnMouseD="SoN(k_regla3)" tooltip="No usar regla de los 3 meses para este auto, S &#243; N (Doble Click para cambiar)"/>
-			<sp/><tab/><txt>S &#243; N (Doble Click para cambiar)</txt><br/><br/><sp/><tab/>
+			<inp id="k_regla3" dim="3,1" brdr="2,0" clr="64,64,64" bclr="255,255,255" type="capital" nc="1" clrBrdr="255,255,255" OnChange="ValidaSoN(k_regla3)" OnMouseD="SoN(k_regla3)" tooltip="No usar regla de los 3 meses para este auto, S ó N (Doble Click para cambiar)"/>
+			<sp/><tab/><txt>S ó N (Doble Click para cambiar)</txt><br/><br/><sp/><tab/>
 			<txt>Codigo del SAT :</txt><tab n="1"/>
 			<inp id="k_codsat" dim="30,1" brdr="2,0" clr="64,64,64" bclr="255,255,255" type="capital" clrBrdr="255,255,255" OnF9="ObtenerCodSat()" OnChange="BuscarCodSat()" tooltip="Clave del SAT"/><sp/><tab/>
 			<br/>
@@ -115,7 +115,7 @@
 					frn.setAtt("k_clave", "modify", "Y" );
 					frn.setAtt("k_descripcion", "available", "Y" );
 					frn.setAtt("btn_paquete", "available", "N" );
-                    frn.set("k_titulo","Catalogo de Vehiculos");
+                    frn.set("k_titulo","Catálogo de Vehículos");
 				
 				}else { 
 					frn.setAtt("k_clave", "available", "Y" );
@@ -209,7 +209,7 @@
 				if (frn.get("k_descripcion") &= "") {						
 					frn.setPos("k_descripcion");
 					resVal=0;
-					frn.message("Debe especificar la descripcion, verificar","Error","Aceptar");
+					frn.message("Debe especificar la descripción, verificar","Error","Aceptar");
 				}
 				if (frn.get("k_clase") &= "") {						
 					frn.setPos("k_clase");
@@ -228,14 +228,14 @@
 				if (frn.get("k_calc_isan") &= "") {						
 					frn.setPos("k_calc_isan");
 					resVal=0;
-					frn.message("Debe especificar el tipo de calculo ISAN, verificar","Error","Aceptar");
+					frn.message("Debe especificar el tipo de cálculo ISAN, verificar","Error","Aceptar");
 				}else{
 					BuscarCIsan();		
 				}
 				if (frn.get("k_linea") &= "") {						
 					frn.setPos("k_linea");
 					resVal=0;
-					frn.message("Debe especificar la linea, verificar","Error","Aceptar");
+					frn.message("Debe especificar la línea, verificar","Error","Aceptar");
 				}else{
 					BuscarLinea();					
 				}
@@ -251,7 +251,7 @@
 				if(resVal == 0){
 					return;
 				}
-				var resultado_confirmacion = frn.message("Desea continuar?","Mensaje de Confirmacion", 2);
+				var resultado_confirmacion = frn.message("¿Desea continuar?","Mensaje de Confirmacion", 2);
 				if (resultado_confirmacion &! 1)  {
 					return;
 				}
@@ -351,7 +351,7 @@
 
             fun ObtenerCIsan(){    
                 cmdQuery = "select c1 as clave, c2 as calculo_isan from keplersc.kdtisan";
-                frn.dialog("genlistafiltrosel","Tipos de calculo ISAN",cmdQuery,"clave","k_calc_isan","0","0","N","S");						   
+                frn.dialog("genlistafiltrosel","Tipos de cálculo ISAN",cmdQuery,"clave","k_calc_isan","0","0","N","S");						   
             }
 
             fun BuscarCIsan(){
@@ -371,7 +371,7 @@
 				}
 				if((nXml(cubo) == 0) && (cisan_id &! "")) {
 					frn.setPos("k_calc_isan");
-					frn.message("El tipo de calculo ISAN no existe","Error","Aceptar");
+					frn.message("El tipo de cálculo ISAN no existe","Error","Aceptar");
 					resVal = 0;
 					return;
                  } else{
@@ -381,7 +381,7 @@
 
             fun ObtenerLinea(){    
                 cmdQuery = "select c1 as clave, c2 as linea from keplersc.kdivl";
-                frn.dialog("genlistafiltrosel","Lineas de Vehiculos",cmdQuery,"clave","k_linea","0","0","N","S");						   
+                frn.dialog("genlistafiltrosel","Líneas de Vehículos",cmdQuery,"clave","k_linea","0","0","N","S");						   
             }
 
             fun BuscarLinea(){
@@ -401,7 +401,7 @@
 				}
 				if((nXml(cubo) == 0) && (linea_id &! "")) {
 					frn.setPos("k_linea");
-					frn.message("La linea del vehiculo no existe","Error","Aceptar");
+					frn.message("La línea del vehículo no existe","Error","Aceptar");
 					resVal = 0;
 					return;
                  } else{
@@ -431,7 +431,7 @@
 				}
 				if((nXml(cubo) == 0) && (codsat_id &! "")) {
 					frn.setPos("k_codsat");
-					frn.message("El codigo SAT no existe","Error","Aceptar");
+					frn.message("El código SAT no existe","Error","Aceptar");
 					resVal = 0;
 					return;
                  }		
@@ -448,7 +448,7 @@
             fun ValidaNoU(){
                 if (frn.get("k_nou") &! "N" && frn.get("k_nou") &! "U"){
                     frn.setPos("k_nou");
-                    frn.message("Solo puede ser N o U","Error","&Aceptar");
+                    frn.message("Sólo puede ser N o U","Error","&Aceptar");
                     return;
                 }  
             }
@@ -464,7 +464,7 @@
             fun ValidaSoN(campo){
                 if (frn.get(campo) &! "S" && frn.get(campo) &! "N"){
                     frn.setPos(campo);
-                    frn.message("Solo puede ser S o N","Error","&Aceptar");
+                    frn.message("Sólo puede ser S o N","Error","&Aceptar");
                     return;
                 }  
             }    

@@ -5,7 +5,7 @@ AS $function$
 --Descripcion: Cursores
 --Autor: Saltiel Rc
 --Fecha: 10/03/2022
---Bitacora de cambios
+--Bitácora de cambios
 --Fixed.1 by:JMM , 21/08/2023 
 declare
 v_sucursal_id text= ''; 
@@ -116,68 +116,8 @@ b8 int = 0;
 */
 -- End Fixed by JMM
 
---Added JMM 20231015
-totalReg int;
-vzones int;
-
-dor_ls numeric;
-dor_li numeric;
-alt_ls numeric;
-alt_li numeric;
-baj_ls numeric;
-baj_li numeric;
-obs_ls numeric;
-obs_li numeric;
-
-dor_ss numeric;
-alt_ss numeric;
-baj_ss numeric;
-obs_ss numeric;
-zone_ss numeric;
-zone_tx text;
-
 BEGIN
 	v_sucursal_id := upper((xpath('//document/k_sucn/text()', dataxml))[1]::text); --C1
-	
-	
-	--  Code Added by JMM 20231014...20231016 to Implement Calc by Zones
-	
-	totReg := 0;
-	select count(c1) into totReg from keplersc.kdpedidosugeridoconf   
-	where c1 = v_sucursal_id;   
-	if totReg = 0 then
-	 	mensaje := 'No existe el registro en la Tabla : kdpedidosugeridoconf';
-		raise exception '%', mensaje;	
-	else
-	
-		dor_ss := 0; alt_ss := 0; baj_ss := 0; obs_ss := 0;
-	
-		select c15, c16, c17, c18 into dor_ss, alt_ss, baj_ss, obs_ss 
-		from keplersc.kdpedidosugeridoconf where c1 = v_sucursal_id; 
-	
-		dor_ss := coalesce(dor_ss, 0); 
-		alt_ss := coalesce(alt_ss, 0); 
-		baj_ss := coalesce(baj_ss, 0); 
-		obs_ss := coalesce(obs_ss, 0); 
-	
-	end if;
-
-	vzones := 0;
-	select count(c1) into vzones from keplersc.kdconfzonas 
-	where c1 = 1;   
-	if vzones = 0 then
-	 	mensaje := 'CALC MIP Original';
-	else
-		select c2, c3, c4, c5, c6, c7, c8, c9 
-		into dor_li, dor_ls, alt_li, alt_ls, baj_li, baj_ls, obs_li, obs_ls  
-		from keplersc.kdconfzonas where c1 = 1; 
-		mensaje := 'CALC MIP x Zones';
-	end if;
-	raise notice '%', mensaje;
-
-	-- End Added 
-
-	
 	--LISTADO_P 
 	--borrar tablas 	
 	delete from keplersc.KDINP where c1 = v_sucursal_id ;
@@ -250,10 +190,8 @@ BEGIN
 				--12
 				select c51 into n11 from  keplersc.kdink where c1=v_sucursal_id and c2=v_C1 and c3 = r1_anio;
 				select c40,c41,c42,c43,c43 into n12,n13,n14,n15,n16 from  keplersc.kdink where c1=v_sucursal_id and c2=v_C1 and c3 = (n1_anio+1)::text ;
-			end case ;
-		
+				end case ;
 --			raise notice '1a';
-		
 			if (n11 is not null and n12 is not null and n13 is not null and n14 is not null and n15 is not null and n16 is not null) then 
 			
 				insert into keplersc.KDINPDET (c1,c2,c3,c4,c5,c6,c7,c8) 
@@ -323,8 +261,6 @@ BEGIN
 			--*/	
 			-- End Added 
 		
-
-			zone_tx := '';  -- Added 20231015 to implement calc by zone
 		
 			n4 = n16; 
 			if(contador >= 3) then 
@@ -333,80 +269,20 @@ BEGIN
 				b6 := (((n3 * (v_c29 / 100))-b1)/25);
 				b7 := (( v_c28-1 ) / 25);
 				b8 := b6 + b7;
-			
-				-- code updated & added to implement calc by zones
-				if vzones = 0 then
-					-- Original Calc
-					b2 := ((b1 * (v_c26 + v_c27 + v_c30)) / 25);
-				else
-				
-					-- Calc by Zone
-					zone_ss := -1;
-				
-					-- Se supone que Zona Dorada es el Mayor Rango
-					-- Por ello no se usa Limite Superior 
-					if b1 >= dor_li /*and b1 <= dor_ls*/ then 
-						zone_ss := dor_ss;
-						zone_tx := 'Dorada';
-					end if;
-				
-		
-					if b1 >= alt_li and b1 <= alt_ls then
-						zone_ss := alt_ss;
-						zone_tx := 'Alto Movimiento';
-					end if;
-				
-					if b1 >= baj_li and b1 <= baj_ls then 
-						zone_ss := baj_ss;
-						zone_tx := 'Lento Movimiento';
-					end if;
-				
-					if b1 >= obs_li and b1 <= obs_ls then 
-						zone_ss := obs_ss;
-						zone_tx := 'Obsoleto';
-					end if;
-				
-					if  zone_ss = -1 then
-						-- Condition Updated 20240106 ... Evitar Inputs Negativos
-						/*
-						mensaje := 'MAD Calculado fuera de Zona : ' || v_C1;
-						raise exception '%', mensaje;	
-						*/
-						r2 := 'O';
-					end if;
-					
-					-- Condition Added 20240106 ... Evitar Inputs Negativos
-					if r2 <> 'O' then 
-						b2 := ((b1 * (v_c26 + v_c27 + zone_ss/*v_c30*/)) / 25);
-					end if;
-					
-				end if;
-			
-				-- Condition Added 20240106 ... Evitar Inputs Negativos 
-				if r2 <> 'O' then
-				    b2 := ceiling(b2);
-					--b2 := ceil(b2);
-				   	b3 := n3;
-	  			    b4 := N4;
-	  			    b5 := b1;
-	  			else
-	  				b1 := 0;
-				    b2 := 0;
-				   	b3 := 0;
-	  			    b4 := 0;
-	  			    b5 := 0;
-	  			    zone_tx := '';
-	  			end if;
-	  			
+				b2 := ((b1 * (v_c26 + v_c27 + v_c30)) / 25);
+			    b2 := ceiling(b2);
+				--b2 := ceil(b2);
+			   	b3 := n3;
+  			    b4 := N4;
+  			    b5 := b1;
 			else
 				r2 := 'O';
 			end if;
 		
-	    	insert into keplersc.kdinp (c1,c2,c3,c4,c5,c6,c7,c8,zona) 
-	    	values(v_sucursal_id,v_C1,r2,b1,b2,b3,b4,b5,zone_tx);
-			--raise notice 'fin reg %',v_C1 ;
+	    insert into keplersc.kdinp (c1,c2,c3,c4,c5,c6,c7,c8) 
+	    values(v_sucursal_id,v_C1,r2,b1,b2,b3,b4,b5);
+		--raise notice 'fin reg %',v_C1 ;
 		end loop; --end loop 1 
-		
 		update keplersc.KDPEDIDOSUGERIDOCONF 
 		set c6 =0,
 			c7 = (select now())  
@@ -422,7 +298,7 @@ return query select resultado, mensaje, adicionales;
 exception
 	when others then
 		resultado := 0;	
-		mensaje := 'PedSug_MadMip() ' || '['|| sqlstate || '] ' || sqlerrm ;
+		mensaje := 'cat_Cursores_crud() ' || '['|| sqlstate || '] ' || sqlerrm ;
 		adicionales := '';
 		return query select resultado, mensaje, adicionales;
 END;

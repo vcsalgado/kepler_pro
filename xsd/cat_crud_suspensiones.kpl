@@ -8,7 +8,6 @@
 	<br/>
 		<hLine clr="0,0,0"/>
 		<br/>
-		<br/>
 		<tab/>
 		<grp id="grupo_crud" dim="80,16,7,11" bclr="236,240,243" fntClrBrdr="236,240,243" fntBrdr="Arial,18" 
 			hSpace="4" clrBrdr="0,58,112" brdr="0,5" fntBrdr="Arial,18" tit="Nuevo" available="Y"><tab/>
@@ -74,7 +73,7 @@
 				if (accion &= "NUEVO"){
 					frn.setAtt("k_clave","available","Y");
 					frn.setAtt("k_clave", "modify", "Y" );
-				    frn.set("k_titulo","Catalogo de Suspensiones");
+				    frn.set("k_titulo","Catálogo de Consecionarios");
 				
 				}else { 
 					frn.setAtt("k_clave", "available", "Y" );
@@ -146,7 +145,7 @@
 				if (frn.get("k_descripcion") &= "") {						
 					frn.setPos("k_descripcion");
 					resVal=0;
-					frn.message("Debe especificar la descripcion de Suspension, verificar","Error","Aceptar");
+					frn.message("Debe especificar la descripción de Suspension, verificar","Error","Aceptar");
 				}if (frn.get("k_refaccion") &= "") {						
 					frn.setPos("k_refaccion");
 					resVal=0;
@@ -161,7 +160,7 @@
 					return;
 				}
 				
-				var resultado_confirmacion = frn.message("Desea continuar?","Mensaje de Confirmacion", 2);
+				var resultado_confirmacion = frn.message("¿Desea continuar?","Mensaje de Confirmacion", 2);
 				if (resultado_confirmacion &! 1)  {
 					return;
 				}

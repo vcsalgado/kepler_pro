@@ -34,7 +34,7 @@ begin
 		encabezado xml
 	);
 
-	expSql= format('select dmm.c5 as k_tipon,dm1.c9 as k_fecha, dm1.c69 as k_hora,
+	expSql= format('select dmm.c5 as k_tipon,dm1.c9 as k_fecha, dm1.c68 as k_hora,
 		dm1.c36 as k_natdocto,dm1.c37 as k_gpodocto,dm1.c38 as k_tipodocto,dm1.c39 as k_foliodocto,  
 		dm1.c11 as k_refer,dm1.c100 as k_claveinv,dm1.c10 as k_clave,  
 		dm1.c32 as k_nombreprov, dm1.c33 as k_calleprov,dm1.c34 as k_coloniaprov,dm1.c35 as k_poblacionprov, dm1.c163 as k_cpprov,
@@ -43,7 +43,7 @@ begin
 		''[''||cfd.c1||''] ''||cfd.c2 as k_cfdi,dm1.c161 as k_cuenta,dm1.c162 as k_m_pago,
 		concat(regexp_replace(dm1.c24,''\r|\n'','' '', ''g''),'' '',dm1.c25,'' '',dm1.c26) as k_coment,dmm.c16 as k_porciva 
 		from keplersc.kdm1 dm1
-		inner join keplersc.kdmm dmm on dmm.col_sucursal=dm1.c1 and dmm.c1=dm1.c2 and dmm.c2=dm1.c3 and dmm.c3=dm1.c4 and dmm.c4=dm1.c5
+		inner join keplersc.kdmm dmm on dmm.c1=dm1.c2 and dmm.c2=dm1.c3 and dmm.c3=dm1.c4 and dmm.c4=dm1.c5
 		left join keplersc.kdf3uso cfd on cfd.c1=dm1.c164
 		left join keplersc.kdf3fp fp on fp.c1=dm1.c160
 		where dm1.c1=%1$L and dm1.c2=%2$L and dm1.c3=%3$L and dm1.c4=%4$s and dm1.c5=%5$s and dm1.c6=%6$L'

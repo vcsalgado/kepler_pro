@@ -9,7 +9,7 @@
 		<grp id="grpDatosGenerales" bclr="236,240,243" fntClrBrdr="236,240,243" fntBrdr="Arial,18" hSpace="4" clrBrdr="0,58,112" brdr="0,5" dim="50,10,7,12" tit="Datos generales"  fnt="Arial,16" available="Y" modify="Y">
 		<sp/><txt clr="0,58,112" hk="S">Sucursal</txt><tab/>
 			<cmb id="k_sucn" clr="64,64,64" clrBrdr="255,255,255"  dim="50,36" bclr="255,255,255" 
-				brdr="2,0" fnt="Arial,16" Null="N" hk="S" available="Y" OnChange="CambiaSucursal()"/>
+				brdr="2,0" fnt="Arial,16" Null="N" hk="S" available="Y"/>
 			<br/>				
 			<br/>
 			<sp/><txt clr="0,58,112">Tipo docto</txt><tab/>
@@ -17,11 +17,11 @@
 		</grp><sp/>
 		<grp id="grpDocumentos" bclr="236,240,243" fntClrBrdr="236,240,243" fntBrdr="Arial,18" hSpace="4" clrBrdr="0,58,112" brdr="0,5" dim="25,10,7,12" tit="Documento"  fnt="Arial,16" available="Y" modify="Y">
 			<tab n="2"/><inp id="operacion" clr="64,64,64"  dim="18,1" brdr="0,1" fnt=",18b" available="N" type="string"/><br/><tab/>
-			<txt id="foliotxt"  visible="N" hk="F" clr="0,58,112">Folio</txt><tab n="2"/>
-			<edt id="k_folio" clr="64,64,64" clrBrdr="255,255,255"  dim="15,1" bclr="255,255,255" brdr="2,0" fnt="Arial,16" visible="N" hk="F" type="string" nc="10"
-				OnF9="ObtenerFolio()" OnButton="ObtenerFolio()" OnChange = "Formar_folio()"	modify="N" available="Y"/>
+			<txt id="foliotxt"  visible="Y" hk="F" clr="0,58,112">Folio</txt><tab n="2"/>
+			<edt id="k_folio" clr="64,64,64" clrBrdr="255,255,255"  dim="15,1" bclr="255,255,255" brdr="2,0" fnt="Arial,16" visible="Y" hk="F" type="string" nc="10"
+				OnF9="ObtenerFolio()" OnChange = "Formar_folio()"	modify="Y" available="Y"/>
 				<sp n="1"/>			
-				<img id="buscar_folio" dim="20,20"  brdr="0,1" bPx="Y" img="_20_Find.png" OnEnter="ConsultarFolio()" clrBrdr="0,0,0" visible="N" modify="N" available="Y"/>
+				<img id="buscar_folio" dim="20,20"  brdr="0,1" bPx="Y" img="_20_Find.png" OnEnter="ConsultarFolio()" clrBrdr="0,0,0" visible="Y" modify="Y" available="Y"/>
 				<br/><tab/>
 			<inp id="k_docto" clr="64,64,64"  dim="25,1" brdr="0,1" fnt="Arial,16" available="N" link="k_tipon,5" type="string"/><br/>
 			<tab/><txt clr="0,58,112">Fecha</txt><tab/>
@@ -29,30 +29,35 @@
 			<inp id="statusDoc" clr="64,64,64"  dim="25,1" brdr="0,1" fnt=",16b" available="N"/><br/><tab n="2"/>			
 		</grp><br/><br/><br/>
 		<tab/>
-		<grp id="grpDetalle" bclr="236,240,243" fntClrBrdr="236,240,243" fntBrdr="Arial,18"  clrBrdr="0,58,112" brdr="0,5" dim="76,38,7,12" tit="Detalle"  fnt="Arial,16" available="Y" modify="Y">
-			<grp id="grpInventario" dim="165,40,7,12" hSpace="4" available="Y" modify="Y">
-				<sp/>
+		<grp id="grpDetalle" bclr="236,240,243" fntClrBrdr="236,240,243" fntBrdr="Arial,18"  clrBrdr="0,58,112" brdr="0,5" dim="76,36,7,12" tit="Detalle"  fnt="Arial,16" available="N" modify="Y">
+			<grp id="grpInventario" dim="165,40,7,12" hSpace="4" available="N" modify="Y">
+				
+
 				<txt>Subsidio</txt><sp n="1"/>	
 				<inp id="k_refer" clr="64,64,64" clrBrdr="255,255,255" OnF9="BusquedaSubsidios()" OnChange="FormarSubsidio()"  tooltip="F9 Subsidios" dim="15,1" bclr="255,255,255" brdr="2,0" fnt="Arial,16" type="capital" nc="10" available = "Y"/>
 				<sp n="1"/>	
-				<img id="busca_factura" dim="20,20"  brdr="0,1" bPx="Y" img="_20_Find.png" OnEnter="MostrarDatos_Subsidio()" clrBrdr="0,0,0"  available="Y" visible="Y"/><sp n="4"/>
+				<img id="busca_factura" dim="20,20"  brdr="0,1" bPx="Y" img="_20_Find.png" OnEnter="MostrarDatos_Subsidio()" clrBrdr="0,0,0"  available="Y" visible="N"/><sp n="4"/>
 				
 				<txt>Factura</txt><sp n="1"/>	
-				<inp id="k_foliodocto" clr="64,64,64" clrBrdr="255,255,255"  dim="15,1" bclr="255,255,255" brdr="2,0" fnt="Arial,16" type="capital"  available = "Y" modify="N"/><sp n="2"/>
-				<br/><sp/>
-				<txt>Inventario</txt><sp/>
+				<inp id="k_foliodocto" clr="64,64,64" clrBrdr="255,255,255"  dim="15,1" bclr="255,255,255" brdr="2,0" fnt="Arial,16" type="capital"  available = "Y" modify="N"/><sp n="1"/>
+			
+				
+				<br/>
+				<txt>Inventario</txt>
 				<inp id="k_inventario" clr="64,64,64" clrBrdr="255,255,255"  dim="15,1" bclr="255,255,255" brdr="2,0" fnt="Arial,16" type="capital" nc="10" available = "Y" tooltip="Inventario ..." modify="N" 
 				OnChange="MostrarInventario()"/>
 				<tab n="3"/><txt>Producto:</txt><sp n="1"/>
 				<inp id="k_producto" clr="64,64,64" dim="18,1" visible="Y" fnt="Arial,16" type="string" nc="16" modify="N" available="N"/>				
 			
+				
+			
+				
 				<txt>Descripci&#243;n: </txt><sp/>
 				<inp id="k_desc_inv" clr="64,64,64"  dim="38,1" visible="Y" fnt="Arial,16" type="string" nc="16" modify="N" available="N"/>	<br/>			
-				<sp/><txt>Cliente</txt><sp n="3"/>
+				<txt>Cliente</txt><sp n="2"/>
 				<inp id="k_clave" clr="64,64,64" clrBrdr="255,255,255"  dim="15,1" bclr="255,255,255" brdr="2,0" fnt="Arial,16" type="capital" nc="10" available = "Y" modify="N" 
 					OnChange="MostrarCliente()"/> <tab/>
-				<br/><sp/>
-				<grp id="grpDatosClientes" bclr="255,255,255" fntClrBrdr="240,220,200" fntBrdr="Arial,18" hSpace="4" clrBrdr="0,58,112" brdr="0,5" dim="106,7,7,12" fnt="Arial,16" available="Y" modify="Y">				
+				<br/><grp id="grpDatosClientes" bclr="255,255,255" fntClrBrdr="240,220,200" fntBrdr="Arial,18" hSpace="4" clrBrdr="0,58,112" brdr="0,5" dim="120,7,7,12" fnt="Arial,16" available="Y" modify="Y">				
 				<inp id="k_rfccli" clr="64,64,64" clrBrdr="255,255,255" dim="15,1" bclr="255,255,255" fnt="Arial,16" nr="3,60" modify="Y" available="N" type="string"/>
 				<tab/><inp id="k_nombreimprfact" clr="64,64,64" clrBrdr="255,255,255"  dim="80,1" bclr="255,255,255" fnt="Arial,16" nr="3,60" modify="Y" available="N" type="string"/>
 				<br/>
@@ -60,7 +65,7 @@
 				<inp id="k_callecli" clr="64,64,64" clrBrdr="255,255,255"  dim="50,1" bclr="255,255,255" fnt="Arial,16" nr="3,60" modify="Y" available="N"/>
 				<br/>
 				<inp id="k_coloniacli" clr="64,64,64" clrBrdr="255,255,255"  dim="50,1" bclr="255,255,255"  fnt="Arial,16" nr="3,60" modify="Y" available="N"/>				
-				<inp id="k_poblacioncli" clr="64,64,64" clrBrdr="255,255,255"  dim="48,1" bclr="255,255,255" fnt="Arial,16" nr="3,60" modify="Y" available="N"/>
+				<inp id="k_poblacioncli" clr="64,64,64" clrBrdr="255,255,255"  dim="50,1" bclr="255,255,255" fnt="Arial,16" nr="3,60" modify="Y" available="N"/>
 				<inp id="k_cpcli" clr="64,64,64" clrBrdr="255,255,255"  dim="8,1" bclr="255,255,255" fnt="Arial,16" nr="3,60" modify="Y" available="N"/>
 				<br/>
 				</grp><sp/>
@@ -96,17 +101,19 @@
 				<br/>
 				
 				<tab n="1"/><txt clr="0,58,112">Comentarios:</txt><br/><tab n="2"/>
-				<inp id="k_coment" clr="64,64,64" clrBrdr="255,255,255"  dim="60,1" bclr="255,255,255" brdr="2,0" fnt="Arial,16" nr="3,60" modify="N" available="N"  type="capital"/>
-				<br/><tab n="2"/><inp id="k_coment2" clr="64,64,64" clrBrdr="255,255,255"  dim="60,1" bclr="255,255,255" brdr="2,0" fnt="Arial,16" nr="3,60" modify="N" available="N" type="capital"/>
-				<br/><tab n="2"/><inp id="k_coment3" clr="64,64,64" clrBrdr="255,255,255"  dim="60,1" bclr="255,255,255" brdr="2,0" fnt="Arial,16" nr="3,60" modify="N" available="N" type="capital"/>				
-				<br/>
-				<tab n="30"/>
-				<img id="Cancelar" dim="40,40" bPx="Y" brdr="0,1"  img="_60_DocRst.png" OnEnter="BorraDatos()" tooltip="Borrar datos" available="Y" clrBrdr="0,0,0" visible="Y"/><tab/>
-				<img id="Aceptar" dim="40,40" bPx="Y" brdr="0,1"  img="_60_DocNew.png" OnEnter="Ejecuta()" tooltip="Aceptar documento &lt;Ctrl&gt;&lt;T&gt;" available="Y" clrBrdr="0,0,0" visible="Y" modify="Y"/><tab/>		
-
+				<inp id="k_coment" clr="64,64,64" clrBrdr="255,255,255"  dim="60,1" bclr="255,255,255" brdr="2,0" fnt="Arial,16" nr="3,60" modify="N" available="N"/>
+				<br/><tab n="2"/><inp id="k_coment2" clr="64,64,64" clrBrdr="255,255,255"  dim="60,1" bclr="255,255,255" brdr="2,0" fnt="Arial,16" nr="3,60" modify="N" available="N"/>
+				<br/><tab n="2"/><inp id="k_coment3" clr="64,64,64" clrBrdr="255,255,255"  dim="60,1" bclr="255,255,255" brdr="2,0" fnt="Arial,16" nr="3,60" modify="N" available="N"/>				
 			</grp>
 		</grp>
-</grp>
+		<br/>
+		<tab n="17"/>
+		<img id="Cancelar" dim="60,60" bPx="Y" brdr="0,1"  img="_60_DocRst.png" OnEnter="BorraDatos()" tooltip="Borrar datos" available="N" clrBrdr="0,0,0" visible="N"/><tab/>
+		<img id="Aceptar" dim="60,60" bPx="Y" brdr="0,1"  img="_60_DocNew.png" OnEnter="Ejecuta()" tooltip="Aceptar documento &lt;Ctrl&gt;&lt;T&gt;" available="N" clrBrdr="0,0,0" visible="N" modify="Y"/><tab/>		
+	</grp>
+	<tools>
+		<tool OnMouseL="Ejecuta()" tooltip="Aceptar documento(Ctrl+T)" scut="Ctrl+T" img="_TL_Execute.png"/>
+	</tools>
 	<script>
 		InstallDriver("KDB75");
 		class Main {
@@ -180,18 +187,11 @@
 				}
 				frn.set("k_titulo_inicial",v_tipoOperacion);
 			
-		
 				//Llenar combo sucursales
 				cmd = "select '['||c1||'] '||c2 as c2, c1 from keplersc.kdms";
-				if (rol_usuario &! "ADMINISTRADOR"  && rol_usuario &! "ADMINISTRATOR"){
-					cmd = cmd & " where c1='" & suc_usuario & "'";
-				}else {
-					if (suc_usuario &! asterisco && suc_usuario &! "" ){
-						cmd = cmd & " where c1='" & suc_usuario & "'";
-					}
-				}
+			
+				cubo = frn.lib("libGeneral.kpl","EjecutarSqlSel",cmd,"ven_nota_descuento.Inicializa()");
 				
-				cubo = frn.lib("libGeneral.kpl","EjecutarSqlSel",cmd,"srvcitacrud.Inicializa()");		
 				ok=getXmlAtt(cubo,"ok");
 				if(ok &! "" && !ok){
 					mensajeError = getXmlAtt(cubo,"native3");
@@ -199,11 +199,21 @@
 					frn.message(mensajeError,"Error","Aceptar");
 					return;
 				}
-					
-				frn.set("k_sucn",getXml(cubo));
 				
-				//Llena combo tipo
-				LlenaCmbTipo();
+				frn.set("k_sucn",getXml(cubo));									
+				cmd = "select c5 as c0,c1,c2,c3,c4,c1||c2||lpad(c3::text,2,'0')||lpad(c4::text,3,'0')||'-'||'0000000' as c5, c16 as c6 from keplersc.kdmm where c1='" & gen_doc & "' and c2='" & nat_doc & "' and c3='" & gpo_doc & "'" ;
+				
+				cubo = frn.lib("libGeneral.kpl","EjecutarSqlSel",cmd,"ven_nota_descuento.Inicializa()");
+				frn.lib("libGeneral.kpl","FileSave",cubo,"C:\Basura\cuboTipoDocto");		
+				ok=getXmlAtt(cubo,"ok");
+				if(ok &! "" && !ok){
+					mensajeError = getXmlAtt(cubo,"native3");
+					mensajeError = frn.lib("libGeneral.kpl","ErrorBD",mensajeError);
+					frn.message(mensajeError,"Error","Aceptar");
+					return;
+				}
+
+				frn.set("k_tipon",getXml(cubo));
 				
 				// Fill Combo forma de pago(Con Query de PostgreSQL)
 				cmd = "select '['||c1||'] '||c2 as c2, c1 from keplersc.kdf3fp";
@@ -239,31 +249,7 @@
 
 			}
 			
-			fun LlenaCmbTipo(){
-				var cubo,cmd,ok,mensajeError;
-				sucursal_id=frn.get("k_sucn",-1,1);		
-								
-				cmd = "select c5 as c0,c1,c2,c3,c4,c1||c2||lpad(c3::text,2,'0')||lpad(c4::text,3,'0')||'-'||'0000000' as c5, c16 as c6 from keplersc.kdmm where c1='" & gen_doc & "' and c2='" & nat_doc & "' and c3='" & gpo_doc & "' and col_sucursal='" & sucursal_id & "'";
-				
-				cubo = frn.lib("libGeneral.kpl","EjecutarSqlSel",cmd,"ven_nota_descuento.Inicializa()");
-				frn.lib("libGeneral.kpl","FileSave",cubo,"C:\Basura\cuboTipoDocto");		
-				ok=getXmlAtt(cubo,"ok");
-				if(ok &! "" && !ok){
-					mensajeError = getXmlAtt(cubo,"native3");
-					mensajeError = frn.lib("libGeneral.kpl","ErrorBD",mensajeError);
-					frn.message(mensajeError,"Error","Aceptar");
-					return;
-				}
 
-				frn.set("k_tipon",getXml(cubo));
-			}	
-			
-			fun CambiaSucursal(){
-				sucursal_id = frn.get("k_sucn",-1,1);
-				LlenaCmbTipo();
-				Valida_Tipo_Docto();
-			
-			}
 		
 			fun ConfiguraControlesOff()
 			{
@@ -388,7 +374,7 @@
 			{
 				  
 				sucursal_id = frn.get("k_sucn",-1,1);
-				var cmdQuery = "select  c6 as folio_subsidio, c39 as folio_factura, to_char(c9, 'dd/mm/yyyy') as fecha,c10 as cliente,c11 as referencia, c16 as monto  from keplersc.kdm1 " ;
+				var cmdQuery = "select  c6 as folio_subsidio, c39 as folio_factura, c9 as fecha,c10 as cliente,c11 as referencia, c16 as monto  from keplersc.kdm1 " ;
 				cmdQuery = cmdQuery & " where c1 = '" & sucursal_id &  "' and c2 = '" & gen_doc &  "' and c3='A' and c4=53 and c5=" &  frn.get("k_tipon",-1,4);
 				cmdQuery = cmdQuery & " and c36 = '" & nat_doc_anex &  "' and c37 = '" & gpo_doc_anex  &  "' and c38 = '" & frn.get("k_tipon",-1,4) &  "' and c43 <> 'C' ";
 				cmdQuery = cmdQuery & " order by c9 desc, c6 desc ";
@@ -399,7 +385,6 @@
 			fun FormarSubsidio(){
 
 				var xmlReqEst, cubofol, cmd, ok, mensajeError ;
-				setXml(xmlReqEst,"document","k_sucn","r1",frn.get("k_sucn",-1,1));
 				setXml(xmlReqEst,"document","folio_id",frn.get("k_refer"));
 				setXml(xmlReqEst,"document","k_tipon","r1",frn.get("k_tipon",-1,1));
 				setXml(xmlReqEst,"document","k_tipon","r2","A");
@@ -694,7 +679,7 @@
 				   var cmdQuery ="",v_tipo_n;
 					v_tipo_n = frn.get("k_tipon",-1,4);
 					sucursal_id = frn.get("k_sucn",-1,1);
-					cmdQuery = "select c1 as tip, c6 as folio, to_char(c9, 'dd/mm/yyyy') as fecha,c11 as referencia, c16 as monto from keplersc.kdm1  where c1 = '" & sucursal_id &  "' and c2 = '" & gen_doc&  "' and c3 = '" & nat_doc&  "' and c4 = '" & gpo_doc&  "' and c5 = '" & v_tipo_n &  "' ";
+					cmdQuery = "select c1 as tip, c6 as folio, c9 as fecha,c11 as referencia, c16 as monto from keplersc.kdm1  where c1 = '" & sucursal_id &  "' and c2 = '" & gen_doc&  "' and c3 = '" & nat_doc&  "' and c4 = '" & gpo_doc&  "' and c5 = '" & v_tipo_n &  "' ";
 					cmdQuery = cmdQuery & " order by c6 desc ";
 					frn.dialog("genlistafiltrosel","Documentos",cmdQuery,"folio","k_folio","0","","N");
 			}
@@ -703,7 +688,6 @@
 			
 			fun Formar_folio(){
 				var xmlReqEst, cubofol, cmd, ok, mensajeError ;
-				setXml(xmlReqEst,"document","k_sucn","r1",frn.get("k_sucn",-1,1));
 				setXml(xmlReqEst,"document","folio_id",frn.get("k_folio"));
 				setXml(xmlReqEst,"document","k_tipon","r1",frn.get("k_tipon",-1,1));
 				setXml(xmlReqEst,"document","k_tipon","r2",frn.get("k_tipon",-1,2));
@@ -762,7 +746,7 @@
 				tip_doc=frn.get("k_tipon",-1,4);
 				kdb.rst();
 				
-				cmd= "select * from keplersc.verify_valid_document('" & frn.get("k_sucn",-1,1) & "','" & gen_doc & "','" & nat_doc & "'," & gpo_doc & "," & frn.get("k_tipon",-1,4) & ")"; //suc text, genero text, naturaleza text, grupo integer, tipo_movto integer
+				cmd= "select * from keplersc.verify_valid_document('" & gen_doc & "','" & nat_doc & "'," & gpo_doc & "," & tip_doc & ")"; //genero text, naturaleza text, grupo integer, tipo_movto integer
 				cubo = frn.lib("libGeneral.kpl","ValidarCondicion",cmd,"ven_nota_descuento.Valida_Tipo_Docto()");				
 				resValidacion= getXml(cubo,"validacion","resultado");
 				resMensaje = getXml(cubo,"validacion","mensaje");

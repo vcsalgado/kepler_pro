@@ -116,7 +116,7 @@ begin
 exception
 	when others then
 		resultado := 0;
-		mensaje := 'invlib_inv_vale_salida_adis_alta() ' || '['|| sqlstate || '] ' || sqlerrm ;
+		mensaje := 'invlib_inv_vale_salida_adis_baja() ' || '['|| sqlstate || '] ' || sqlerrm ;
 		adicionales := '';
 		return query select resultado, mensaje, adicionales;	
 end;

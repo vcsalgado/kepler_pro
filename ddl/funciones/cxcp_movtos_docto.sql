@@ -27,7 +27,7 @@ begin
 			(case when xe.c6=''D'' then xe.c13 else 0 end) as movto_cargo,	
 			(case when xe.c6=''A'' then xe.c13 else 0 end) as movto_abono 
 			from keplersc.kduxe xe, keplersc.kdmm mm
-			where xe.c1=mm.col_sucursal and xe.c5 = mm.c1 and xe.c6=mm.c2 and xe.c7=mm.c3 and xe.c8=mm.c4
+			where xe.c5 = mm.c1 and xe.c6=mm.c2 and xe.c7=mm.c3 and xe.c8=mm.c4
 			and xe.c1=%1$L and xe.c2=%2$L and xe.c3=%3$L',sucursal_id,cliente_prov,documento);
 
 	select query_to_xml(expSql, false, true, '') into xmlResultado ;

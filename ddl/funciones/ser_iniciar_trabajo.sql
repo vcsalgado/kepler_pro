@@ -6,14 +6,12 @@ AS $function$
 --Autor: Luis Leal
 --Fecha: 12/08/2022
 --Bitacora de cambios
---27/05/2024 Miriam Santana: Grabar en kdpunres c17(usuario_operario) y c20(clave_operario)
 declare
 		sucursal_id text;
 		tipo_orden text;
 		folio_orden text;
 		numero_punto text;
 		clave_operario text;
-		usuario_operario text;
 		status_recomendacion text;
 		consecutivo int;
 	
@@ -29,21 +27,18 @@ begin
 	 	folio_orden := coalesce((xpath('//document/folio_orden/text()', dataxml))[1]::text,'')::text; 
 	 	numero_punto := coalesce((xpath('//document/numero_punto/text()', dataxml))[1]::text,'')::text; 
 	 	clave_operario := coalesce((xpath('//document/clave_operario/text()', dataxml))[1]::text,'')::text;
-	 	usuario_operario := coalesce((xpath('//document/usuario_operario/text()', dataxml))[1]::text,'')::text;	 
---	 	clave_operario:='';
---	 	usuario_operario:='';
+	 	 
 	 	if numero_punto = '' then
 	 		raise exception '%' , 'Debes seleccionar un punto';
 	 	end if;
---raise notice 'clave_operario %, usuario_operario %',clave_operario, usuario_operario;	
-
+	
 		select c5 into status_recomendacion from  keplersc.kdpunres 
 		where c1=sucursal_id and c2=tipo_orden and c3=folio_orden and c4=numero_punto::numeric;
 		if found then 
 			update keplersc.kdpunres set c5=10 where c1=sucursal_id and c2=tipo_orden and c3=folio_orden and c4=numero_punto::numeric;
 		else
-			insert into keplersc.kdpunres(c1,c2,c3,c4,c5,c6,c7,c17,c20) values(sucursal_id,tipo_orden,
-			folio_orden,numero_punto::numeric,10, current_date, left(current_time::text,8),usuario_operario,clave_operario);
+			insert into keplersc.kdpunres(c1,c2,c3,c4,c5,c6,c7) values(sucursal_id,tipo_orden,
+			folio_orden,numero_punto::numeric,10, current_date, left(current_time::text,8));
 		end if;
 	
 		--registra tiempos 
@@ -54,8 +49,8 @@ begin
 			consecutivo := 1;
 		end if;
 	
-		insert into keplersc.kdtiempos(c1,c2,c3,c4,c5,c6,c7,c11,c12) values(sucursal_id,tipo_orden,
-		folio_orden,numero_punto::numeric,consecutivo, current_date, left(current_time::text,8),usuario_operario,clave_operario);
+		insert into keplersc.kdtiempos(c1,c2,c3,c4,c5,c6,c7) values(sucursal_id,tipo_orden,
+		folio_orden,numero_punto::numeric,consecutivo, current_date, left(current_time::text,8));
 	
 		resultado := 1;
 		mensaje :=  format('Trabajo numero %1$s iniciado', numero_punto );

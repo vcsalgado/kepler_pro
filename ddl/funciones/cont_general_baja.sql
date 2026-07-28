@@ -128,8 +128,8 @@ begin
 	*/
 
 
-	-- Condition Added by JMM 20240902 ... For {fecha_operacion} , Adapted by JMM 20241017 
-	if upper(flag_contrarec) in /*=*/ ('CXP_CONTR_REC','CXP_CONTR_REC_INTERNO_BAJA') then 
+	-- Condition Added by JMM 20240902 ... For {fecha_operacion}
+	if upper(flag_contrarec) = 'CXP_CONTR_REC' then 
 	
 		fecha_operacion := (xpath('//document/k_fecha/text()', dataxml))[1];
 	

@@ -42,8 +42,7 @@ DECLARE
 	folio_id text;
 
 	flag_cobros text = '';	--MSS 22122024 Anulacion de cobro
-	usuario_movto text = '';		--MSS 13052026 Excluir validacion metodo de pago
-			
+		
 	--Variables de retorno desde funciones externas
 	get_resultado text; --retorno
 	get_mensaje text; --retorno
@@ -66,9 +65,6 @@ begin
 	uen := coalesce((xpath('//document/ambiente/uen/text()',dataxml))[1],'');
 
 	flag_cobros :=coalesce((xpath('//document/ambiente/flag_cobros/text()',dataxml))[1]::text,'')::text;		--MSS 22122024 Anulacion de cobro
-	
-	--Movimiento
-	usuario_movto := (xpath('//document/movimiento/usuario/text()',dataxml))[1];								--MSS 13052026 Excluir validacion metodo de pago
 
 	if genero = 'U' and naturaleza = 'D' then --Cuentas por cobrar, Deudora			
 		---------------------------------------------------------------
@@ -283,19 +279,14 @@ begin
 				and (xpath('//row/c86/text()', xmlKDMM))[1]::text = 'S' then --Abrir campo Importe
 				--TO DO: Desarrollar CXPLIB.CXCP_SUSTITUCION				
 			end if; --FIN CXCP_SUSTITUCION
-			
-			--MSS 13052026 Excluir validacion metodo de pago
-			select count(*) into totalReg from keplersc.param_opc_usr_sec 
-				where sucursal=sucursal_id and opcion='Excluir validacion metodo de pago' and lower(usuario)=lower(usuario_movto);
-			if totalReg=0 then
-				--MSS 14042026 Validacion si cartera debe ser PPD
-				if (xpath('//row/c80/text()', xmlKDMM))[1]::text = 'S' then
-					if (xpath('//row/c162/text()', xmlKDM1))[1]::text = 'PUE' then
-						raise exception 'El movimiento genera cartera, el metodo de pago no puede ser PUE, cambielo a PPD';
-					end if;			
-				end if;
+
+			--MSS 14042026 Validacion si cartera debe ser PPD			
+			if (xpath('//row/c80/text()', xmlKDMM))[1]::text = 'S' then
+				if (xpath('//row/c162/text()', xmlKDM1))[1]::text = 'PUE' then
+--					raise exception 'El movimiento genera cartera, el metodo de pago no puede ser PUE, cambielo a PPD';
+				end if;			
 			end if;
-		
+			
 			--CXCP_ALTA_SINMOV
 			if (xpath('//row/c47/text()', xmlKDMM))[1]::text <> 'S' then --Pantalla movimientos CXP			
 				--CXCP_ALTA_SINMOV

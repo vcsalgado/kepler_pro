@@ -3,7 +3,8 @@ CREATE  TABLE keplersc.param_oper_periodo (
   anio character varying(4) NOT NULL DEFAULT ''::character varying,
   mes character varying(2) NOT NULL DEFAULT ''::character varying,
   parametro character varying(35) NOT NULL DEFAULT ''::character varying,
-  valor character varying(35) NOT NULL DEFAULT ''::character varying
+  valor character varying(35) NOT NULL DEFAULT ''::character varying,
+  CONSTRAINT param_oper_periodo_unique UNIQUE (sucursal, anio, mes, parametro)
 ) TABLESPACE pg_default;
 COMMENT ON TABLE keplersc.param_oper_periodo IS 'Parametros operativos por periodo';
 COMMENT ON COLUMN keplersc.param_oper_periodo.valor IS 'Valor del parametro';

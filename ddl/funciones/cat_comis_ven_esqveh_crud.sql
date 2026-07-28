@@ -62,7 +62,7 @@ begin
 		delete from keplersc.kdvesqveh 
 			where c1=k_sucn and c2=k_esquema and c3=k_oper and c4=k_tipove and c5=k_tipo_comis ;
 		mensaje := 'Registro eliminado.';
---raise exception 'Eliminado. 1:% 2:% 3:% 4:% 5:%',k_sucn,k_esquema,k_oper,k_tipove,k_tipo_comis;
+raise exception 'Eliminado. 1:% 2:% 3:% 4:% 5:%',k_sucn,k_esquema,k_oper,k_tipove,k_tipo_comis;
 	
 	end if;
 

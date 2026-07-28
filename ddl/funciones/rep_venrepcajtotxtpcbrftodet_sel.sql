@@ -48,7 +48,7 @@ begin
 		, (E.c3 || E.c4 || lpad(E.c5::text,2,''0'') || lpad(E.c6::text,3,''0'') || ''-'' || E.c7) as folio
 		/*, ''000001'' as folio*/ 
 		from keplersc.kdecaja E 
-		inner join keplersc.kdmm M on E.c1 = M.col_sucursal and E.c3 = M.c1 and E.c4 = M.c2 and E.c5 = M.c3 and E.c6 = M.c4 and upper(M.c14) = upper(''S'') 
+		inner join keplersc.kdmm M on E.c3 = M.c1 and E.c4 = M.c2 and E.c5 = M.c3 and E.c6 = M.c4 and upper(M.c14) = upper(''S'') 
 		inner join keplersc.kdm1 Y on E.c1 = Y.c1 and E.c3 = Y.c2 and E.c4 = Y.c3 and E.c5 = Y.c4 and E.c6 = Y.c5 and E.c7 = Y.c6  
 		where 
 		E.c9 >= to_date(%2$L,%4$L) and E.c9 <= to_date(%3$L,%4$L) 

@@ -162,7 +162,7 @@ begin
 		m1.c67 as usuario_movto, 
 		kdc2.c10
 		from tmpkdc2 kdc2 left outer join keplersc.kdmm mm on
-		mm.col_sucursal=kdc2.c14 and mm.c1=kdc2.c15 and mm.c2=kdc2.c16 and mm.c3=kdc2.c17 and mm.c4=kdc2.c18
+		mm.c1=kdc2.c15 and mm.c2=kdc2.c16 and mm.c3=kdc2.c17 and mm.c4=kdc2.c18
 		left outer join keplersc.kdm1 m1 on 
 		m1.c1=kdc2.c14 and m1.c2=kdc2.c15 and m1.c3=kdc2.c16 and m1.c4=kdc2.c17 
 		and m1.c5=kdc2.c18 and m1.c6=kdc2.c19

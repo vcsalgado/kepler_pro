@@ -64,7 +64,7 @@ begin
 
 	select '<document>'||strValor||'</document>' into strValor;
 	xmlRequest := strValor::xml;
---raise notice 'xmlRequest:% ',xmlRequest;
+
 	select * into clave_original, clave_actual, cadena_reemplazo from keplersc.prod_cadena_reemplazo(xmlRequest);
 
 	--Validar existencia de producto

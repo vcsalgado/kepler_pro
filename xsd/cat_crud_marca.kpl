@@ -2,13 +2,13 @@
 <pag xmlns="www.kepler.com.mx/2003/KSchema" roles="" tit="Catalogo de Marca">
 <grp  brdr="0,0" clr="0,58,112" fnt="Arial,16"  dim="0,0,10,10" bclr="192,205,213" unfont="0">
 	<tab/><inp id="k_titulo" dim="30,1" brdr="0,0" bclr="192,205,213" clr="0,0,0" clrBrdr="192,205,213"
-				type="string" modify="N" available="N" fnt="Arial,22"/>
+				type="string" modify="N" available="N" fnt="Arial,25"/>
 	<br/>
-	<br/><tab/>
+	<br/>
 		<hLine clr="0,0,0"/>
 		<br/><br/>
 		<tab/>
-		<grp id="gpo_2" bclr="236,240,243" fntClrBrdr="255,255,255" unfont="0" fntBrdr="Arial,18" hSpace="4" clrBrdr="0,58,112" dim="60,15,10,9" brdr="0,5" tit="Catalogo de Marca Alta Nuevo" fnt="Arial,16">
+		<grp id="gpo_2" bclr="236,240,243" fntClrBrdr="255,255,255" unfont="0" fntBrdr="Arial,18" hSpace="4" clrBrdr="0,58,112" dim="60,15,10,9" brdr="0,5" tit="Catalogo PLANTILLA..." fnt="Arial,16">
 			<tab/>
 			<sp/>
 				<inp id="clave" dim="25,1" brdr="0,0" bclr="236,240,243" clrBrdr="192,205,213" 
@@ -145,7 +145,7 @@
 			fun ConfiguraUI(){
 				consPlantilla="PLANTILLA"; //AQUI DEFINE LA CONSTANTE PARA COMPARAR EN PARAMETROS
 				if (frn.nParam() == 0){
-					frn.message("Accion no permitida.","Error","&Aceptar");
+					frn.message("Acción no permitida.","Error","&Aceptar");
 					frn.open("redirect",2);
 					return;
 				}
@@ -173,7 +173,7 @@
 					frn.set("k_titulo","Catalogo Marca Consulta");
 				}
 				else{
-					frn.message("Accion no permitida.","Error","&Aceptar");
+					frn.message("Acción no permitida.","Error","&Aceptar");
 					frn.open("redirect",2);
 					return;
 				}
@@ -205,7 +205,7 @@
 				var cmd,ok,mensajeError, cubo;
 				//Etiquetas 
 				frn.set("clave","Clave");
-				frn.set("desc","Descripcion ");
+				frn.set("desc","Descripción ");
 
 				frn.setAtt("k_clave", "available", "N");
 				frn.setAtt("k_clave", "bclr", "236,240,243");

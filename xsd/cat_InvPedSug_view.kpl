@@ -1,439 +1,1 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<pag xmlns="www.kepler.com.mx/2003/KSchema" roles="" tit="T&#237;tulo">
-<!-- dim="45,40,15,15" -->
-<grp dim="1,-1,10,20" 
-	  brdr="0,0" 
-	  clr="0,58,112" 
-	  bclr="192,205,213" 
-	  fnt="Arial,16" 
-	  unfont="0" id="Principal"><br/>
-			<!-- <tab/> -->
-			
-			<!-- dim="45,65,9,9" -->
-			<grp dim="42,33,7,12" bclr="236,240,243" fntClrBrdr="255,206,0" fntBrdr="Arial,18" hSpace="4" clrBrdr="0,58,112" brdr="0,5" tit="Configuraci&#243;n para Pedido Sugerido" fnt="Arial,16">
-
-				<sp n="1"/>
-				<txt>Sucursal : </txt>
-				<sp n="1"/>
-				<cmb id="k_sucn" clr="64,64,64" clrBrdr="255,255,255"  
-						dim="45,15" bclr="255,255,255" brdr="2,0" fnt="Arial,16"  
-						Null="N"  available="Y"
-						OnChange="CargarPedidoSugerido()"/>
-				<br/>	<br/>				
-				<sp n="1"/>
-				<txt>Aplicar Min. Ant. : </txt>
-				<sp n="1"/>
-				<cmb id="k_aplminant" clr="64,64,64" clrBrdr="255,255,255" dim="5,5" bclr="255,255,255" brdr="2,0" fnt="Arial,16" Null="N" available="Y" modify="Y"/>
-				<sp n="2"/> <txt>Si / No </txt>
-				<br/>
-				<sp n="1"/>
-				<txt>M&#237;nimo Anticipo : </txt>
-				<sp n="2"/>
-				<inp id="k_minanticipo" dim="5,1" brdr="2,0" clr="64,64,64" bclr="255,255,255" clrBrdr="255,255,255" type="number" fmt="5" nc="3" max="100"/>
-				<sp n="2"/> <txt>1 - 100%</txt>
-				<br/>
-				<sp n="1"/>
-				<txt>F&#243;rmula : </txt>
-				<sp n="8"/>
-				<!-- <inp id="k_formula" dim="5,1" brdr="2,0" clr="64,64,64" bclr="255,255,255" clrBrdr="255,255,255" type="string"/> -->
-				<cmb id="k_formula" clr="64,64,64" clrBrdr="255,255,255" dim="5,5" bclr="255,255,255" brdr="2,0" fnt="Arial,16" Null="N" available="Y" modify="Y"/>
-				<!-- <br/><br/> -->
-				<sp n="4"/>
-				<txt>USE Q - f&#243;rmula QROMOTORS</txt>
-				<br/>
-				<sp n="31"/>
-				<txt> M - f&#243;rmula MIP</txt>
-				<br/><br/>
-				<sp n="5"/>
-				<txt>-SOLO PARA LA F&#211;RMULA MIP-</txt>
-				<br/>
-				<sp n="1"/>
-				<txt>D&#237;as H&#225;biles del Mes :</txt>
-				<sp n="8"/>
-				<inp id="k_diashabmes" dim="5,1" brdr="2,0" clr="64,64,64" bclr="255,255,255" clrBrdr="255,255,255" type="number" nc="2" fmt="5" max="30"/><br/>
-				<sp n="1"/>
-				<txt>Usar Desviaci&#243;n Estandar :</txt>
-				<sp n="4"/>				
-				<cmb id="k_desvest" clr="64,64,64" clrBrdr="255,255,255" dim="5,5" bclr="255,255,255" brdr="2,0" fnt="Arial,16" Null="N" available="Y" modify="Y"/>
-				<sp n="1"/> <txt>Si / No </txt>
-				<br/>
-				<sp n="1"/>
-				<txt>Calcular Stock de Seguridad  : </txt>
-				<sp n="1"/>
-				<cmb id="k_stockseguridad" clr="64,64,64" clrBrdr="255,255,255" dim="5,5" bclr="255,255,255" brdr="2,0" fnt="Arial,16" Null="N" available="Y" modify="Y"/>
-				<sp n="1"/> <txt>Si / No </txt>
-				<br/> 
-				<sp n="1"/> <txt fnt=",b" clr="36,36,36">Stock de Seguridad x Zona : </txt>
-				<br/>
-				<sp n="1"/>
-				<txt clr="36,36,36">SS Dorada : </txt>
-				<sp n="9"/>
-				<inp id="k_ss_dor" dim="7,1" brdr="2,0" clr="64,64,64" bclr="255,255,255" clrBrdr="255,255,255" type="number" fmt="5" nc="3"/>
-				<br/>
-				<sp n="1"/>
-				<txt clr="36,36,36">SS Alto Movimiento : </txt>
-				<sp n="2"/>
-				<inp id="k_ss_alt" dim="7,1" brdr="2,0" clr="64,64,64" bclr="255,255,255" clrBrdr="255,255,255" type="number" fmt="5" nc="3"/>
-				<br/>
-				<sp n="1"/>
-				<txt clr="36,36,36">SS Bajo Movimiento : </txt>
-				<sp n="1"/>
-				<inp id="k_ss_baj" dim="7,1" brdr="2,0" clr="64,64,64" bclr="255,255,255" clrBrdr="255,255,255" type="number" fmt="5" nc="3"/>
-				<br/>
-				<sp n="1"/>
-				<txt clr="36,36,36">SS Obsoleto : </txt>
-				<sp n="7"/>
-				<inp id="k_ss_obs" dim="7,1" brdr="2,0" clr="64,64,64" bclr="255,255,255" clrBrdr="255,255,255" type="number" fmt="5" nc="3"/>
-				<br/>
-			</grp>
-			
-			<!-- <sp/> -->
-			
-			<grp dim="35,33,7,12" bclr="236,240,243" fntClrBrdr="236,240,243" fntBrdr="Arial,18" hSpace="4" clrBrdr="0,58,112" brdr="0,5" fnt="Arial,16" tit=" ">
-
-			<sp n="5"/>
-			<txt>-SOLO PARA LA F&#211;RMULA QROMOTORS-</txt>
-			<br/> 
-			<sp n="1"/>
-			<txt>D&#237;as de Ventas Buscados : </txt>
-			<sp n="1"/>
-			<inp id="k_diasvenbusmen" dim="7,1" brdr="2,0" clr="64,64,64" bclr="255,255,255" clrBrdr="255,255,255" type="number" nc="3" fmt="5"/>
-			<sp n="2"/> <txt> (Mensuales)</txt><br/>
-			<sp n="1"/>
-			<txt>D&#237;as de Ventas Buscados : </txt>
-			<sp n="1"/>
-			<inp id="k_diasvenbusdia" dim="7,1" brdr="2,0" clr="64,64,64" bclr="255,255,255" clrBrdr="255,255,255" type="number" nc="3" fmt="5"/>
-			<sp n="2"/> <txt> (Diarios)</txt><br/>
-			<sp n="1"/>
-			<txt>Delay de Traslado : </txt>
-			<sp n="8"/>
-			<inp id="k_delaytraslado" dim="7,1" brdr="2,0" clr="64,64,64" bclr="255,255,255" clrBrdr="255,255,255" type="number" nc="3" fmt="5"/><br/>
-			<br/> <br/>
-			<sp n="5"/>
-			<txt>-INVENTARIO VIRTUAL-</txt>
-			<br/>
-			<sp n="1"/>
-			<txt>Usar Inventario Virtual :</txt>
-			<sp n="1"/>				
-			<cmb id="k_invvirtual" clr="64,64,64" clrBrdr="255,255,255" dim="5,5" bclr="255,255,255" brdr="2,0" fnt="Arial,16" Null="N" available="Y" modify="Y"/>
-			<sp n="2"/>	<txt>Si / No </txt><br/>
-			<br/><br/>
-			<sp n="5"/>
-			<txt>-PEDIDOS DE MOSTRADOR-</txt>
-			<br/>
-			<sp n="1"/>
-			<txt>Requerir VIN:</txt>
-			<sp n="2"/>			
-			<cmb id="k_pedmostvin" clr="64,64,64" clrBrdr="255,255,255" dim="5,5" bclr="255,255,255" brdr="2,0" fnt="Arial,16" Null="N" available="Y" modify="Y"/>
-			<sp n="2"/> <txt>Si / No </txt><br/>
-			<br/> <br/>
-
-			<br/> <br/>
-			<tab n="5"/><bot id="btn_aceptar" dim="9,0" brdr="5" text="Aceptar" OnEnter="Execute(0)" default="0" visible="Y" available="Y"/>
-			<tab n="1"/><bot id="btn_cancelar" dim="9,0" brdr="5" text="Cancelar" OnEnter="Execute(1)" default="0" visible="Y" available="Y"/>
-			<br/>
-			
-			</grp>
-			
-</grp>
-	<script>
-		InstallDriver("KDB75");
-		class Main {			
-			var frn,kdb,frP,externo,accion,suc_usuario,perfil_usuario, rol_usuario, asterisco   ;
-			fun Main() {
-				frn=new FRNT;
-				frP=new FRNTP;
-				kdb=new KDB;
-				kdb.connect();
-				ctlrs_off();
-				suc_usuario = frn.lib("libKepler","UserInfo(1)");
-				perfil_usuario = frn.lib("libKepler","UserInfo(2)");
-				rol_usuario = frn.config("user","role");
-				asterisco = "*";
-				llenar_ctlrs_default();
-				//config_ctrls_perfil();
-			
-				Inicializa();
-			}
-			
-			fun Inicializa() {
-			
-				frn.setX("S", "k_desvest",0,0);
-				frn.setX("N", "k_desvest",1,0);				
-				frn.setX("S", "k_aplminant",0,0);
-				frn.setX("N", "k_aplminant",1,0);				
-				frn.setX("S", "k_stockseguridad",0,0);
-				frn.setX("N", "k_stockseguridad",1,0);
-				frn.setX("S", "k_invvirtual",0,0);
-				frn.setX("N", "k_invvirtual",1,0);
-				frn.setX("S", "k_pedmostvin",0,0);
-				frn.setX("N", "k_pedmostvin",1,0);
-				
-				// Added by JMM ... 20231017 
-				frn.setX("M", "k_formula",0,0);
-				frn.setX("Q", "k_formula",1,0);
-					
-				CargarPedidoSugerido();
-			}
-			
-			
-			fun ctlrs_off()
-			{
-				/*frn.setAtt("text_agrupador", "visible", "N" );	
-				frn.setAtt("input_agrupador", "visible", "N" );	*/				
-				frn.setAtt("btn_cancelar", "visible", "Y" );
-				frn.setAtt("btn_aceptar", "visible", "Y" );
-			}
-			fun llenar_ctlrs_default()
-			{
-				frn.rst("principal");
-				accion = frn.param(0);
-				var xmlRequest,
-					 cmd,
-					 ok, 
-					 cuboResultados,
-					 mensajeError;
-				
-				frn.setAtt("principal", "tit", accion );
-			
-				
-	
-				//Llenar combo sucursales
-				cmd = "select '['||c1||'] '||c2 as c2, c1 from keplersc.kdms";
-				if (rol_usuario &! "ADMINISTRADOR"  && rol_usuario &! "ADMINISTRATOR"){
-					cmd = cmd & " where c1='" & suc_usuario & "'";
-				}else {
-					if (suc_usuario &! asterisco && suc_usuario &! "" ){
-						cmd = cmd & " where c1='" & suc_usuario & "'";
-					}
-				}
-				
-				var cubo = frn.lib("libGeneral.kpl","EjecutarSqlSel",cmd,"srvcitacrud.Inicializa()");		
-				ok=getXmlAtt(cubo,"ok");
-				if(ok &! "" && !ok){
-					mensajeError = getXmlAtt(cubo,"native3");
-					mensajeError = frn.lib("libGeneral.kpl","ErrorBD",mensajeError);
-					frn.message(mensajeError,"Error","Aceptar");
-					return;
-				}
-					
-				frn.set("k_sucn",getXml(cubo));
-			
-			
-			}
-			
-			fun llenar_cmb(cuboResultados, cmb)
-			{					
-				var len_cubo = nXml(cuboResultados);				
-				var pos_ini = frn.N(cmb);					
-				for (var cont=0; cont<len_cubo ; cont++)
-				{
-					var desc= getXmlAtt(cuboResultados,"r"&cont,"descripcion");
-					var clave= getXmlAtt(cuboResultados,"r"&cont,"clave");					
-					frn.setX(desc, cmb, cont+pos_ini ,0);
-					frn.setX(clave, cmb, cont+pos_ini ,1);				
-				}	
-			}
-			
-			fun CargarPedidoSugerido()
-			{
-				//frn.message(frn.get("k_sucn", -1, 1),"Mensaje","Aviso");				
-				var clave_Sucursal = frn.get("k_sucn", -1, 1);
-				var cmd,
-						ok,
-						cubo;
-				//cmd = "select C1, C2,C3,C4,C5,C8,C9,C10,C11,C12,C13, C14, C15,C16 from keplersc.KDPEDIDOSUGERIDOCONF where c1='" & clave_Sucursal & "'";
-				cmd = "select C1, C2 k_diasvenbusmen ,C3 k_delaytraslado, C4 k_diasvenbusdia ," & 
-					"C5 k_formula,C8 k_diashabmes,C9 k_minanticipo,C10 k_invvirtual,C11 k_aplminant," & 
-					"C12 k_desvest, C13 k_pedmostvin, C14 k_stockseguridad, C15 k_ss_dor, C16 k_ss_alt, C17 k_ss_baj, C18 k_ss_obs " & 
-					"from keplersc.KDPEDIDOSUGERIDOCONF where c1='" & clave_Sucursal & "'";
-				cubo = frn.lib("libGeneral.kpl","EjecutarSqlSel",cmd,"cat_InvPedSug_view.Cargar()");				
-				ok=getXmlAtt(cubo,"ok");
-				if(ok &! "" && !ok)
-				{
-					var mensajeError = getXmlAtt(cubo,"native3");
-					frn.message(mensajeError,"Error","Aceptar");
-					return;
-				}				
-				if (nXml(cubo) == 0){
-				
-					frn.message("Configuracion de sucursal no existe","Error","Aceptar");
-					
-					// Codigo No Aplica porque Limpia los Valores de las Listas Creadas en Inicializa ...
-					/*
-					frn.rst("k_formula");
-					frn.rst("k_aplminant"); 
-					frn.rst("k_desvest"); 
-					frn.rst("k_stockseguridad"); 
-					frn.rst("k_invvirtual"); 
-					frn.rst("k_pedmostvin"); 
-					*/
-					
-					frn.rst("k_diasvenbusmen");
-					frn.rst("k_diasvenbusdia");
-					frn.rst("k_delaytraslado");	
-					
-					frn.rst("k_minanticipo");
-					frn.rst("k_diashabmes");
-					frn.rst("k_ss_dor");
-					frn.rst("k_ss_alt");
-					frn.rst("k_ss_baj");
-					frn.rst("k_ss_obs");
-									
-					return;
-				}
-				frn.lib("libGeneral.kpl","FileSave",cubo,"D:\Basura\cubo_pedsugconf");		
-				
-				/*
-				var   v_DiasVenBusMen, //A1
-						v_DelayTraslado, //A2
-						v_DiasVenBusDia, //A3
-						v_Formula, //A5
-						v_DiasHabMes,//A8
-						v_MinAnticipo, //A9
-						v_InvVirtual, //A10
-						v_AplMinAnt, //A11
-						v_DesvEst, //A12
-						v_PedMostVIN, //A13
-						v_StockSeguridad; // A14
-						
-					v_DiasVenBusMen = getXmlAtt(cubo,"r0", "c2");
-					v_DelayTraslado = getXmlAtt(cubo,"r0", "c3");
-					v_DiasVenBusDia = getXmlAtt(cubo,"r0", "c4");
-					v_Formula = getXmlAtt(cubo,"r0", "c5");
-					v_DiasHabMes = getXmlAtt(cubo,"r0", "c8");
-					v_MinAnticipo = getXmlAtt(cubo,"r0", "c9");
-					
-					v_InvVirtual = getXmlAtt(cubo,"r0", "c10");
-					v_AplMinAnt = getXmlAtt(cubo,"r0", "c11");
-					v_DesvEst = getXmlAtt(cubo,"r0", "c12");
-					v_PedMostVIN = getXmlAtt(cubo,"r0", "c13");
-					v_StockSeguridad = getXmlAtt(cubo,"r0", "c14");
-
-					frn.set("k_diasvenbusmen", v_DiasVenBusMen );
-					frn.set("k_delaytraslado", v_DelayTraslado);
-					frn.set("k_diasvenbusdia", v_DiasVenBusDia);
-					frn.set("k_invvirtual", v_InvVirtual);
-					frn.set("k_formula", v_Formula);
-					frn.set("k_diashabmes", v_DiasHabMes);
-					frn.set("k_MinAnticipo", v_MinAnticipo);
-					
-					frn.set("k_invvirtual", v_InvVirtual);
-					frn.set("k_aplminant", v_AplMinAnt);
-					frn.set("k_desvest", v_DesvEst);
-					frn.set("k_pedmostvin", v_PedMostVIN);
-					frn.set("k_stockseguridad", v_StockSeguridad);
-				*/
-					
-					
-				//Cambiar Atributos a tag para llenar de forma dinamica los elementos graficos
-				var xmlRow=frn.lib("libGeneral.kpl","CreaXmlDesdeAtt",cubo,"r0","D:\Basura\xmlRow");
-				frn.lib("libGeneral.kpl","FileSave",xmlRow,"D:\Basura\xmlRow");
-				frn.setX(xmlRow);
-				
-			}
-				
-			fun Execute(pIOpcion)
-			{
-			
-			if(pIOpcion == 0)
-			{
-				if(Validaciones()<=0)
-				{
-					return;
-				}
-				var xmlPantalla,cmd,cubo,resultado,mensaje,tip_ope,strTmp,mensaje ,ok,mensajeError;
-				xmlPantalla = getXml(frn.dataPag()); //Obtener el xml de la pantalla;
-				setXml(xmlPantalla ,"k_nocatalogo",0);
-				//setXml(xmlPantalla ,"k_1_2",0);
-				//setXml(xmlPantalla ,"k_Fecha","a");
-				frn.lib("libGeneral.kpl","FileSave",xmlPantalla,"C:\Basura\XMLPantalla_ConfPedSug");
-				
-				// For Testing 20231017 
-				/*
-				frn.message("XML to be sent has been created ...","Info !!!","Aceptar");
-				return;
-				*/
-				
-				cmd = "SELECT * FROM keplersc.cat_pedidosugeridoconf_crud('<document>" & getXmlStr(xmlPantalla,"EOF:13_10") & "</document>')";
-				kdb.rst(cubo);
-				cubo = frn.lib("libGeneral.kpl","EjecutarSql",cmd,"cat_InvPedSug.Execute");
-				
-				ok = getXmlAtt(cubo,"ok");
-				if(ok &! "" && !ok)
-				{	
-					mensajeError = getXmlAtt(cubo,"native3");					
-					mensajeError = frn.lib("libGeneral.kpl","ErrorBD",mensajeError);					
-					frn.message(mensajeError,"Error","Aceptar");
-					return;
-				}
-				
-				resultado= getXml(cubo,"resultado");
-				mensaje= getXml(cubo,"mensaje");
-				
-				if(resultado &= "1"){
-					frn.message(mensaje, "Registro guardado.","&Aceptar");
-				}else{
-					frn.message(mensaje, "Error","&Aceptar");
-				}
-			}
-			// Added by JMM 20231017
-			else {
-				CargarPedidoSugerido();
-			}
-			
-			}//end fun Execute
-			
-			fun Validaciones(psOpcion)
-			{
-				var v_DiasVenBusMen,
-					 v_DelayTraslado,
-					 v_DiasVenBusDia,
-					 v_DiasHabMes,
-					 v_MinAnticipo;
-					
-				v_DiasVenBusMen = frn.get("k_diasvenbusmen");
-				v_DelayTraslado = frn.get("k_delaytraslado");
-				v_DiasVenBusDia = frn.get("k_diasvenbusdia"); 
-				v_DiasHabMes = frn.get("k_diashabmes");
-				v_MinAnticipo = frn.get("k_minanticipo");
-				
-				if(frn.get("k_formula",-1,0)/*psOpcion ==*/ &= "Q")
-				{
-					if(v_DiasVenBusMen <= 0)
-					{
-						frn.message("Los dias de venta buscados MENSUALES deben ser mayor a cero.", "Dias de Ventas Buscados (Mensuales)","&Aceptar");
-						return 0;
-					}			
-					if(v_DiasVenBusDia <= 0)
-					{
-						frn.message("Los dias de venta buscados DIARIOS deben ser mayor a cero", "Delay de Traslado","&Aceptar");
-						return 0;
-					}
-					if(v_DelayTraslado <= 0)
-					{
-						frn.message("El delay de traslado debe ser mayor a cero", "Dias de Ventas Buscados (Diarios)","&Aceptar");
-						return 0;
-					}
-				}//end IF Q
-				else
-				{
-					if(v_DiasHabMes <= 0)
-					{
-						frn.message("Los dias habiles del mes deben ser mayor a cero", "Dias Habiles del Mes","&Aceptar");
-						return 0;
-					}
-				}//end if-else
-				
-				if(v_MinAnticipo  <= 0 || v_MinAnticipo > 100 )
-					{
-						frn.message("El porcentaje minimo para los anticipos debe ser mayor a cero", "Minimo Anticipo","&Aceptar");
-						return 0;
-					}
-				
-				return 1;
-			}//end fun Validaciones
-			
-		}
-	</script>
-</pag>
+<?xml version="1.0" encoding="UTF-8"?><pag xmlns="www.kepler.com.mx/2003/KSchema" roles="" tit="T&#237;tulo"><grp dim="45,40,15,15" 	  brdr="0,0" 	  clr="0,58,112" 	  bclr="192,205,213" 	  fnt="Arial,16" 	  unfont="0" id="Principal"><br/>			<tab/>			<grp bclr="236,240,243" 			fntClrBrdr="255,206,0" 			fntBrdr="Arial,18" 			hSpace="4" 			clrBrdr="0,58,112" 			brdr="0,5" 			dim="45,65,9,9" 			tit="Configuraci&#243;n para Pedido Sugerido"			fnt="Arial,16"><tab n="2"/><txt>Sucursal : </txt><tab n="2"/>				<cmb id="k_sucn" clr="64,64,64" clrBrdr="255,255,255"  						dim="32,15" bclr="255,255,255" brdr="2,0" fnt="Arial,16"  						Null="N"  available="Y"						OnChange="CargarPedidoSugerido()"/><br/>								<tab/><txt>Aplicar Min. Ant. :</txt><tab/>				<cmb id="k_aplminant" clr="64,64,64" clrBrdr="255,255,255" dim="5,5" bclr="255,255,255" brdr="2,0" fnt="Arial,16" Null="N" available="Y" modify="Y"/><txt>Si / No </txt><br/>				<tab/><txt>M&#237;nimo Anticipo :</txt><tab/>				<inp id="k_minanticipo" dim="10,1" brdr="2,0" clr="64,64,64" bclr="255,255,255" clrBrdr="255,255,255" type="string"/><txt>1 - 100%</txt><br/>				<tab n ="2"/><txt>F&#243;rmula :</txt><tab n ="2"/>				<inp id="k_formula" dim="10,1" brdr="2,0" clr="64,64,64" bclr="255,255,255" clrBrdr="255,255,255" type="string"/>				<br/><br/>				<tab n ="4"/><txt>USE Q - f&#243;rmula QROMOTORS</txt>				<br/>				<tab n ="5"/><txt> M - f&#243;rmula MIP</txt>				<br/><br/>				<tab n ="2"/><txt>-SOLO PARA LA F&#211;RMULA QROMOTORS-</txt>				<br/>				<tab/><txt>D&#237;as de Ventas Buscados :</txt><tab/>				<inp id="k_diasvenbusmen" dim="10,1" brdr="2,0" clr="64,64,64" bclr="255,255,255" clrBrdr="255,255,255"/><txt> (Mensuales)</txt><br/>				<tab/><txt>D&#237;as de Ventas Buscados :</txt><tab/>				<inp id="k_diasvenbusdia" dim="10,1" brdr="2,0" clr="64,64,64" bclr="255,255,255" clrBrdr="255,255,255" type="string"/><txt> (Diarios)</txt><br/>				<tab/><txt>Delay de Traslado :</txt><tab n="3"/>				<inp id="k_delaytraslado" dim="10,1" brdr="2,0" clr="64,64,64" bclr="255,255,255" clrBrdr="255,255,255"/><br/>				<br/><br/>				<tab n ="2"/><txt>-SOLO PARA LA F&#211;RMULA MIP-</txt>				<br/>				<tab/><txt>D&#237;as H&#225;biles del Mes :</txt><tab n="2"/>				<inp id="k_diashabmes" dim="10,1" brdr="2,0" clr="64,64,64" bclr="255,255,255" clrBrdr="255,255,255"/><br/>				<tab/><txt>Usar Desviaci&#243;n Estandar :</txt><tab/>								<cmb id="k_desvest" clr="64,64,64" clrBrdr="255,255,255" dim="5,5" bclr="255,255,255" brdr="2,0" fnt="Arial,16" Null="N" available="Y" modify="Y"/><txt>Si / No </txt><br/>				<br/>								<tab/><txt>Calcular Stock de Seguridad :</txt><tab/>				<cmb id="k_stockseguridad" clr="64,64,64" clrBrdr="255,255,255" dim="5,5" bclr="255,255,255" brdr="2,0" fnt="Arial,16" Null="N" available="Y" modify="Y"/><txt>Si / No </txt><br/>								<br/><br/>				<tab n ="2"/><txt>-INVENTARIO VIRTUAL-</txt>				<br/>				<tab/><txt>Usar Inventario Virtual :</txt><tab n="2"/>								<cmb id="k_invvirtual" clr="64,64,64" clrBrdr="255,255,255" dim="5,5" bclr="255,255,255" brdr="2,0" fnt="Arial,16" Null="N" available="Y" modify="Y"/><txt>Si / No </txt><br/>				<br/><br/>				<tab n ="2"/><txt>-PEDIDOS DE MOSTRADOR-</txt>				<br/>				<tab/><txt>Requerir VIN:</txt><tab n="4"/>								<cmb id="k_pedmostvin" clr="64,64,64" clrBrdr="255,255,255" dim="5,5" bclr="255,255,255" brdr="2,0" fnt="Arial,16" Null="N" available="Y" modify="Y"/><txt>Si / No </txt><br/>				<br/>				<tab n="5"/><bot id="btn_aceptar" dim="9,0" brdr="5" text="Aceptar" OnEnter="Execute(0)" default="0" visible="Y" available="Y"/>				<tab n="1"/><bot id="btn_cancelar" dim="9,0" brdr="5" text="Cancelar" OnEnter="Execute(1)" default="0" visible="Y" available="Y"/>				<br/>							<br/>			</grp></grp>	<script>		InstallDriver("KDB75");		class Main {						var frn,kdb,frP,externo,accion,suc_usuario,perfil_usuario ;			fun Main() {				frn=new FRNT;				frP=new FRNTP;				kdb=new KDB;				kdb.connect();				ctlrs_off();				llenar_ctlrs_default();				//config_ctrls_perfil();				suc_usuario = frn.lib("libKepler","UserInfo(1)");				perfil_usuario = frn.lib("libKepler","UserInfo(2)");				Inicializa();			}			fun Inicializa()			{				frn.setX("S", "k_desvest",0,0);				frn.setX("N", "k_desvest",1,0);								frn.setX("S", "k_aplminant",0,0);				frn.setX("N", "k_aplminant",1,0);								frn.setX("S", "k_stockseguridad",0,0);				frn.setX("N", "k_stockseguridad",1,0);				frn.setX("S", "k_invvirtual",0,0);				frn.setX("N", "k_invvirtual",1,0);				frn.setX("S", "k_pedmostvin",0,0);				frn.setX("N", "k_pedmostvin",1,0);				CargarPedidoSugerido();			}									fun ctlrs_off()			{				/*frn.setAtt("text_agrupador", "visible", "N" );					frn.setAtt("input_agrupador", "visible", "N" );	*/								frn.setAtt("btn_cancelar", "visible", "Y" );				frn.setAtt("btn_aceptar", "visible", "Y" );			}			fun llenar_ctlrs_default()			{				frn.rst("principal");				accion = frn.param(0);				var xmlRequest,					 cmd,					 ok, 					 cuboResultados,					 mensajeError;								frn.setAtt("principal", "tit", accion );				cmd = "select '['||c1||'] '||c2 as c2, c1 from keplersc.kdms";				cuboResultados = frn.lib("libGeneral.kpl","EjecutarSqlSel",cmd,"cat_InvPedSug.llenar_ctlrs_default()");				ok = getXmlAtt(cuboResultados ,"ok");				if(ok &! "" && !ok)				{				   mensajeError = getXmlAtt(cuboResultados ,"native3");					frn.message(mensajeError,"Error","Aceptar");					return;				}				frn.set("k_sucn",getXml(cuboResultados));			}						fun llenar_cmb(cuboResultados, cmb)			{									var len_cubo = nXml(cuboResultados);								var pos_ini = frn.N(cmb);									for (var cont=0; cont<len_cubo ; cont++)				{					var desc= getXmlAtt(cuboResultados,"r"&cont,"descripcion");					var clave= getXmlAtt(cuboResultados,"r"&cont,"clave");										frn.setX(desc, cmb, cont+pos_ini ,0);					frn.setX(clave, cmb, cont+pos_ini ,1);								}				}						fun CargarPedidoSugerido()			{				//frn.message(frn.get("k_sucn", -1, 1),"Mensaje","Aviso");								var clave_Sucursal = frn.get("k_sucn", -1, 1);				var cmd,						ok,						cubo;				//cmd = "select C1, C2,C3,C4,C5,C8,C9,C10,C11,C12,C13, C14, C15,C16 from keplersc.KDPEDIDOSUGERIDOCONF where c1='" & clave_Sucursal & "'";				cmd = "select C1, C2 k_diasvenbusmen ,C3 k_delaytraslado, C4 k_diasvenbusdia ," & 					"C5 k_formula,C8 k_diashabmes,C9 k_minanticipo,C10 k_invvirtual,C11 k_aplminant," & 					"C12 k_desvest, C13 k_pedmostvin, C14 k_stockseguridad, C15,C16 from keplersc.KDPEDIDOSUGERIDOCONF where c1='" & clave_Sucursal & "'";				cubo = frn.lib("libGeneral.kpl","EjecutarSqlSel",cmd,"cat_InvPedSug_view.Cargar()");								ok=getXmlAtt(cubo,"ok");				if(ok &! "" && !ok)				{					var mensajeError = getXmlAtt(cubo,"native3");					frn.message(mensajeError,"Error","Aceptar");					return;				}								if (nXml(cubo) == 0){					frn.message("Configuración de sucursal no existe","Error","Aceptar");					frn.rst("k_formula");					frn.rst("k_diasvenbusmen");					frn.rst("k_diasvenbusdia");					frn.rst("k_delaytraslado");										return;				}				frn.lib("libGeneral.kpl","FileSave",cubo,"D:\Basura\cubo");						/*				var   v_DiasVenBusMen, //A1						v_DelayTraslado, //A2						v_DiasVenBusDia, //A3						v_Formula, //A5						v_DiasHabMes,//A8						v_MinAnticipo, //A9						v_InvVirtual, //A10						v_AplMinAnt, //A11						v_DesvEst, //A12						v_PedMostVIN, //A13						v_StockSeguridad; // A14											v_DiasVenBusMen = getXmlAtt(cubo,"r0", "c2");					v_DelayTraslado = getXmlAtt(cubo,"r0", "c3");					v_DiasVenBusDia = getXmlAtt(cubo,"r0", "c4");					v_Formula = getXmlAtt(cubo,"r0", "c5");					v_DiasHabMes = getXmlAtt(cubo,"r0", "c8");					v_MinAnticipo = getXmlAtt(cubo,"r0", "c9");										v_InvVirtual = getXmlAtt(cubo,"r0", "c10");					v_AplMinAnt = getXmlAtt(cubo,"r0", "c11");					v_DesvEst = getXmlAtt(cubo,"r0", "c12");					v_PedMostVIN = getXmlAtt(cubo,"r0", "c13");					v_StockSeguridad = getXmlAtt(cubo,"r0", "c14");					frn.set("k_diasvenbusmen", v_DiasVenBusMen );					frn.set("k_delaytraslado", v_DelayTraslado);					frn.set("k_diasvenbusdia", v_DiasVenBusDia);					frn.set("k_invvirtual", v_InvVirtual);					frn.set("k_formula", v_Formula);					frn.set("k_diashabmes", v_DiasHabMes);					frn.set("k_MinAnticipo", v_MinAnticipo);										frn.set("k_invvirtual", v_InvVirtual);					frn.set("k_aplminant", v_AplMinAnt);					frn.set("k_desvest", v_DesvEst);					frn.set("k_pedmostvin", v_PedMostVIN);					frn.set("k_stockseguridad", v_StockSeguridad);					*/															//Cambiar Atributos a tag para llenar de forma dinamica los elementos graficos				var xmlRow=frn.lib("libGeneral.kpl","CreaXmlDesdeAtt",cubo,"r0","D:\Basura\xmlRow");				frn.lib("libGeneral.kpl","FileSave",xmlRow,"D:\Basura\xmlRow");				frn.setX(xmlRow);							}							fun Execute(pIOpcion)			{			if(pIOpcion == 0)			{				if(Validaciones()<=0)				{					return;				}				var xmlPantalla,cmd,cubo,resultado,mensaje,tip_ope,strTmp,mensaje ,ok,mensajeError;				xmlPantalla = getXml(frn.dataPag()); //Obtener el xml de la pantalla;				setXml(xmlPantalla ,"k_nocatalogo",0);				//setXml(xmlPantalla ,"k_1_2",0);				//setXml(xmlPantalla ,"k_Fecha","a");				frn.lib("libGeneral.kpl","FileSave",xmlPantalla,"C:\Basura\XMLPantalla");								cmd = "SELECT * FROM keplersc.cat_pedidosugeridoconf_crud('<document>" & getXmlStr(xmlPantalla,"EOF:13_10") & "</document>')";				kdb.rst(cubo);				cubo = frn.lib("libGeneral.kpl","EjecutarSql",cmd,"cat_InvPedSug.Execute");								ok = getXmlAtt(cubo,"ok");				if(ok &! "" && !ok)				{						mensajeError = getXmlAtt(cubo,"native3");										mensajeError = frn.lib("libGeneral.kpl","ErrorBD",mensajeError);										frn.message(mensajeError,"Error","Aceptar");					return;				}								resultado= getXml(cubo,"resultado");				mensaje= getXml(cubo,"mensaje");								if(resultado &= "1"){					frn.message(mensaje, "Registro guardado.","&Aceptar");				}else{					frn.message(mensaje, "Error","&Aceptar");				}			}			}//end fun Execute			fun Validaciones(psOpcion)			{				var v_DiasVenBusMen,					 v_DelayTraslado,					 v_DiasVenBusDia,					 v_DiasHabMes,					 v_MinAnticipo;										v_DiasVenBusMen = frn.get("k_diasvenbusmen");					v_DelayTraslado = frn.get("k_delaytraslado");					v_DiasVenBusDia = frn.get("k_diasvenbusdia"); 					v_DiasHabMes = frn.get("k_diashabmes");					v_MinAnticipo = frn.get("k_minanticipo");				if(psOpcion == "Q")				{					if(v_DiasVenBusMen <= 0)					{						frn.message("Los días de venta buscados MENSUALES deben ser mayor a cero.", "Días de Ventas Buscados (Mensuales)","&Aceptar");						return 0;					}								if(v_DiasVenBusDia <= 0)					{						frn.message("Los días de venta buscados DIARIOS deben ser mayor a cero", "Delay de Traslado","&Aceptar");						return 0;					}					if(v_DelayTraslado <= 0)					{						frn.message("El delay de traslado debe ser mayor a cero", "Días de Ventas Buscados (Diarios)","&Aceptar");						return 0;					}				}//end IF Q				else				{					if(v_DiasHabMes <= 0)					{						frn.message("Los dÃ­as HÁBILES del mes deben ser mayor a cero", "Días Hábiles del Mes","&Aceptar");						return 0;					}				}//end if-else								if(v_MinAnticipo  <= 0 || v_MinAnticipo  > 100 )					{						frn.message("El porcentaje mínimo para los anticipos debe ser mayor a cero", "Mínimo Anticipo","&Aceptar");						return 0;					}								return 1;			}//end fun Validaciones					}	</script></pag>

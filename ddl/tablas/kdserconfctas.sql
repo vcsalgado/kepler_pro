@@ -32,7 +32,7 @@ CREATE  TABLE keplersc.kdserconfctas (
   c31 numeric NULL,
   c32 numeric NULL,
   c33 numeric NULL,
-  c34 character varying(2) NOT NULL DEFAULT '0'::character varying
+  c34 character varying(2) NOT NULL DEFAULT 0
 ) TABLESPACE pg_default;
 ALTER TABLE ONLY keplersc.kdserconfctas ADD CONSTRAINT pk_kdserconfctas PRIMARY KEY (c1);
 COMMENT ON TABLE keplersc.kdserconfctas IS 'Configuracion del Modulo de Citas';

@@ -22,6 +22,5 @@ COMMENT ON COLUMN keplersc.kdms.c5 IS 'Clave distribuidor';
 COMMENT ON COLUMN keplersc.kdms.c4 IS 'Lugar expedicion';
 COMMENT ON COLUMN keplersc.kdms.c3 IS 'Identificacion';
 COMMENT ON COLUMN keplersc.kdms.c2 IS 'Nombre';
-COMMENT ON COLUMN keplersc.kdms.c12 IS 'Time zone';
 COMMENT ON COLUMN keplersc.kdms.c1 IS 'Sucursal';
 

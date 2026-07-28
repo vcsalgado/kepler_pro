@@ -13,7 +13,6 @@ ALTER TABLE ONLY keplersc.kdasesorcc ADD CONSTRAINT pk_kdasesorcc PRIMARY KEY (c
 COMMENT ON TABLE keplersc.kdasesorcc IS 'Asesores Contact Center';
 COMMENT ON COLUMN keplersc.kdasesorcc.c9 IS 'Sucursal';
 COMMENT ON COLUMN keplersc.kdasesorcc.c8 IS 'Esquema';
-COMMENT ON COLUMN keplersc.kdasesorcc.c3 IS 'Activo S o N';
 COMMENT ON COLUMN keplersc.kdasesorcc.c2 IS 'Nombre';
 COMMENT ON COLUMN keplersc.kdasesorcc.c1 IS 'Clave';
 

@@ -117,7 +117,7 @@ begin
 		clave_producto := coalesce((xpath('//document/k_mov/r' ||intCont||'/k_parte/text()',dataxml))[1],'');
 	
 		if upper(entradaSalida) = 'E' and deccantidad_partida <= 0 then
-			msg_err := msg_err || 'Partida [' || numero_partida::text || '] Producto ' || clave_producto || ' [ERR] Cantidad <= 0 ;';	
+			msg_err := msg_err || 'Partida [' || numero_partida::text || '] Producto ' || clave_producto || ' [ERR] Cantidad = 0 ;';	
 		end if;
 	
 		clave_producto := btrim(clave_producto);
@@ -148,7 +148,7 @@ begin
 		end if;
 	end if;
 
-	if upper(genero) = 'X' and upper(naturaleza) = 'A' and grupo::integer /*=*/ in (4,5) /*and tipo_clave::integer = 1*/ then 
+	if upper(genero) = 'X' and upper(naturaleza) = 'A' and grupo::integer = 5 /*and tipo_clave::integer = 1*/ then 
 		if length(referencia) = 0 then
 			msg_err := msg_err || 'Sin Referencia [ERR] ; ';
 		end if;

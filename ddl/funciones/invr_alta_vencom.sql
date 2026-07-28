@@ -216,7 +216,7 @@ begin
 			var_comisionable = '';
 			comisionable = '';
 			select c91 into var_comisionable from keplersc.kdmm 
-			where col_sucursal=sucursal_id and c1 = genero and c2 = naturaleza and c3 = grupo::integer and c4 = tipo_clave::integer;
+			where c1 = genero and c2 = naturaleza and c3 = grupo::integer and c4 = tipo_clave::integer;
 			comisionable := coalesce(var_comisionable,'');
 			if upper(comisionable) = 'S' then
 				totReg := 0;

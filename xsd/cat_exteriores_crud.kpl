@@ -6,7 +6,7 @@
 				type="string" modify="N" available="N" fnt="Arial,22"/>
 	<br/>
 	<br/>
-		<tab/><hLine clr="0,0,0" dim="80,0,0,0"/>
+		<hLine clr="0,0,0"/>
 		<br/><br/>
 		<tab/>
 
@@ -68,7 +68,7 @@
 				if (accion &= "NUEVO"){
 					frn.setAtt("k_modelo", "available", "Y" );
 				    frn.setAtt("k_color", "available", "Y" );
-					frn.set("k_titulo","Catalogo de Colores Exteriores del Vehiculo");					
+					frn.set("k_titulo","Catálogo de Colores Exteriores del Vehículo");					
 				}else{
 					frn.setAtt("k_modelo", "available", "Y" );
 					frn.setAtt("k_modelo", "modify", "N" );
@@ -139,7 +139,7 @@
 				if (frn.get("k_descripcion") &= "") {						
 					frn.setPos("k_descripcion");
 					resVal=0;
-					frn.message("Debe especificar la descripcion del color, verificar","Error","Aceptar");
+					frn.message("Debe especificar la descripción del color, verificar","Error","Aceptar");
 				}
 			}
 
@@ -150,7 +150,7 @@
 					return;
 				}
 				
-				var resultado_confirmacion = frn.message("Desea continuar?","Mensaje de Confirmacion", 2);
+				var resultado_confirmacion = frn.message("¿Desea continuar?","Mensaje de Confirmacion", 2);
 				if (resultado_confirmacion &! 1)  {
 					return;
 				}
@@ -191,7 +191,7 @@
 					
             fun ObtenerModelo(){    
                 cmdQuery = "select c1 as modelo,c2 as descripcion from keplersc.kdiv";
-                frn.dialog("genlistafiltrosel","Modelos de Vehiculos",cmdQuery,"modelo","k_modelo","0","0","N","S");			   
+                frn.dialog("genlistafiltrosel","Modelos de Vehículos",cmdQuery,"modelo","k_modelo","0","0","N","S");			   
             }
 
              fun ObtenerColor(){   
@@ -223,7 +223,7 @@
 				}
 				if((nXml(cubo) == 0) && (modelo_id &! "")) {
 					frn.setPos("k_modelo");
-					frn.message("El modelo del vehiculo no existe, es necesario darlo de alta","Error","Aceptar");
+					frn.message("El modelo del vehículo no existe, es necesario darlo de alta","Error","Aceptar");
 					resVal = 0;
 					return;
 				}

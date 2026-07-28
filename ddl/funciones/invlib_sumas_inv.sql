@@ -2,7 +2,7 @@ CREATE OR REPLACE FUNCTION keplersc.invlib_sumas_inv(dataxml xml)
  RETURNS TABLE(resultado text, mensaje text, adicionales text)
  LANGUAGE plpgsql
 AS $function$
---Descripcion: SUMAS_INV - se adapta la funcion ISAN_INV dentro de esta funcion
+--Descripcion: SUMAS_INV - se adapta la función ISAN_INV dentro de esta función
 --Autor: Saltiel Rc
 --Fecha: 27/09/2022
 
@@ -84,9 +84,9 @@ begin
 	v_B7015_TipoOper:=v_B7015_TipoOper::numeric;	
 
 	select count(*) into totreg from keplersc.kdmm 
-		where col_sucursal=v_sucursal_id and c1 = genero and c2 = naturaleza and c3 = grupo::numeric  and c4 = tipo_clave::numeric;
+		where c1 = genero and c2 = naturaleza and c3 = grupo::numeric  and c4 = tipo_clave::numeric;
 	if totReg>0 then 
-		v_m16:=(select c16 from keplersc.kdmm where col_sucursal=v_sucursal_id and c1 = genero and c2 = naturaleza and c3 = grupo::numeric  and c4 = tipo_clave::numeric)::numeric;
+		v_m16:=(select c16 from keplersc.kdmm where c1 = genero and c2 = naturaleza and c3 = grupo::numeric  and c4 = tipo_clave::numeric)::numeric;
 	else
 		v_m16:=16;
 	end if;

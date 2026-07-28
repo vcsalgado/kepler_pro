@@ -64,7 +64,7 @@ COMMENT ON COLUMN keplersc.kdm2.c31 IS 'Cantidad restada al documento anterior (
 COMMENT ON COLUMN keplersc.kdm2.c30 IS 'Número de cargos (descuentos usados como cargos)';
 COMMENT ON COLUMN keplersc.kdm2.c3 IS 'Naturaleza';
 COMMENT ON COLUMN keplersc.kdm2.c29 IS 'Clave del almacén o Referencia';
-COMMENT ON COLUMN keplersc.kdm2.c28 IS 'Codigo reemplazado o Clave del Vendedor ó Comprador';
+COMMENT ON COLUMN keplersc.kdm2.c28 IS 'Codigo reemplazado o Clave del Vendedor � Comprador';
 COMMENT ON COLUMN keplersc.kdm2.c27 IS 'Codigo requisicion';
 COMMENT ON COLUMN keplersc.kdm2.c26 IS 'Costo venta partida';
 COMMENT ON COLUMN keplersc.kdm2.c25 IS 'Clave cliente';

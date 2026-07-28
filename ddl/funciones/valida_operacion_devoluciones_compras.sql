@@ -20,7 +20,6 @@ declare
 	hora_movto text = '';
 	referencia text = '';
 	clave_cteprov text = '';
-	folio_compra text = '';
 
 	--Variables de uso general 
 	deccantidad_partida decimal = 0.00;
@@ -58,8 +57,7 @@ begin
 	grupo := (xpath('//document/k_tipon/r3/text()', dataxml))[1];
 	tipo_clave := (xpath('//document/k_tipon/r4/text()', dataxml))[1];
 	fecha_operacion := (xpath('//document/k_fecha/text()', dataxml))[1];
-	ptipo_compra := (xpath('//document/tipo_compra/text()', dataxml))[1];		
-	folio_compra := (xpath('//document/folio_compra/text()', dataxml))[1];
+	--tipo_movto := (xpath('//document/tipo_movto/text()', dataxml))[1];
 	--Movimiento
 
 --	usuario_movto := (xpath('//document/movimiento/usuario/text()',dataxml))[1];
@@ -108,7 +106,7 @@ begin
 		end if;	
 	
 		-- NEW 20220724 ; MANDATORY TO CHECK with VCSS : Por el tema de las partidas con Catidad = 0 
-	    -- el cual es un escenario presentado en los Grids (Tabla-Ambiente Grafico) debido a que todas 
+	   -- el cual es un escenario presentado en los Grids (Tabla-Ambiente Grafico) debido a que todas 
 		-- las partidas de la Compra se precargan, pero no necesariamente todas se utilizan en la 
 		-- Devolucion; sin embargo se incluyen en el XML que se envia como parametro al Docdis, por la 
 		-- La funcion que Carga el Ambiente Grafico al XML de envio 
@@ -118,46 +116,53 @@ begin
 	
 			-- Implementing DEVs Validation
 		
-		clave_producto := coalesce((xpath('//document/k_mov/r' ||intCont||'/k_partesel/text()',dataxml))[1],'');
+			clave_producto := coalesce((xpath('//document/k_mov/r' ||intCont||'/k_parte/text()',dataxml))[1],'');
 		   
-		var_suc := '';
+			var_suc := '';
 	   	var_prod := '';
 	   	var_dev := 0;
 	   	var_ref = '';
 		
 	   	select
-			tdm1.c1 /*as sucursal*/, tdm2.c8 /*as k_parte*/, coalesce(tDev.cantdev,0) /*as k_qd*/, tdm1.c11 /*as refer*/, coalesce(tdm2.c9,0) /*as k_qc*/  
+			/*
+			tdm1.c1 as sucursal, tdm2.c10 as k_descr, tdm2.c8 as k_parte, tdm2.c9 as k_qc, tdm2.c11 as k_unidad, tdm2.c12 as k_pc  
+			, tdm2.c13 as k_ic, tdm2.c17 as ivaperce, tdm2.c27 as costovtapartida 
+			, lpad(tdm1.c11,10,'0') as refer, tdm1.c6 as folio 
+			, tdm2.c7 as partida, tdm1.c1 as suc, tdm1.c10 as prov, tuxg.c4 as Factura
+			, coalesce(tDev.cantdev,0) as k_qd
+			*/
+			tdm1.c1 /*as sucursal*/, tdm2.c8 /*as k_parte*/, coalesce(tDev.cantdev,0) /*as k_qd*/, lpad(tdm1.c11,10,'0') /*as refer*/, coalesce(tdm2.c9,0) /*as k_qc*/  
 			into var_suc, var_prod, var_dev, var_ref, var_cant  
 			from keplersc.kdm1 tdm1 
 				inner join keplersc.kdm2 tdm2 on tdm1.c1 = tdm2.c1 and tdm1.c6 = tdm2.c6 
-					and tdm1.c2 = tdm2.c2 and tdm1.c3 = tdm2.c3 and tdm1.c4 = tdm2.c4 and tdm1.c5 = tdm2.c5
-				inner join keplersc.kduxg tuxg on tdm1.c1 = tuxg.c1 and tdm1.c11 = tuxg.c4 and tdm1.c10 = tuxg.c3
-				inner join keplersc.kduxe tuxe on tuxg.c1 = tuxe.c1 and tuxg.c4 = tuxe.c3 and tuxg.c3 = tuxe.c2
-			 	   and tdm1.c2 = tuxe.c5 and tdm1.c3 = tuxe.c6 and tdm1.c4 = tuxe.c7 and tdm1.c5 = tuxe.c8
+					/*220721*/ and tdm1.c2 = tdm2.c2 and tdm1.c3 = tdm2.c3 and tdm1.c4 = tdm2.c4 and tdm1.c5 = tdm2.c5
+				inner join keplersc.kduxg tuxg on tdm1.c1 = tuxg.c1 and lpad(tdm1.c11,10,'0') = tuxg.c4 and tdm1.c10 = tuxg.c3
+				/*220721*/ inner join keplersc.kduxe tuxe on tuxg.c1 = tuxe.c1 and tuxg.c4 = tuxe.c3 and tuxg.c3 = tuxe.c2
+			 	   /*220721*/ and tdm1.c2 = tuxe.c5 and tdm1.c3 = tuxe.c6 and tdm1.c4 = tuxe.c7 and tdm1.c5 = tuxe.c8
 			   left join ( 
-				   select tuxg.c1, tuxg.c3, tuxe.c3 as factura, tkdm2.c8 as devprod, sum(tkdm2.c9) as cantdev  
+				   select tuxg.c1, tuxg.c3, /*tuxg.c4*/tuxe.c3 as factura, tkdm2.c8 as devprod, sum(tkdm2.c9) as cantdev  
 					from keplersc.kdm1 tdm1 
 						inner join keplersc.kdm2 tkdm2 on tdm1.c1 = tkdm2.c1 and tdm1.c6 = tkdm2.c6 
-						  and tdm1.c2 = tkdm2.c2 and tdm1.c3 = tkdm2.c3 and tdm1.c4 = tkdm2.c4 and tdm1.c5 = tkdm2.c5
+						/*220721*/ and tdm1.c2 = tkdm2.c2 and tdm1.c3 = tkdm2.c3 and tdm1.c4 = tkdm2.c4 and tdm1.c5 = tkdm2.c5
 						inner join keplersc.kduxe tuxe on tdm1.c1 = tuxe.c1 and tdm1.c6 = tuxe.c9 and tdm1.c10 = tuxe.c2 
-						  and tdm1.c11 = tuxe.c3 
-						  and tdm1.c2 = tuxe.c5 and tdm1.c3 = tuxe.c6 and tdm1.c4 = tuxe.c7 and tdm1.c5 = tuxe.c8 
-						inner join keplersc.kduxg tuxg on tuxg.c1 = tuxe.c1 and tuxg.c4 = tuxe.c3 and tuxg.c3 = tuxe.c2 
-					where tuxe.c5 = /*'X'*/genero and tuxe.c6 = /*'D'*/naturaleza and tuxe.c7 = /*40*/grupo::integer and tuxe.c8 = /*1*/tipo_clave::integer    
+						/*220721*/ and lpad(tdm1.c11,10,'0') = tuxe.c3 
+						/*220721*/ and tdm1.c2 = tuxe.c5 and tdm1.c3 = tuxe.c6 and tdm1.c4 = tuxe.c7 and tdm1.c5 = tuxe.c8 
+						inner join keplersc.kduxg tuxg on tuxg.c1 = tuxe.c1 and tuxg.c4 = tuxe.c9/*tuxe.c3*/ and tuxg.c3 = tuxe.c2 
+					where /*tuxg.c2*/tuxe.c5 = /*'X'*/genero and tuxe.c6 = /*'D'*/naturaleza and tuxe.c7 = /*40*/grupo::integer and tuxe.c8 = /*1*/tipo_clave::integer    
 					and tuxg.c1 = sucursal_id   
-					and tuxe.c3 = referencia   
-					group by tuxg.c1, tuxg.c3, tuxe.c3, tkdm2.c8
+					/*220721*/ and lpad(/*tdm1.c11*/tuxe.c3,10,'0') = referencia   
+					group by tuxg.c1, tuxg.c3, /*tuxg.c4*/tuxe.c3, tkdm2.c8
 				) tDev on tuxg.c1 = tDev.c1 and tuxg.c3 = tDev.c3 and tuxg.c4 = tDev.factura and tdm2.c8 = tDev.devprod 	
-			where tdm1.c1 = sucursal_id and tdm1.c10 = clave_cteprov and tdm1.c11 = referencia  
-				and tdm1.c2 = 'X' and tdm1.c3 = 'A' and tdm1.c4 = 4 and tdm1.c5 = ptipo_compra
-				and tdm2.c8 = clave_producto;	
+			where tdm1.c1 = sucursal_id and tdm1.c10 = clave_cteprov and lpad(tdm1.c11,10,'0') = referencia  
+				/*new 220721*/ and tdm1.c2 = 'X' and tdm1.c3 = 'A' and tdm1.c4 = 5 and tdm1.c5 = ptipo_compra
+				/*new 220725 for function valida...devs*/ and tdm2.c8 = clave_producto;	
 		
-	raise notice 'clave_producto:% var_prod:% var_cant:% var_dev:% deccantidad_partida:%',clave_producto,var_prod,var_cant,var_dev,deccantidad_partida;	
+			
 			if (coalesce(var_prod,'') = '') or (coalesce(var_cant,-1) < 0) then
-				msg_prod := msg_prod || clave_producto || ' Producto no encontrado o cantidad invalida ; ';
+				msg_prod := msg_prod || clave_producto || ' Not found or Quantity Issue ; ';
 			else
 				if var_cant - var_dev - deccantidad_partida < 0 then
-					msg_prod := msg_prod || clave_producto || ' Excede la cantidad a devolver ; ';
+					msg_prod := msg_prod || clave_producto || ' DEV quantity exceeded ; ';
 				end if;
 			end if;
 	

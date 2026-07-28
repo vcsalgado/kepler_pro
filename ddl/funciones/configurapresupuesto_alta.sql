@@ -70,7 +70,7 @@ begin
 	strValor := (xpath('//document/results/no_partidas/text()',dataxml))[1];
 	no_partidas := strValor::integer;	
 	
-	if no_partidas > 0 then
+	if no_partidas > 1 then
 		--Procesar detalle
 		for cont in 0..no_partidas - 1 loop
 			--Tipo de documento

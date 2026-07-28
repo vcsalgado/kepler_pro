@@ -10,7 +10,7 @@ CREATE  TABLE keplersc.kdgcompradet (
   c9 character varying(1) NOT NULL DEFAULT ''::character varying,
   c10 numeric NOT NULL DEFAULT 0,
   c11 numeric NOT NULL DEFAULT 0,
-  c12 character varying(10) NOT NULL DEFAULT ''::character varying,
+  c12 character varying(7) NOT NULL DEFAULT ''::character varying,
   c13 numeric NOT NULL DEFAULT 0
 ) TABLESPACE pg_default;
 ALTER TABLE ONLY keplersc.kdgcompradet ADD CONSTRAINT pk_kdgcompradet PRIMARY KEY (c1, c2, c3, c4, c5, c6, c7);

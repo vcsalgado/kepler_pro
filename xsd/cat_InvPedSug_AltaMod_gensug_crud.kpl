@@ -1,673 +1,1 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<pag xmlns="www.kepler.com.mx/2003/KSchema" roles="" tit="T&#237;tulo">
-<grp dim="45,40,15,15" 
-	  brdr="0,0" 
-	  clr="0,58,112" 
-	  bclr="192,205,213" 
-	  fnt="Arial,16" 
-	  unfont="0" id="Principal"><br/>
-			<tab/>
-			<grp bclr="236,240,243" 
-			fntClrBrdr="255,206,0" 
-			fntBrdr="Arial,18" 
-			hSpace="4" 
-			clrBrdr="0,58,112" 
-			brdr="0,5" 
-			dim="35,50,9,9" 
-			tit="Alta / Modif. Sugerido"
-			fnt="Arial,16">
-			<tab n="2"/><txt>Sucursal : </txt><tab n="2"/>
-			<cmb id="k_sucn" clr="64,64,64" clrBrdr="255,255,255"  
-						dim="32,15" bclr="255,255,255" brdr="2,0" fnt="Arial,16"  
-						Null="N"  available="Y"
-						OnChange="CargarPedidoSugerido()"/><br/>				
-			<tab n="2"/><txt>Referencia :</txt><tab n="2"/>
-				<inp id="k_referencia_a6" dim ="10,1" brdr="2,0" clr="65,65,65" bclr="255,255,255" OnEnter="CargaDatosReferencia()" clrBrdr="255,255,255" type="string" just="C"/><br/>
-			<tab n="2"/><txt>Fecha creaci&#243;n : </txt>
-				<inp id="k_fechac_a2" dim="15,1" brdr="2,0" clr="64,64,64" bclr="255,255,255" clrBrdr="255,255,255" type="capital" just="C"/><br/>
-			<tab n ="2"/><txt>Estatus :</txt><tab n ="2"/>
-				<inp id="k_estatus_a12" dim="15,1" brdr="2,0" clr="64,64,64" bclr="255,255,255" clrBrdr="255,255,255" type="capital" available="N"/><br/>
-			<tab n="2"/><txt>F&#243;rmula :</txt><tab n ="2"/>
-				<inp id="k_formula_a7" dim="4,1" brdr="2,0" clr="64,64,64" bclr="255,255,255" clrBrdr="255,255,255" OnEnter="CargaFormula(0)" type="capital" just="C"/><tab n ="1"/>
-				<inp id="k_formula_a8" dim="10,1" brdr="2,0" clr="64,64,64" bclr="233,233,233" clrBrdr="255,255,255" available="N" type="capital" tooltip="Tipo f&#243;rmula"/>
-				<br/><br/>				
-			<tab n ="2"/><txt>S&#211;LO P&#193;RA F&#211;RMULA QROMOTORS</txt>
-				<br/>
-				<tab/><txt>Modo de Operaci&#243;n : </txt><tab n="2"/>
-				<cmb id="k_modope_a3" clr="64,64,64" clrBrdr="255,255,255" dim="5,5" bclr="255,255,255" brdr="2,0" fnt="Arial,16" Null="N" available="n" modify="Y"/><txt>[0-Mensual , 1- Diario]</txt><br/>				
-				<tab/><txt>D&#237;as de Venta Buscados :</txt><tab/>
-				<inp id="k_diasvenbus_a4" dim="10,1" brdr="2,0" clr="64,64,64" bclr="255,255,255" clrBrdr="255,255,255" available="n" type="string" just="C"/><br/>
-				<tab/><txt>Delay de Traslado :</txt><tab n="2"/>
-				<inp id="k_delaytraslado_a5" dim="10,1" brdr="2,0" clr="64,64,64" bclr="255,255,255" clrBrdr="255,255,255" type="string" just="C"/><br/>
-				<br/><br/>
-				<tab n ="2"/><txt>-SOLO PARA F&#211;RMULA MIP-</txt>
-				<br/>
-				<tab/><txt>D&#237;as H&#225;biles Mensuales :</txt><tab n="2"/>
-				<inp id="k_diashabmes_a9" dim="10,1" brdr="2,0" clr="64,64,64" bclr="255,255,255" clrBrdr="255,255,255" type="string"/><br/>
-				<tab/><txt>Incluir Desviaci&#243;n Estandar :</txt><tab/>
-				<cmb id="k_desvestr_a10" clr="64,64,64" clrBrdr="255,255,255" dim="5,5" bclr="255,255,255" brdr="2,0" fnt="Arial,16" Null="N" available="Y" modify="Y"/><txt>Si / No </txt><br/>
-				<tab/><txt>Usar Inventario Virtual :</txt><tab n="2"/>				
-				<cmb id="k_invvirtual_a11" clr="64,64,64" clrBrdr="255,255,255" dim="5,5" bclr="255,255,255" brdr="2,0" fnt="Arial,16" Null="N" available="Y" modify="Y"/><txt>Si / No </txt><br/>
-				<br/><br/>
-				<tab n="6"/><bot id="btn_aceptar" dim="9,0" brdr="5" text="Generar" OnEnter="Execute(1)" default="1" visible="Y" available="Y"/>				
-				<br/>
-				
-			<br/>
-			</grp>
-</grp>
-	<script>
-		InstallDriver("KDB75");
-		class Main {			
-		//TEXTO DE PRUEBA... 16 MAYO - 2022
-			var frn,kdb,frP,externo,
-					accion,suc_usuario,
-					perfil_usuario, 
-					v_gC6,
-					v_gC7,
-					v_gC12,sys,
-					rol_usuario,
-					asterisco;
-			fun Main() {
-				frn=new FRNT;
-				frP=new FRNTP;
-				kdb=new KDB;
-				kdb.connect();
-				sys=new SYS;
-				ctlrs_off();
-				rol_usuario = frn.config("user","role");
-				asterisco = "*";
-				
-				//config_ctrls_perfil();				
-				suc_usuario = frn.lib("libKepler","UserInfo(1)");
-				perfil_usuario = frn.lib("libKepler","UserInfo(2)");	
-				Inicializa();
-				llenar_ctlrs_default();
-				
-				CargarPedidoSugerido();			
-			}
-			fun Inicializa()
-			{				
-				frn.setX("0", "k_modope_a3",0,0);
-				frn.setX("1", "k_modope_a3",1,0);				
-				frn.setX("S", "k_desvestr_a10",0,0);
-				frn.setX("N", "k_desvestr_a10",1,0);
-				frn.setX("S", "k_invvirtual_a11",0,0);
-				frn.setX("N", "k_invvirtual_a11",1,0);				
-			}
-			
-			
-			fun ctlrs_off()
-			{
-				/*frn.setAtt("text_agrupador", "visible", "N" );*/			
-				frn.setAtt("k_estatus_a12", "available", "N" );	
-				frn.setAtt("btn_aceptar", "visible", "Y" );
-				frn.setAtt("k_formula_a8","available", "N" );
-			}
-			fun llenar_ctlrs_default()
-			{
-				frn.rst("principal");
-				accion = frn.param(0);
-				var xmlRequest,
-					 cmd,
-					 ok, 
-					 cuboResultados,
-					 mensajeError;
-				
-				frn.setAtt("principal", "tit", accion );
-			
-				
-				
-					
-			//Llenar combo sucursales
-				cmd = "select '['||c1||'] '||c2 as c2, c1 from keplersc.kdms";
-				if (rol_usuario &! "ADMINISTRADOR"  && rol_usuario &! "ADMINISTRATOR"){
-					cmd = cmd & " where c1='" & suc_usuario & "'";
-				}else {
-					if (suc_usuario &! asterisco && suc_usuario &! "" ){
-						cmd = cmd & " where c1='" & suc_usuario & "'";
-					}
-				}
-				
-				var cubo = frn.lib("libGeneral.kpl","EjecutarSqlSel",cmd,"srvcitacrud.Inicializa()");		
-				ok=getXmlAtt(cubo,"ok");
-				if(ok &! "" && !ok){
-					mensajeError = getXmlAtt(cubo,"native3");
-					mensajeError = frn.lib("libGeneral.kpl","ErrorBD",mensajeError);
-					frn.message(mensajeError,"Error","Aceptar");
-					return;
-				}
-					
-				frn.set("k_sucn",getXml(cubo));
-				
-
-				//establecer par谩metros iniciales
-				frn.set("k_modope_a3", 1);
-				
-			}
-			
-			fun llenar_cmb(cuboResultados, cmb)
-			{					
-				var len_cubo = nXml(cuboResultados);				
-				var pos_ini = frn.N(cmb);					
-				for (var cont=0; cont<len_cubo ; cont++)
-				{
-					var desc= getXmlAtt(cuboResultados,"r"&cont,"descripcion");
-					var clave= getXmlAtt(cuboResultados,"r"&cont,"clave");					
-					frn.setX(desc, cmb, cont+pos_ini ,0);
-					frn.setX(clave, cmb, cont+pos_ini ,1);				
-				}
-			}
-			fun genera_referencia()
-			{
-				var clave_Sucursal = frn.get("k_sucn", -1, 1);
-				var cmd,
-						ok,
-						cubo;
-				cmd = "select Max(C2) as cmax from keplersc.KDPEDREF where c1='" & clave_Sucursal & "'";
-				cubo = frn.lib("libGeneral.kpl","EjecutarSqlSel",cmd,"cat_InvPedSug_view.Cargar()");
-				ok=getXmlAtt(cubo,"ok");
-				if(ok &! "" && !ok)
-				{
-					var mensajeError = getXmlAtt(cubo,"native3");
-					frn.message(mensajeError,"Error","Aceptar");
-					return;
-				}
-				if (nXml(cubo) == 0)
-				{
-					frn.message("Configuracion de sucursal no existe","Error","Aceptar");					
-					return;
-				}
-				frn.set("k_referencia_a6", PadLeft((getXmlAtt(cubo,"r0", "cmax") + 1),10,"0"));				
-			}
-			
-			fun CargarPedidoSugerido()
-			{
-				////frn.lib("libGeneral.kpl","FileSave",getXml(cubo),"C:\Basura\XMLPantalla");
-				//frn.message(frn.get("k_sucn", -1, 1),"Mensaje","Aviso");				
-				var clave_Sucursal = frn.get("k_sucn", -1, 1);
-				var cmd,
-						ok,
-						cubo;
-				cmd = "select C1, C2,C3,C4,C5,C6,C8,C9,C10,C11,C12,C13, C14, C15,C16,(select Max(C2) from keplersc.KDPEDREF) as cmax from keplersc.KDPEDIDOSUGERIDOCONF where c1='" & clave_Sucursal & "'";
-				cubo = frn.lib("libGeneral.kpl","EjecutarSqlSel",cmd,"cat_InvPedSug_view.Cargar()");
-				ok=getXmlAtt(cubo,"ok");
-				if(ok &! "" && !ok)
-				{
-					var mensajeError = getXmlAtt(cubo,"native3");
-					frn.message(mensajeError,"Error","Aceptar");
-					return;
-				}				
-				if (nXml(cubo) == 0){
-					frn.message("Configuracion de sucursal no existe","Error","Aceptar");
-					//frn.rst("k_formula_a7");
-					
-					return;
-				}
-					frn.set("k_diasvenbus_a4", 15);
-					frn.set("k_delaytraslado_a5", 1);
-					frn.set("k_formula_a7", "");
-					frn.set("k_formula_a8", "");
-					frn.set("k_diashabmes_a9", 25);
-					frn.set("k_desvestr_a10", "N");
-					frn.set("k_invvirtual_a11", "N");
-								
-				var   v_sucN,
-						v_Referencia_A6,
-						v_FechaC_A2,
-						v_Estatus_A12,
-						v_Formula_A7,
-						v_Formula_A8,
-						v_ModOpe_A3,
-						v_DiasVenBus_A4,
-						v_DelayTraslado_A5,
-						v_DiasHabMes_A9,
-						v_DesvEstr_A10,
-						v_InvVirtual_A11,
-						v_c2,
-						v_c3,
-						v_c4,
-						v_c5,						
-						v_c8,
-						v_c9,
-						v_c10,
-						v_c11,
-						v_c12, 
-						vopA3;
-						
-					v_c2 = getXmlAtt(cubo,"r0", "c2");
-					v_c3 = getXmlAtt(cubo,"r0", "c3");
-					v_c4 = getXmlAtt(cubo,"r0", "c4");
-					v_c5 = getXmlAtt(cubo,"r0", "c5");
-					v_gC6 = getXmlAtt(cubo,"r0", "c6");					
-					v_gC7 = getXmlAtt(cubo,"r0", "c7");
-					v_c8 = getXmlAtt(cubo,"r0", "c8");
-					v_c9 = getXmlAtt(cubo,"r0", "c9");
-					v_c10 = getXmlAtt(cubo,"r0", "c10");
-					v_c12 = getXmlAtt(cubo,"r0", "c12");
-					v_gC12 = v_c12 ;
-					//frn.message(v_RefMaxima,"Informaci贸n","Aceptar");
-					frn.set("k_referencia_a6", PadLeft((getXmlAtt(cubo,"r0", "cmax") + 1),10,"0"));
-					vopA3 = frn.get("k_modope_a3", -1, 0);
-					if(vopA3 &= "1")
-					{
-						frn.set("k_diasvenbus_a4", v_c4);
-					}else{
-						frn.set("k_diasvenbus_a4", v_c2);
-					}
-					frn.set("k_delaytraslado_a5", v_c3);
-					frn.set("k_formula_a7", v_c5);
-					frn.set("k_formula_a8", "");
-					frn.set("k_diashabmes_a9", v_c8);
-					frn.set("k_desvestr_a10", v_c12);
-					frn.set("k_invvirtual_a11", v_c10);
-					
-					if(v_c5 &= "Q")
-					{
-						frn.set("k_formula_a8", "QROMOTORS");						
-					}
-					else if(v_c5 &= "M")
-					{
-						frn.set("k_formula_a8", "MIP");					
-					}
-					else
-					{
-						frn.message("Formula no especificada..","Error","Aceptar");
-						return;
-					}
-					
-					frn.set("k_fechac_a2",sys.date());
-					frn.set("k_estatus_a12", "NUEVO");
-			}
-			
-			fun PadLeft(pText,pRelleno,pCaracterRelleno)
-			{
-				var Resultado;
-				var pos_ini = pText;
-				var nReg= strlen(pText);
-				for (var cont = nReg; cont < pRelleno; cont++)
-				{
-					Resultado = pCaracterRelleno & Resultado;
-				}
-				Resultado = Resultado & pText;
-				//frn.message(Resultado ,"Informaci贸n","Aceptar");
-				return Resultado;
-			}
-			
-			fun CargaDatosReferencia()
-			{
-				var clave_Sucursal = frn.get("k_sucn", -1, 1);
-				var Referencia_C2 = PadLeft(frn.get("k_referencia_a6"),10,"0"); //0000000001
-				var cmd,
-						ok,
-						cuboResultados;
-				cmd = "select C3,C4,C5 from keplersc.KDPEDREF where c1='" & clave_Sucursal & "' AND c2 ='" & Referencia_C2  & "'" ;
-				cuboResultados = frn.lib("libGeneral.kpl","EjecutarSqlSel",cmd,"cat_InvPedSug_view.Cargar()");
-				ok=getXmlAtt(cuboResultados,"ok");
-				if(ok &! "" && !ok)
-				{
-					var mensajeError = getXmlAtt(cuboResultados,"native3");
-					frn.message(mensajeError,"Error","Aceptar");
-					return;
-				}
-				if (nXml(cuboResultados) == 0){
-					frn.message("Referencia no encontrada","Aviso","Aceptar");
-					//frn.rst("k_formula_a7");
-					frn.set("k_fechac_a2", fnDate());
-					CargarPedidoSugerido();
-					return;
-				}
-								
-				var   v_c3,
-						v_c4,
-						v_c5;						
-					
-					v_c3 = getXmlAtt(cuboResultados,"r0", "c3");
-					v_c4 = getXmlAtt(cuboResultados,"r0", "c4");
-					v_c5 = getXmlAtt(cuboResultados,"r0", "c5");
-						
-					frn.set("k_fechac_a2", v_c3);		
-					frn.set("k_formula_a7", v_c5);		
-					if (v_c5 &= "Q") 
-					{
-						frn.set("k_formula_a8", "QROMOTORS");
-						frn.setAtt("k_formula_a8", "available", "n" );
-						frn.setAtt("k_modope_a3", "available", "Y" );
-						frn.setAtt("k_diasvenbus_a4", "available", "Y" );
-						frn.setAtt("k_diasvenbus_a4", "available", "Y" );
-						
-					}
-					else if (v_c5 &= "M") 
-					{
-						frn.set("k_formula_a8", "MIP");
-						frn.setAtt("k_formula_a8", "available", "n" );
-						frn.setAtt("k_modope_a3", "available", "n" );
-						frn.setAtt("k_diasvenbus_a4", "available", "n" );
-						frn.setAtt("k_diasvenbus_a4", "available", "n" );
-					}
-					else
-					{
-						frn.message("Error en formula","Error","Aceptar");
-						return;
-					}
-					
-					if(v_c4 == 0 )
-					{
-					   frn.set("k_estatus_a12", "ELIMINADO");
-					   
-					}
-					else if(v_c4 == 10 )
-					{
-						frn.set("k_estatus_a12", "EDITABLE");
-					}
-					else if (v_c4 == 20 )
-					{
-						frn.set("k_estatus_a12", "SOLICITADO");
-					}
-					
-			}// fin datosReferencia
-			fun CargaFormula(pIopcion)
-			{
-				if (frn.get("k_formula_a7") &= "Q") 
-					{
-						frn.set("k_formula_a8", "QROMOTORS");
-						frn.setAtt("k_formula_a8", "available", "n" );
-						frn.setAtt("k_modope_a3", "available", "Y" );
-						frn.setAtt("k_diasvenbus_a4", "available", "Y" );
-						frn.setAtt("k_diasvenbus_a4", "available", "Y" );
-						
-					}else
-					{
-						frn.set("k_formula_a8", "MIP");
-						frn.setAtt("k_formula_a8", "available", "n" );
-						frn.setAtt("k_modope_a3", "available", "n" );
-						frn.setAtt("k_diasvenbus_a4", "available", "n" );
-						frn.setAtt("k_diasvenbus_a4", "available", "n" );
-					}
-			}
-			
-			fun Execute(pIOpcion)
-			{
-			
-				var v_exec, v_suc, v_ref;
-				
-				if( pIOpcion == 1 )
-				{					
-				
-					v_exec = 0;
-				   v_exec = Ejecuta();
-				
-					if ( v_exec/*Ejecuta()*/ == /*1*/ 3 ) // regresa 3 cuando la referencia no existe y se debe crear. 
-					{
-						//genera_referencia();
-						
-						// For Tests by JMM ... 
-						//frn.message("Correra el Proceso ... Despues de Funcion Ejecuta.cat_pedidosugerido_altamod_crud","Info","Aceptar");
-						// /*
-						//inserta_referencia();
-						genera_sugerido();
-						// Added 20230826 
-						CargaDatosReferencia();
-						
-						v_suc = frn.get("k_sucn", -1, 1);
-						v_ref = frn.get("k_referencia_a6");
-						frn.dialog("tbl_kdpedrefmov_upd", v_suc, v_ref);
-						
-						return;
-						// */
-						
-					}
-					// New Code JMM ... 20230829 
-					if ( v_exec == /*1v*/ 1 ) // regresa 3 cuando la referencia existe ... y si es editable se lanzara la SCR Input  
-					{
-						if ( frn.get("k_estatus_a12") &=  "EDITABLE" ) {
-							v_suc = frn.get("k_sucn", -1, 1);
-							v_ref = frn.get("k_referencia_a6");
-							frn.dialog("tbl_kdpedrefmov_upd", v_suc, v_ref);	
-						}
-					}				
-				}
-				if( pIOpcion == 0 )
-				{
-					if( Validaciones() <= 0 )
-					{
-						return;
-					}
-				
-				}
-			}//end fun Execute
-			
-			fun Ejecuta ()
-			{
-				var  resultado;
-				//var clave_Sucursal = frn.get("k_sucn", -1, 1);
-				//var Referencia_C2 = PadLeft(frn.get("k_referencia_a6"),10,"0"); //0000000001
-				
-				var xmlPantalla,
-						 cmd,
-						 cubo,
-						 resultado,
-						 mensaje,
-						 tip_ope,
-						 strTmp,
-						 mensaje ,
-						 ok,mensajeError;
-					    xmlPantalla = getXml(frn.dataPag()); //Obtener el xml de la pantalla;
-						 setXml(xmlPantalla ,"k_sucn",frn.get("k_sucn", -1, 1)); // obtener sucursal 
-						 setXml(xmlPantalla ,"k_referencia_a6",(PadLeft(frn.get("k_referencia_a6"),10,"0"))); // obtener la referencia 
-						 //nuevas variables para validar en Funcion
-						 
-						 if(frn.get("k_formula_a7") &=  "Q")
-						 {
-							setXml(xmlPantalla ,"k_modope_a3",frn.get("k_modope_a3", -1, 1)); 
-						 }
-						 else
-						 {
-							setXml(xmlPantalla ,"k_modope_a3","0"); 
-						 }
-						 
-				   setXml(xmlPantalla ,"k_diasvenbus_a4",frn.get("k_diasvenbus_a4")); 
-				   setXml(xmlPantalla ,"k_delaytraslado_a5",frn.get("k_delaytraslado_a5"));						 
-					frn.lib("libGeneral.kpl","FileSave",xmlPantalla,"C:\Basura\Alta_Mod_Sugerido");
-					cmd = "SELECT * FROM keplersc.cat_pedidosugerido_altamod_crud('<document>" & getXmlStr(xmlPantalla,"EOF:13_10") & "</document>')";
-					kdb.rst(cubo);
-					cubo = frn.lib("libGeneral.kpl","EjecutarSql",cmd,"cat_InvPedSug.Execute");					
-					ok = getXmlAtt(cubo,"ok");
-					if(ok &! "" && !ok)
-					{
-						mensajeError = getXmlAtt(cubo,"native3");					
-						mensajeError = frn.lib("libGeneral.kpl","ErrorBD",mensajeError);					
-						frn.message(mensajeError,"Error","Aceptar");
-						resultado = -1;
-						return resultado;
-					}				
-					
-		
-					resultado = getXml(cubo,"resultado");
-					mensaje = getXml(cubo,"mensaje");
-					//frn.message(mensaje ,"Mensaje de validacion","Aceptar");
-					// Conditions Added by JMM ... 20230826 
-					if( resultado == 1 || resultado == 3 ){
-						if( resultado == 1 ){ 
-							if ( frn.get("k_estatus_a12") &!  "EDITABLE" ) {
-								frn.message("La Referencia ya Existe ...", "Mensaje de validacion","Aceptar");
-							} 
-						}
-						if( resultado == 3 ){ frn.message("La Referencia se Procesara ...", "Mensaje de validacion","Aceptar"); }			
-					} else {
-						frn.message(mensaje ,"Mensaje de validacion","Aceptar");
-					}
-					
-				return resultado;
-				
-			}
-			
-			fun inserta_referencia()			
-			{
-					var a1,a6,a2,a4,a7;
-					a1 = frn.get("k_sucn", -1, 1);
-					a6 = frn.get("k_referencia_a6");
-					a2 = frn.get("k_fechac_a2");
-					a4 = 10;
-					a7 = frn.get("k_formula_a7");;
-					
-				var resultado;				
-				var xmlPantalla,
-						 cmd,
-						 cubo,
-						 resultado,
-						 mensaje,
-						 tip_ope,
-						 strTmp,
-						 mensaje ,
-						 ok,mensajeError;
-					    xmlPantalla = getXml(frn.dataPag()); 
-						 setXml(xmlPantalla ,"k_sucn",a1); 
-						 setXml(xmlPantalla ,"k_referencia_a6",(PadLeft(a6,10,"0")));						 
-						 setXml(xmlPantalla ,"k_fechac_a2",a2); 
-						 setXml(xmlPantalla ,"k_diasvenbus_a4",a4); 
-						 setXml(xmlPantalla ,"k_formula_a7",a7); 
-						 
-					// Added by JMM
-					frn.lib("libGeneral.kpl","FileSave",xmlPantalla,"C:\Basura\Alta_Mod_Insert_ENC_Sugerido_Paso2");
-					return;
-					
-					cmd = "SELECT * FROM keplersc.cat_pedidosugerido_altamod_insert_crud('<document>" & getXmlStr(xmlPantalla,"EOF:13_10") & "</document>')";
-					kdb.rst(cubo);
-					cubo = frn.lib("libGeneral.kpl","EjecutarSql",cmd,"cat_InvPedSug.Execute");
-				
-					ok = getXmlAtt(cubo,"ok");
-					if(ok &! "" && !ok)
-					{
-						mensajeError = getXmlAtt(cubo,"native3");					
-						mensajeError = frn.lib("libGeneral.kpl","ErrorBD",mensajeError);					
-						frn.message(mensajeError,"Error","Aceptar");
-						resultado = -1;
-						return resultado;
-					}
-				
-				resultado = getXml(cubo,"resultado");
-				mensaje = getXml(cubo,"mensaje");
-				
-				if(resultado &= "1")
-				{
-				// JMM ... Verificar si es necesario el MSG ... Expuesto con VCSS este proceso (INS.ENC) se ligara con Resultado del proceso INS.DET 
-				frn.message(mensaje ,"Registro Insertado","Aceptar");
-				}
-				else
-				{
-					frn.message(mensaje ,"Error","Aceptar");
-				}
-				return resultado;
-   
-			}
-			
-			fun genera_sugerido()
-			{
-					var  resultado;
-				//var clave_Sucursal = frn.get("k_sucn", -1, 1);
-				//var Referencia_C2 = PadLeft(frn.get("k_referencia_a6"),10,"0"); //0000000001
-				
-				var xmlPantalla,
-						 cmd,
-						 cubo,
-						 resultado,
-						 mensaje,
-						 tip_ope,
-						 strTmp,
-						 mensaje ,
-						 ok,mensajeError;
-					    xmlPantalla = getXml(frn.dataPag()); //Obtener el xml de la pantalla;
-						 setXml(xmlPantalla ,"k_sucn",frn.get("k_sucn", -1, 1)); // obtener sucursal 
-						 setXml(xmlPantalla ,"k_referencia_a6",(PadLeft(frn.get("k_referencia_a6"),10,"0"))); // obtener la referencia						 
-						 setXml(xmlPantalla ,"k_diasvenbus_a4",frn.get("k_diasvenbus_a4")); 
-						 setXml(xmlPantalla ,"k_delaytraslado_a5",frn.get("k_delaytraslado_a5")); 
-						 setXml(xmlPantalla ,"k_formula_a7",frn.get("k_formula_a7")); 
-						 setXml(xmlPantalla ,"k_invvirtual_a11",frn.get("k_invvirtual_a11")); 
-
-				// Added by JMM
-				frn.lib("libGeneral.kpl","FileSave",xmlPantalla,"C:\Basura\Alta_Mod_GenSug_Sugerido_Paso3");
-				//return;
-					
-				// JMM	... Se considera que el nombre de esta funcion es Erroneo ... Se Actualizar con otra (ya existente en K80) 
-				//cmd = "SELECT * FROM keplersc.cat_pedidosugerido_altamod_crud('<document>" & getXmlStr(xmlPantalla,"EOF:13_10") & "</document>')";
-				cmd = "SELECT * FROM keplersc.cat_pedidosugerido_altamod_gensug_crud('<document>" & getXmlStr(xmlPantalla,"EOF:13_10") & "</document>')";
-				kdb.rst(cubo);
-				cubo = frn.lib("libGeneral.kpl","EjecutarSql",cmd,"cat_InvPedSug.Execute");
-				
-				ok = getXmlAtt(cubo,"ok");
-				if(ok &! "" && !ok)
-				{
-					mensajeError = getXmlAtt(cubo,"native3");					
-					mensajeError = frn.lib("libGeneral.kpl","ErrorBD",mensajeError);					
-					frn.message(mensajeError,"Error","Aceptar");
-					resultado = -1;
-					return resultado;
-				}
-				
-				resultado = getXml(cubo,"resultado");
-				mensaje = getXml(cubo,"mensaje");
-				
-				if(resultado &= "1")
-				{
-					//frn.message(mensaje ,"Error","Aceptar");
-					//frn.message(mensaje ,"Info","Aceptar");
-				}
-				else
-				{
-					frn.message(mensaje ,"Error","Aceptar");
-				}
-				return resultado;
-			}
-			
-			fun Validaciones(psOpcion)
-			{
-				var v_DiasVenBusMen,
-					 v_DelayTraslado,
-					 v_DiasVenBusDia,
-					 v_DiasHabMes,
-					 v_MinAnticipo;
-					
-					v_DiasVenBusMen = frn.get("k_DiasVenBusMen");
-					v_DelayTraslado = frn.get("k_DelayTraslado");
-					v_DiasVenBusDia = frn.get("k_DiasVenBusDia"); 
-					v_DiasHabMes = frn.get("k_DiasHabMes");
-					v_MinAnticipo = frn.get("k_MinAnticipo");
-				if(psOpcion == "Q")
-				{
-					if(v_DiasVenBusMen <= 0)
-					{
-						frn.message("Los dias de venta buscados MENSUALES deben ser mayor a cero.", "Dias de Ventas Buscados (Mensuales)","&Aceptar");
-						return 0;
-					}			
-					if(v_DiasVenBusDia <= 0)
-					{
-						frn.message("Los dias de venta buscados DIARIOS deben ser mayor a cero", "Delay de Traslado","&Aceptar");
-						return 0;
-					}
-					if(v_DelayTraslado <= 0)
-					{
-						frn.message("El delay de traslado debe ser mayor a cero", "Dias de Ventas Buscados (Diarios)","&Aceptar");
-						return 0;
-					}
-				}//end IF Q
-				else
-				{
-					if(v_DiasHabMes <= 0)
-					{
-						frn.message("Los dias habiles del mes deben ser mayor a cero", "Dias Habiles del Mes","&Aceptar");
-						return 0;
-					}
-				}//end if-else
-				
-				if(v_MinAnticipo  <= 0 || v_MinAnticipo  > 100 )
-					{
-						frn.message("El porcentaje minimo para los anticipos debe ser mayor a cero", "Minimo Anticipo","&Aceptar");
-						return 0;
-					}
-				
-				return 1;
-			}//end fun Validaciones
-			
-		}
-	</script>
-</pag>
+<?xml version="1.0" encoding="UTF-8"?><pag xmlns="www.kepler.com.mx/2003/KSchema" roles="" tit="T&#237;tulo"><grp dim="45,40,15,15" 	  brdr="0,0" 	  clr="0,58,112" 	  bclr="192,205,213" 	  fnt="Arial,16" 	  unfont="0" id="Principal"><br/>			<tab/>			<grp bclr="236,240,243" 			fntClrBrdr="255,206,0" 			fntBrdr="Arial,18" 			hSpace="4" 			clrBrdr="0,58,112" 			brdr="0,5" 			dim="35,50,9,9" 			tit="Alta / Modif. Sugerido"			fnt="Arial,16">			<tab n="2"/><txt>Sucursal : </txt><tab n="2"/>			<cmb id="k_sucn" clr="64,64,64" clrBrdr="255,255,255"  						dim="32,15" bclr="255,255,255" brdr="2,0" fnt="Arial,16"  						Null="N"  available="Y"						OnChange="CargarPedidoSugerido()"/><br/>							<tab n="2"/><txt>Referencia :</txt><tab n="2"/>				<inp id="k_referencia_a6" dim ="10,1" brdr="2,0" clr="65,65,65" bclr="255,255,255" OnEnter="CargaDatosReferencia()" clrBrdr="255,255,255" type="string" just="C"/><br/>			<tab n="2"/><txt>Fecha creaci&#243;n : </txt>				<inp id="k_fechac_a2" dim="15,1" brdr="2,0" clr="64,64,64" bclr="255,255,255" clrBrdr="255,255,255" type="capital" just="C"/><br/>			<tab n ="2"/><txt>Estatus :</txt><tab n ="2"/>				<inp id="k_estatus_a12" dim="15,1" brdr="2,0" clr="64,64,64" bclr="255,255,255" clrBrdr="255,255,255" type="capital" available="N"/><br/>			<tab n="2"/><txt>F&#243;rmula :</txt><tab n ="2"/>				<inp id="k_formula_a7" dim="4,1" brdr="2,0" clr="64,64,64" bclr="255,255,255" clrBrdr="255,255,255" OnEnter="CargaFormula(0)" type="capital" just="C"/><tab n ="1"/>				<inp id="k_formula_a8" dim="10,1" brdr="2,0" clr="64,64,64" bclr="233,233,233" clrBrdr="255,255,255" available="n" type="capital" tooltip="Tipo f&#243;rmula"/>				<br/><br/>							<tab n ="2"/><txt>S&#211;LO P&#193;RA F&#211;RMULA QROMOTORS</txt>				<br/>				<tab/><txt>Modo de Operaci&#243;n : </txt><tab n="2"/>				<cmb id="k_modope_a3" clr="64,64,64" clrBrdr="255,255,255" dim="5,5" bclr="255,255,255" brdr="2,0" fnt="Arial,16" Null="N" available="n" modify="Y"/><txt>[0-Mensual , 1- Diario]</txt><br/>								<tab/><txt>D&#237;as de Venta Buscados :</txt><tab/>				<inp id="k_diasvenbus_a4" dim="10,1" brdr="2,0" clr="64,64,64" bclr="255,255,255" clrBrdr="255,255,255" available="n" type="string" just="C"/><br/>				<tab/><txt>Delay de Traslado :</txt><tab n="2"/>				<inp id="k_delaytraslado_a5" dim="10,1" brdr="2,0" clr="64,64,64" bclr="255,255,255" clrBrdr="255,255,255" type="string" just="C"/><br/>				<br/><br/>				<tab n ="2"/><txt>-SOLO PARA F&#211;RMULA MIP-</txt>				<br/>				<tab/><txt>D&#237;as H&#225;biles Mensuales :</txt><tab n="2"/>				<inp id="k_diashabmes_a9" dim="10,1" brdr="2,0" clr="64,64,64" bclr="255,255,255" clrBrdr="255,255,255" type="string"/><br/>				<tab/><txt>Incluir Desviaci&#243;n Estandar :</txt><tab/>				<cmb id="k_desvestr_a10" clr="64,64,64" clrBrdr="255,255,255" dim="5,5" bclr="255,255,255" brdr="2,0" fnt="Arial,16" Null="N" available="Y" modify="Y"/><txt>Si / No </txt><br/>				<tab/><txt>Usar Inventario Virtual :</txt><tab n="2"/>								<cmb id="k_invvirtual_a11" clr="64,64,64" clrBrdr="255,255,255" dim="5,5" bclr="255,255,255" brdr="2,0" fnt="Arial,16" Null="N" available="Y" modify="Y"/><txt>Si / No </txt><br/>				<br/><br/>				<tab n="6"/><bot id="btn_aceptar" dim="9,0" brdr="5" text="Generar" OnEnter="Execute(1)" default="1" visible="Y" available="Y"/>								<br/>							<br/>			</grp></grp>	<script>		InstallDriver("KDB75");		class Main {					//TEXTO DE PRUEBA... 16 MAYO - 2022			var frn,kdb,frP,externo,					accion,suc_usuario,					perfil_usuario, 					v_gC6,					v_gC7,					v_gC12,sys;			fun Main() {				frn=new FRNT;				frP=new FRNTP;				kdb=new KDB;				kdb.connect();				sys=new SYS;				ctlrs_off();				Inicializa();				llenar_ctlrs_default();				//config_ctrls_perfil();								suc_usuario = frn.lib("libKepler","UserInfo(1)");				perfil_usuario = frn.lib("libKepler","UserInfo(2)");									CargarPedidoSugerido();						}			fun Inicializa()			{								frn.setX("0", "k_modope_a3",0,0);				frn.setX("1", "k_modope_a3",1,0);								frn.setX("S", "k_desvestr_a10",0,0);				frn.setX("N", "k_desvestr_a10",1,0);				frn.setX("S", "k_invvirtual_a11",0,0);				frn.setX("N", "k_invvirtual_a11",1,0);							}									fun ctlrs_off()			{				/*frn.setAtt("text_agrupador", "visible", "N" );*/							frn.setAtt("k_estatus_a12", "available", "N" );					frn.setAtt("btn_aceptar", "visible", "Y" );				frn.setAtt("k_formula_a8","available", "N" );			}			fun llenar_ctlrs_default()			{				frn.rst("principal");				accion = frn.param(0);				var xmlRequest,					 cmd,					 ok, 					 cuboResultados,					 mensajeError;								frn.setAtt("principal", "tit", accion );				cmd = "select '['||c1||'] '||c2 as c2, c1 from keplersc.kdms";				cuboResultados = frn.lib("libGeneral.kpl","EjecutarSqlSel",cmd,"cat_InvPedSug.llenar_ctlrs_default()");				ok = getXmlAtt(cuboResultados ,"ok");				if(ok &! "" && !ok)				{				   mensajeError = getXmlAtt(cuboResultados ,"native3");					frn.message(mensajeError,"Error","Aceptar");					return;				}				frn.set("k_sucn",getXml(cuboResultados));								//establecer par谩metros iniciales				frn.set("k_modope_a3", 1);							}						fun llenar_cmb(cuboResultados, cmb)			{									var len_cubo = nXml(cuboResultados);								var pos_ini = frn.N(cmb);									for (var cont=0; cont<len_cubo ; cont++)				{					var desc= getXmlAtt(cuboResultados,"r"&cont,"descripcion");					var clave= getXmlAtt(cuboResultados,"r"&cont,"clave");										frn.setX(desc, cmb, cont+pos_ini ,0);					frn.setX(clave, cmb, cont+pos_ini ,1);								}			}			fun genera_referencia()			{				var clave_Sucursal = frn.get("k_sucn", -1, 1);				var cmd,						ok,						cubo;				cmd = "select Max(C2) as cmax from keplersc.KDPEDREF where c1='" & clave_Sucursal & "'";				cubo = frn.lib("libGeneral.kpl","EjecutarSqlSel",cmd,"cat_InvPedSug_view.Cargar()");				ok=getXmlAtt(cubo,"ok");				if(ok &! "" && !ok)				{					var mensajeError = getXmlAtt(cubo,"native3");					frn.message(mensajeError,"Error","Aceptar");					return;				}				if (nXml(cubo) == 0)				{					frn.message("Configuraci髇 de sucursal no existe","Error","Aceptar");										return;				}				frn.set("k_referencia_a6", PadLeft((getXmlAtt(cubo,"r0", "cmax") + 1),10,"0"));							}						fun CargarPedidoSugerido()			{				////frn.lib("libGeneral.kpl","FileSave",getXml(cubo),"C:\Basura\XMLPantalla");				//frn.message(frn.get("k_sucn", -1, 1),"Mensaje","Aviso");								var clave_Sucursal = frn.get("k_sucn", -1, 1);				var cmd,						ok,						cubo;				cmd = "select C1, C2,C3,C4,C5,C6,C8,C9,C10,C11,C12,C13, C14, C15,C16,(select Max(C2) from keplersc.KDPEDREF) as cmax from keplersc.KDPEDIDOSUGERIDOCONF where c1='" & clave_Sucursal & "'";				cubo = frn.lib("libGeneral.kpl","EjecutarSqlSel",cmd,"cat_InvPedSug_view.Cargar()");				ok=getXmlAtt(cubo,"ok");				if(ok &! "" && !ok)				{					var mensajeError = getXmlAtt(cubo,"native3");					frn.message(mensajeError,"Error","Aceptar");					return;				}								if (nXml(cubo) == 0){					frn.message("Configuraci髇 de sucursal no existe","Error","Aceptar");					//frn.rst("k_formula_a7");										return;				}					frn.set("k_diasvenbus_a4", 15);					frn.set("k_delaytraslado_a5", 1);					frn.set("k_formula_a7", "");					frn.set("k_formula_a8", "");					frn.set("k_diashabmes_a9", 25);					frn.set("k_desvestr_a10", "N");					frn.set("k_invvirtual_a11", "N");												var   v_sucN,						v_Referencia_A6,						v_FechaC_A2,						v_Estatus_A12,						v_Formula_A7,						v_Formula_A8,						v_ModOpe_A3,						v_DiasVenBus_A4,						v_DelayTraslado_A5,						v_DiasHabMes_A9,						v_DesvEstr_A10,						v_InvVirtual_A11,						v_c2,						v_c3,						v_c4,						v_c5,												v_c8,						v_c9,						v_c10,						v_c11,						v_c12, 						vopA3;											v_c2 = getXmlAtt(cubo,"r0", "c2");					v_c3 = getXmlAtt(cubo,"r0", "c3");					v_c4 = getXmlAtt(cubo,"r0", "c4");					v_c5 = getXmlAtt(cubo,"r0", "c5");					v_gC6 = getXmlAtt(cubo,"r0", "c6");										v_gC7 = getXmlAtt(cubo,"r0", "c7");					v_c8 = getXmlAtt(cubo,"r0", "c8");					v_c9 = getXmlAtt(cubo,"r0", "c9");					v_c10 = getXmlAtt(cubo,"r0", "c10");					v_c12 = getXmlAtt(cubo,"r0", "c12");					v_gC12 = v_c12 ;					//frn.message(v_RefMaxima,"Informaci贸n","Aceptar");					frn.set("k_referencia_a6", PadLeft((getXmlAtt(cubo,"r0", "cmax") + 1),10,"0"));					vopA3 = frn.get("k_modope_a3", -1, 0);					if(vopA3 &= "1")					{						frn.set("k_diasvenbus_a4", v_c4);					}else{						frn.set("k_diasvenbus_a4", v_c2);					}					frn.set("k_delaytraslado_a5", v_c3);					frn.set("k_formula_a7", v_c5);					frn.set("k_formula_a8", "");					frn.set("k_diashabmes_a9", v_c8);					frn.set("k_desvestr_a10", v_c12);					frn.set("k_invvirtual_a11", v_c10);										if(v_c5 &= "Q")					{						frn.set("k_formula_a8", "QROMOTORS");											}					else if(v_c5 &= "M")					{						frn.set("k_formula_a8", "MIP");										}					else					{						frn.message("F髍mula no especificada..","Error","Aceptar");						return;					}										frn.set("k_fechac_a2",sys.date());					frn.set("k_estatus_a12", "NUEVO");			}						fun PadLeft(pText,pRelleno,pCaracterRelleno)			{				var Resultado;				var pos_ini = pText;				var nReg= strlen(pText);				for (var cont = nReg; cont < pRelleno; cont++)				{					Resultado = pCaracterRelleno & Resultado;				}				Resultado = Resultado & pText;				//frn.message(Resultado ,"Informaci贸n","Aceptar");				return Resultado;			}						fun CargaDatosReferencia()			{				var clave_Sucursal = frn.get("k_sucn", -1, 1);				var Referencia_C2 = PadLeft(frn.get("k_referencia_a6"),10,"0"); //0000000001				var cmd,						ok,						cuboResultados;				cmd = "select C3,C4,C5 from keplersc.KDPEDREF where c1='" & clave_Sucursal & "' AND c2 ='" & Referencia_C2  & "'" ;				cuboResultados = frn.lib("libGeneral.kpl","EjecutarSqlSel",cmd,"cat_InvPedSug_view.Cargar()");				ok=getXmlAtt(cuboResultados,"ok");				if(ok &! "" && !ok)				{					var mensajeError = getXmlAtt(cuboResultados,"native3");					frn.message(mensajeError,"Error","Aceptar");					return;				}				if (nXml(cuboResultados) == 0){					frn.message("Referencia no encontrada","Aviso","Aceptar");					//frn.rst("k_formula_a7");					frn.set("k_fechac_a2", fnDate());					CargarPedidoSugerido();					return;				}												var   v_c3,						v_c4,						v_c5;																v_c3 = getXmlAtt(cuboResultados,"r0", "c3");					v_c4 = getXmlAtt(cuboResultados,"r0", "c4");					v_c5 = getXmlAtt(cuboResultados,"r0", "c5");											frn.set("k_fechac_a2", v_c3);							frn.set("k_formula_a7", v_c5);							if (v_c5 &= "Q") 					{						frn.set("k_formula_a8", "QROMOTORS");						frn.setAtt("k_formula_a8", "available", "n" );						frn.setAtt("k_modope_a3", "available", "Y" );						frn.setAtt("k_diasvenbus_a4", "available", "Y" );						frn.setAtt("k_diasvenbus_a4", "available", "Y" );											}					else if (v_c5 &= "M") 					{						frn.set("k_formula_a8", "MIP");						frn.setAtt("k_formula_a8", "available", "n" );						frn.setAtt("k_modope_a3", "available", "n" );						frn.setAtt("k_diasvenbus_a4", "available", "n" );						frn.setAtt("k_diasvenbus_a4", "available", "n" );					}					else					{						frn.message("Error en f髍mula","Error","Aceptar");						return;					}										if(v_c4 == 0 )					{					   frn.set("k_estatus_a12", "ELIMINADO");					   					}					else if(v_c4 == 10 )					{						frn.set("k_estatus_a12", "EDITABLE");					}					else if (v_c4 == 20 )					{						frn.set("k_estatus_a12", "SOLICITADO");					}								}// fin datosReferencia			fun CargaFormula(pIopcion)			{				if (frn.get("k_formula_a7") &= "Q") 					{						frn.set("k_formula_a8", "QROMOTORS");						frn.setAtt("k_formula_a8", "available", "n" );						frn.setAtt("k_modope_a3", "available", "Y" );						frn.setAtt("k_diasvenbus_a4", "available", "Y" );						frn.setAtt("k_diasvenbus_a4", "available", "Y" );											}else					{						frn.set("k_formula_a8", "MIP");						frn.setAtt("k_formula_a8", "available", "n" );						frn.setAtt("k_modope_a3", "available", "n" );						frn.setAtt("k_diasvenbus_a4", "available", "n" );						frn.setAtt("k_diasvenbus_a4", "available", "n" );					}			}						fun Execute(pIOpcion)			{							var v_exec, v_suc, v_ref;								if( pIOpcion == 1 )				{														v_exec = 0;				   v_exec = Ejecuta();									if ( v_exec/*Ejecuta()*/ == /*1*/ 3 ) // regresa 3 cuando la referencia no existe y se debe crear. 					{						//genera_referencia();												// For Tests by JMM ... 						//frn.message("Correra el Proceso ... Despues de Funcion Ejecuta.cat_pedidosugerido_altamod_crud","Info","Aceptar");						// /*						//inserta_referencia();						genera_sugerido();						// Added 20230826 						CargaDatosReferencia();												v_suc = frn.get("k_sucn", -1, 1);						v_ref = frn.get("k_referencia_a6");						frn.dialog("tbl_kdpedrefmov_upd", v_suc, v_ref);												return;						// */											}					// New Code JMM ... 20230829 					if ( v_exec == /*1v*/ 1 ) // regresa 3 cuando la referencia existe ... y si es editable se lanzara la SCR Input  					{						if ( frn.get("k_estatus_a12") &=  "EDITABLE" ) {							v_suc = frn.get("k_sucn", -1, 1);							v_ref = frn.get("k_referencia_a6");							frn.dialog("tbl_kdpedrefmov_upd", v_suc, v_ref);							}					}								}				if( pIOpcion == 0 )				{					if( Validaciones() <= 0 )					{						return;					}								}			}//end fun Execute						fun Ejecuta ()			{				var  resultado;				//var clave_Sucursal = frn.get("k_sucn", -1, 1);				//var Referencia_C2 = PadLeft(frn.get("k_referencia_a6"),10,"0"); //0000000001								var xmlPantalla,						 cmd,						 cubo,						 resultado,						 mensaje,						 tip_ope,						 strTmp,						 mensaje ,						 ok,mensajeError;					    xmlPantalla = getXml(frn.dataPag()); //Obtener el xml de la pantalla;						 setXml(xmlPantalla ,"k_sucn",frn.get("k_sucn", -1, 1)); // obtener sucursal 						 setXml(xmlPantalla ,"k_referencia_a6",(PadLeft(frn.get("k_referencia_a6"),10,"0"))); // obtener la referencia 						 //nuevas variables para validar en Funcion						 						 if(frn.get("k_formula_a7") &=  "Q")						 {							setXml(xmlPantalla ,"k_modope_a3",frn.get("k_modope_a3", -1, 1)); 						 }						 else						 {							setXml(xmlPantalla ,"k_modope_a3","0"); 						 }						 				   setXml(xmlPantalla ,"k_diasvenbus_a4",frn.get("k_diasvenbus_a4")); 				   setXml(xmlPantalla ,"k_delaytraslado_a5",frn.get("k_delaytraslado_a5"));						 					frn.lib("libGeneral.kpl","FileSave",xmlPantalla,"C:\Basura\Alta_Mod_Sugerido");					cmd = "SELECT * FROM keplersc.cat_pedidosugerido_altamod_crud('<document>" & getXmlStr(xmlPantalla,"EOF:13_10") & "</document>')";					kdb.rst(cubo);					cubo = frn.lib("libGeneral.kpl","EjecutarSql",cmd,"cat_InvPedSug.Execute");										ok = getXmlAtt(cubo,"ok");					if(ok &! "" && !ok)					{						mensajeError = getXmlAtt(cubo,"native3");											mensajeError = frn.lib("libGeneral.kpl","ErrorBD",mensajeError);											frn.message(mensajeError,"Error","Aceptar");						resultado = -1;						return resultado;					}																resultado = getXml(cubo,"resultado");					mensaje = getXml(cubo,"mensaje");					//frn.message(mensaje ,"Mensaje de validaci髇","Aceptar");					// Conditions Added by JMM ... 20230826 					if( resultado == 1 || resultado == 3 ){						if( resultado == 1 ){ 							if ( frn.get("k_estatus_a12") &!  "EDITABLE" ) {								frn.message("La Referencia ya Existe ...", "Mensaje de validaci髇","Aceptar");							} 						}						if( resultado == 3 ){ frn.message("La Referencia se Procesara ...", "Mensaje de validaci髇","Aceptar"); }								} else {						frn.message(mensaje ,"Mensaje de validaci髇","Aceptar");					}									return resultado;							}						fun inserta_referencia()						{					var a1,a6,a2,a4,a7;					a1 = frn.get("k_sucn", -1, 1);					a6 = frn.get("k_referencia_a6");					a2 = frn.get("k_fechac_a2");					a4 = 10;					a7 = frn.get("k_formula_a7");;									var resultado;								var xmlPantalla,						 cmd,						 cubo,						 resultado,						 mensaje,						 tip_ope,						 strTmp,						 mensaje ,						 ok,mensajeError;					    xmlPantalla = getXml(frn.dataPag()); 						 setXml(xmlPantalla ,"k_sucn",a1); 						 setXml(xmlPantalla ,"k_referencia_a6",(PadLeft(a6,10,"0")));						 						 setXml(xmlPantalla ,"k_fechac_a2",a2); 						 setXml(xmlPantalla ,"k_diasvenbus_a4",a4); 						 setXml(xmlPantalla ,"k_formula_a7",a7); 						 					// Added by JMM					frn.lib("libGeneral.kpl","FileSave",xmlPantalla,"C:\Basura\Alta_Mod_Insert_ENC_Sugerido_Paso2");					return;										cmd = "SELECT * FROM keplersc.cat_pedidosugerido_altamod_insert_crud('<document>" & getXmlStr(xmlPantalla,"EOF:13_10") & "</document>')";					kdb.rst(cubo);					cubo = frn.lib("libGeneral.kpl","EjecutarSql",cmd,"cat_InvPedSug.Execute");									ok = getXmlAtt(cubo,"ok");					if(ok &! "" && !ok)					{						mensajeError = getXmlAtt(cubo,"native3");											mensajeError = frn.lib("libGeneral.kpl","ErrorBD",mensajeError);											frn.message(mensajeError,"Error","Aceptar");						resultado = -1;						return resultado;					}								resultado = getXml(cubo,"resultado");				mensaje = getXml(cubo,"mensaje");								if(resultado &= "1")				{				// JMM ... Verificar si es necesario el MSG ... Expuesto con VCSS este proceso (INS.ENC) se ligara con Resultado del proceso INS.DET 				frn.message(mensaje ,"Registro Insertado","Aceptar");				}				else				{					frn.message(mensaje ,"Error","Aceptar");				}				return resultado;   			}						fun genera_sugerido()			{					var  resultado;				//var clave_Sucursal = frn.get("k_sucn", -1, 1);				//var Referencia_C2 = PadLeft(frn.get("k_referencia_a6"),10,"0"); //0000000001								var xmlPantalla,						 cmd,						 cubo,						 resultado,						 mensaje,						 tip_ope,						 strTmp,						 mensaje ,						 ok,mensajeError;					    xmlPantalla = getXml(frn.dataPag()); //Obtener el xml de la pantalla;						 setXml(xmlPantalla ,"k_sucn",frn.get("k_sucn", -1, 1)); // obtener sucursal 						 setXml(xmlPantalla ,"k_referencia_a6",(PadLeft(frn.get("k_referencia_a6"),10,"0"))); // obtener la referencia						 						 setXml(xmlPantalla ,"k_diasvenbus_a4",frn.get("k_diasvenbus_a4")); 						 setXml(xmlPantalla ,"k_delaytraslado_a5",frn.get("k_delaytraslado_a5")); 						 setXml(xmlPantalla ,"k_formula_a7",frn.get("k_formula_a7")); 						 setXml(xmlPantalla ,"k_invvirtual_a11",frn.get("k_invvirtual_a11")); 				// Added by JMM				frn.lib("libGeneral.kpl","FileSave",xmlPantalla,"C:\Basura\Alta_Mod_GenSug_Sugerido_Paso3");				//return;									// JMM	... Se considera que el nombre de esta funcion es Erroneo ... Se Actualizar con otra (ya existente en K80) 				//cmd = "SELECT * FROM keplersc.cat_pedidosugerido_altamod_crud('<document>" & getXmlStr(xmlPantalla,"EOF:13_10") & "</document>')";				cmd = "SELECT * FROM keplersc.cat_pedidosugerido_altamod_gensug_crud('<document>" & getXmlStr(xmlPantalla,"EOF:13_10") & "</document>')";				kdb.rst(cubo);				cubo = frn.lib("libGeneral.kpl","EjecutarSql",cmd,"cat_InvPedSug.Execute");								ok = getXmlAtt(cubo,"ok");				if(ok &! "" && !ok)				{					mensajeError = getXmlAtt(cubo,"native3");										mensajeError = frn.lib("libGeneral.kpl","ErrorBD",mensajeError);										frn.message(mensajeError,"Error","Aceptar");					resultado = -1;					return resultado;				}								resultado = getXml(cubo,"resultado");				mensaje = getXml(cubo,"mensaje");								if(resultado &= "1")				{					//frn.message(mensaje ,"Error","Aceptar");					//frn.message(mensaje ,"Info","Aceptar");				}				else				{					frn.message(mensaje ,"Error","Aceptar");				}				return resultado;			}						fun Validaciones(psOpcion)			{				var v_DiasVenBusMen,					 v_DelayTraslado,					 v_DiasVenBusDia,					 v_DiasHabMes,					 v_MinAnticipo;										v_DiasVenBusMen = frn.get("k_DiasVenBusMen");					v_DelayTraslado = frn.get("k_DelayTraslado");					v_DiasVenBusDia = frn.get("k_DiasVenBusDia"); 					v_DiasHabMes = frn.get("k_DiasHabMes");					v_MinAnticipo = frn.get("k_MinAnticipo");				if(psOpcion == "Q")				{					if(v_DiasVenBusMen <= 0)					{						frn.message("Los dias de venta buscados MENSUALES deben ser mayor a cero.", "Dias de Ventas Buscados (Mensuales)","&Aceptar");						return 0;					}								if(v_DiasVenBusDia <= 0)					{						frn.message("Los dias de venta buscados DIARIOS deben ser mayor a cero", "Delay de Traslado","&Aceptar");						return 0;					}					if(v_DelayTraslado <= 0)					{						frn.message("El delay de traslado debe ser mayor a cero", "Dias de Ventas Buscados (Diarios)","&Aceptar");						return 0;					}				}//end IF Q				else				{					if(v_DiasHabMes <= 0)					{						frn.message("Los dias habiles del mes deben ser mayor a cero", "Dias Habiles del Mes","&Aceptar");						return 0;					}				}//end if-else								if(v_MinAnticipo  <= 0 || v_MinAnticipo  > 100 )					{						frn.message("El porcentaje minimo para los anticipos debe ser mayor a cero", "Minimo Anticipo","&Aceptar");						return 0;					}								return 1;			}//end fun Validaciones					}	</script></pag>

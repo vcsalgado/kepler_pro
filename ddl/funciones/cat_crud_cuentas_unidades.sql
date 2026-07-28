@@ -90,7 +90,7 @@ begin
 	end if;
 
 	if crud = 'ELIMINAR' then
-		delete from keplersc.kdini
+		delete from keplersc.ini
 			where  c1=k_clave_crud and c2=k_anio_crud and c3=k_sucursal_crud ;
 	end if;
 

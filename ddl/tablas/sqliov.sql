@@ -7,7 +7,9 @@ CREATE  TABLE keplersc.sqliov (
   c6 character varying NULL,
   col_sucursal character varying(2) NOT NULL DEFAULT '00'::character varying
 ) TABLESPACE pg_default;
-ALTER TABLE ONLY keplersc.sqliov ADD CONSTRAINT sqliov_pk PRIMARY KEY (col_sucursal, c1, c2, c3);
+ALTER TABLE ONLY keplersc.sqliov ADD CONSTRAINT sqliov_pk PRIMARY KEY (c1, c2);
+CREATE UNIQUE INDEX IF NOT EXISTS pk_sqliov ON keplersc.sqliov USING btree (c1, c2, c3) TABLESPACE pg_default;
+CREATE UNIQUE INDEX IF NOT EXISTS sqliov_c1_idx ON keplersc.sqliov USING btree (c1, c2, c3) TABLESPACE pg_default;
 COMMENT ON TABLE keplersc.sqliov IS 'Folios';
 COMMENT ON COLUMN keplersc.sqliov.c6 IS 'Campo donde buscar folio';
 COMMENT ON COLUMN keplersc.sqliov.c5 IS 'Tabla';

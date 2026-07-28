@@ -1,5 +1,5 @@
 CREATE  TABLE keplersc.kdtmktserconf (
-  c1 character varying(7) NOT NULL DEFAULT '0'::character varying,
+  c1 character varying(7) NOT NULL DEFAULT 0,
   c2 character varying NOT NULL DEFAULT ''::character varying,
   c3 numeric NOT NULL DEFAULT 0,
   c4 numeric NOT NULL DEFAULT 0,
@@ -25,9 +25,7 @@ CREATE  TABLE keplersc.kdtmktserconf (
   c24 numeric NOT NULL DEFAULT 0,
   c25 numeric NOT NULL DEFAULT 0,
   c26 numeric NOT NULL DEFAULT 1,
-  c27 character varying NOT NULL DEFAULT '0'::character varying,
-  col_suc_ventas character varying(7) NOT NULL DEFAULT '0'::character varying,
-  c28 numeric NOT NULL DEFAULT 2
+  c27 character varying NOT NULL DEFAULT 0
 ) TABLESPACE pg_default;
 ALTER TABLE ONLY keplersc.kdtmktserconf ADD CONSTRAINT pk_kdtmktserconf PRIMARY KEY (c1);
 COMMENT ON TABLE keplersc.kdtmktserconf IS 'Configuracion de Telemarketing de Servicios';
@@ -38,7 +36,6 @@ COMMENT ON COLUMN keplersc.kdtmktserconf.c6 IS 'Fecha de ultima rutina de TMKT';
 COMMENT ON COLUMN keplersc.kdtmktserconf.c5 IS 'Dias de recontacto para servicio';
 COMMENT ON COLUMN keplersc.kdtmktserconf.c4 IS 'Dias de recontacto para ventas';
 COMMENT ON COLUMN keplersc.kdtmktserconf.c3 IS 'km recorridos para siguiente cita';
-COMMENT ON COLUMN keplersc.kdtmktserconf.c28 IS 'Recordatorio posterior 3 (debe ser mayor a recordatorio posterior 2)';
 COMMENT ON COLUMN keplersc.kdtmktserconf.c27 IS 'Telefono Centro de Servicio';
 COMMENT ON COLUMN keplersc.kdtmktserconf.c26 IS 'Recordatorio posterior 2 (debe ser mayor a recordatorio posterior 1)';
 COMMENT ON COLUMN keplersc.kdtmktserconf.c25 IS 'Recordatorio posterior 1 (si hay cambios agregar a kd_tipo_n )';

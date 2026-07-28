@@ -5,8 +5,6 @@ AS $function$
 declare
 	--Autor: Saltiel RC. 12/10/2022
 	--Variables de definicion de documento	
---Bitacora de cambios
--- 17/Oct/2023 Miriam Santana: Genera registro inicial en tabla de Evento de Bienvenida y crea contacto de telemarketing
 	
 	v_sucursal_id text = '';
 	genero text = '';
@@ -161,11 +159,6 @@ begin
 	if (xpath('//row/c65/text()', xmlKDMM))[1]::text = '70' then 
 			--paso:= 'docdis.invlib_INV_VALE_SALIDA_ALTA';			
 			select * into resultado, mensaje, adicionales from keplersc.invlib_inv_vale_salida_alta(dataxml,xmlkdmm,folio_operacion);			
-			if resultado = '0' then					
-				raise exception '%',mensaje;
-			end if;
-			--Genera registro inicial en tabla de Evento de Bienvenida y crea contacto de telemarketing
-			select * into resultado, mensaje, adicionales from keplersc.ser_tmkt_altacontacto_bienvenida(dataxml,xmlkdmm,folio_operacion);			
 			if resultado = '0' then					
 				raise exception '%',mensaje;
 			end if;	

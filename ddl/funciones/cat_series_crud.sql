@@ -159,7 +159,7 @@ begin
 				raise exception 'Tiene que introducir una serie';
 			end if;
 		
-			if length(trim(Serie)) <> '17' then 
+			if length(Serie) <> '17' then 
 				raise exception 'La serie debe ser de 17 digitos';
 			end if;
 			Identificador := right(Serie, 8);
@@ -205,24 +205,24 @@ begin
 			end if;
 			
 			if Anio = '' then 
-				raise exception 'Debe ingresar Anio';
+				raise exception 'Debe ingresar Año';
 			else 
 				select count(*) into totReg
 					from keplersc.kdanio
 					where c1=Anio;
 				if totReg=0 then
-					raise exception 'Verifique. El anio no existe';	
+					raise exception 'Verifique. El año no existe';	
 				end if;
 			end if;
 		
-			--Valida caracter 10 de la serie corresponda al anio capturado
+			--Valida caracter 10 de la serie corresponda al año capturado
 			codeanio := '';
 			vanio := Anio::integer-1980;
 			id_codanio := div(vanio,30);
 			id_codanio := vanio-id_codanio*30;
 			select c2 into codeanio from keplersc.kdyearcode where c1 = id_codanio::text;
 			if codeanio <> substring(Serie,10,1) then
-				raise exception 'El anio no coincide con el indicado en la serie en su caracter 10';
+				raise exception 'El año no coincide con el indicado en la serie en su caracter 10';
 			end if;
 		
 	 		select c9 into valkodawari from keplersc.kdconftaller;
@@ -267,59 +267,30 @@ begin
 					if segvehicular = '' then
 						raise exception 'Debe ingresar el estado del Seguro Vehicular S/N';
 					end if;
-					if length(tel_usuario) <> 10 then
-						raise exception 'El telefono del usuario debe ser de 10 digitos';
-					else
-						select tel_usuario ~ '^[0-9\.]+$' into isidentificadornumeric; 
-						if not isidentificadornumeric then 
-							raise exception 'El telefono del usuario debe ser numerico';
+					if medio_pref_usuario <> 'EMAIL' and medio_pref_usuario <> '' then
+						if length(tel_mediopref_usuario) < 10 then
+							raise exception 'El num. medio preferido de contacto del usuario debe ser de 10 digitos';
 						end if;
-					end if;
-					
-					if length(tel_autoriza) <> 10 then
-						raise exception 'El telefono del resp. mantto. debe ser de 10 digitos';
-					else
-						select tel_autoriza ~ '^[0-9\.]+$' into isidentificadornumeric; 
-						if not isidentificadornumeric then 
-							raise exception 'El telefono del resp. mantto. debe ser numerico';
-						end if;
-					end if;
-								
-					if medio_pref_usuario <> '' then
+					else 
 						select count(*) into totReg
 							from keplersc.kdsercontpref
 							where c1=medio_pref_usuario;
-						if totReg=0 then
-							raise exception 'Verifique. El medio de contacto del usuario no existe';	
-						end if;
+							if totReg=0 then
+								raise exception 'Verifique. El medio de contacto del usuario no existe';	
+							end if;
+						
 					end if;
-					if medio_pref_autoriza <> '' then
+					if medio_pref_autoriza <> 'EMAIL' and medio_pref_autoriza <> '' then
+						if length(tel_mediopref_autoriza) < 10 then
+							raise exception 'El num. medio preferido de contacto del resp. mantto. debe ser de 10 digitos';
+						end if;
+					else 
 						select count(*) into totReg
 							from keplersc.kdsercontpref
 							where c1=medio_pref_autoriza;
-						if totReg=0 then
-							raise exception 'Verifique. El medio de contacto del resp. mantto no existe';	
-						end if;
-					end if;
-					if medio_pref_usuario <> 'EMAIL' and medio_pref_usuario <> '' then
-						if length(tel_mediopref_usuario) <> 10 then
-							raise exception 'El num. medio preferido de contacto del usuario debe ser de 10 digitos';
-						else
-							select tel_mediopref_autoriza ~ '^[0-9\.]+$' into isidentificadornumeric; 
-							if not isidentificadornumeric then 
-								raise exception 'El num. medio preferido de contacto del usuario debe ser numerico';
+							if totReg=0 then
+								raise exception 'Verifique. El medio de contacto del resp. mantto no existe';	
 							end if;
-						end if;	
-					end if;
-					if medio_pref_autoriza <> 'EMAIL' and medio_pref_autoriza <> '' then
-						if length(tel_mediopref_autoriza) <> 10 then
-							raise exception 'El num. medio preferido de contacto del resp. mantto. debe ser de 10 digitos';
-						else
-							select tel_mediopref_autoriza ~ '^[0-9\.]+$' into isidentificadornumeric; 
-							if not isidentificadornumeric then 
-								raise exception 'El num. medio preferido de contacto del resp. mantto. debe ser numerico';
-							end if;
-						end if;
 					end if; 	
 				end if;	
 			end if;
@@ -327,38 +298,35 @@ begin
 	end if;
 
 	if crud = 'NUEVO' then
-		select count(*) into totReg from keplersc.kdserie where c4=	Serie;
-		if totReg > 0 then
-			raise exception 'No es posible realizar el Alta. El no. de serie ya existe.';
-		else
-			insert into keplersc.kdserie(
-				c1,c2,c3,c4,c5,
-				c6,c7,c8,c9,c10,
-				c11,c12,c13,c14,c15,
-				c16,c17,c18,c19,c20,
-				c21,c22,c23,c24,c25,
-				c26,c27,c28,c29,c30,
-				c31,c32,c33,c34,c35,
-				c36,c37,c38,c39,c40,
-				c41,c42,c43,c44,c45) 
-			values(
-				Identificador,Marca, Modelo, Serie, Motor, 
-				Transmision,Eje_trasero, Placas, Contacto, Color,
-				Anio, kilometraje,to_date(Fecha_venta,'YYYY-MM-DD'), Concesionario,to_date(Ultima_visita,'YYYY-MM-DD'), 
-				nombre_contacto,Codigo_planta,k_version,to_date(fecha_dofu,'YYYY-MM-DD'),nombre_usuario,
-				tel_usuario,nombre_autoriza,tel_autoriza,ap_paterno_usuario,ap_materno_usuario,
-				correo_usuario,ap_paterno_autoriza,ap_materno_autoriza,correo_autoriza,rfc_usuario,
-				rfc_autoriza,medio_pref_usuario,tel_mediopref_usuario,medio_pref_autoriza,tel_mediopref_autoriza,
-				cond_unidad::integer,subcond_unidad::integer,garantia_ext,to_date(fec_expgarantia,'YYYY-MM-DD'),segvehicular,
-				to_date(fec_vigseguro,'YYYY-MM-DD'),aseg_garantext,poliza_garantext,aseg_segvehicular,poliza_segvehicular);
-		end if;
+					
+		insert into keplersc.kdserie(
+			c1,c2,c3,c4,c5,
+			c6,c7,c8,c9,c10,
+			c11,c12,c13,c14,c15,
+			c16,c17,c18,c19,c20,
+			c21,c22,c23,c24,c25,
+			c26,c27,c28,c29,c30,
+			c31,c32,c33,c34,c35,
+			c36,c37,c38,c39,c40,
+			c41,c42,c43,c44,c45) 
+		values(
+			Identificador,Marca, Modelo, Serie, Motor, 
+			Transmision,Eje_trasero, Placas, Contacto, Color,
+			Anio, kilometraje,to_date(Fecha_venta,'YYYY-MM-DD'), Concesionario,to_date(Ultima_visita,'YYYY-MM-DD'), 
+			nombre_contacto,Codigo_planta,k_version,to_date(fecha_dofu,'YYYY-MM-DD'),nombre_usuario,
+			tel_usuario,nombre_autoriza,tel_autoriza,ap_paterno_usuario,ap_materno_usuario,
+			correo_usuario,ap_paterno_autoriza,ap_materno_autoriza,correo_autoriza,rfc_usuario,
+			rfc_autoriza,medio_pref_usuario,tel_mediopref_usuario,medio_pref_autoriza,tel_mediopref_autoriza,
+			cond_unidad::integer,subcond_unidad::integer,garantia_ext,to_date(fec_expgarantia,'YYYY-MM-DD'),segvehicular,
+			to_date(fec_vigseguro,'YYYY-MM-DD'),aseg_garantext,poliza_garantext,aseg_segvehicular,poliza_segvehicular);
+
 	end if;
 
 	if crud = 'MODIFICAR' then
 		--TO DO: Por el momento se extrae la sucursal del cliente anterior, KDSERIE no tiene sucursal
 		select ser.c9,ud.c1 into cliente_ant,sucursal_id
 		from keplersc.kdserie ser
-		inner join keplersc.kdud ud on ud.c2=ser.c9 
+		inner join keplersc.kdud ud on ud.c2=ser.c9 /*TO DO: on ud.c1=sucursal_id and ud.c2=ser.c9*/
 		where ser.c1=Identificador;
 		
 		cliente_nvo := Contacto;			

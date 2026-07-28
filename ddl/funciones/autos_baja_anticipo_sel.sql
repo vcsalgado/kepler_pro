@@ -48,7 +48,7 @@ begin
 		''[''||cfd.c1||''] ''||cfd.c2 as k_cfdi,dm1.c161 as k_cuenta,dm1.c162 as k_m_pago,
 		concat(regexp_replace(dm1.c24,''\r|\n'','' '', ''g''),'' '',dm1.c25,'' '',dm1.c26) as k_coment,dmm.c16 as k_porciva 
 		from keplersc.kdm1 dm1
-		inner join keplersc.kdmm dmm on dmm.col_sucursal=dm1.c1 and dmm.c1=dm1.c2 and dmm.c2=dm1.c3 and dmm.c3=dm1.c4 and dmm.c4=dm1.c5
+		inner join keplersc.kdmm dmm on dmm.c1=dm1.c2 and dmm.c2=dm1.c3 and dmm.c3=dm1.c4 and dmm.c4=dm1.c5
 		left join keplersc.kdf3uso cfd on cfd.c1=dm1.c164
 		left join keplersc.kdf3fp fp on fp.c1=dm1.c160
 		where dm1.c1=%1$L and dm1.c2=%2$L and dm1.c3=%3$L and dm1.c4=%4$s and dm1.c5=%5$s and dm1.c6=%6$L'

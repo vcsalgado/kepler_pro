@@ -7,8 +7,6 @@ AS $function$
 --Autor: Miriam Santana
 --Fecha: 05/03/2025
 --Bitacora de cambios
---22/04/2026 Miriam Santana: Seleccion de anticipos de una factura de autos, servicio o refacciones para relacionarlos en el CFDI
-
 declare
 	--Variables de definicion de documento
 	sucursal_id text;
@@ -16,7 +14,7 @@ declare
 	naturaleza text;
 	grupo text;
 	tipo text;
-	cve_seleccion text;
+	inventario text;
 
 	folio_docto text = '';
 
@@ -33,11 +31,11 @@ begin
 	grupo := (xpath('//document/k_tipon/r3/text()', dataxml))[1];
 	tipo := (xpath('//document/k_tipon/r4/text()', dataxml))[1];
 
-	cve_seleccion := (xpath('//document/k_seleccion/text()',dataxml))[1];
+	inventario := (xpath('//document/k_claveinv/text()',dataxml))[1];
 	folio_docto := coalesce((xpath('//document/k_foliodocto/text()',dataxml))[1]::text,'')::text;
 	
 	if naturaleza = 'D' then --ALTA
-		--raise exception 'suc:%, cve_seleccion:%, g:%, n:%, gp:%, tp:%, folio:%',sucursal_id, cve_seleccion, genero, naturaleza, grupo, tipo, folio_operacion;	
+--raise exception 'suc:%, inv:%, g:%, n:%, gp:%, tp:%, folio:%',sucursal_id, inventario, genero, naturaleza, grupo, tipo, folio_operacion;	
 		update keplersc.kdf3ncant set
 			tipo_relacion ='07',
 			genero_doctorel = genero,
@@ -45,7 +43,7 @@ begin
 			grupo_doctorel = grupo::integer,
 			tipo_doctorel = tipo::integer,
 			folio_relacionado = folio_operacion				
-			where c1=sucursal_id and c2='U' and c3='D' and c4=79 and folio_relacionado = cve_seleccion;
+			where c1=sucursal_id and c2='U' and c3='D' and c4=79 and folio_relacionado = inventario;
 
 	else					--BAJA
 		update keplersc.kdf3ncant set

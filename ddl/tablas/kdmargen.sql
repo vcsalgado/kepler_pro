@@ -23,7 +23,7 @@ COMMENT ON COLUMN keplersc.kdmargen.c8 IS 'Factor de conversion';
 COMMENT ON COLUMN keplersc.kdmargen.c7 IS 'MArgen sobre cargos varios';
 COMMENT ON COLUMN keplersc.kdmargen.c6 IS 'Margen sobre TOTs';
 COMMENT ON COLUMN keplersc.kdmargen.c5 IS 'Margen sobre refacciones y materiales internos';
-COMMENT ON COLUMN keplersc.kdmargen.c4 IS 'Precio por Hora de Mano de obra';
+COMMENT ON COLUMN keplersc.kdmargen.c4 IS 'Costo por Hora de Mano de obra';
 COMMENT ON COLUMN keplersc.kdmargen.c3 IS 'Descripcion';
 COMMENT ON COLUMN keplersc.kdmargen.c2 IS 'Tipo de Trabajo, tipo cita';
 COMMENT ON COLUMN keplersc.kdmargen.c16 IS 'Cargos varios default por diagnostico';

@@ -1,590 +1,1 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<pag xmlns="www.kepler.com.mx/2003/KSchema" roles="" tit="Catalogo Cuentas de unidades">
-<grp  brdr="0,0" clr="0,58,112" fnt="Arial,14"  dim="0,0,20,20" bclr="192,205,213" unfont="0">
-	<tab/><txt fnt=",22" clr="0,0,0">Cat&#225;logo Cuentas Contables Autos</txt>
-	<br/>
-	<tab/><hLine clr="0,0,0" dim="37,0,0"/>
-	<br/>
-	<br/>
-	<tab/>
-	<grp id="grupo_consulta" bclr="236,240,243" fntClrBrdr="255,255,255" unfont="0" fntBrdr="Arial,18" hSpace="4" clrBrdr="0,58,112" 
-		dim="37,3,10,20" brdr="0,5" tit="Cargar A&#241;o anterior" fnt="Arial,16">
-		<sp/><txt>Cve Vehiculo:</txt>
-			<cmb id="k_clave_vehiculo" dim="22,1" brdr="2,0" bclr="255,255,255" clr="64,64,64" clrBrdr="255,255,255" available="Y" modify="Y"/>
-		<sp/><txt>A&#241;o:</txt>
-			<cmb id="k_anio" dim="8,1" brdr="2,0" bclr="255,255,255" clr="64,64,64" clrBrdr="255,255,255" available="Y" modify="Y"/>
-		<sp/><txt>Sucursal:</txt>
-			<cmb id="k_suc" dim="20,1" brdr="2,0" bclr="255,255,255" clr="64,64,64" clrBrdr="255,255,255" available="Y" modify="Y"/>
-		<sp/><img id="img_buscar" dim="20,20" bPx="1" brdr="0,1" available="Y" img="_20_Find.png" OnEnter="ObtenerCuentasPeriodo()"/>	
-	</grp>
-	<br/>
-	<tab/>
-	<grp id="grupo_crud" bclr="236,240,243" fntClrBrdr="255,255,255" unfont="0" fntBrdr="Arial,18" hSpace="4" clrBrdr="0,58,112" 
-		dim="37,25,10,20" brdr="0,5" tit="Nuevo" fnt="Arial,16">
-		<inp id="input_crud" dim="10,1" brdr="2,0" clr="64,64,64" bclr="255,255,255" clrBrdr="255,255,255" visible="N"/>
-		<br/>
-
-		<tab/>
-						
-			<txt>Clave del Vehiculo : </txt>
-			<tab n="3"/><sp/>
-			<inp id="k_clave_crud" dim="20,1" brdr="2,0" clr="64,64,64" bclr="255,255,255" clrBrdr="255,255,255" type="capital" nc="18" available="Y" modify="Y"/>
-		<sp/>
-		<br/>
-
-	<tab/>
-						
-			<txt>A&#241;o: </txt>
-			<tab n="6"/><sp/>
-			<inp id="k_anio_crud" dim="20,1" brdr="2,0" clr="64,64,64" bclr="255,255,255" clrBrdr="255,255,255" type="capital" nc="2" available="Y" modify="Y"/>
-		<sp/>
-		<br/>
-
-		<tab/>
-						
-			<txt>Sucursal: </txt>
-			<tab n="5"/><sp/>
-			<inp id="k_sucursal_crud" dim="20,1" brdr="2,0" clr="64,64,64" bclr="255,255,255" clrBrdr="255,255,255" type="capital" nc="7" available="Y" modify="Y"/>
-		<sp/>
-		<br/>
-		<tab/>
-						
-			<txt>(V15) Notas de Descuento : </txt>
-			<tab n="2"/><sp/>
-			<inp id="k_notas_descuento_crud" dim="20,1" brdr="2,0" clr="64,64,64" bclr="255,255,255" clrBrdr="255,255,255" type="capital" nc="16" available="Y" modify="Y"/>
-
-		<br/>
-		<tab/>
-			<txt>(V16) Ventas F&amp;I : </txt>
-			<tab n="3"/><sp/>
-			<inp id="k_ventas_fni_crud" dim="30,1" brdr="2,0" clr="64,64,64" bclr="255,255,255" clrBrdr="255,255,255" type="capital" nc="16" available="Y" modify="Y"/>
-			<br/>
-
-		<tab/>
-			<txt>(V17) Costo F&amp;I : </txt>
-			<tab n="4"/><sp/>
-			<inp id="k_costo_fni_crud" dim="30,1" brdr="2,0" clr="64,64,64" bclr="255,255,255" clrBrdr="255,255,255" type="capital" nc="16" available="Y" modify="Y"/>
-		<br/>
-		<tab/>
-			<txt>(V18) Ventas Contado : </txt>
-			<tab n="3"/><sp/>
-			<inp id="k_ventas_contado_crud" dim="30,1" brdr="2,0" clr="64,64,64" bclr="255,255,255" clrBrdr="255,255,255" type="capital" nc="16" available="Y" modify="Y"/>
-
-		<br/>
-		<tab/>
-			<txt>(V19) Proveedores : </txt>
-			<tab n="3"/><sp/>
-			<inp id="k_proveedores_crud" dim="30,1" brdr="2,0" clr="64,64,64" bclr="255,255,255" clrBrdr="255,255,255" type="capital" nc="16" available="Y" modify="Y"/>
-
-		<br/>
-		<tab/>
-			<txt>(V20) Inventario : </txt>
-			<tab n="4"/><sp/>
-			<inp id="k_inventario_crud" dim="30,1" brdr="2,0" clr="64,64,64" bclr="255,255,255" clrBrdr="255,255,255" type="capital" nc="16" available="Y" modify="Y"/>
-			<br/>
-
-
-		<tab/>
-			<txt>(V21) Costo Ventas : </txt>
-			<tab n="3"/><sp/>
-			<inp id="k_costo_ventas_crud" dim="30,1" brdr="2,0" clr="64,64,64" bclr="255,255,255" clrBrdr="255,255,255" type="capital" nc="16" available="Y" modify="Y"/>
-
-		<br/>
-		<tab/>
-			<txt>(V22) Precio Venta : </txt>
-			<tab n="3"/><sp/>
-			<inp id="k_precio_venta_crud" dim="30,1" brdr="2,0" clr="64,64,64" bclr="255,255,255" clrBrdr="255,255,255" type="capital" nc="16" available="Y" modify="Y"/>
-
-		<br/>
-		<tab/>
-			<txt>(V23) Iva a la venta : </txt>
-			<tab n="3"/><sp/>
-			<inp id="k_iva_venta_crud" dim="30,1" brdr="2,0" clr="64,64,64" bclr="255,255,255" clrBrdr="255,255,255" type="capital" nc="16" available="Y" modify="Y"/>
-		<br/>
-		<tab/>
-			<txt>(V24) Iva a la compra : </txt>
-			<tab n="3"/><sp/>
-			<inp id="k_iva_compra_crud" dim="30,1" brdr="2,0" clr="64,64,64" bclr="255,255,255" clrBrdr="255,255,255" type="capital" nc="16" available="Y" modify="Y"/>
-			<br/>
-
-		<tab/>
-			<txt>(V25) Costo de ventas de Traspasos: </txt>
-
-			<inp id="k_costo_vent_tras_crud" dim="30,1" brdr="2,0" clr="64,64,64" bclr="255,255,255" clrBrdr="255,255,255" type="capital" nc="16" available="Y" modify="Y"/>
-			<br/>
-		
-		<tab/>
-			<txt>(V26) Precio Ventas Traspasos : </txt>
-			<tab/><sp/>
-			<inp id="k_precio_vent_tras_crud" dim="30,1" brdr="2,0" clr="64,64,64" bclr="255,255,255" clrBrdr="255,255,255" type="capital" nc="16" available="Y" modify="Y"/>
-			<br/>
-
-		<br/>		<tab/>
-		<bot id="k_btn_cons" dim="10,10" brdr="5" text="Guardar" hk="K" default="0" step="0"  OnEnter="Execute()" fnt="Arial,16" visible="Y" available="Y"/>
-		<tab/>
-		<bot id="btn_aceptar" dim="10,10" brdr="5" text="Aceptar" hk="K" default="0" step="0"  OnEnter="salir()" fnt="Arial,16" available="N" visible="N"/>
-	</grp>
-</grp>
-<script>
-	InstallDriver("KDB75");
-	class Main {
-		var frn,frP,kdb,sys,suc_usuario,perfil_usuario,rol_usuario, asterisco  ;
-		var cmdQuery, cuboQuery, ok, mensajeError, xml_cubo_cata, accion, externo, straccion, clave_sel, cve_color, sucursal_id, resVal;
-		var k_clave_vehiculo, k_anio, k_suc;
-		fun Main(){
-			frn=new FRNT;
-			kdb=new KDB;
-			frP=new FRNTP;
-			sys=new SYS;
-			kdb.connect();
-			
-			suc_usuario = frn.lib("libKepler","UserInfo(1)");
-			perfil_usuario = frn.lib("libKepler","UserInfo(2)");
-			rol_usuario = frn.config("user","role");
-			asterisco = "*";
-			accion = frn.param(0);
-			k_clave_vehiculo = frn.param(1);
-			k_anio = frn.param(2);
-			k_suc = frn.param(3);
-			
-			ConfiguraUI();
-			Inicializa();
-			
-		}
-
-		fun vacia_campos(){
-			frn.rst("k_clave_crud");
-			frn.rst("k_anio_crud");
-			frn.rst("k_sucursal_crud");
-			frn.rst("k_notas_descuento_crud");
-			frn.rst("k_ventas_fni_crud");
-			frn.rst("k_costo_fni_crud");
-			frn.rst("k_ventas_contado_crud");
-			frn.rst("k_proveedores_crud");
-			frn.rst("k_inventario_crud");
-			frn.rst("k_costo_ventas_crud");
-			frn.rst("k_precio_venta_crud");
-			frn.rst("k_iva_venta_crud");
-			frn.rst("k_iva_compra_crud");
-			frn.rst("k_costo_vent_tras_crud");
-			frn.rst("k_precio_vent_tras_crud");
-		}
-            
-		fun ObtenerCuentasPeriodo(){
-			
-			k_clave_vehiculo = frn.get("k_clave_vehiculo",-1,"c2");
-			k_anio = frn.get("k_anio",-1,"c2");
-			k_suc = frn.get("k_suc",-1,"c2");
-			vacia_campos();
-			cmdQuery = "select c1 as k_clave_crud, c2 as k_anio_crud, c3 as k_sucursal_crud
-						,c15 as k_notas_descuento_crud, c16 as k_ventas_fni_crud
-						,c17 as k_costo_fni_crud, c18 as k_ventas_contado_crud
-						,c19 as k_proveedores_crud, c20 as k_inventario_crud
-						,c21 as k_costo_ventas_crud, c22 as k_precio_venta_crud
-						,c23 as k_iva_venta_crud, c24 as k_iva_compra_crud
-						,c25 as k_costo_vent_tras_crud, c26 as k_precio_vent_tras_crud
-						from keplersc.kdivcl where c1 = '"& k_clave_vehiculo &"' and c2 = '"& k_anio &"' and c3 = '"& k_suc &"'";
-frn.lib("libGeneral.kpl","FileSave",cmdQuery ,"C:\Basura\xmlCuenta");		
-			rstXml(cuboQuery);
-			cuboQuery = frn.lib("libGeneral.kpl","EjecutarSqlSel",cmdQuery,"cat_clasifpagos_crud.IniCombos()");
-			xml_cubo_cata=frn.lib("libGeneral.kpl","CreaXmlDesdeAtt",cuboQuery,"r0");
-frn.lib("libGeneral.kpl","FileSave",cuboQuery,"C:\Basura\cubo");		
-			frn.setX(xml_cubo_cata);
-
-		}
-
-		fun salir(){
-			accion="NUEVO";
-			vacia_campos();
-			Inicializa();
-			frn.exit();			
-		}
-
-
-		fun llena_combos(){
-			var contAnio, maxAnio;
-			// Fill Combo Sucursal (Con Query de PostgreSQL)
-			
-			
-			//Llenar combo sucursales
-			var cmd = "select '['||c1||'] '||c2 as c2, c1 from keplersc.kdms";
-			if (rol_usuario &! "ADMINISTRADOR"  && rol_usuario &! "ADMINISTRATOR"){
-				cmd = cmd & " where c1='" & suc_usuario & "'";
-			}else {
-				if (suc_usuario &! asterisco && suc_usuario &! "" ){
-					cmd = cmd & " where c1='" & suc_usuario & "'";
-				}
-			}
-				
-			var cubo = frn.lib("libGeneral.kpl","EjecutarSqlSel",cmd,"srvcitacrud.Inicializa()");		
-			ok=getXmlAtt(cubo,"ok");
-			if(ok &! "" && !ok){
-				mensajeError = getXmlAtt(cubo,"native3");
-				mensajeError = frn.lib("libGeneral.kpl","ErrorBD",mensajeError);
-				frn.message(mensajeError,"Error","Aceptar");
-				return;
-			}
-					
-			frn.set("k_suc",getXml(cubo));
-					
-			
-			cmdQuery = "select '['||c1||'] '||c2 as c1, c1 as c2 from keplersc.kdiv";
-			rstXml(cuboQuery);
-			cuboQuery = frn.lib("libGeneral.kpl","EjecutarSqlSel",cmdQuery,"cat_crud_cuentas_unidades.IniCombos()");
-			frn.set("k_clave_vehiculo",cuboQuery);		
-
-
-			// Anio
-/*
-			kdb.date("SrvDate");	//Fecha del servidor
-			kdb.kde("KDE");//Configuracion del servidor
-			kdb.exec();			
-			maxAnio=fnDate("year",kdb.get("SrvDate"));
-			maxAnio=maxAnio+1;
-
-			for (contAnio=2020; contAnio<=maxAnio; contAnio++){
-				frn.setX(contAnio,"k_anio",contAnio-2020,0);
-				frn.setX(contAnio,"k_anio",contAnio-2020,1);
-			}
-*/			
-			cmdQuery = "select distinct '20'||c2 as c1, c2 as c2 from keplersc.kdivcl order by c1 desc";
-			rstXml(cuboQuery);
-			cuboQuery = frn.lib("libGeneral.kpl","EjecutarSqlSel",cmdQuery,"cat_crud_cuentas_unidades.IniCombos()");
-			frn.set("k_anio",cuboQuery);		
-	
-		}
-
-		fun carga_datos(){
-
-
-			cmdQuery = "select c1 as k_clave_crud, c2 as k_anio_crud, c3 as k_sucursal_crud
-						,c15 as k_notas_descuento_crud, c16 as k_ventas_fni_crud
-						,c17 as k_costo_fni_crud, c18 as k_ventas_contado_crud
-						,c19 as k_proveedores_crud, c20 as k_inventario_crud
-						,c21 as k_costo_ventas_crud, c22 as k_precio_venta_crud
-						,c23 as k_iva_venta_crud, c24 as k_iva_compra_crud
-						,c25 as k_costo_vent_tras_crud, c26 as k_precio_vent_tras_crud
-						from keplersc.kdivcl where c1 = '"& k_clave_vehiculo &"' and c2 = '"& k_anio &"' and c3 = '"& k_suc &"'";
-			rstXml(cuboQuery);
-			cuboQuery = frn.lib("libGeneral.kpl","EjecutarSqlSel",cmdQuery,"cat_clasifpagos_crud.IniCombos()");
-			xml_cubo_cata=frn.lib("libGeneral.kpl","CreaXmlDesdeAtt",cuboQuery,"r0");
-			frn.lib("libGeneral.kpl","FileSave",cuboQuery,"C:\Basura\cubo");		
-			frn.setX(xml_cubo_cata);
-
-		}
-
-
-		fun ValidarDatos(){
-
-
-			if (frn.get("k_clave_crud") &= "") {						
-				frn.setPos("k_clave_crud");
-				resVal=0;
-				frn.message("Debe especificar la clave, verificar","Error","Aceptar");
-				return;
-			}
-			if (frn.get("k_anio_crud") &= "") {						
-				frn.setPos("k_anio_crud");
-				resVal=0;
-				frn.message("Debe especificar el Anio, verificar","Error","Aceptar");
-				return;
-			}
-			if (frn.get("k_sucursal_crud") &= "") {						
-				frn.setPos("k_clave_crud");
-				resVal=0;
-				frn.message("Debe especificar la clave, verificar","Error","Aceptar");
-				return;
-			}
-
-		}
-
-		fun Execute() {
-			resVal = 1;
-			ValidarDatos();
-			if(resVal == 0){
-				return;
-			}
-			
-			var resultado_confirmacion = frn.message("Desea continuar?","Mensaje de Confirmacion", 2);
-			if (resultado_confirmacion &! 1)  {
-				return;
-			}
-			
-			var xmlRequest = getXml(frn.dataPag());	
-			frn.lib("libGeneral.kpl","FileSave",xmlRequest ,"C:\Basura\xmlRequest ");
-					cmdQuery="SELECT * FROM keplersc.cat_crud_cuentas_unidades('<document>" & getXmlStr(xmlRequest ,"EOF:13_10") & "</document>')";
-			var cubo = frn.lib("libGeneral.kpl","EjecutarSql",cmdQuery,"cat_clasifpagos_crud.Execute()");	
-			frn.lib("libGeneral.kpl","FileSave",cubo ,"C:\Basura\cuboResultados");					
-			var resultado=getXml(cubo ,"resultado");
-			
-			if(resultado &= "0"){
-				mensajeError = getXml(cubo ,"mensaje");
-				frn.message(mensajeError,"Error","Aceptar");
-				return;
-			}
-			frP.script("Inicia_Forma()");
-			if (accion &= "NUEVO" || accion &= "MODIFICAR") {	
-				var sms =  "";
-				if (accion &= "NUEVO"){
-					sms = "Registro guardado";
-				}else {
-					sms = "Registro modificado";
-				}
-				accion="CONSULTAR";
-				k_clave_vehiculo = frn.get("k_clave_crud");
-				k_anio = frn.get("k_anio_crud");
-				k_suc = frn.get("k_sucursal_crud");
-				ctlrs_opcion();
-				frn.message(sms ,"Mensaje","Aceptar");	
-
-
-			}
-			if (accion &= "ELIMINAR"){
-				frn.message("Registro eliminado","Mensaje","Aceptar");
-				frn.exit();			
-			}
-		}	
-		
-		fun ctlrs_opcion(){
-			frn.set("input_crud", accion);
-			frn.rst("grupo_crud");
-			if (accion &= "NUEVO"){
-
-				frn.setAtt("k_clave_crud", "available", "Y" );
-				frn.setAtt("k_clave_crud", "modify", "Y" );
-
-				frn.setAtt("k_anio_crud", "available", "Y" );
-				frn.setAtt("k_anio_crud", "modify", "Y" );
-
-				frn.setAtt("k_sucursal_crud", "available", "Y" );
-				frn.setAtt("k_sucursal_crud", "modify", "Y" );
-
-				frn.setAtt("k_notas_descuento_crud", "available", "Y" );
-				frn.setAtt("k_notas_descuento_crud", "modify", "Y" );
-
-				frn.setAtt("k_ventas_fni_crud", "available", "Y" );
-				frn.setAtt("k_ventas_fni_crud", "modify", "Y" );
-
-				frn.setAtt("k_costo_fni_crud", "available", "Y" );
-				frn.setAtt("k_costo_fni_crud", "modify", "Y" );
-
-				frn.setAtt("k_ventas_contado_crud", "available", "Y" );
-				frn.setAtt("k_ventas_contado_crud", "modify", "Y" );
-
-				frn.setAtt("k_proveedores_crud", "available", "Y" );
-				frn.setAtt("k_proveedores_crud", "modify", "Y" );
-
-				frn.setAtt("k_inventario_crud", "available", "Y" );
-				frn.setAtt("k_inventario_crud", "modify", "Y" );
-
-				frn.setAtt("k_costo_ventas_crud", "available", "Y" );
-				frn.setAtt("k_costo_ventas_crud", "modify", "Y" );
-
-				frn.setAtt("k_precio_venta_crud", "available", "Y" );
-				frn.setAtt("k_precio_venta_crud", "modify", "Y" );
-
-				frn.setAtt("k_iva_venta_crud", "available", "Y" );
-				frn.setAtt("k_iva_venta_crud", "modify", "Y" );
-
-				frn.setAtt("k_iva_compra_crud", "available", "Y" );
-				frn.setAtt("k_iva_compra_crud", "modify", "Y" );
-
-				frn.setAtt("k_costo_vent_tras_crud", "available", "Y" );
-				frn.setAtt("k_costo_vent_tras_crud", "modify", "Y" );
-
-				frn.setAtt("k_precio_vent_tras_crud", "available", "Y" );
-				frn.setAtt("k_precio_vent_tras_crud", "modify", "Y" );
-
-			    frn.set("k_titulo","Nuevo Clasificacion Pagos");
-				frn.setAtt("grupo_crud", "tit", "Nuevo" );
-				frn.setAtt("k_btn_cons", "visible", "Y" );
-				frn.setAtt("btn_aceptar", "available", "N" );
-				frn.setAtt("btn_aceptar", "visible", "N" );
-			
-			}else { 
-
-					if (accion &= "MODIFICAR") {
-					carga_datos();
-
-					frn.setAtt("grupo_consulta", "available", "N" );
-					frn.setAtt("grupo_consulta", "modify", "N" );
-					frn.setAtt("grupo_consulta", "visible", "N" );
-
-					frn.setAtt("k_clave_crud", "available", "N" );
-					frn.setAtt("k_clave_crud", "modify", "N" );
-
-					frn.setAtt("k_anio_crud", "available", "N" );
-					frn.setAtt("k_anio_crud", "modify", "N" );
-
-					frn.setAtt("k_sucursal_crud", "available", "N" );
-					frn.setAtt("k_sucursal_crud", "modify", "N" );
-
-					frn.setAtt("k_notas_descuento_crud", "available", "Y" );
-					frn.setAtt("k_notas_descuento_crud", "modify", "Y" );
-
-					frn.setAtt("k_ventas_fni_crud", "available", "Y" );
-					frn.setAtt("k_ventas_fni_crud", "modify", "Y" );
-
-					frn.setAtt("k_costo_fni_crud", "available", "Y" );
-					frn.setAtt("k_costo_fni_crud", "modify", "Y" );
-
-					frn.setAtt("k_ventas_contado_crud", "available", "Y" );
-					frn.setAtt("k_ventas_contado_crud", "modify", "Y" );
-
-					frn.setAtt("k_proveedores_crud", "available", "Y" );
-					frn.setAtt("k_proveedores_crud", "modify", "Y" );
-
-					frn.setAtt("k_inventario_crud", "available", "Y" );
-					frn.setAtt("k_inventario_crud", "modify", "Y" );
-
-					frn.setAtt("k_costo_ventas_crud", "available", "Y" );
-					frn.setAtt("k_costo_ventas_crud", "modify", "Y" );
-
-					frn.setAtt("k_precio_venta_crud", "available", "Y" );
-					frn.setAtt("k_precio_venta_crud", "modify", "Y" );
-
-					frn.setAtt("k_iva_venta_crud", "available", "Y" );
-					frn.setAtt("k_iva_venta_crud", "modify", "Y" );
-
-					frn.setAtt("k_iva_compra_crud", "available", "Y" );
-					frn.setAtt("k_iva_compra_crud", "modify", "Y" );
-
-					frn.setAtt("k_costo_vent_tras_crud", "available", "Y" );
-					frn.setAtt("k_costo_vent_tras_crud", "modify", "Y" );
-
-					frn.setAtt("k_precio_vent_tras_crud", "available", "Y" );
-					frn.setAtt("k_precio_vent_tras_crud", "modify", "Y" );
-					frn.set("k_titulo","Modifica Clasificacion Pagos");
-
-					frn.setAtt("grupo_crud", "tit", "Modifica" );
-                    frn.setAtt("grupo_crud", "available","Y");
-					frn.setAtt("k_btn_cons", "visible", "Y" );
-					frn.setAtt("btn_aceptar", "available", "N" );
-					frn.setAtt("btn_aceptar", "visible", "N" );
-					
-                   }else{
-
-						carga_datos();
-						frn.setAtt("k_clave_crud", "available", "N" );
-						frn.setAtt("k_clave_crud", "modify", "N" );
-
-						frn.setAtt("k_anio_crud", "available", "N" );
-						frn.setAtt("k_anio_crud", "modify", "N" );
-
-						frn.setAtt("k_sucursal_crud", "available", "N" );
-						frn.setAtt("k_sucursal_crud", "modify", "N" );
-
-						frn.setAtt("k_notas_descuento_crud", "available", "N" );
-						frn.setAtt("k_notas_descuento_crud", "modify", "N" );
-
-						frn.setAtt("k_ventas_fni_crud", "available", "N" );
-						frn.setAtt("k_ventas_fni_crud", "modify", "N" );
-
-						frn.setAtt("k_costo_fni_crud", "available", "N" );
-						frn.setAtt("k_costo_fni_crud", "modify", "N" );
-
-						frn.setAtt("k_ventas_contado_crud", "available", "N" );
-						frn.setAtt("k_ventas_contado_crud", "modify", "N" );
-
-						frn.setAtt("k_proveedores_crud", "available", "N" );
-						frn.setAtt("k_proveedores_crud", "modify", "N" );
-
-						frn.setAtt("k_inventario_crud", "available", "N" );
-						frn.setAtt("k_inventario_crud", "modify", "N" );
-
-						frn.setAtt("k_costo_ventas_crud", "available", "N" );
-						frn.setAtt("k_costo_ventas_crud", "modify", "N" );
-
-						frn.setAtt("k_precio_venta_crud", "available", "N" );
-						frn.setAtt("k_precio_venta_crud", "modify", "N" );
-
-						frn.setAtt("k_iva_venta_crud", "available", "N" );
-						frn.setAtt("k_iva_venta_crud", "modify", "N" );
-
-						frn.setAtt("k_iva_compra_crud", "available", "N" );
-						frn.setAtt("k_iva_compra_crud", "modify", "N" );
-
-						frn.setAtt("k_costo_vent_tras_crud", "available", "N" );
-						frn.setAtt("k_costo_vent_tras_crud", "modify", "N" );
-
-						frn.setAtt("k_precio_vent_tras_crud", "available", "N" );
-						frn.setAtt("k_precio_vent_tras_crud", "modify", "N" );
-						
-						frn.set("k_titulo","Modifica Clasificacion Pagos");
-
-						frn.setAtt("grupo_crud", "tit", "Colsulta" );
-						frn.setAtt("btn_aceptar", "available", "Y" );
-						frn.setAtt("btn_aceptar", "visible", "Y" );
-						frn.setAtt("k_btn_cons", "available", "N" );
-						frn.setAtt("k_btn_cons", "visible", "N" );
-
-
-				   }
-				
-			}
-			if (accion &! "CONSULTAR"){
-
-				frn.setAtt("btn_aceptar", "available", "N" );
-				frn.setAtt("btn_aceptar", "visible", "N" );
-				frn.setAtt("k_btn_cons", "available", "Y" );
-				frn.setAtt("k_btn_cons", "visible", "Y" );
-			}
-		}		
-
-		
-		fun ConfiguraUI(){
-			if (frn.nParam() == 0){
-				frn.message("Accion no permitida.","Error","&Aceptar");
-//				frn.open("redirect",2);
-				return;
-			}
-		}		
-
-		fun Inicializa(){
-	
-			ctlrs_opcion();
-			llena_combos();
-			
-		}
-		
-  
-		fun llenar_cmb(cuboResultados, cmb){
-					
-				var len_cubo = nXml(cuboResultados);
-				
-				var pos_ini = frn.N(cmb);
-					
-				for (var cont=0; cont<len_cubo ; cont++){
-			
-					var desc= getXmlAtt(cuboResultados,"r"&cont,"descripcion");
-					var clave= getXmlAtt(cuboResultados,"r"&cont,"clave");
-					
-					frn.setX(desc, cmb, cont+pos_ini ,0);
-					frn.setX(clave, cmb, cont+pos_ini ,1);
-				
-				}	
-			}
-			
-			
-			
-			fun descr_combo(combo,posicion,valor){
-
-				var descr, valor_actual;
-				var len_combo = frn.N(combo);
-
-				for (var cont=0; cont<len_combo ; cont++){
-					valor_actual= frn.get(combo,cont,posicion);
-					if (valor_actual &=  valor){
-						descr = frn.get(combo,cont,0);
-						return descr;
-					}
-				}
-			}
-			
-           
-				
-	}
-	
-		
-	</script>
-</pag>
+<?xml version="1.0" encoding="UTF-8"?><pag xmlns="www.kepler.com.mx/2003/KSchema" roles="" tit="Catalogo Cuentas de unidades"><grp  brdr="0,0" clr="0,58,112" fnt="Arial,14"  dim="0,0,20,20" bclr="192,205,213" unfont="0">	<txt fnt=",22" clr="0,0,0">  Cat&#225;logo Cuentas Contables Autos</txt>	<br/>	<hLine clr="0,0,0"	dim="38,0,0,0"/>	<br/>	<br/>	<grp id="grupo_consulta" bclr="236,240,243" fntClrBrdr="255,255,255" unfont="0" fntBrdr="Arial,18" hSpace="4" clrBrdr="0,58,112" 		dim="37,3,10,20" brdr="0,5" tit="Cargar A&#241;o anterior" fnt="Arial,16">		<sp/><txt>Clave Vehiculo : </txt>			<cmb id="k_clave_vehiculo" dim="20,1" brdr="2,0" bclr="255,255,255" clr="64,64,64" clrBrdr="255,255,255" available="Y" modify="Y"/>		<sp/><txt>A&#241;o : </txt>			<cmb id="k_anio" dim="8,1" brdr="2,0" bclr="255,255,255" clr="64,64,64" clrBrdr="255,255,255" available="Y" modify="Y"/>		<sp/><txt>Sucursal : </txt>			<cmb id="k_suc" dim="14,1" brdr="2,0" bclr="255,255,255" clr="64,64,64" clrBrdr="255,255,255" available="Y" modify="Y"/>		<sp/><img id="img_buscar" dim="20,20" bPx="1" brdr="0,1" available="Y" img="_20_Find.png" OnEnter="ObtenerCuentasPeriodo()"/>		</grp>	<br/>	<grp id="grupo_crud" bclr="236,240,243" fntClrBrdr="255,255,255" unfont="0" fntBrdr="Arial,18" hSpace="4" clrBrdr="0,58,112" 		dim="37,25,10,20" brdr="0,5" tit="Nuevo" fnt="Arial,16">		<inp id="input_crud" dim="10,1" brdr="2,0" clr="64,64,64" bclr="255,255,255" clrBrdr="255,255,255" visible="N"/>		<br/>		<tab/>									<txt>Clave del Vehiculo : </txt>			<tab n="3"/><sp/>			<inp id="k_clave_crud" dim="20,1" brdr="2,0" clr="64,64,64" bclr="255,255,255" clrBrdr="255,255,255" type="capital" nc="18" available="Y" modify="Y"/>		<sp/>		<br/>	<tab/>									<txt>A&#241;o: </txt>			<tab n="6"/><sp/>			<inp id="k_anio_crud" dim="20,1" brdr="2,0" clr="64,64,64" bclr="255,255,255" clrBrdr="255,255,255" type="capital" nc="2" available="Y" modify="Y"/>		<sp/>		<br/>		<tab/>									<txt>Sucursal: </txt>			<tab n="5"/><sp/>			<inp id="k_sucursal_crud" dim="20,1" brdr="2,0" clr="64,64,64" bclr="255,255,255" clrBrdr="255,255,255" type="capital" nc="7" available="Y" modify="Y"/>		<sp/>		<br/>		<tab/>									<txt>(V15) Notas de Descuento : </txt>			<tab n="2"/><sp/>			<inp id="k_notas_descuento_crud" dim="20,1" brdr="2,0" clr="64,64,64" bclr="255,255,255" clrBrdr="255,255,255" type="capital" nc="16" available="Y" modify="Y"/>		<br/>		<tab/>			<txt>(V16) Ventas F&amp;I : </txt>			<tab n="3"/><sp/>			<inp id="k_ventas_fni_crud" dim="30,1" brdr="2,0" clr="64,64,64" bclr="255,255,255" clrBrdr="255,255,255" type="capital" nc="16" available="Y" modify="Y"/>			<br/>		<tab/>			<txt>(V17) Costo F&amp;I : </txt>			<tab n="4"/><sp/>			<inp id="k_costo_fni_crud" dim="30,1" brdr="2,0" clr="64,64,64" bclr="255,255,255" clrBrdr="255,255,255" type="capital" nc="16" available="Y" modify="Y"/>		<br/>		<tab/>			<txt>(V18) Ventas Contado : </txt>			<tab n="3"/><sp/>			<inp id="k_ventas_contado_crud" dim="30,1" brdr="2,0" clr="64,64,64" bclr="255,255,255" clrBrdr="255,255,255" type="capital" nc="16" available="Y" modify="Y"/>		<br/>		<tab/>			<txt>(V19) Proveedores : </txt>			<tab n="3"/><sp/>			<inp id="k_proveedores_crud" dim="30,1" brdr="2,0" clr="64,64,64" bclr="255,255,255" clrBrdr="255,255,255" type="capital" nc="16" available="Y" modify="Y"/>		<br/>		<tab/>			<txt>(V20) Inventario : </txt>			<tab n="4"/><sp/>			<inp id="k_inventario_crud" dim="30,1" brdr="2,0" clr="64,64,64" bclr="255,255,255" clrBrdr="255,255,255" type="capital" nc="16" available="Y" modify="Y"/>			<br/>		<tab/>			<txt>(V21) Costo Ventas : </txt>			<tab n="3"/><sp/>			<inp id="k_costo_ventas_crud" dim="30,1" brdr="2,0" clr="64,64,64" bclr="255,255,255" clrBrdr="255,255,255" type="capital" nc="16" available="Y" modify="Y"/>		<br/>		<tab/>			<txt>(V22) Precio Venta : </txt>			<tab n="3"/><sp/>			<inp id="k_precio_venta_crud" dim="30,1" brdr="2,0" clr="64,64,64" bclr="255,255,255" clrBrdr="255,255,255" type="capital" nc="16" available="Y" modify="Y"/>		<br/>		<tab/>			<txt>(V23) Iva a la venta : </txt>			<tab n="3"/><sp/>			<inp id="k_iva_venta_crud" dim="30,1" brdr="2,0" clr="64,64,64" bclr="255,255,255" clrBrdr="255,255,255" type="capital" nc="16" available="Y" modify="Y"/>		<br/>		<tab/>			<txt>(V24) Iva a la compra : </txt>			<tab n="3"/><sp/>			<inp id="k_iva_compra_crud" dim="30,1" brdr="2,0" clr="64,64,64" bclr="255,255,255" clrBrdr="255,255,255" type="capital" nc="16" available="Y" modify="Y"/>			<br/>		<tab/>			<txt>(V25) Costo de ventas de Traspasos: </txt>			<inp id="k_costo_vent_tras_crud" dim="30,1" brdr="2,0" clr="64,64,64" bclr="255,255,255" clrBrdr="255,255,255" type="capital" nc="16" available="Y" modify="Y"/>			<br/>				<tab/>			<txt>(V26) Precio Ventas Traspasos : </txt>			<tab/><sp/>			<inp id="k_precio_vent_tras_crud" dim="30,1" brdr="2,0" clr="64,64,64" bclr="255,255,255" clrBrdr="255,255,255" type="capital" nc="16" available="Y" modify="Y"/>			<br/>		<br/>		<tab/>		<bot id="k_btn_cons" dim="10,10" brdr="5" text="Guardar" hk="K" default="0" step="0"  OnEnter="Execute()" fnt="Arial,16" visible="Y" available="Y"/>		<tab/>		<bot id="btn_aceptar" dim="10,10" brdr="5" text="Aceptar" hk="K" default="0" step="0"  OnEnter="salir()" fnt="Arial,16" available="N" visible="N"/>	</grp></grp><script>	InstallDriver("KDB75");	class Main {		var frn,frP,kdb,sys,suc_usuario,perfil_usuario,rol_usuario, asterisco  ;		var cmdQuery, cuboQuery, ok, mensajeError, xml_cubo_cata, accion, externo, straccion, clave_sel, cve_color, sucursal_id, resVal;		var k_clave_vehiculo, k_anio, k_suc;		fun Main(){			frn=new FRNT;			kdb=new KDB;			frP=new FRNTP;			sys=new SYS;			kdb.connect();						suc_usuario = frn.lib("libKepler","UserInfo(1)");			perfil_usuario = frn.lib("libKepler","UserInfo(2)");			rol_usuario = frn.config("user","role");			asterisco = "*";			accion = frn.param(0);			k_clave_vehiculo = frn.param(1);			k_anio = frn.param(2);			k_suc = frn.param(3);						ConfiguraUI();			Inicializa();					}		fun vacia_campos(){			frn.rst("k_clave_crud");			frn.rst("k_anio_crud");			frn.rst("k_sucursal_crud");			frn.rst("k_notas_descuento_crud");			frn.rst("k_ventas_fni_crud");			frn.rst("k_costo_fni_crud");			frn.rst("k_ventas_contado_crud");			frn.rst("k_proveedores_crud");			frn.rst("k_inventario_crud");			frn.rst("k_costo_ventas_crud");			frn.rst("k_precio_venta_crud");			frn.rst("k_iva_venta_crud");			frn.rst("k_iva_compra_crud");			frn.rst("k_costo_vent_tras_crud");			frn.rst("k_precio_vent_tras_crud");		}            		fun ObtenerCuentasPeriodo(){						k_clave_vehiculo = frn.get("k_clave_vehiculo",-1,"c2");			k_anio = frn.get("k_anio",-1,"c2");			k_suc = frn.get("k_suc",-1,"c2");			vacia_campos();			cmdQuery = "select c1 as k_clave_crud, c2 as k_anio_crud, c3 as k_sucursal_crud						,c15 as k_notas_descuento_crud, c16 as k_ventas_fni_crud						,c17 as k_costo_fni_crud, c18 as k_ventas_contado_crud						,c19 as k_proveedores_crud, c20 as k_inventario_crud						,c21 as k_costo_ventas_crud, c22 as k_precio_venta_crud						,c23 as k_iva_venta_crud, c24 as k_iva_compra_crud						,c25 as k_costo_vent_tras_crud, c26 as k_precio_vent_tras_crud						from keplersc.kdivcl where c1 = '"& k_clave_vehiculo &"' and c2 = '"& k_anio &"' and c3 = '"& k_suc &"'";frn.lib("libGeneral.kpl","FileSave",cmdQuery ,"C:\Basura\xmlCuenta");					rstXml(cuboQuery);			cuboQuery = frn.lib("libGeneral.kpl","EjecutarSqlSel",cmdQuery,"cat_clasifpagos_crud.IniCombos()");			xml_cubo_cata=frn.lib("libGeneral.kpl","CreaXmlDesdeAtt",cuboQuery,"r0");frn.lib("libGeneral.kpl","FileSave",cuboQuery,"C:\Basura\cubo");					frn.setX(xml_cubo_cata);		}		fun salir(){			accion="NUEVO";			vacia_campos();			Inicializa();			frn.exit();					}		fun llena_combos(){			var contAnio, maxAnio;			// Fill Combo Sucursal (Con Query de PostgreSQL)			cmdQuery = "select '['||c1||'] '||c2 as c1, c1 as c2 from keplersc.kdms";			rstXml(cuboQuery);			cuboQuery = frn.lib("libGeneral.kpl","EjecutarSqlSel",cmdQuery,"cat_crud_cuentas_unidades.IniCombos()");			frn.set("k_suc",cuboQuery);								cmdQuery = "select '['||c1||'] '||c2 as c1, c1 as c2 from keplersc.kdiv";			rstXml(cuboQuery);			cuboQuery = frn.lib("libGeneral.kpl","EjecutarSqlSel",cmdQuery,"cat_crud_cuentas_unidades.IniCombos()");			frn.set("k_clave_vehiculo",cuboQuery);					// Año/*			kdb.date("SrvDate");	//Fecha del servidor			kdb.kde("KDE");//Configuración del servidor			kdb.exec();						maxAnio=fnDate("year",kdb.get("SrvDate"));			maxAnio=maxAnio+1;			for (contAnio=2020; contAnio<=maxAnio; contAnio++){				frn.setX(contAnio,"k_anio",contAnio-2020,0);				frn.setX(contAnio,"k_anio",contAnio-2020,1);			}*/						cmdQuery = "select distinct '20'||c2 as c1, c2 as c2 from keplersc.kdivcl order by c1 desc";			rstXml(cuboQuery);			cuboQuery = frn.lib("libGeneral.kpl","EjecutarSqlSel",cmdQuery,"cat_crud_cuentas_unidades.IniCombos()");			frn.set("k_anio",cuboQuery);					}		fun carga_datos(){			cmdQuery = "select c1 as k_clave_crud, c2 as k_anio_crud, c3 as k_sucursal_crud						,c15 as k_notas_descuento_crud, c16 as k_ventas_fni_crud						,c17 as k_costo_fni_crud, c18 as k_ventas_contado_crud						,c19 as k_proveedores_crud, c20 as k_inventario_crud						,c21 as k_costo_ventas_crud, c22 as k_precio_venta_crud						,c23 as k_iva_venta_crud, c24 as k_iva_compra_crud						,c25 as k_costo_vent_tras_crud, c26 as k_precio_vent_tras_crud						from keplersc.kdivcl where c1 = '"& k_clave_vehiculo &"' and c2 = '"& k_anio &"' and c3 = '"& k_suc &"'";			rstXml(cuboQuery);			cuboQuery = frn.lib("libGeneral.kpl","EjecutarSqlSel",cmdQuery,"cat_clasifpagos_crud.IniCombos()");			xml_cubo_cata=frn.lib("libGeneral.kpl","CreaXmlDesdeAtt",cuboQuery,"r0");			frn.lib("libGeneral.kpl","FileSave",cuboQuery,"C:\Basura\cubo");					frn.setX(xml_cubo_cata);		}		fun ValidarDatos(){			if (frn.get("k_clave_crud") &= "") {										frn.setPos("k_clave_crud");				resVal=0;				frn.message("Debe especificar la clave, verificar","Error","Aceptar");				return;			}			if (frn.get("k_anio_crud") &= "") {										frn.setPos("k_anio_crud");				resVal=0;				frn.message("Debe especificar el Añio, verificar","Error","Aceptar");				return;			}			if (frn.get("k_sucursal_crud") &= "") {										frn.setPos("k_clave_crud");				resVal=0;				frn.message("Debe especificar la clave, verificar","Error","Aceptar");				return;			}		}		fun Execute() {			resVal = 1;			ValidarDatos();			if(resVal == 0){				return;			}						var resultado_confirmacion = frn.message("¿Desea continuar?","Mensaje de Confirmacion", 2);			if (resultado_confirmacion &! 1)  {				return;			}						var xmlRequest = getXml(frn.dataPag());				frn.lib("libGeneral.kpl","FileSave",xmlRequest ,"C:\Basura\xmlRequest ");					cmdQuery="SELECT * FROM keplersc.cat_crud_cuentas_unidades('<document>" & getXmlStr(xmlRequest ,"EOF:13_10") & "</document>')";			var cubo = frn.lib("libGeneral.kpl","EjecutarSql",cmdQuery,"cat_clasifpagos_crud.Execute()");				frn.lib("libGeneral.kpl","FileSave",cubo ,"C:\Basura\cuboResultados");								var resultado=getXml(cubo ,"resultado");						if(resultado &= "0"){				mensajeError = getXml(cubo ,"mensaje");				frn.message(mensajeError,"Error","Aceptar");				return;			}			frP.script("Inicia_Forma()");			if (accion &= "NUEVO" || accion &= "MODIFICAR") {					var sms =  "";				if (accion &= "NUEVO"){					sms = "Registro guardado";				}else {					sms = "Registro modificado";				}				accion="CONSULTAR";				k_clave_vehiculo = frn.get("k_clave_crud");				k_anio = frn.get("k_anio_crud");				k_suc = frn.get("k_sucursal_crud");				ctlrs_opcion();				frn.message(sms ,"Mensaje","Aceptar");				}			if (accion &= "ELIMINAR"){				frn.message("Registro eliminado","Mensaje","Aceptar");				frn.exit();						}		}					fun ctlrs_opcion(){			frn.set("input_crud", accion);			frn.rst("grupo_crud");			if (accion &= "NUEVO"){				frn.setAtt("k_clave_crud", "available", "Y" );				frn.setAtt("k_clave_crud", "modify", "Y" );				frn.setAtt("k_anio_crud", "available", "Y" );				frn.setAtt("k_anio_crud", "modify", "Y" );				frn.setAtt("k_sucursal_crud", "available", "Y" );				frn.setAtt("k_sucursal_crud", "modify", "Y" );				frn.setAtt("k_notas_descuento_crud", "available", "Y" );				frn.setAtt("k_notas_descuento_crud", "modify", "Y" );				frn.setAtt("k_ventas_fni_crud", "available", "Y" );				frn.setAtt("k_ventas_fni_crud", "modify", "Y" );				frn.setAtt("k_costo_fni_crud", "available", "Y" );				frn.setAtt("k_costo_fni_crud", "modify", "Y" );				frn.setAtt("k_ventas_contado_crud", "available", "Y" );				frn.setAtt("k_ventas_contado_crud", "modify", "Y" );				frn.setAtt("k_proveedores_crud", "available", "Y" );				frn.setAtt("k_proveedores_crud", "modify", "Y" );				frn.setAtt("k_inventario_crud", "available", "Y" );				frn.setAtt("k_inventario_crud", "modify", "Y" );				frn.setAtt("k_costo_ventas_crud", "available", "Y" );				frn.setAtt("k_costo_ventas_crud", "modify", "Y" );				frn.setAtt("k_precio_venta_crud", "available", "Y" );				frn.setAtt("k_precio_venta_crud", "modify", "Y" );				frn.setAtt("k_iva_venta_crud", "available", "Y" );				frn.setAtt("k_iva_venta_crud", "modify", "Y" );				frn.setAtt("k_iva_compra_crud", "available", "Y" );				frn.setAtt("k_iva_compra_crud", "modify", "Y" );				frn.setAtt("k_costo_vent_tras_crud", "available", "Y" );				frn.setAtt("k_costo_vent_tras_crud", "modify", "Y" );				frn.setAtt("k_precio_vent_tras_crud", "available", "Y" );				frn.setAtt("k_precio_vent_tras_crud", "modify", "Y" );			    frn.set("k_titulo","Nuevo Clasificacion Pagos");				frn.setAtt("grupo_crud", "tit", "Nuevo" );				frn.setAtt("k_btn_cons", "visible", "Y" );				frn.setAtt("btn_aceptar", "available", "N" );				frn.setAtt("btn_aceptar", "visible", "N" );						}else { 					if (accion &= "MODIFICAR") {					carga_datos();					frn.setAtt("grupo_consulta", "available", "N" );					frn.setAtt("grupo_consulta", "modify", "N" );					frn.setAtt("grupo_consulta", "visible", "N" );					frn.setAtt("k_clave_crud", "available", "N" );					frn.setAtt("k_clave_crud", "modify", "N" );					frn.setAtt("k_anio_crud", "available", "N" );					frn.setAtt("k_anio_crud", "modify", "N" );					frn.setAtt("k_sucursal_crud", "available", "N" );					frn.setAtt("k_sucursal_crud", "modify", "N" );					frn.setAtt("k_notas_descuento_crud", "available", "Y" );					frn.setAtt("k_notas_descuento_crud", "modify", "Y" );					frn.setAtt("k_ventas_fni_crud", "available", "Y" );					frn.setAtt("k_ventas_fni_crud", "modify", "Y" );					frn.setAtt("k_costo_fni_crud", "available", "Y" );					frn.setAtt("k_costo_fni_crud", "modify", "Y" );					frn.setAtt("k_ventas_contado_crud", "available", "Y" );					frn.setAtt("k_ventas_contado_crud", "modify", "Y" );					frn.setAtt("k_proveedores_crud", "available", "Y" );					frn.setAtt("k_proveedores_crud", "modify", "Y" );					frn.setAtt("k_inventario_crud", "available", "Y" );					frn.setAtt("k_inventario_crud", "modify", "Y" );					frn.setAtt("k_costo_ventas_crud", "available", "Y" );					frn.setAtt("k_costo_ventas_crud", "modify", "Y" );					frn.setAtt("k_precio_venta_crud", "available", "Y" );					frn.setAtt("k_precio_venta_crud", "modify", "Y" );					frn.setAtt("k_iva_venta_crud", "available", "Y" );					frn.setAtt("k_iva_venta_crud", "modify", "Y" );					frn.setAtt("k_iva_compra_crud", "available", "Y" );					frn.setAtt("k_iva_compra_crud", "modify", "Y" );					frn.setAtt("k_costo_vent_tras_crud", "available", "Y" );					frn.setAtt("k_costo_vent_tras_crud", "modify", "Y" );					frn.setAtt("k_precio_vent_tras_crud", "available", "Y" );					frn.setAtt("k_precio_vent_tras_crud", "modify", "Y" );					frn.set("k_titulo","Modifica Clasificacion Pagos");					frn.setAtt("grupo_crud", "tit", "Modifica" );                    frn.setAtt("grupo_crud", "available","Y");					frn.setAtt("k_btn_cons", "visible", "Y" );					frn.setAtt("btn_aceptar", "available", "N" );					frn.setAtt("btn_aceptar", "visible", "N" );					                   }else{						carga_datos();						frn.setAtt("k_clave_crud", "available", "N" );						frn.setAtt("k_clave_crud", "modify", "N" );						frn.setAtt("k_anio_crud", "available", "N" );						frn.setAtt("k_anio_crud", "modify", "N" );						frn.setAtt("k_sucursal_crud", "available", "N" );						frn.setAtt("k_sucursal_crud", "modify", "N" );						frn.setAtt("k_notas_descuento_crud", "available", "N" );						frn.setAtt("k_notas_descuento_crud", "modify", "N" );						frn.setAtt("k_ventas_fni_crud", "available", "N" );						frn.setAtt("k_ventas_fni_crud", "modify", "N" );						frn.setAtt("k_costo_fni_crud", "available", "N" );						frn.setAtt("k_costo_fni_crud", "modify", "N" );						frn.setAtt("k_ventas_contado_crud", "available", "N" );						frn.setAtt("k_ventas_contado_crud", "modify", "N" );						frn.setAtt("k_proveedores_crud", "available", "N" );						frn.setAtt("k_proveedores_crud", "modify", "N" );						frn.setAtt("k_inventario_crud", "available", "N" );						frn.setAtt("k_inventario_crud", "modify", "N" );						frn.setAtt("k_costo_ventas_crud", "available", "N" );						frn.setAtt("k_costo_ventas_crud", "modify", "N" );						frn.setAtt("k_precio_venta_crud", "available", "N" );						frn.setAtt("k_precio_venta_crud", "modify", "N" );						frn.setAtt("k_iva_venta_crud", "available", "N" );						frn.setAtt("k_iva_venta_crud", "modify", "N" );						frn.setAtt("k_iva_compra_crud", "available", "N" );						frn.setAtt("k_iva_compra_crud", "modify", "N" );						frn.setAtt("k_costo_vent_tras_crud", "available", "N" );						frn.setAtt("k_costo_vent_tras_crud", "modify", "N" );						frn.setAtt("k_precio_vent_tras_crud", "available", "N" );						frn.setAtt("k_precio_vent_tras_crud", "modify", "N" );												frn.set("k_titulo","Modifica Clasificacion Pagos");						frn.setAtt("grupo_crud", "tit", "Colsulta" );						frn.setAtt("btn_aceptar", "available", "Y" );						frn.setAtt("btn_aceptar", "visible", "Y" );						frn.setAtt("k_btn_cons", "available", "N" );						frn.setAtt("k_btn_cons", "visible", "N" );				   }							}			if (accion &! "CONSULTAR"){				frn.setAtt("btn_aceptar", "available", "N" );				frn.setAtt("btn_aceptar", "visible", "N" );				frn.setAtt("k_btn_cons", "available", "Y" );				frn.setAtt("k_btn_cons", "visible", "Y" );			}		}						fun ConfiguraUI(){			if (frn.nParam() == 0){				frn.message("Acción no permitida.","Error","&Aceptar");//				frn.open("redirect",2);				return;			}		}				fun Inicializa(){				ctlrs_opcion();			llena_combos();					}		  		fun llenar_cmb(cuboResultados, cmb){									var len_cubo = nXml(cuboResultados);								var pos_ini = frn.N(cmb);									for (var cont=0; cont<len_cubo ; cont++){								var desc= getXmlAtt(cuboResultados,"r"&cont,"descripcion");					var clave= getXmlAtt(cuboResultados,"r"&cont,"clave");										frn.setX(desc, cmb, cont+pos_ini ,0);					frn.setX(clave, cmb, cont+pos_ini ,1);								}				}												fun descr_combo(combo,posicion,valor){				var descr, valor_actual;				var len_combo = frn.N(combo);				for (var cont=0; cont<len_combo ; cont++){					valor_actual= frn.get(combo,cont,posicion);					if (valor_actual &=  valor){						descr = frn.get(combo,cont,0);						return descr;					}				}			}			           					}				</script></pag>

@@ -41,7 +41,7 @@ begin
 		encabezado xml
 	);
 
-	expSql= format('select dmm.c5 as k_tipon,dm1.c9 as k_fecha, dm1.c69 as k_hora, ''[''||mar.c1||''] ''||mar.c3 as k_tipo_orden, dm1.c122 as k_orden,
+	expSql= format('select dmm.c5 as k_tipon,dm1.c9 as k_fecha, dm1.c68 as k_hora, ''[''||mar.c1||''] ''||mar.c3 as k_tipo_orden, dm1.c122 as k_orden,
 		dm1.c36 as k_natdocto,dm1.c37 as k_gpodocto,dm1.c38 as k_tipodocto,dm1.c39 as k_foliodocto, 
 		dm1.c12 as k_vendedor, rec.c2 as k_nombre_recep, dm1.c11 as k_refer,dm1.c27 as k_pedimento,inf.c2 as k_claveinv,
 		dm1.c10 as k_clave, dm1.c51 as k_montoext1,dm1.c52 as k_montoext2,dm1.c53 as k_montoext3,dm1.c54 as k_montoext4, 
@@ -51,7 +51,7 @@ begin
 		''[''||cfd.c1||''] ''||cfd.c2 as k_cfdi,dm1.c161 as k_cuenta,dm1.c162 as k_m_pago,
 		concat(regexp_replace(dm1.c24,''\r|\n'','' '', ''g''),'' '',dm1.c25,'' '',dm1.c26) as k_coment,dmm.c16 as k_porciva 
 		from keplersc.kdm1 dm1
-		inner join keplersc.kdmm dmm on dmm.col_sucursal=dm1.c1 and	dmm.c1=dm1.c2 and dmm.c2=dm1.c3 and dmm.c3=dm1.c4 and dmm.c4=dm1.c5
+		inner join keplersc.kdmm dmm on dmm.c1=dm1.c2 and dmm.c2=dm1.c3 and dmm.c3=dm1.c4 and dmm.c4=dm1.c5
 		left join keplersc.kdmargen mar on mar.c1=dm1.c121
 		left join keplersc.kdinf inf on inf.c2=dm1.c100 
 		left join keplersc.kdrecep rec on rec.c1=dm1.c12

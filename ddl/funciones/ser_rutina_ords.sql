@@ -15,7 +15,6 @@ AS $procedure$
 		costo_varios text;
 	
 		--kdmm--
-		suc_kdmm text;
 		gen_kdmm text;
 		nat_kdmm text;
 		gpo_kdmm numeric;
@@ -67,14 +66,14 @@ AS $procedure$
 			end loop;
 		
 		
-		for suc_kdmm,gen_kdmm,nat_kdmm,gpo_kdmm ,tipo_kdmm in select col_sucursal,c1,c2,c3,c4 
-		from keplersc.kdmm where col_sucursal = sucursal and (c1='U' and c2='D' and c3='10') 
+		for gen_kdmm,nat_kdmm,gpo_kdmm ,tipo_kdmm in select c1,c2,c3,c4 
+		from keplersc.kdmm where (c1='U' and c2='D' and c3='10') 
 		or (c1='U' and c2='A' and c3='14') or (c1='U' and c2='A' and c3='24')
 		loop 
 			
 			if (tipo_kdmm >= 3 and tipo_kdmm <=10) or tipo_kdmm=13 or tipo_kdmm=15 or tipo_kdmm=16 then 
 						
-				update keplersc.kdmm set c16=0, c21='' where col_sucursal=sucursal and c1=gen_kdmm
+				update keplersc.kdmm set c16=0, c21='' where c1=gen_kdmm
 				and c2=nat_kdmm and c3=gpo_kdmm and c4=tipo_kdmm;
 			
 				for gen, nat, gpo, tip, fol, monto_iva, importe

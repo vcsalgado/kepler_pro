@@ -1,7 +1,7 @@
 CREATE  TABLE keplersc.kdud (
   c1 character varying(7) NOT NULL DEFAULT ''::character varying,
   c2 character varying(7) NOT NULL DEFAULT ''::character varying,
-  c3 character varying(130) NOT NULL DEFAULT ''::character varying,
+  c3 character varying(90) NOT NULL DEFAULT ''::character varying,
   c4 character varying(80) NOT NULL DEFAULT ''::character varying,
   c5 character varying(70) NOT NULL DEFAULT ''::character varying,
   c6 character varying(70) NOT NULL DEFAULT ''::character varying,
@@ -28,7 +28,7 @@ CREATE  TABLE keplersc.kdud (
   c27 character varying(10) NOT NULL DEFAULT ''::character varying,
   c28 numeric(7,4) NOT NULL DEFAULT 0,
   c29 numeric(7,4) NOT NULL DEFAULT 0,
-  c30 character varying(130) NULL DEFAULT ''::character varying,
+  c30 character varying(90) NULL DEFAULT ''::character varying,
   c31 character varying(1) NOT NULL DEFAULT ''::character varying,
   c32 character varying(90) NOT NULL DEFAULT ''::character varying,
   c33 character varying(30) NOT NULL DEFAULT ''::character varying,
@@ -47,7 +47,7 @@ CREATE  TABLE keplersc.kdud (
   c46 character varying(27) NOT NULL DEFAULT ''::character varying,
   c47 character varying(70) NOT NULL DEFAULT ''::character varying,
   c48 character varying(35) NOT NULL DEFAULT ''::character varying,
-  c49 character varying(35) NOT NULL DEFAULT 'MEX'::character varying,
+  c49 character varying(35) NULL DEFAULT ''::character varying,
   c50 character varying(1) NOT NULL DEFAULT ''::character varying,
   c51 character varying(1) NOT NULL DEFAULT ''::character varying,
   c52 character varying(5) NULL DEFAULT ''::character varying,
@@ -59,19 +59,19 @@ CREATE  TABLE keplersc.kdud (
   c58 character varying(20) NULL,
   c59 character varying(100) NULL,
   c60 character varying(100) NULL,
-  c61 numeric NOT NULL DEFAULT 0,
+  c61 numeric NOT NULL DEFAULT 10,
   estatus numeric NOT NULL DEFAULT 0,
   subestatus numeric NOT NULL DEFAULT 0,
   nombre_referencia character varying(90) NOT NULL DEFAULT ''::character varying,
   parentesco_refer_cte character varying(20) NOT NULL DEFAULT ''::character varying
 ) TABLESPACE pg_default;
 CREATE UNIQUE INDEX IF NOT EXISTS pk_kdud ON keplersc.kdud USING btree (c2) TABLESPACE pg_default;
+CREATE INDEX IF NOT EXISTS sindkdud07 ON keplersc.kdud USING btree (c10) TABLESPACE pg_default;
 CREATE INDEX IF NOT EXISTS sindkdud02 ON keplersc.kdud USING btree (c3, c2) TABLESPACE pg_default;
 CREATE INDEX IF NOT EXISTS sindkdud03 ON keplersc.kdud USING btree (c12, c2) TABLESPACE pg_default;
 CREATE INDEX IF NOT EXISTS sindkdud04 ON keplersc.kdud USING btree (c13, c2) TABLESPACE pg_default;
 CREATE INDEX IF NOT EXISTS sindkdud05 ON keplersc.kdud USING btree (c14, c2) TABLESPACE pg_default;
 CREATE INDEX IF NOT EXISTS sindkdud06 ON keplersc.kdud USING btree (c40, c2) TABLESPACE pg_default;
-CREATE INDEX IF NOT EXISTS sindkdud07 ON keplersc.kdud USING btree (c10) TABLESPACE pg_default;
 COMMENT ON TABLE keplersc.kdud IS 'Catalogo de clientes';
 COMMENT ON COLUMN keplersc.kdud.subestatus IS 'Subestatus del cliente';
 COMMENT ON COLUMN keplersc.kdud.parentesco_refer_cte IS 'Parentesco de la referencia con el cliente';
@@ -82,7 +82,6 @@ COMMENT ON COLUMN keplersc.kdud.c8 IS 'Telefono2';
 COMMENT ON COLUMN keplersc.kdud.c7 IS 'Telefono';
 COMMENT ON COLUMN keplersc.kdud.c61 IS 'Medio de contacto preferente (0 llamada, 10 Correo, 20 Whatsapp, 30 SMS) (kdmediocontacto)';
 COMMENT ON COLUMN keplersc.kdud.c6 IS 'Ciudad o Poblacion';
-COMMENT ON COLUMN keplersc.kdud.c59 IS 'D = Duplicado';
 COMMENT ON COLUMN keplersc.kdud.c58 IS 'Telefono chofer';
 COMMENT ON COLUMN keplersc.kdud.c57 IS 'Contacto chofer';
 COMMENT ON COLUMN keplersc.kdud.c56 IS 'Telefono autoriza';

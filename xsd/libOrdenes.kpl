@@ -1,1 +1,57 @@
-<?xml version="1.0" encoding="UTF-8"?><pag xmlns="www.kepler.com.mx/2003/KSchema" roles="" tit="Libreria">	<grp brdr="0,0" clr="0,58,112" fnt="Arial,16" dim="1,-1,10,20" bclr="192,205,213"><br/>		<grp bclr="236,240,243" fntClrBrdr="255,206,0" fntBrdr="Arial,18" hSpace="4" clrBrdr="0,58,112" dim="70,50,7,12" brdr="0,5" tit="Datos generales" fnt="Arial,16"><br/>		</grp><br/>	</grp>	<script>		InstallDriver("KDB75");		class Main {			var frn,kdb,sys;			var bConect;//Bandera que indica si ya está conectado o no.			var cubo, cmd,ok, mensajeError;			fun Main() {				frn=new FRNT;//Solo para frn.message, no se puede modificar objetos gráficos de la ventana principal				kdb=new KDB;				sys=new SYS;				bConect=0;				//Esta rutina se ejecuta solo la primera vez que se manda llamar alguna función de la librería. 			}						fun Conexion(){//Cuando se quiera accesar a base de datos, ejecutar esta función, antes de cualquier cosa. 				if(bConect==0){					kdb.connect();					bConect=1;				}			}			fun ConsultaOrden(sucursal_id, tipo_orden, folio_orden){				var xmlOrden;				cmd = "select ms.c1 as k_sucursal, ms.c2 as k_sucnombre," &				"ord.c4 as k_fecha, case when ord.c8 = 0 then 'PENDIENTE' when ord.c8 = 10 then 'ACTIVA' when ord.c8 = 20 then 'SUSPENDIDA' " &				"when ord.c8 = 30 then 'TERMINADA' when ord.c8 = 40 then 'CERRADA'  when ord.c8 = 50 then 'FUERA TALLER' end k_estatusdesc," &				"ord.c2 as k_tipo, upper(mar.c3) as k_tipodesc," &				"ord.c3 as k_folio," &				"ord.c10 as k_cliente, ord.c11 as k_nombre," &				"ord.c6 as k_serie," &				"ser.c2 as k_marca, ser.c3 as k_modelo, ser.c11 as k_anio," &				"ord.c21 as k_placa, ord.c19 as k_bonete " &				"from keplersc.kdord ord " &				"inner join  keplersc.kdms ms on ms.c1 = ord.c1 " &				"left outer join keplersc.kdserie ser on ser.c1 = ord.c6 " &				"left outer join keplersc.kdmargen mar on mar.c1 = ord.c2 " &				"where ord.c1= '" & sucursal_id & "' and ord.c2='" & tipo_orden  & "' and ord.c3='" & folio_orden  & "'";								rstXml(xmlOrden);				xmlOrden= frn.lib("libGeneral.kpl","EjecutarSqlSel",cmd,"administracionordenes.Inicializa()");								ok=getXmlAtt(cubo,"ok");				if(ok &! "" && !ok){					mensajeError = getXmlAtt(cubo,"native3");					mensajeError = frn.lib("libGeneral.kpl","ErrorBD",mensajeError);					frn.message(mensajeError,"Error","Aceptar");					return;				}				return xmlOrden;			}		}	</script></pag>
+<?xml version="1.0" encoding="UTF-8"?>
+<pag xmlns="www.kepler.com.mx/2003/KSchema" roles="" tit="Libreria">
+	<grp brdr="0,0" clr="0,58,112" fnt="Arial,16" dim="1,-1,10,20" bclr="192,205,213"><br/>
+		<grp bclr="236,240,243" fntClrBrdr="255,206,0" fntBrdr="Arial,18" hSpace="4" clrBrdr="0,58,112" dim="70,50,7,12" brdr="0,5" tit="Datos generales" fnt="Arial,16"><br/>
+		</grp><br/>
+	</grp>
+	<script>
+		InstallDriver("KDB75");
+		class Main {
+			var frn,kdb,sys;
+			var bConect;//Bandera que indica si ya está conectado o no.
+			var cubo, cmd,ok, mensajeError;
+			fun Main() {
+				frn=new FRNT;//Solo para frn.message, no se puede modificar objetos gráficos de la ventana principal
+				kdb=new KDB;
+				sys=new SYS;
+				bConect=0;
+				//Esta rutina se ejecuta solo la primera vez que se manda llamar alguna función de la librería. 
+			}
+			
+			fun Conexion(){//Cuando se quiera accesar a base de datos, ejecutar esta función, antes de cualquier cosa. 
+				if(bConect==0){
+					kdb.connect();
+					bConect=1;
+				}
+			}
+
+			fun ConsultaOrden(sucursal_id, tipo_orden, folio_orden){
+				var xmlOrden;
+				cmd = "select ms.c1 as k_sucursal, ms.c2 as k_sucnombre," &
+				"ord.c4 as fecha, 'PENDIENTE' as k_estatusdesc," &
+				"ord.c2 as k_tipo, 'PENDIENTE' as k_tipodesc," &
+				"ord.c3 as k_folio," &
+				"ord.c10 as k_cliente, ord.c11 as k_nombre," &
+				"ord.c6 as k_serie," &
+				"ser.c2 as k_marca, ser.c3 as k_modelo, ser.c11 as k_anio," &
+				"ord.c21 as placa, ord.c1 as k_bonete " &
+				"from keplersc.kdord ord " &
+				"inner join  keplersc.kdms ms on ms.c1 = ord.c1 " &
+				"left outer join keplersc.kdserie ser on ser.c1 = ord.c6 " &
+				"where ord.c1= '" & sucursal_id & "' and ord.c2='" & tipo_orden  & "' and ord.c3='" & folio_orden  & "'";
+//frn.message(cmd,"Mensaje",1);				
+				rstXml(xmlOrden);
+				xmlOrden= frn.lib("libGeneral.kpl","EjecutarSqlSel",cmd,"administracionordenes.Inicializa()");
+				
+				ok=getXmlAtt(cubo,"ok");
+				if(ok &! "" && !ok){
+					mensajeError = getXmlAtt(cubo,"native3");
+					mensajeError = frn.lib("libGeneral.kpl","ErrorBD",mensajeError);
+					frn.message(mensajeError,"Error","Aceptar");
+					return;
+				}
+				return xmlOrden;
+			}
+		}
+	</script>
+</pag>
