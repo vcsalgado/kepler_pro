@@ -219,7 +219,7 @@ raise notice '%',paso;
 					raise exception '%',get_mensaje;
 				end if;	
 			end if;
-
+		
 			paso:= 'docdis_xd.mov_sec_alta';
 			select * into get_resultado, get_mensaje, get_adicionales from keplersc.mov_sec_alta(dataxml, folio_operacion);
 			if get_resultado = '0' then

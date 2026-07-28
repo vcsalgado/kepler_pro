@@ -7,8 +7,6 @@ CREATE  TABLE keplersc.kdtmktaccion (
   estado character varying(5) NOT NULL DEFAULT 'NA'::character varying
 ) TABLESPACE pg_default;
 ALTER TABLE ONLY keplersc.kdtmktaccion ADD CONSTRAINT kdtmktaccion_pk PRIMARY KEY (accion_id);
-ALTER TABLE ONLY keplersc.kdtmktaccion ADD CONSTRAINT kdtmktaccion_fk FOREIGN KEY (estado) REFERENCES keplersc.kdcatestadotmktaccion(clave) ON UPDATE RESTRICT ON DELETE RESTRICT;
-
 COMMENT ON TABLE keplersc.kdtmktaccion IS 'acciones a tomar en los contactos de tmkt';
 COMMENT ON COLUMN keplersc.kdtmktaccion.seleccionable IS 'Accion selecionabe desde tmkt';
 COMMENT ON COLUMN keplersc.kdtmktaccion.descripcion IS 'Descripcion de la accion';

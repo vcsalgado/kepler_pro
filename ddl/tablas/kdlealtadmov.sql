@@ -9,12 +9,4 @@ CREATE  TABLE keplersc.kdlealtadmov (
   c8 numeric(10,5) NOT NULL DEFAULT 0
 ) TABLESPACE pg_default;
 ALTER TABLE ONLY keplersc.kdlealtadmov ADD CONSTRAINT pk_kdlealtadmov PRIMARY KEY (c1, c2, c3, c4);
-COMMENT ON COLUMN keplersc.kdlealtadmov.c8 IS '% Descuento';
-COMMENT ON COLUMN keplersc.kdlealtadmov.c7 IS 'Fecha de Cierre';
-COMMENT ON COLUMN keplersc.kdlealtadmov.c6 IS 'Clave Paquete';
-COMMENT ON COLUMN keplersc.kdlealtadmov.c5 IS 'Tipo Punto';
-COMMENT ON COLUMN keplersc.kdlealtadmov.c4 IS 'Punto';
-COMMENT ON COLUMN keplersc.kdlealtadmov.c3 IS 'Orden';
-COMMENT ON COLUMN keplersc.kdlealtadmov.c2 IS 'Tipo de Orden';
-COMMENT ON COLUMN keplersc.kdlealtadmov.c1 IS 'Sucursal';
 

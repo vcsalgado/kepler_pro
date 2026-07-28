@@ -77,7 +77,7 @@ begin
 		raise exception 'Error, sin cuenta de utilidad.';
 	end if;
 --raise exception 'Función no disponible';
-	if anio_ini<21 then
+	if anio_ini<19 then
 		raise exception 'Error en el año a cerrar.';
 	end if;
 	anio_fin = anio_ini +1;
@@ -281,7 +281,7 @@ exception
 	when others then
 		--Habilitar trigger
 		if tabla_kdc1 <> '' then
-			expSql:=concat('ALTER TABLE keplersc.', tabla_kdc1, ' ENABLE TRIGGER kdc1_upd_nivel_after_crud');
+			expSql := concat('create trigger kdc1_upd_nivel_after_crud after insert or delete or update on keplersc.', tabla_kdc1 ,' for each row execute function keplersc.cont_upd_nivel()');
 			execute expSql;
 		end if;
 		resultado := 0;

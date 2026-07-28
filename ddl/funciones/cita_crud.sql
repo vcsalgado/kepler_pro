@@ -735,7 +735,7 @@ begin
 					
 
 				select * into coincide_ope from keplersc.kdpuntop where c1=tipo_punto and c2=tipo_operario;
-				if found or origen = 'BPR' then --VCSS 02 jul 2026, BP no maneja tipos de punto, grabar en este caso. 
+				if found then 
 				
 					/*select * into strValor from keplersc.kdctasser as cta inner join keplersc.kdctassermov as mov
 					on cta.c1=mov.c1 and cta.c2=mov.c2 where cta.c1=sucursal_id and cta.c12=fecha_cita

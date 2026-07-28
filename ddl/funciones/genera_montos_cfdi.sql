@@ -121,9 +121,9 @@ raise notice 'Horas';
 
 --Orden
 raise notice 'Inicio Orden';
-	--	for rec in select * from keplersc.kdord where c7=10 and c8=40  and c61 =0 and c62=0 and c63=0	--status de orden cerrada c7:flujo admon=10 y c8:flujo servicio=40
-		for rec in select * from keplersc.kdord ord
-			inner join (select distinct c1,c2,c3 from keplersc.kdordfact) as fact on fact.c1=ord.c1 and fact.c2=ord.c2 and fact.c3=ord.c3 
+		for rec in select * from keplersc.kdord where c7>=10 and c8>=40  and c61 =0 and c62=0 and c63=0	--status de orden cerrada c7:flujo admon=10 y c8:flujo servicio=40
+--		for rec in select * from keplersc.kdord ord
+--			inner join (select distinct c1,c2,c3 from keplersc.kdordfact) as fact on fact.c1=ord.c1 and fact.c2=ord.c2 and fact.c3=ord.c3 
 		loop															--Tiene factura en kdordfact
 			iva_total := 0;	importe_total := 0; subtotal := 0;
 			mano_obra :=0; refacciones :=0; tots :=0; cargos_varios :=0;

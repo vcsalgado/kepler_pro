@@ -12,8 +12,8 @@ declare
 	intValor int = 0;
 
 begin
-		select count(c1) into intValor from keplersc.kdc1_view  where position(cuenta in c1) > 0 and 
-			substring(c1,1,length(cuenta)) = cuenta and c1<>cuenta and c14>0;
+		select count(c1) into intValor from keplersc.kdc1_view  where position(cuenta in c1) > 0 and substring(c1,1,1) = substring(cuenta,1,1) 
+		and c1<>cuenta and c14>0;
 	
 	return intValor;
 end;

@@ -214,7 +214,7 @@ begin
 		substring(descrip,1,40),refer,tipo_poliza,numero_partida,sucursal,
 		genero,naturaleza,grupo,tipo_clave,folio_operacion ,var_st_compr ,var_concept_prspto);
 		
---raise notice 'PASO 3 Partida poliza: %', expSql;
+raise notice 'PASO 3 Partida poliza: %', expSql;
 	execute expSql;
 
 	resultado := 1;

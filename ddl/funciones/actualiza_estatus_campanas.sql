@@ -63,9 +63,8 @@ begin
 			when estatus = 'REALIZADA' then 10
 			when estatus = 'OTRO DISTRIBUIDOR' then 15 end,
 			c5 = to_date(coalesce(fec_realiza,'1800-01-01'),'YYYY-MM-DD'),
-			c6 = sucursal_id,
 			c9 = otro_distribuidor
-		where c2=cve_serie and c3=cve_campana;
+		where c2=cve_serie and c3=cve_campana and c6=sucursal_id;
 	
 	resultado := 1;
 	mensaje := 'Registro actualizado:' || cve_campana;

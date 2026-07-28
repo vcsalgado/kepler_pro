@@ -12,6 +12,9 @@
 	</grp><br/><br/><tab n="9"/>
 <img id="btnEjecutar" dim="40,40" brdr="0,1" bPx="1" tooltip="Ejecutar reporte" OnEnter="Reporte()" img="_60_ExecuteReport.png" available="Y"/><br/><tab n="3"/>
 </grp>
+	<tools>
+		<tool name="ejecuta" OnMouseL="Reporte()" tooltip="Ejecutar(Ctrl+T)" scut="Ctrl+T" img="_TL_Execute.png"/>
+	</tools>
 	<script>
 		InstallDriver("KDB75");
 		class Main {

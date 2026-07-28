@@ -2,7 +2,7 @@ CREATE OR REPLACE FUNCTION keplersc.baja_cont_doc_compr(dataxml xml, folio_opera
  RETURNS TABLE(resultado text, mensaje text, adicionales text)
  LANGUAGE plpgsql
 AS $function$
---Descripcion: Realiza inserci?n de movimientos contables en KDMDOCSCOMPR
+--Descripcion: Realiza inserci�n de movimientos contables en KDMDOCSCOMPR
 ---- para uso exclusivo de las Operaciones de Nvo Esquema de CxP - Contrarecibo Convert (Comprobacion de C x P)
 --Autor: Jose Mendoza
 --Fecha: 2024-05-14
@@ -64,7 +64,7 @@ begin
 	end if;
 
 	if upper(flag_contrarec) <> 'CXP_CONTR_REC_CONVERT_ROLLBACK' then 
-		raise exception '%', 'Se esta llamando a la funcion [ baja_cont_doc_no_deduc ] desde una Operacion No Valida ...';
+		raise exception '%', 'Se esta llamando a la funcion [ alta_cont_doc_compr ] desde una Operacion No Valida ...';
 	end if;
 
 	--Partidas

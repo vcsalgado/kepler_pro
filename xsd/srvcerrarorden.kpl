@@ -1,1 +1,268 @@
-<?xml version="1.0" encoding="UTF-8"?><pag xmlns="www.kepler.com.mx/2003/KSchema" roles=""><grp  brdr="0,0" clr="0,58,112" fnt="Arial,16"  dim="0,0,10,12" bclr="192,205,213" unfont="0"><br/><br/><tab/>		<grp bclr="236,240,243" fntClrBrdr="255,206,0" unfont="0" fntBrdr="Arial,18" hSpace="4" clrBrdr="0,58,112" dim="55,54,10,10" brdr="0,5" tit=" " fnt="Arial,16">				<br/>		<tab n="1"/><txt  fnt="Arial,16,b">ORDEN:</txt>	<sp n="6"/>				<inp id="tipo_orden" clr="64,64,64"  dim="2,1" fnt="Arial,20" clrBrdr="255,255,255"   bclr="255,255,255" brdr="2,0" modify="N"   visible="Y"/><sp/>			<inp id="folio_orden" clr="64,64,64"  dim="12,1" fnt="Arial,20" clrBrdr="255,255,255"   bclr="255,255,255" brdr="2,0"  modify="N" visible="Y"/><sp/>		<br/>				<tab n="1"/><txt  fnt="Arial,16,b">Tarjeta Lealtad:</txt>	<sp n="3"/>				<inp id="tarjeta_lealtad" clr="64,64,64"  dim="12,1" fnt="Arial,20" clrBrdr="255,255,255"   bclr="255,255,255" brdr="2,0" modify="N"   visible="Y" type="string"/>		<sp/><tab/><txt fnt=",b">Cliente Agencia: </txt> <inp id="es_cliente" dim="3,1" brdr="2,0" bclr="255,255,255" clr="64,64,64" clrBrdr="255,255,255" type="string" nc="1" modify="N" available="N" fnt="Arial,20"/>				<br/>		<br/>				<tab n="5"/><txt  fnt="Arial,16,b">Precio Normal</txt>	<tab n="1"/><txt  fnt="Arial,16,b">Precio Lealtad</txt><tab n="2"/><txt fnt=",b">Detalle Desctos.</txt>			<br/>		<br/>	<tab n="1"/><txt  fnt="Arial,16,b">Mano de Obra:</txt>	<sp/>			<inp id="mano_obra"  dim="10,1" brdr="2,0" clr="64,64,64" type="number" bclr="255,255,255" available="N" nd="6" clrBrdr="255,255,255"/>		<tab n="1"/>		<inp id="mano_obra_lealtad"  dim="10,1" brdr="2,0" clr="64,64,64" type="number" bclr="255,255,255" available="N" nd="6" clrBrdr="255,255,255"/><tab n="2"/>		<inp id="mano_obra_descto" dim="10,1" brdr="2,0" bclr="255,255,255" clr="64,64,64" clrBrdr="255,255,255" type="number" modify="N" available="N" nd="6" just="R"/><txt clr="173,9,41" fnt=",18b"> *</txt>				<br/>	<tab n="1"/><txt  fnt="Arial,16,b">Refacciones:</txt>	<sp n="2"/>		<inp id="refacciones"  dim="10,1" brdr="2,0" clr="64,64,64" type="number" bclr="255,255,255" available="N"  nd="6" clrBrdr="255,255,255"/>		<tab n="1"/>		<inp id="refacciones_lealtad"  dim="10,1" brdr="2,0" clr="64,64,64" type="number" bclr="255,255,255" available="N"  nd="6" clrBrdr="255,255,255"/><tab n="2"/>		<inp id="refacciones_descto" dim="10,1" brdr="2,0" bclr="255,255,255" clr="64,64,64" clrBrdr="255,255,255" type="number" modify="N" available="N" just="R" nd="6"/><txt clr="173,9,41" fnt=",18b"> *</txt>						<br/>	<tab n="1"/><txt  fnt="Arial,16,b">TOTs:</txt>	<sp n="7"/>		<inp id="tots"  dim="10,1" brdr="2,0" clr="64,64,64" type="number" bclr="255,255,255" available="N" nd="6" clrBrdr="255,255,255"/>		<tab n="1"/>		<inp id="tots_lealtad"  dim="10,1" brdr="2,0" clr="64,64,64" type="number" bclr="255,255,255" available="N" nd="6" clrBrdr="255,255,255"/><tab n="2"/><inp id="tots_descto" dim="10,1" brdr="2,0" bclr="255,255,255" clr="64,64,64" clrBrdr="255,255,255" type="number" just="R" nd="6" modify="N" available="N"/>				<br/>	<tab n="1"/><txt  fnt="Arial,16,b">Cargos Varios:</txt>	<sp/>		<inp id="cargos_varios"  dim="10,1" brdr="2,0" clr="64,64,64" type="number" bclr="255,255,255" available="N"  nd="6" clrBrdr="255,255,255"/>		<tab n="1"/>		<inp id="cargos_varios_lealtad"  dim="10,1" brdr="2,0" clr="64,64,64" type="number" bclr="255,255,255" available="N"  nd="6" clrBrdr="255,255,255"/><tab n="2"/><inp id="cargos_descto" dim="10,1" brdr="2,0" bclr="255,255,255" clr="64,64,64" clrBrdr="255,255,255" type="number" modify="N" available="N" just="R" nd="6"/>				<br/>		<tab n="10"/><txt clr="173,9,41" fnt=",16">* Aplicados a M.O.  </txt>		<inp id="total_moref_descto" dim="10,1" brdr="2,0" bclr="255,255,255" clr="64,64,64" clrBrdr="255,255,255" type="number" modify="N" just="R" nd="6"/>								<br/>	<tab n="1"/><txt  fnt="Arial,16,b">Subtotal:</txt>	<sp n="5"/>		<inp id="subtotal"  dim="10,1" brdr="2,0" clr="64,64,64" type="number" bclr="255,255,255" available="N"  nd="6" clrBrdr="255,255,255"/>		<tab n="1"/>		<inp id="subtotal_lealtad"  dim="10,1" brdr="2,0" clr="64,64,64" type="number" bclr="255,255,255" available="N"  nd="6" clrBrdr="255,255,255"/>								<br/>	<tab n="1"/><txt  fnt="Arial,16,b">IVA:</txt>	<sp n="8"/>		<inp id="iva"  dim="10,1" brdr="2,0" clr="64,64,64" type="number" bclr="255,255,255" available="N"  nd="6" clrBrdr="255,255,255"/>		<tab n="1"/>		<inp id="iva_lealtad"  dim="10,1" brdr="2,0" clr="64,64,64" type="number" bclr="255,255,255" available="N"  nd="6" clrBrdr="255,255,255"/>								<br/>	<tab n="1"/><txt  fnt="Arial,16,b">Importe:</txt>	<sp n="5"/>		<inp id="importe"  dim="10,1" brdr="2,0" clr="64,64,64" type="number" bclr="255,255,255"  nd="2" available="N"  clrBrdr="255,255,255"/>		<tab n="1"/>		<inp id="importe_lealtad"  dim="10,1" brdr="2,0" clr="64,64,64" type="number" bclr="255,255,255"  nd="2" available="N"  clrBrdr="255,255,255"/>				<br/><br/><br/>		<tab n="1"/><txt  fnt="Arial,16">Registro Kms de salida:</txt><sp/>		<inp id="kms_salida" dim="9,1" bclr="255,255,255" clr="64,64,64" clrBrdr="255,255,255" type="string" brdr="2,0" available="S" just="R"/>		<br/><br/><br/>		<tab n="1"/><txt  fnt="Arial,14,b">SEGUIMIENTO POSVENTA</txt>			<br/>		<tab n="1"/>	<txt> Ingrese la fecha y hora preferida por el cliente para el seguimiento posventa </txt>	<br/>		<tab n="1"/><txt> (72 hrs. despues de su visita a servicio) </txt> <br/>		<tab n="1"/><txt>Fecha: </txt> 		<edt id="k_fecha" dim="15,1" type="date" fmt="DD/MM/CCYY" brdr="2,0" bclr="255,255,255" clr="64,64,64" page="_ks_fecha,k_fecha" OnF9="Dialog(3,_ks_fecha,k_fecha)" clrBrdr="255,255,255"  tooltip="Fecha"/> 		<sp n="1"/> 		<txt>Hora : </txt> 		<sp n="1"/> 		<edt id="k_hora" dim="8,1" type="time" nc="-1" bclr="255,255,255" brdr="2,0" fmt="HH:MM:SS" clrBrdr="255,255,255"/> 		<br/>	<br/>			<tab n="2"/><bot id="bot_walkaround" dim="14,0" brdr="5" text="Walkaround" default="0" OnEnter="walkaround()"/>			<tab n="1"/><bot id="bot_disponibilidad" dim="14,0" brdr="5" text="Disponibilidad" default="0" OnEnter="Dialog(3,horarios_segposventa)"/>			<tab n="1"/><bot id="bot_cerrar_orden" dim="14,0" brdr="5" text="Cerrar Orden" default="0" OnEnter="cerrar_orden()"/>		</grp>					<br/>	</grp>	<script>		InstallDriver("KDB75");		class Main {			var frn,frP,kdb,sys,suc_usuario,usuario,perfil_usuario,rol_usuario  ,flujo_admon,flujo_servicio  ,asterisco, externo, sucursal,folio_orden, tipo_orden, vin ;			fun Main(){				frn=new FRNT;				kdb=new KDB;				frP=new FRNTP;				sys=new SYS;				kdb.connect();				kdb.open("s,KDMS");								suc_usuario = frn.lib("libKepler","UserInfo(1)");				usuario = frn.config("user","name");				perfil_usuario = frn.lib("libKepler","UserInfo(2)");				rol_usuario = frn.config("user","role");				asterisco = "*";								sucursal =trim(frn.param(0));				tipo_orden=trim(frn.param(1));				folio_orden=trim(frn.param(2));				vin=trim(frn.param(3));				Inicializa();			}						fun Inicializa(){							frn.set("tipo_orden", tipo_orden );				frn.set("folio_orden", folio_orden );								var cmd, cubo, ok, mensajeError, xmlRequest, dias_agregar, fec_segpostvta;								/*cmd = " select c1 from keplersc.kdrecep where c1='" & usuario & "'";							cubo = frn.lib("libGeneral.kpl","EjecutarSqlSel",cmd,"srvabrirorden.Inicializa()");				frn.lib("libGeneral.kpl","FileSave",cubo,"C:\Basura\perfil_usuario");				ok=getXmlAtt(cubo,"ok");				if(ok &! "" && !ok){					mensajeError = getXmlAtt(cubo,"native3");					mensajeError = frn.lib("libGeneral.kpl","ErrorBD",mensajeError);					frn.message(mensajeError,"Error","Aceptar");					return;				}							if (nXml(cubo) &= "0"){					frn.message("No tienes permisos para acceder a esta opcion","Error","Aceptar");					frn.timer(0,1,"salir()");				}*/												setXml(xmlRequest,"sucursal_id", sucursal );				setXml(xmlRequest,"tipo_orden", tipo_orden);				setXml(xmlRequest, "folio_orden", folio_orden);														frn.lib("libGeneral.kpl","FileSave",xmlRequest,"C:\Basura\xmlRequestcerrarorden");				cmd="select * from keplersc.ser_calculos_montos_orden(' <document> " & getXmlStr(xmlRequest,"EOF:13_10") & " </document> ')";				cubo= frn.lib("libGeneral.kpl","EjecutarSqlSel",cmd,"srvcerrarorden.Inicializa()");								frn.lib("libGeneral.kpl","FileSave",cubo,"C:\Basura\cuboResultadoscerrarorden");								ok=getXmlAtt(cubo,"ok");				if(ok &! "" && !ok){					mensajeError = getXmlAtt(cubo,"native3");					mensajeError = frn.lib("libGeneral.kpl","ErrorBD",mensajeError);					frn.message(mensajeError,"Error","Aceptar");					return;				}								var cubo_datos;				var strTmp = getXmlAtt(cubo,"r0","ser_calculos_montos_orden");				strTmp = delScpScn(strTmp);				setXmlStr(cubo_datos,strTmp);								frn.lib("libGeneral.kpl","FileSave",cubo_datos,"C:\Basura\cubo_datos_cerrar_orden");												frn.set("mano_obra", getXml(cubo_datos,"importe_total_horas"));				frn.set("refacciones", getXml(cubo_datos,"importe_total_refs"));				frn.set("tots", getXml(cubo_datos,"importe_total_tots"));				frn.set("cargos_varios", getXml(cubo_datos,"importe_total_car"));				frn.set("subtotal", getXml(cubo_datos,"subtotal"));				frn.set("iva", getXml(cubo_datos,"iva_total"));				frn.set("importe", getXml(cubo_datos,"importe_total"));								//Programa Lealtad				frn.set("tarjeta_lealtad", getXml(cubo_datos,"tarjeta_lealtad"));				frn.set("mano_obra_lealtad", getXml(cubo_datos,"mano_obra_lealtad"));				frn.set("refacciones_lealtad", getXml(cubo_datos,"refacciones_lealtad"));				frn.set("tots_lealtad", getXml(cubo_datos,"tots_lealtad"));				frn.set("cargos_varios_lealtad", getXml(cubo_datos,"cargos_varios_lealtad"));				frn.set("subtotal_lealtad", getXml(cubo_datos,"subtotal_lealtad"));				frn.set("iva_lealtad", getXml(cubo_datos,"iva_lealtad"));				frn.set("importe_lealtad", getXml(cubo_datos,"importe_lealtad"));				//Detalle de desctos				frn.set("mano_obra_descto", getXml(cubo_datos,"mano_obra_descto"));				frn.set("refacciones_descto", getXml(cubo_datos,"refacciones_descto"));				frn.set("tots_descto", getXml(cubo_datos,"tots_descto"));				frn.set("cargos_descto", getXml(cubo_datos,"cargos_descto"));				frn.set("total_moref_descto", getXml(cubo_datos,"total_moref_descto"));				frn.set("es_cliente", getXml(cubo_datos,"es_cliente"));				//Mostrar Km salida capturado				//if (frn.get("tipo_orden") &= "G"){					//obtener y mostrar kms de salida					cmd = " select kms_salida from keplersc.kdord where c1='" & sucursal & "' and c2='" & tipo_orden & "' and c3='" & folio_orden & "'";					cubo = frn.lib("libGeneral.kpl","EjecutarSqlSel",cmd,"srvcerrarorden.inicializa()");															frn.set("kms_salida",getXmlAtt(cubo,"r0", "kms_salida"));					frn.setAtt("kms_salida", "available", "S" );				//} else{				//	frn.setAtt("kms_salida", "available", "N" );				//}				if (fnDate("dayweek", sys.date())==6){			//si es sabado agrega 4 dias					dias_agregar = 4;				} else{					dias_agregar = 3;				}				fec_segpostvta=fnDate("addC",sys.date(),dias_agregar);				if (fnDate("dayweek", fec_segpostvta)==0){		//si es domingo, agrega 1 dia					fec_segpostvta=fnDate("addC",fec_segpostvta,1);				} 				frn.set("k_fecha",fec_segpostvta);			}						fun cerrar_orden(){							var cmd, cubo, ok, mensajeError,xmlRequest ;								if (frn.get("tipo_orden") &= "G"){				//	frn.setAtt("kms_salida", "available", "S" );					if (frn.get("kms_salida") &=""){						frn.setPos("kms_salida");  						frn.message("Para las ordenes de Garantia, es necesario capturar el kilometraje de salida","Error","Aceptar");						return;					}				//} else{				//	frn.setAtt("kms", "available", "N" );				}								xmlRequest = getXml(frn.dataPag()); //Obtener el xml de la pantalla;								setXml(xmlRequest,"sucursal_id", sucursal );				setXml(xmlRequest, "folio_orden", folio_orden);				setXml(xmlRequest,"tipo_orden", tipo_orden);				setXml(xmlRequest,"vin", vin);				setXml(xmlRequest,"clave_autorizacion", "XX00XX");				setXml(xmlRequest ,"usuario",usuario);								frn.lib("libGeneral.kpl","FileSave",xmlRequest,"C:\Basura\xmlRequest");								cmd="select * from keplersc.cerrar_orden(' <document> " & getXmlStr(xmlRequest,"EOF:13_10") & " </document> ')";				cubo= frn.lib("libGeneral.kpl","EjecutarSqlSel",cmd,"srvabrirorden.cerrar_orden()");								frn.lib("libGeneral.kpl","FileSave",cubo,"C:\Basura\cuboResultados");								var resultado = getXmlAtt(cubo,"r0","reslt");							if(resultado &= "0"){					mensajeError = getXmlAtt(cubo,"r0","mensaje");					frn.message(mensajeError,"Error","Aceptar");					return;				}								if(resultado &= "1"){					var mensaje = getXmlAtt(cubo,"r0","mensaje");					frn.message(mensaje ,"Atencion","Aceptar");				}								}									fun salir (){							frn.exit();			}									fun walkaround(){										var cmd = " select c10, c11 from keplersc.kdord where c1='" & sucursal & "' and c2='" & tipo_orden & "' and c3='" & folio_orden & "' and c6='" & vin & "'";							var cubo = frn.lib("libGeneral.kpl","EjecutarSqlSel",cmd,"srvcerrarorden.walkaround()");				frn.lib("libGeneral.kpl","FileSave",cubo,"C:\Basura\perfil_usuario");								var cliente =getXmlAtt(cubo,"r0", "c10");				var nombre=getXmlAtt(cubo,"r0", "c11");						frn.dialog("srv_cuest_pre","CUESTWLKA", sucursal,tipo_orden,folio_orden, vin, cliente, nombre);			}															//------------------------------------------------------EXTRAS------------------			 fun Dialog(iModo,pag,par0,par1,par2,par3,par4,par5,par6,par7,par8,par9,par10,par11,par12,par13,par14,par15){				/*iModo: 0)No hace mayor validaci?n. Siempre despliega la ventana. NO CONCATENA PREFIJO							1)Solo concatena el prefijo de la carpeta del lenguaje, no hace mayor validaci?n. Siempre despliega la ventana							2)Modo especial. Se valida que el campo indicado en par0 se puede modificar(El par0 puede ser una tabla, y par1 la columna)							3)Modo especial para p?ginas de operacion:Solo si se est? en alta o modifica despliega la pagina. Simpre agrega el prefijo del lenguaje				*/				var prefix=frn.lib("libKepler","langPrefix");				var page=prefix&pag;				var b_valido=1;				if(iModo==0)page=pag;				else if(iModo==2&&(strlen(par0)>0)){//Se toma el par0 como el objeto (o grid) al que se devolver? el resultado.					if( frn.getAtt(par0,"modify",par1) &= "N" ) b_valido=0;					if( frn.getAtt(par0,"available",par1) &= "N" ) b_valido=0;					if( frn.getAtt(par0,"visible",par1) &= "N" ) b_valido=0;				}				if(iModo==3)frn.dialog(page,par0,par1,par2,par3,par4,par5,par6,par7,par8,par9,par10,par11,par12,par13,par14,par15);			}					}	</script></pag>
+<?xml version="1.0" encoding="UTF-8"?>
+<pag xmlns="www.kepler.com.mx/2003/KSchema" roles="">
+<grp  brdr="0,0" clr="0,58,112" fnt="Arial,16"  dim="0,0,10,12" bclr="192,205,213" unfont="0"><br/><br/><tab/>
+		<grp bclr="236,240,243" fntClrBrdr="255,206,0" unfont="0" fntBrdr="Arial,18" hSpace="4" clrBrdr="0,58,112" dim="55,48,10,10" brdr="0,5" tit=" " fnt="Arial,16">
+		
+		<br/>
+		<tab n="1"/><txt  fnt="Arial,16,b">ORDEN:</txt>	<sp n="3"/>
+		
+		<inp id="tipo_orden" clr="64,64,64"  dim="2,1" fnt="Arial,20" clrBrdr="255,255,255"   bclr="255,255,255" brdr="2,0" modify="N"   visible="Y"/><sp/>
+	
+		<inp id="folio_orden" clr="64,64,64"  dim="12,1" fnt="Arial,20" clrBrdr="255,255,255"   bclr="255,255,255" brdr="2,0"  modify="N" visible="Y"/><sp/>
+		<br/>	<br/>
+		
+	
+		
+		<br/>	<tab n="1"/><txt  fnt="Arial,16,b">Mano de Obra:</txt>	<sp/>
+	
+		<inp id="mano_obra"  dim="10,1" brdr="2,0" clr="64,64,64" type="number" bclr="255,255,255" available="N" nd="6" clrBrdr="255,255,255"/>
+		
+		<br/>	<tab n="1"/><txt  fnt="Arial,16,b">Refacciones:</txt>	<sp n="2"/>
+		<inp id="refacciones"  dim="10,1" brdr="2,0" clr="64,64,64" type="number" bclr="255,255,255" available="N"  nd="6" clrBrdr="255,255,255"/>
+		
+		<br/>	<tab n="1"/><txt  fnt="Arial,16,b">TOTs:</txt>	<sp n="7"/>
+		<inp id="tots"  dim="10,1" brdr="2,0" clr="64,64,64" type="number" bclr="255,255,255" available="N" nd="6" clrBrdr="255,255,255"/>
+		
+		<br/>	<tab n="1"/><txt  fnt="Arial,16,b">Cargos Varios:</txt>	<sp/>
+		<inp id="cargos_varios"  dim="10,1" brdr="2,0" clr="64,64,64" type="number" bclr="255,255,255" available="N"  nd="6" clrBrdr="255,255,255"/>
+		
+		<br/>
+				
+		<br/>	<tab n="1"/><txt  fnt="Arial,16,b">Subtotal:</txt>	<sp n="5"/>
+		<inp id="subtotal"  dim="10,1" brdr="2,0" clr="64,64,64" type="number" bclr="255,255,255" available="N"  nd="6" clrBrdr="255,255,255"/>
+		
+				
+		<br/>	<tab n="1"/><txt  fnt="Arial,16,b">IVA:</txt>	<sp n="8"/>
+		<inp id="iva"  dim="10,1" brdr="2,0" clr="64,64,64" type="number" bclr="255,255,255" available="N"  nd="6" clrBrdr="255,255,255"/>
+		
+				
+		<br/>	<tab n="1"/><txt  fnt="Arial,16,b">Importe:</txt>	<sp n="5"/>
+		<inp id="importe"  dim="10,1" brdr="2,0" clr="64,64,64" type="number" bclr="255,255,255"  nd="2" available="N"  clrBrdr="255,255,255"/>
+		<br/><br/><br/>
+		<tab n="1"/><txt  fnt="Arial,16">Registro Kms de salida:</txt><sp/>
+		<inp id="kms_salida" dim="9,1" bclr="255,255,255" clr="64,64,64" clrBrdr="255,255,255" type="string" brdr="2,0" available="S" just="R"/>
+
+		<br/><br/><br/>
+		<tab n="1"/><txt  fnt="Arial,14,b">SEGUIMIENTO POSVENTA</txt>	
+		<br/>
+		<tab n="1"/>	<txt> Ingrese la fecha y hora preferida por el cliente para el seguimiento posventa </txt>	<br/>
+		<tab n="1"/><txt> (72 hrs. despues de su visita a servicio) </txt> <br/>
+		<tab n="1"/><txt>Fecha: </txt> 
+		<edt id="k_fecha" dim="15,1" type="date" fmt="DD/MM/CCYY" brdr="2,0" bclr="255,255,255" clr="64,64,64" page="_ks_fecha,k_fecha" OnF9="Dialog(3,_ks_fecha,k_fecha)" clrBrdr="255,255,255"  tooltip="Fecha"/> 
+		<sp n="1"/> 
+		<txt>Hora : </txt> 
+		<sp n="1"/> 
+		<edt id="k_hora" dim="8,1" type="time" nc="-1" bclr="255,255,255" brdr="2,0" fmt="HH:MM:SS" clrBrdr="255,255,255"/> 
+
+		<br/>	<br/>
+			<tab n="2"/><bot id="bot_walkaround" dim="14,0" brdr="5" text="Walkaround" default="0" OnEnter="walkaround()"/>
+			<tab n="1"/><bot id="bot_disponibilidad" dim="14,0" brdr="5" text="Disponibilidad" default="0" OnEnter="Dialog(3,horarios_segposventa)"/>
+			<tab n="1"/><bot id="bot_cerrar_orden" dim="14,0" brdr="5" text="Cerrar Orden" default="0" OnEnter="cerrar_orden()"/>
+		</grp>
+		
+	
+		<br/>
+	
+</grp>
+	<script>
+		InstallDriver("KDB75");
+		class Main {
+			var frn,frP,kdb,sys,suc_usuario,usuario,perfil_usuario,rol_usuario  ,flujo_admon,flujo_servicio  ,asterisco, externo, sucursal,folio_orden, tipo_orden, vin ;
+
+			fun Main(){
+				frn=new FRNT;
+				kdb=new KDB;
+				frP=new FRNTP;
+				sys=new SYS;
+				kdb.connect();
+				kdb.open("s,KDMS");
+				
+				suc_usuario = frn.lib("libKepler","UserInfo(1)");
+				usuario = frn.config("user","name");
+				perfil_usuario = frn.lib("libKepler","UserInfo(2)");
+				rol_usuario = frn.config("user","role");
+				asterisco = "*";
+				
+				sucursal =trim(frn.param(0));
+				tipo_orden=trim(frn.param(1));
+				folio_orden=trim(frn.param(2));
+				vin=trim(frn.param(3));
+				Inicializa();
+
+			}
+			
+			fun Inicializa(){
+			
+				frn.set("tipo_orden", tipo_orden );
+				frn.set("folio_orden", folio_orden );
+				
+				var cmd, cubo, ok, mensajeError, xmlRequest, dias_agregar, fec_segpostvta;
+				
+				/*cmd = " select c1 from keplersc.kdrecep where c1='" & usuario & "'";
+			
+				cubo = frn.lib("libGeneral.kpl","EjecutarSqlSel",cmd,"srvabrirorden.Inicializa()");
+				frn.lib("libGeneral.kpl","FileSave",cubo,"C:\Basura\perfil_usuario");
+				ok=getXmlAtt(cubo,"ok");
+				if(ok &! "" && !ok){
+					mensajeError = getXmlAtt(cubo,"native3");
+					mensajeError = frn.lib("libGeneral.kpl","ErrorBD",mensajeError);
+					frn.message(mensajeError,"Error","Aceptar");
+					return;
+				}
+			
+				if (nXml(cubo) &= "0"){
+					frn.message("No tienes permisos para acceder a esta opcion","Error","Aceptar");
+					frn.timer(0,1,"salir()");
+				}*/
+				
+				
+				setXml(xmlRequest,"sucursal_id", sucursal );
+				setXml(xmlRequest,"tipo_orden", tipo_orden);
+				setXml(xmlRequest, "folio_orden", folio_orden);
+			
+				
+				frn.lib("libGeneral.kpl","FileSave",xmlRequest,"C:\Basura\xmlRequestcerrarorden");
+				cmd="select * from keplersc.ser_calculos_montos_orden(' <document> " & getXmlStr(xmlRequest,"EOF:13_10") & " </document> ')";
+				cubo= frn.lib("libGeneral.kpl","EjecutarSqlSel",cmd,"srvcerrarorden.Inicializa()");
+				
+				frn.lib("libGeneral.kpl","FileSave",cubo,"C:\Basura\cuboResultadoscerrarorden");
+				
+				ok=getXmlAtt(cubo,"ok");
+				if(ok &! "" && !ok){
+					mensajeError = getXmlAtt(cubo,"native3");
+					mensajeError = frn.lib("libGeneral.kpl","ErrorBD",mensajeError);
+					frn.message(mensajeError,"Error","Aceptar");
+					return;
+				}
+				
+				var cubo_datos;
+				var strTmp = getXmlAtt(cubo,"r0","ser_calculos_montos_orden");
+				strTmp = delScpScn(strTmp);
+				setXmlStr(cubo_datos,strTmp);				
+				frn.lib("libGeneral.kpl","FileSave",cubo_datos,"C:\Basura\cubo_datos_cerrar_orden");
+				
+				frn.set("mano_obra", getXml(cubo_datos,"importe_total_horas"));
+				frn.set("refacciones", getXml(cubo_datos,"importe_total_refs"));
+				frn.set("tots", getXml(cubo_datos,"importe_total_tots"));
+				frn.set("cargos_varios", getXml(cubo_datos,"importe_total_car"));
+				frn.set("subtotal", getXml(cubo_datos,"subtotal"));
+				frn.set("iva", getXml(cubo_datos,"iva_total"));
+				frn.set("importe", getXml(cubo_datos,"importe_total"));
+
+				//Mostrar Km salida capturado
+				//if (frn.get("tipo_orden") &= "G"){
+					//obtener y mostrar kms de salida
+					cmd = " select kms_salida from keplersc.kdord where c1='" & sucursal & "' and c2='" & tipo_orden & "' and c3='" & folio_orden & "'";
+					cubo = frn.lib("libGeneral.kpl","EjecutarSqlSel",cmd,"srvcerrarorden.inicializa()");
+										
+					frn.set("kms_salida",getXmlAtt(cubo,"r0", "kms_salida"));
+					frn.setAtt("kms_salida", "available", "S" );
+				//} else{
+				//	frn.setAtt("kms_salida", "available", "N" );
+				//}
+
+				if (fnDate("dayweek", sys.date())==6){			//si es sabado agrega 4 dias
+					dias_agregar = 4;
+				} else{
+					dias_agregar = 3;
+				}
+				fec_segpostvta=fnDate("addC",sys.date(),dias_agregar);
+				if (fnDate("dayweek", fec_segpostvta)==0){		//si es domingo, agrega 1 dia
+					fec_segpostvta=fnDate("addC",fec_segpostvta,1);
+				} 
+				frn.set("k_fecha",fec_segpostvta);
+			}
+			
+			fun cerrar_orden(){
+			
+				var cmd, cubo, ok, mensajeError,xmlRequest ;
+				
+				if (frn.get("tipo_orden") &= "G"){
+				//	frn.setAtt("kms_salida", "available", "S" );
+					if (frn.get("kms_salida") &=""){
+						frn.setPos("kms_salida");  
+						frn.message("Para las ordenes de Garantia, es necesario capturar el kilometraje de salida","Error","Aceptar");
+						return;
+					}
+				//} else{
+				//	frn.setAtt("kms", "available", "N" );
+				}
+
+				
+				xmlRequest = getXml(frn.dataPag()); //Obtener el xml de la pantalla;
+				
+				setXml(xmlRequest,"sucursal_id", sucursal );
+				setXml(xmlRequest, "folio_orden", folio_orden);
+				setXml(xmlRequest,"tipo_orden", tipo_orden);
+				setXml(xmlRequest,"vin", vin);
+				setXml(xmlRequest,"clave_autorizacion", "XX00XX");
+				setXml(xmlRequest ,"usuario",usuario);
+				
+				frn.lib("libGeneral.kpl","FileSave",xmlRequest,"C:\Basura\xmlRequest");
+				
+				cmd="select * from keplersc.cerrar_orden(' <document> " & getXmlStr(xmlRequest,"EOF:13_10") & " </document> ')";
+				cubo= frn.lib("libGeneral.kpl","EjecutarSqlSel",cmd,"srvabrirorden.cerrar_orden()");
+				
+				frn.lib("libGeneral.kpl","FileSave",cubo,"C:\Basura\cuboResultados");
+				
+				var resultado = getXmlAtt(cubo,"r0","reslt");
+			
+				if(resultado &= "0"){
+					mensajeError = getXmlAtt(cubo,"r0","mensaje");
+					frn.message(mensajeError,"Error","Aceptar");
+					return;
+				}
+				
+				if(resultado &= "1"){
+					var mensaje = getXmlAtt(cubo,"r0","mensaje");
+					frn.message(mensaje ,"Atencion","Aceptar");
+				}
+					
+			}
+			
+			
+			fun salir (){
+			
+				frn.exit();
+			}
+			
+			
+			fun walkaround(){
+			
+			
+				var cmd = " select c10, c11 from keplersc.kdord where c1='" & sucursal & "' and c2='" & tipo_orden & "' and c3='" & folio_orden & "' and c6='" & vin & "'";
+			
+				var cubo = frn.lib("libGeneral.kpl","EjecutarSqlSel",cmd,"srvcerrarorden.walkaround()");
+				frn.lib("libGeneral.kpl","FileSave",cubo,"C:\Basura\perfil_usuario");
+				
+				var cliente =getXmlAtt(cubo,"r0", "c10");
+				var nombre=getXmlAtt(cubo,"r0", "c11");
+		
+				frn.dialog("srv_cuest_pre","CUESTWLKA", sucursal,tipo_orden,folio_orden, vin, cliente, nombre);
+			}
+			
+			
+			
+			
+			//------------------------------------------------------EXTRAS------------------
+			 fun Dialog(iModo,pag,par0,par1,par2,par3,par4,par5,par6,par7,par8,par9,par10,par11,par12,par13,par14,par15){
+				/*iModo: 0)No hace mayor validaci?n. Siempre despliega la ventana. NO CONCATENA PREFIJO
+							1)Solo concatena el prefijo de la carpeta del lenguaje, no hace mayor validaci?n. Siempre despliega la ventana
+							2)Modo especial. Se valida que el campo indicado en par0 se puede modificar(El par0 puede ser una tabla, y par1 la columna)
+							3)Modo especial para p?ginas de operacion:Solo si se est? en alta o modifica despliega la pagina. Simpre agrega el prefijo del lenguaje
+				*/
+				var prefix=frn.lib("libKepler","langPrefix");
+				var page=prefix&pag;
+				var b_valido=1;
+				if(iModo==0)page=pag;
+				else if(iModo==2&&(strlen(par0)>0)){//Se toma el par0 como el objeto (o grid) al que se devolver? el resultado.
+					if( frn.getAtt(par0,"modify",par1) &= "N" ) b_valido=0;
+					if( frn.getAtt(par0,"available",par1) &= "N" ) b_valido=0;
+					if( frn.getAtt(par0,"visible",par1) &= "N" ) b_valido=0;
+				}
+				if(iModo==3)frn.dialog(page,par0,par1,par2,par3,par4,par5,par6,par7,par8,par9,par10,par11,par12,par13,par14,par15);
+			}
+			
+		}
+	</script>
+</pag>

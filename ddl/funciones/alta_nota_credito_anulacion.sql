@@ -6,8 +6,7 @@ AS $function$
 --Autor: Jose Mendoza 
 --Fecha: 23/10/2022
 --Bitacora de cambios
---03/06/2025 Miriam Santana: Generar el registro con el docto de la nota de descuento que esta cancelando
-
+ 
 declare
 v_sucursal_id text = '';  
 genero text;
@@ -42,13 +41,6 @@ begin
 	grupo_rel := (xpath('//document/k_gpodocto/text()', dataxml))[1];
 	tipo_clave_rel := (xpath('//document/k_tipodocto/text()', dataxml))[1];
 	folio_rel := (xpath('//document/k_foliodocto/text()', dataxml))[1];	
-
-	if (genero||naturaleza||grupo = 'UD61') then		--MSS 03062025 generar el registro con el docto de la nota de descuento que esta cancelando
-		naturaleza_rel := 'A';
-		grupo_rel := 52;
-		tipo_clave_rel := (xpath('//document/k_tipon/r4/text()', dataxml))[1];
-		folio_rel := (xpath('//document/k_refer/text()', dataxml))[1];		
-	end if;
 
 	--si no es G(General) es una N(Nota de Credito) o A(Anulacion)
 	if (xpath('//row/c94/text()', xmlkdmm))[1]::text <> 'G' or (xpath('//row/c94/text()', xmlkdmm))[1]::text is null then

@@ -164,5 +164,4 @@ COMMENT ON COLUMN keplersc.kdord.c12 IS 'Direccion';
 COMMENT ON COLUMN keplersc.kdord.c11 IS 'Nombre';
 COMMENT ON COLUMN keplersc.kdord.c10 IS 'Clave del Cliente';
 COMMENT ON COLUMN keplersc.kdord.c1 IS 'Sucursal';
-CREATE TRIGGER kdord_notif AFTER INSERT OR DELETE OR UPDATE ON keplersc.kdord FOR EACH ROW EXECUTE FUNCTION keplersc.notif_registrar_movto();
 

@@ -23,9 +23,9 @@ CREATE  TABLE keplersc.kdref (
   c22 numeric(20,6) NOT NULL DEFAULT 0
 ) TABLESPACE pg_default;
 ALTER TABLE ONLY keplersc.kdref ADD CONSTRAINT pk_kdref PRIMARY KEY (c1, c2, c3, c4, c5, c6, c7, c8, c9, c10);
+CREATE INDEX IF NOT EXISTS sindkdref04 ON keplersc.kdref USING btree (c1, c20, c5, c6, c7, c8, c9, c10) TABLESPACE pg_default;
 CREATE INDEX IF NOT EXISTS sindkdref02 ON keplersc.kdref USING btree (c1, c2, c3, c4) TABLESPACE pg_default;
 CREATE INDEX IF NOT EXISTS sindkdref03 ON keplersc.kdref USING btree (c1, c5, c6, c7, c8, c9, c10) TABLESPACE pg_default;
-CREATE INDEX IF NOT EXISTS sindkdref04 ON keplersc.kdref USING btree (c1, c20, c5, c6, c7, c8, c9, c10) TABLESPACE pg_default;
 COMMENT ON TABLE keplersc.kdref IS 'refacciones cargadas por cada punto de servicio';
 COMMENT ON COLUMN keplersc.kdref.c9 IS 'Folio';
 COMMENT ON COLUMN keplersc.kdref.c8 IS 'Tipo';

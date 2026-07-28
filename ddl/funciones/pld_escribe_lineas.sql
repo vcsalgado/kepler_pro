@@ -115,7 +115,7 @@ begin
 		from keplersc.kdud ud
 		inner join keplersc.kdcfdconfig cfg on cfg.c1=suc_vtas
 		inner join keplersc.kdm1 dm1 on dm1.c1=cfg.c1 and dm1.c2=gen_vtas and dm1.c3=nat_vtas and dm1.c4=gpo_vtas::integer and dm1.c5=tpo_vtas::integer and dm1.c6=folio_vtas
-		left join  keplersc.kdm1 m1bj on m1bj.c1=dm1.c1 and m1bj.c2=dm1.c2 and m1bj.c36=dm1.c3 and m1bj.c37=dm1.c4 and m1bj.c38=dm1.c5 and m1bj.c39=dm1.c6 and m1bj.c2 = 'U' and m1bj.c3 = 'A' and m1bj.c4 in ('70', '60', '63', '22', '21')
+		left join  keplersc.kdm1 m1bj on m1bj.c1=dm1.c1 and m1bj.c2=dm1.c2 and m1bj.c36=dm1.c3 and m1bj.c37=dm1.c4 and m1bj.c38=dm1.c5 and m1bj.c39=dm1.c6
 		left join keplersc.kdmm mm on mm.c1=m1bj.c2 and mm.c2=m1bj.c3 and mm.c3=m1bj.c4 and mm.c4=m1bj.c5
 		inner join keplersc.kdmarca mar on mar.c1=marca
 		inner join keplersc.kdinf inf on inf.c1=cfg.c1 and inf.c2=inv_vtas

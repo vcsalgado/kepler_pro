@@ -169,7 +169,6 @@ COMMENT ON COLUMN keplersc.kdinf.c27 IS 'Fecha pedimento';
 COMMENT ON COLUMN keplersc.kdinf.c26 IS 'Pedimento';
 COMMENT ON COLUMN keplersc.kdinf.c24 IS 'Fecha asignación';
 COMMENT ON COLUMN keplersc.kdinf.c23 IS 'Empresa lozalizacion';
-COMMENT ON COLUMN keplersc.kdinf.c22 IS 'Es Demo 1=Si, Vacio = No, default es vacio';
 COMMENT ON COLUMN keplersc.kdinf.c21 IS 'Nuevo / Usado';
 COMMENT ON COLUMN keplersc.kdinf.c20 IS 'Clave calculo ISAN';
 COMMENT ON COLUMN keplersc.kdinf.c2 IS 'Numero de Inventario';

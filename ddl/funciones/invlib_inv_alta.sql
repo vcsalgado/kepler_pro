@@ -8,9 +8,6 @@ DECLARE
 	--Autor: Saltiel Cruz
 	--Fecha: 17 Oct 2022
 	--actualizado:07/Dic/2022
-	--Bitacora de cambios
-	--28/11/25 Miriam Santana: Agregue la sucursal en el where de los select a KDM1
-
 	--Variables para xml
 	sucursal_id text;
 	tipo_desc text;

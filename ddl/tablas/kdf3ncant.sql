@@ -20,12 +20,12 @@ CREATE  TABLE keplersc.kdf3ncant (
   folio_relacionado character varying(17) NOT NULL DEFAULT ''::character varying
 ) TABLESPACE pg_default;
 ALTER TABLE ONLY keplersc.kdf3ncant ADD CONSTRAINT pk_kdf3ncant PRIMARY KEY (c1, c2, c3, c4, c5, c6);
+CREATE INDEX IF NOT EXISTS kdf3ncant_c1_idx ON keplersc.kdf3ncant USING btree (c1, c2, c3, c4, folio_relacionado) TABLESPACE pg_default;
+CREATE INDEX IF NOT EXISTS kdf3ncant_c2_idx ON keplersc.kdf3ncant USING btree (c1, genero_doctorel, naturaleza_doctorel, grupo_doctorel, tipo_doctorel, folio_relacionado) TABLESPACE pg_default;
 CREATE INDEX IF NOT EXISTS sindkdf3ncant02 ON keplersc.kdf3ncant USING btree (c1, c8, c2, c3, c4, c5, c6) TABLESPACE pg_default;
 CREATE INDEX IF NOT EXISTS sindkdf3ncant03 ON keplersc.kdf3ncant USING btree (c1, c8, c7, c2, c3, c4, c5, c6) TABLESPACE pg_default;
 CREATE INDEX IF NOT EXISTS sindkdf3ncant04 ON keplersc.kdf3ncant USING btree (c1, c7, c2, c3, c4, c5, c6) TABLESPACE pg_default;
 CREATE INDEX IF NOT EXISTS kdf3ncant_c3_idx ON keplersc.kdf3ncant USING btree (c1, c2, c9, c10, c11, c12) TABLESPACE pg_default;
-CREATE INDEX IF NOT EXISTS kdf3ncant_c1_idx ON keplersc.kdf3ncant USING btree (c1, c2, c3, c4, folio_relacionado) TABLESPACE pg_default;
-CREATE INDEX IF NOT EXISTS kdf3ncant_c2_idx ON keplersc.kdf3ncant USING btree (c1, genero_doctorel, naturaleza_doctorel, grupo_doctorel, tipo_doctorel, folio_relacionado) TABLESPACE pg_default;
 COMMENT ON TABLE keplersc.kdf3ncant IS 'f3 Notas de credito';
 COMMENT ON COLUMN keplersc.kdf3ncant.tipo_relacion IS 'Tipo de relacion CFDI';
 COMMENT ON COLUMN keplersc.kdf3ncant.tipo_doctorel IS 'Tipo documento relacionado';

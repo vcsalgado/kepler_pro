@@ -16,12 +16,12 @@ declare
 begin
 	--Validacion que las cuentas de las polizas existan en el catalogo de cuentas
 	for recM2 in select distinct v2.c3 from keplersc.kdc223_view v2 where v2.c3 not in 
-		(select cat.c1 from keplersc.kdc123 cat where cat.c1=v2.c3) order by v2.c3
+		(select cat.c1 from keplersc.kdc124 cat where cat.c1=v2.c3) order by v2.c3
 	loop
 		raise notice 'No esta en kdc1: %',recM2.c3;
 	end loop;
 
-	anio='23';
+	anio='24';
 	tabla_cuentas = 'keplersc.kdc1' || anio;
 	--Validacion que las cuentas de las polizas sean de nivel mas bajo
 	for recM2 in select distinct v2.c3 from keplersc.kdc223_view v2 order by v2.c3

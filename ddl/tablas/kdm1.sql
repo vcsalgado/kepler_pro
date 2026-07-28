@@ -218,11 +218,11 @@ CREATE  TABLE keplersc.kdm1 (
   usr_comprobacion character varying(21) NOT NULL DEFAULT ''::character varying,
   uuid_retisr character varying(50) NOT NULL DEFAULT ''::character varying,
   uuid_retiva character varying(50) NOT NULL DEFAULT ''::character varying,
+  fol_origen character varying(7) NULL,
   grupo_id integer NULL,
   doc_refer_aux character varying(90) NOT NULL DEFAULT ''::character varying,
   tipo_relacion character varying(2) NOT NULL DEFAULT ''::character varying,
   motivo_cancelacion character varying(2) NOT NULL DEFAULT ''::character varying,
-  fol_origen character varying(7) NOT NULL DEFAULT '0'::character varying,
   uuid_trasieps character varying(50) NOT NULL DEFAULT '0'::character varying,
   uuid_totalimptotras character varying(50) NOT NULL DEFAULT '0'::character varying,
   uuid_totalimptoret character varying(50) NOT NULL DEFAULT '0'::character varying,
@@ -266,6 +266,7 @@ COMMENT ON COLUMN keplersc.kdm1.grupo_id IS 'ID Agrupador Gastos - Contra Recibo
 COMMENT ON COLUMN keplersc.kdm1.gpo_aux IS 'Grupo Auxiliar';
 COMMENT ON COLUMN keplersc.kdm1.gen_aux IS 'Genero Auxiliar';
 COMMENT ON COLUMN keplersc.kdm1.folio_aux IS 'Folio Auxiliar';
+COMMENT ON COLUMN keplersc.kdm1.fol_origen IS 'Folio original antes de migracion';
 COMMENT ON COLUMN keplersc.kdm1.fecha_comprobacion IS 'Fecha Comprobacion CxP ( Modulo Gastos )';
 COMMENT ON COLUMN keplersc.kdm1.esquema IS 'Esquema del proceso';
 COMMENT ON COLUMN keplersc.kdm1.doc_refer_compl IS 'Documento Referencia Complemento ( Modulo Gastos )';

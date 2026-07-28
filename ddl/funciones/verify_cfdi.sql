@@ -294,14 +294,14 @@ begin
 			end if;
 		
 			--MSS 25052026 No permitir anulacion o NC si la factura tiene aplicacion de anticipos
-			if concat(genero,naturaleza,grupo) ='UA60' or concat(genero,naturaleza,grupo) ='UA70' then
+			if naturaleza = 'A' and upper(flag_cobros) <> 'APLICA_ANTICIPO' then
 				select c8,c10,folio_relacionado into statusNC,tipoNC_A,factura from keplersc.kdf3ncant 
 					where c1=sucursal_id and tipo_relacion='07' and genero_doctorel=genero and naturaleza_doctorel=natdocto_anx and grupo_doctorel=gpodocto_anx::integer and tipo_doctorel=tipodocto_anx::integer and folio_relacionado=foliodocto_anx;
 				if tipoNC_A = 81 then	
 					raise exception 'Factura con Aplicacion de Anticipos. Por favor anule primero la Aplicacion de Anticipos';
 				end  if;
 			end if;
-	
+			
 		end if;
 	end if;
 
