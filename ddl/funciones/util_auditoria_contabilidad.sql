@@ -15,16 +15,16 @@ declare
 
 begin
 	--Validacion que las cuentas de las polizas existan en el catalogo de cuentas
-	for recM2 in select distinct v2.c3 from keplersc.kdc223_view v2 where v2.c3 not in 
-		(select cat.c1 from keplersc.kdc123 cat where cat.c1=v2.c3) order by v2.c3
+	for recM2 in select distinct v2.c3 from keplersc.kdc226_view v2 where v2.c3 not in 
+		(select cat.c1 from keplersc.kdc126 cat where cat.c1=v2.c3) order by v2.c3
 	loop
 		raise notice 'No esta en kdc1: %',recM2.c3;
 	end loop;
 
-	anio='23';
+	anio='26';
 	tabla_cuentas = 'keplersc.kdc1' || anio;
 	--Validacion que las cuentas de las polizas sean de nivel mas bajo
-	for recM2 in select distinct v2.c3 from keplersc.kdc223_view v2 order by v2.c3
+	for recM2 in select distinct v2.c3 from keplersc.kdc226_view v2 order by v2.c3
 	loop
 
 		expSql = format('SELECT count(*) from %1$s where c1=%2$L',tabla_cuentas,recM2.c3);
@@ -43,7 +43,7 @@ begin
 	end loop;
 
 	--Validacion que las cuentas de las polizas tengan un nivel mayor
-	for recM2 in select distinct v2.c3 from keplersc.kdc223_view v2 order by v2.c3
+	for recM2 in select distinct v2.c3 from keplersc.kdc226_view v2 order by v2.c3
 	loop
 		--Validar que la cuenta tiene un padre
 		expSql = format('select count(*) from %1$s where position(c1 in %2$L) > 0 and substring(c1,1,1) = substring(%2$L,1,1) 
@@ -108,7 +108,7 @@ select
     sum(c63+c64+c65+c66+c67+c68+c69+c70+c71+c72+c73+c74) as saldo_final_23,
     '' as anio_24, 0 as saldoMeses_ant_24, 0 as saldo_ini_24, 0 as cargos_24, 0 as abonos_24, 0 as saldo_final_24,
     '' as anio_25, 0 as saldoMeses_ant_25, 0 as saldo_ini_25, 0 as cargos_25, 0 as abonos_25, 0 as saldo_final_25
-from keplersc.kdc123
+from keplersc.kdc126
 --where length(c1) = 3
 group by c1
 union

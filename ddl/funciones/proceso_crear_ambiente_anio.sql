@@ -7,7 +7,9 @@ declare
 	--Fecha: 23/12/2025
 --kdivcl, kddinv
 --kdtallcont
---
+--********* Falta actualizar tabla ISAN
+--********* Falta agregar llamado a la funcion de registrar niveles en tablas cuentas_niveles
+
 	--Variables de definicion de documento
 	variable_id text = '';
 	anio_new integer = 0;

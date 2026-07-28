@@ -83,4 +83,5 @@ COMMENT ON COLUMN keplersc.kdventas.c13 IS 'Coach';
 COMMENT ON COLUMN keplersc.kdventas.c11 IS 'Clave del cliente';
 COMMENT ON COLUMN keplersc.kdventas.c10 IS 'Status: 0 Alta; 10 Baja';
 COMMENT ON COLUMN keplersc.kdventas.c1 IS 'Sucursal';
+CREATE TRIGGER kdventas_notif AFTER INSERT ON keplersc.kdventas FOR EACH ROW EXECUTE FUNCTION keplersc.notif_registrar_movto();
 

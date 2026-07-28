@@ -87,7 +87,6 @@ declare
 begin
 	sucursal_id := (xpath('//document/k_sucn/text()', dataxml))[1];
 	inventario := (xpath('//document/k_inventario/text()', dataxml))[1];
-
 	select count(*) into totReg from keplersc.kdinf where c1=sucursal_id and c2=inventario;
 	if totReg>0 then
 		select * into rec_E_INF from keplersc.kdinf where c1=sucursal_id and c2=inventario;

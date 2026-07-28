@@ -1,5 +1,5 @@
 CREATE  TABLE keplersc.kdc124 (
-  c1 character varying(20) NOT NULL DEFAULT ''::character varying,
+  c1 character varying(20) NOT NULL,
   c2 character varying(40) NOT NULL DEFAULT ''::character varying,
   c3 character varying(3) NOT NULL DEFAULT ''::character varying,
   c4 numeric NOT NULL DEFAULT 0,
@@ -93,37 +93,34 @@ CREATE  TABLE keplersc.kdc124 (
   c92 numeric(15,2) NOT NULL DEFAULT 0,
   c93 numeric(15,2) NOT NULL DEFAULT 0,
   c94 numeric(15,2) NOT NULL DEFAULT 0,
-  c95 character varying(1) NOT NULL DEFAULT ''::character varying,
-  c96 character varying(1) NOT NULL DEFAULT ''::character varying,
+  c95 character varying(1) NOT NULL DEFAULT 0,
+  c96 character varying(1) NOT NULL DEFAULT 0,
   c97 character varying(1) NOT NULL DEFAULT ''::character varying,
   c98 character varying(1) NOT NULL DEFAULT ''::character varying,
   c99 character varying(1) NOT NULL DEFAULT ''::character varying,
   c100 character varying(1) NOT NULL DEFAULT ''::character varying
 ) TABLESPACE pg_default;
 ALTER TABLE ONLY keplersc.kdc124 ADD CONSTRAINT pk_kdc124 PRIMARY KEY (c1);
-CREATE UNIQUE INDEX IF NOT EXISTS kdc124_c1_idx ON keplersc.kdc124 USING btree (c1) TABLESPACE pg_default;
-CREATE INDEX IF NOT EXISTS kdc124_c2_c1_idx ON keplersc.kdc124 USING btree (c2, c1) TABLESPACE pg_default;
-CREATE INDEX IF NOT EXISTS kdc124_c3_c1_idx ON keplersc.kdc124 USING btree (c3, c1) TABLESPACE pg_default;
 CREATE INDEX IF NOT EXISTS sindkdc12402 ON keplersc.kdc124 USING btree (c2, c1) TABLESPACE pg_default;
 CREATE INDEX IF NOT EXISTS sindkdc12403 ON keplersc.kdc124 USING btree (c3, c1) TABLESPACE pg_default;
-COMMENT ON COLUMN keplersc.kdc124.c86 IS 'suma de abonos en dólares en el mes 12';
-COMMENT ON COLUMN keplersc.kdc124.c85 IS 'suma de abonos en dólares en el mes 11';
-COMMENT ON COLUMN keplersc.kdc124.c84 IS 'suma de abonos en dólares en el mes 10';
-COMMENT ON COLUMN keplersc.kdc124.c83 IS 'suma de abonos en dólares en el mes 9';
-COMMENT ON COLUMN keplersc.kdc124.c82 IS 'suma de abonos en dólares en el mes 8';
-COMMENT ON COLUMN keplersc.kdc124.c81 IS 'suma de abonos en dólares en el mes 7';
-COMMENT ON COLUMN keplersc.kdc124.c80 IS 'suma de abonos en dólares en el mes 6';
-COMMENT ON COLUMN keplersc.kdc124.c79 IS 'suma de abonos en dólares en el mes 5';
-COMMENT ON COLUMN keplersc.kdc124.c78 IS 'suma de abonos en dólares en el mes 4';
-COMMENT ON COLUMN keplersc.kdc124.c77 IS 'suma de abonos en dólares en el mes 3';
-COMMENT ON COLUMN keplersc.kdc124.c76 IS 'suma de abonos en dólares en el mes 2';
-COMMENT ON COLUMN keplersc.kdc124.c75 IS 'suma de abonos en dólares en el mes 1';
+COMMENT ON COLUMN keplersc.kdc124.c86 IS 'suma de abonos en dolares en el mes 12';
+COMMENT ON COLUMN keplersc.kdc124.c85 IS 'suma de abonos en dolares en el mes 11';
+COMMENT ON COLUMN keplersc.kdc124.c84 IS 'suma de abonos en dolares en el mes 10';
+COMMENT ON COLUMN keplersc.kdc124.c83 IS 'suma de abonos en dolares en el mes 9';
+COMMENT ON COLUMN keplersc.kdc124.c82 IS 'suma de abonos en dolares en el mes 8';
+COMMENT ON COLUMN keplersc.kdc124.c81 IS 'suma de abonos en dolares en el mes 7';
+COMMENT ON COLUMN keplersc.kdc124.c80 IS 'suma de abonos en dolares en el mes 6';
+COMMENT ON COLUMN keplersc.kdc124.c79 IS 'suma de abonos en dolares en el mes 5';
+COMMENT ON COLUMN keplersc.kdc124.c78 IS 'suma de abonos en dolares en el mes 4';
+COMMENT ON COLUMN keplersc.kdc124.c77 IS 'suma de abonos en dolares en el mes 3';
+COMMENT ON COLUMN keplersc.kdc124.c76 IS 'suma de abonos en dolares en el mes 2';
+COMMENT ON COLUMN keplersc.kdc124.c75 IS 'suma de abonos en dolares en el mes 1';
 COMMENT ON COLUMN keplersc.kdc124.c74 IS 'suma de abonos en pesos en el mes 12';
 COMMENT ON COLUMN keplersc.kdc124.c73 IS 'suma de abonos en pesos en el mes 11';
 COMMENT ON COLUMN keplersc.kdc124.c72 IS 'suma de abonos en pesos en el mes 10';
 COMMENT ON COLUMN keplersc.kdc124.c71 IS 'suma de abonos en pesos en el mes 9';
 COMMENT ON COLUMN keplersc.kdc124.c70 IS 'suma de abonos en pesos en el mes 8';
-COMMENT ON COLUMN keplersc.kdc124.c7 IS 'Clave de la moneda DLL=dólares PES=nuevos pesos';
+COMMENT ON COLUMN keplersc.kdc124.c7 IS 'Clave de la moneda DLL=dolares PES=nuevos pesos';
 COMMENT ON COLUMN keplersc.kdc124.c69 IS 'suma de abonos en pesos en el mes 7';
 COMMENT ON COLUMN keplersc.kdc124.c68 IS 'suma de abonos en pesos en el mes 6';
 COMMENT ON COLUMN keplersc.kdc124.c67 IS 'suma de abonos en pesos en el mes 5';
@@ -131,19 +128,19 @@ COMMENT ON COLUMN keplersc.kdc124.c66 IS 'suma de abonos en pesos en el mes 4';
 COMMENT ON COLUMN keplersc.kdc124.c65 IS 'suma de abonos en pesos en el mes 3';
 COMMENT ON COLUMN keplersc.kdc124.c64 IS 'suma de abonos en pesos en el mes 2';
 COMMENT ON COLUMN keplersc.kdc124.c63 IS 'suma de abonos en pesos en el mes 1';
-COMMENT ON COLUMN keplersc.kdc124.c62 IS 'saldo en dólares del mes diciembre';
-COMMENT ON COLUMN keplersc.kdc124.c61 IS 'saldo en dólares del mes noviembre';
-COMMENT ON COLUMN keplersc.kdc124.c60 IS 'saldo en dólares del mes octubre';
+COMMENT ON COLUMN keplersc.kdc124.c62 IS 'saldo en dolares del mes diciembre';
+COMMENT ON COLUMN keplersc.kdc124.c61 IS 'saldo en dolares del mes noviembre';
+COMMENT ON COLUMN keplersc.kdc124.c60 IS 'saldo en dolares del mes octubre';
 COMMENT ON COLUMN keplersc.kdc124.c6 IS 'Naturaleza D=Deudora A=Acreedora';
-COMMENT ON COLUMN keplersc.kdc124.c59 IS 'saldo en dólares del mes septiembre';
-COMMENT ON COLUMN keplersc.kdc124.c58 IS 'saldo en dólares del mes agosto';
-COMMENT ON COLUMN keplersc.kdc124.c57 IS 'saldo en dólares del mes julio';
-COMMENT ON COLUMN keplersc.kdc124.c56 IS 'saldo en dólares del mes junio';
-COMMENT ON COLUMN keplersc.kdc124.c55 IS 'saldo en dólares del mes mayo';
-COMMENT ON COLUMN keplersc.kdc124.c54 IS 'saldo en dólares del mes abril';
-COMMENT ON COLUMN keplersc.kdc124.c53 IS 'saldo en dólares del mes marzo';
-COMMENT ON COLUMN keplersc.kdc124.c52 IS 'saldo en dólares del mes febrero';
-COMMENT ON COLUMN keplersc.kdc124.c51 IS 'saldo en dólares del mes enero';
+COMMENT ON COLUMN keplersc.kdc124.c59 IS 'saldo en dolares del mes septiembre';
+COMMENT ON COLUMN keplersc.kdc124.c58 IS 'saldo en dolares del mes agosto';
+COMMENT ON COLUMN keplersc.kdc124.c57 IS 'saldo en dolares del mes julio';
+COMMENT ON COLUMN keplersc.kdc124.c56 IS 'saldo en dolares del mes junio';
+COMMENT ON COLUMN keplersc.kdc124.c55 IS 'saldo en dolares del mes mayo';
+COMMENT ON COLUMN keplersc.kdc124.c54 IS 'saldo en dolares del mes abril';
+COMMENT ON COLUMN keplersc.kdc124.c53 IS 'saldo en dolares del mes marzo';
+COMMENT ON COLUMN keplersc.kdc124.c52 IS 'saldo en dolares del mes febrero';
+COMMENT ON COLUMN keplersc.kdc124.c51 IS 'saldo en dolares del mes enero';
 COMMENT ON COLUMN keplersc.kdc124.c50 IS 'presupuesto del mes diciembre';
 COMMENT ON COLUMN keplersc.kdc124.c49 IS 'presupuesto del mes noviembre';
 COMMENT ON COLUMN keplersc.kdc124.c48 IS 'presupuesto del mes octubre';
@@ -170,21 +167,21 @@ COMMENT ON COLUMN keplersc.kdc124.c3 IS 'Grupo AC AF AD PC PLP PD CC VTA CMV GTO
 COMMENT ON COLUMN keplersc.kdc124.c29 IS 'suma de cargos en pesos del mes 3';
 COMMENT ON COLUMN keplersc.kdc124.c28 IS 'suma de cargos en pesos del mes 2';
 COMMENT ON COLUMN keplersc.kdc124.c27 IS 'suma de cargos en pesos del mes 1';
-COMMENT ON COLUMN keplersc.kdc124.c26 IS 'saldo año anterior diciembre';
-COMMENT ON COLUMN keplersc.kdc124.c25 IS 'saldo año anterior noviembre';
-COMMENT ON COLUMN keplersc.kdc124.c24 IS 'saldo año anterior octubre';
-COMMENT ON COLUMN keplersc.kdc124.c23 IS 'saldo año anterior septiembre';
-COMMENT ON COLUMN keplersc.kdc124.c22 IS 'saldo año anterior agosto';
-COMMENT ON COLUMN keplersc.kdc124.c21 IS 'saldo año anterior julio';
-COMMENT ON COLUMN keplersc.kdc124.c20 IS 'saldo año anterior junio';
-COMMENT ON COLUMN keplersc.kdc124.c2 IS 'Descripción de la cuenta';
-COMMENT ON COLUMN keplersc.kdc124.c19 IS 'saldo año anterior mayo';
-COMMENT ON COLUMN keplersc.kdc124.c18 IS 'saldo año anterior abril';
-COMMENT ON COLUMN keplersc.kdc124.c17 IS 'saldo año anterior marzo';
-COMMENT ON COLUMN keplersc.kdc124.c16 IS 'saldo año anterior febrero';
-COMMENT ON COLUMN keplersc.kdc124.c15 IS 'saldo año anterior enero';
+COMMENT ON COLUMN keplersc.kdc124.c26 IS 'saldo a�o anterior diciembre';
+COMMENT ON COLUMN keplersc.kdc124.c25 IS 'saldo a�o anterior noviembre';
+COMMENT ON COLUMN keplersc.kdc124.c24 IS 'saldo a�o anterior octubre';
+COMMENT ON COLUMN keplersc.kdc124.c23 IS 'saldo a�o anterior septiembre';
+COMMENT ON COLUMN keplersc.kdc124.c22 IS 'saldo a�o anterior agosto';
+COMMENT ON COLUMN keplersc.kdc124.c21 IS 'saldo a�o anterior julio';
+COMMENT ON COLUMN keplersc.kdc124.c20 IS 'saldo a�o anterior junio';
+COMMENT ON COLUMN keplersc.kdc124.c2 IS 'Descripci�n de la cuenta';
+COMMENT ON COLUMN keplersc.kdc124.c19 IS 'saldo a�o anterior mayo';
+COMMENT ON COLUMN keplersc.kdc124.c18 IS 'saldo a�o anterior abril';
+COMMENT ON COLUMN keplersc.kdc124.c17 IS 'saldo a�o anterior marzo';
+COMMENT ON COLUMN keplersc.kdc124.c16 IS 'saldo a�o anterior febrero';
+COMMENT ON COLUMN keplersc.kdc124.c15 IS 'saldo a�o anterior enero';
 COMMENT ON COLUMN keplersc.kdc124.c14 IS 'Saldo inicial pesos';
-COMMENT ON COLUMN keplersc.kdc124.c11 IS 'Saldo inicial dólares';
+COMMENT ON COLUMN keplersc.kdc124.c11 IS 'Saldo inicial dolares';
 COMMENT ON COLUMN keplersc.kdc124.c100 IS 'Afecta IETU';
 COMMENT ON COLUMN keplersc.kdc124.c1 IS 'No. de cuenta';
 CREATE TRIGGER kdc1_upd_nivel_after_crud AFTER INSERT OR DELETE OR UPDATE ON keplersc.kdc124 FOR EACH ROW EXECUTE FUNCTION keplersc.cont_upd_nivel();

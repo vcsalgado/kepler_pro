@@ -25,13 +25,13 @@ CREATE  TABLE keplersc.kdvnpun (
   c24 numeric(10,2) NOT NULL DEFAULT 0
 ) TABLESPACE pg_default;
 ALTER TABLE ONLY keplersc.kdvnpun ADD CONSTRAINT pk_kdvnpun PRIMARY KEY (c1, c2, c3, c4, c11);
-CREATE INDEX IF NOT EXISTS sindkdvnpun02 ON keplersc.kdvnpun USING btree (c1, c6, c7, c8, c9, c10, c11) TABLESPACE pg_default;
-CREATE INDEX IF NOT EXISTS sindkdvnpun03 ON keplersc.kdvnpun USING btree (c1, c12, c2, c3, c4, c11) TABLESPACE pg_default;
-CREATE INDEX IF NOT EXISTS sindkdvnpun04 ON keplersc.kdvnpun USING btree (c1, c13, c12, c2, c3, c4, c11) TABLESPACE pg_default;
 CREATE INDEX IF NOT EXISTS sindkdvnpun05 ON keplersc.kdvnpun USING btree (c1, c13, c15, c12, c2, c3, c4, c11) TABLESPACE pg_default;
 CREATE INDEX IF NOT EXISTS sindkdvnpun06 ON keplersc.kdvnpun USING btree (c1, c14, c13, c12, c2, c3, c4, c11) TABLESPACE pg_default;
 CREATE INDEX IF NOT EXISTS sindkdvnpun07 ON keplersc.kdvnpun USING btree (c1, c5, c12, c2, c3, c4, c11) TABLESPACE pg_default;
 CREATE INDEX IF NOT EXISTS sindkdvnpun08 ON keplersc.kdvnpun USING btree (c1, c14, c13, c15, c12, c2, c3, c4, c11) TABLESPACE pg_default;
+CREATE INDEX IF NOT EXISTS sindkdvnpun02 ON keplersc.kdvnpun USING btree (c1, c6, c7, c8, c9, c10, c11) TABLESPACE pg_default;
+CREATE INDEX IF NOT EXISTS sindkdvnpun03 ON keplersc.kdvnpun USING btree (c1, c12, c2, c3, c4, c11) TABLESPACE pg_default;
+CREATE INDEX IF NOT EXISTS sindkdvnpun04 ON keplersc.kdvnpun USING btree (c1, c13, c12, c2, c3, c4, c11) TABLESPACE pg_default;
 COMMENT ON TABLE keplersc.kdvnpun IS 'Puntos Venta';
 COMMENT ON COLUMN keplersc.kdvnpun.c9 IS 'Tipo';
 COMMENT ON COLUMN keplersc.kdvnpun.c8 IS 'Grupo';

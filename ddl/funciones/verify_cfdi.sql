@@ -301,7 +301,7 @@ begin
 					raise exception 'Factura con Aplicacion de Anticipos. Por favor anule primero la Aplicacion de Anticipos';
 				end  if;
 			end if;
-	
+			
 		end if;
 	end if;
 

@@ -12,8 +12,11 @@ DECLARE
     --RHFC variables para extraer sucursal y folio del json
     extracted_sucursal text;
     extracted_folio text;
-   
-    --variables trigger
+ 	extracted_tipo int;
+	jason_id_trans jsonb;
+	datosInterfaz jsonb;
+	--RHFC Termina se incluyen variables para extraer sucursal, tipo y folio del json    --variables trigger
+
     entidad text = '';
     operacion text = '';
     p_new record = NEW;
@@ -59,13 +62,13 @@ BEGIN
         IF strOem = 'TOY' THEN
             SELECT resultado.datos_interfaz->>'sucursal' INTO extracted_sucursal;
             SELECT resultado.datos_interfaz->>'folio' INTO extracted_folio;
-            
+			SELECT resultado.datos_interfaz->>'tipo' INTO extracted_tipo;
             IF entidad = 'KDPEDREF' THEN
                 INSERT INTO keplersc.notif_api_control_envios (id_transaccion, api_id, datos_interfaz, sucursal, genero, naturaleza, grupo, tipo, folio)
                 VALUES (intTransaction, resultado.api_id, resultado.datos_interfaz, extracted_sucursal,'N','D',21,1,extracted_folio);    
-            ELSIF entidad = 'IFZ_DDOA_RDR_NOTIF' THEN
+            ELSIF entidad = 'IFZ_DDOA_RDR_PREENVIO' THEN
                 INSERT INTO keplersc.notif_api_control_envios (id_transaccion, api_id, datos_interfaz, sucursal, genero, naturaleza, grupo, tipo, folio)
-                VALUES (intTransaction, resultado.api_id, resultado.datos_interfaz, extracted_sucursal,'U','D',6,1,extracted_folio);
+                VALUES (intTransaction, resultado.api_id, resultado.datos_interfaz, extracted_sucursal,'U','D',6,extracted_tipo,extracted_folio);
             ELSE
                 INSERT INTO keplersc.notif_api_control_envios (id_transaccion, api_id, datos_interfaz)
                 VALUES (intTransaction, resultado.api_id, resultado.datos_interfaz);
@@ -76,9 +79,29 @@ BEGIN
                 EXECUTE expSql;
                 RAISE NOTICE 'JSON enviado a Toyota: %', json_notif;
             ELSE
+/*
                 expSql := format('notify interfaces_toyota, ''%s''', intTransaction);
                 EXECUTE expSql;
                 RAISE NOTICE 'notify interfaces_toyota enviado: %', intTransaction;
+*/
+/*
+				if resultado.interfaz = 'CRM' THEN
+			        json_notif := jsonb_build_object(
+			            'schema_version','1.0',
+			            'cirdan_metadata', jsonb_build_object('id_transaccion', intTransaction),
+			            'target_workflow', jsonb_build_object('config_key', resultado.api_id),
+			            'initial_context', jsonb_build_object('param', resultado.datos_interfaz)
+			        );
+--raise exception 'CRM %',json_notif;
+	                expSql := format('notify interfaces_toyota, %L', json_notif::text);
+	                EXECUTE expSql;
+	                RAISE NOTICE 'JSON enviado a Toyota: %', json_notif;
+				else
+*/
+	                expSql := format('notify interfaces_toyota, %L', json_notif::text);
+	                EXECUTE expSql;
+	                RAISE NOTICE 'JSON enviado a Toyota: %', json_notif;
+--				end if;
             END IF;
 
         ELSIF strOem = 'GM' THEN

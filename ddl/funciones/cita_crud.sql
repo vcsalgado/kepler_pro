@@ -15,6 +15,7 @@ AS $function$
 --Miriam Santana:  28/08/2024 Parametrizar la validacion:permitir cita con orden en taller solo si ='S' en param_oper 
 --Jose Mendoza:    Del 05/05/2025 al 26/05/2025 : Datos para Implementacion de Web-Hook de Citas - Interface - Business Pro (BP/BPR)
 --Miriam Santana:  14/11/2025 Manejo de campanas para ordenes G o M-Garantia adicional a las C, y ajustes por interface de campanas 
+--Miriam Santana:  20/07/2026 Ya no se actualiza la tabla de control de citas, actualizar la tabla kdctassermov y a partir de esta se genera la tmpControl_de_citas y validar horarios
 
 declare
 
@@ -169,7 +170,12 @@ declare
     adicionales text = '';
    
    	tipo_crud text; 
-	
+
+	--Variables interfaz BP
+	resultado_bpr text = '';
+	mensaje_bpr text = '';
+    adicionales_bpr text = '';	
+
 begin 
 	
 	sucursal_id := (xpath('//document/k_sucN/r1/text()', dataxml))[1]; 
@@ -241,9 +247,16 @@ begin
   
   	-- JMM 05/26/2025 interface BP (Business Pro) - WebHook , Si no hay origen asigna el default K80
   	if length(origen) = 0 or origen = '' then
-  		origen = 'K80';
+  		origen = 'K80'; 
 	end if;  
 
+if origen = 'BPR' then
+	select * into resultado_bpr, mensaje_bpr, adicionales_bpr from keplersc.cita_crud_bp(dataxml); 
+	resultado:= resultado_bpr;
+	mensaje:=mensaje_bpr; 
+	adicionales:=adicionales_bpr;
+
+else -- origen = 'BPR'
 	if tipo_operacion = 0 then
   		tipo_crud := 'A';
   	else
@@ -273,16 +286,18 @@ begin
 			end if;
 		end if;
 		
-	else 
-		--MSS Permitir modificar o cancelar cita a usr con privilegios
-		select c19 into p_modcitas from keplersc.kdusrinfo
-			where c1=usuario;
-		if found then
-			if p_modcitas <> 'S' then
-				raise exception 'Su usuario No tiene privilegios para modificar o cancelar citas';
+	else
+		if origen <> 'BPR' then 
+			--MSS Permitir modificar o cancelar cita a usr con privilegios
+			select c19 into p_modcitas from keplersc.kdusrinfo
+				where c1=usuario;
+			if found then
+				if p_modcitas <> 'S' then
+					raise exception 'Su usuario No tiene privilegios para modificar o cancelar citas';
+				end if;
+			else 
+				raise exception 'Solo Asesores TMKT o con privilegios pueden crear, modificar o cancelar citas';
 			end if;
-		else 
-			raise exception 'Solo Asesores TMKT o con privilegios pueden crear, modificar o cancelar citas';
 		end if;
 	end if;
 	
@@ -324,46 +339,47 @@ begin
 		if fecha_promesa_entrega < fecha_cita then
 			raise exception 'La Promesa de entrega tiene que tener una Fecha igual o posterior a la fecha de la cita';	
 		end if;
-	
-		--valida minutos
-		--VCSS Integracion de recepcion y entrega cada 20 mins, requerimiento deGM
-		select count(*) into intValor from keplersc.param_oper where parametro = 'esquema horas recepcion';
-		if intValor > 0 then
-			select oper.valor into strValor from keplersc.param_oper oper where oper.parametro = 'esquema horas recepcion'; 
-		else
-			strValor='15'; --Default
-		end if;
-		intValor:=strValor::int;
-		if intValor <> 20 then
-			intValor:=15; --Valor por defecto
-		end if;		
 
-		if intValor=15 then
-			mins_cita := right(left(hora_cita::text,5)::text,2);
-			if mins_cita <> '00' and mins_cita <> '15' and mins_cita <> '30' and mins_cita <> '45' then 
-				raise exception 'Solo se permiten los siguientes minutos en la cita 00,15,30,45 '; 
+		if origen <> 'BPR' then --VCSS Interfaz BPR	
+			--valida minutos
+			--VCSS Integracion de recepcion y entrega cada 20 mins, requerimiento deGM
+			select count(*) into intValor from keplersc.param_oper where parametro = 'esquema horas recepcion';
+			if intValor > 0 then
+				select oper.valor into strValor from keplersc.param_oper oper where oper.parametro = 'esquema horas recepcion'; 
+			else
+				strValor='15'; --Default
 			end if;
-			mins_entrega := right(left(hora_promesa_entrega::text,5)::text,2);
-			if mins_entrega <> '00' and mins_entrega <> '15' and mins_entrega <> '30' and mins_entrega <> '45' then 
-				raise exception 'Solo se permiten los siguientes minutos en la entrega 00,15,30,45 '; 
-			end if;
-		else
-			mins_cita := right(left(hora_cita::text,5)::text,2);
-			if mins_cita <> '00' and mins_cita <> '20' and mins_cita <> '40' then 
-				raise exception 'Solo se permiten los siguientes minutos en la cita 00,20,40'; 
-			end if;
-			mins_entrega := right(left(hora_promesa_entrega::text,5)::text,2);
-			if mins_entrega <> '00' and mins_entrega <> '20' and mins_entrega <> '40' then 
-				raise exception 'Solo se permiten los siguientes minutos en la entrega 00,20,40'; 
-			end if;
-		end if;
-		--valida hora	
-		if fecha_cita = fecha_captura_cita then
-			if hora_cita < hora_captura_cita then
-				raise exception 'La hora de la cita no puede ser antes que la de captura';	
-			end if;
-		end if;
+			intValor:=strValor::int;
+			if intValor <> 20 then
+				intValor:=15; --Valor por defecto
+			end if;		
 	
+			if intValor=15 then
+				mins_cita := right(left(hora_cita::text,5)::text,2);
+				if mins_cita <> '00' and mins_cita <> '15' and mins_cita <> '30' and mins_cita <> '45' then 
+					raise exception 'Solo se permiten los siguientes minutos en la cita 00,15,30,45 '; 
+				end if;
+				mins_entrega := right(left(hora_promesa_entrega::text,5)::text,2);
+				if mins_entrega <> '00' and mins_entrega <> '15' and mins_entrega <> '30' and mins_entrega <> '45' then 
+					raise exception 'Solo se permiten los siguientes minutos en la entrega 00,15,30,45 '; 
+				end if;
+			else
+				mins_cita := right(left(hora_cita::text,5)::text,2);
+				if mins_cita <> '00' and mins_cita <> '20' and mins_cita <> '40' then 
+					raise exception 'Solo se permiten los siguientes minutos en la cita 00,20,40'; 
+				end if;
+				mins_entrega := right(left(hora_promesa_entrega::text,5)::text,2);
+				if mins_entrega <> '00' and mins_entrega <> '20' and mins_entrega <> '40' then 
+					raise exception 'Solo se permiten los siguientes minutos en la entrega 00,20,40'; 
+				end if;
+			end if;
+			--valida hora	
+			if fecha_cita = fecha_captura_cita then
+				if hora_cita < hora_captura_cita then
+					raise exception 'La hora de la cita no puede ser antes que la de captura';	
+				end if;
+			end if;
+		end if;
 		--valida tiempo	
 		/*if fecha_promesa_entrega < posible_fecha_entrega then
 			raise exception 'El dia de entrega es antes del tiempo necesario para hacer el servicio';	
@@ -400,7 +416,7 @@ begin
 
 		select c9 into kodawari from keplersc.kdconftaller where c2=sucursal_id;
 	
-		if kodawari = 'S' then
+		if kodawari = 'S' and origen <> 'BPR' then --VCSS Interfaces BP
 		
 			select c3::numeric,c8::numeric,c14 into max_cts_recep,validar_cts_recep,validaciones_recep from keplersc.kdserconfctas; --where c31=sucursal_id
 			if validar_cts_recep= 10 and (tipo_cita='N' or (validaciones_recep='S' and tipo_cita <> 'N')) then 
@@ -485,7 +501,11 @@ begin
 				update keplersc.kdctasser set c20=estatus_cita_anterior, c24=folio_cita where c1=sucursal_id and c2=fol_cita_modificar;
 				
 				mensaje := 'La cita tiene un cambio de fecha y hora. Se considera una reprogramacion. Folio nuevo: ' || folio_cita;
-			
+
+				--MSS 20/07/2026 En lugar de regenerar la tabla de contro citas, actualizar los horarios ini y fin para que ya no se considere en la nueva generacion de horarios en tmpControl_de_citas
+				update keplersc.kdctassermov set c12='', c13='' where c1=sucursal_id and c2=fol_cita_modificar;
+				 --y el siguiente llamado de tmkt_control_de_citas ya no seria necesario
+				/*	
 				-- JMM ... Aqui debe haber un llamado a la Funcion {tmkt_control_de_citas} para Liberar Horarios Originales 
 				--Added by JMM ... To update data for fecha_cita (this is not run anytime)
 		
@@ -505,9 +525,8 @@ begin
 				end if;
 			
 				-- End : Added Code by JMM
-				
-			else 
-			
+				*/
+			else 			
 				--elimina prepicking  LGLG 15/01/24 
 				delete from keplersc.prepicking where c1=sucursal_id and c2=fol_cita_modificar;
 				--elimina fecha y hora entrega
@@ -557,7 +576,8 @@ begin
 		, observaciones2, observaciones3, observaciones4, observaciones5, observaciones6, origen /*Added by JMM 05/05/2025 Web-Hook BP*/, tipo_crud
 		);
 
-
+		--MSS 20/07/2026 este llamado no es necesario xq borra los registros de kdctassermov cuando es modificacion y se eliminan los horarios de ini y fin en una reprogramacion
+		/*
 		-- JMM ... Aqui debe haber un llamado a la Funcion {tmkt_control_de_citas} para Liberar Horarios Originales si es una Modificacion 
 		--Added by JMM ... To update data for fecha_cita (this is not run anytime)
 		
@@ -581,7 +601,7 @@ begin
 		end if;
 	
 		-- End : Added Code by JMM
-	
+		*/
 		strValor := (xpath('//document/ctd_puntos/text()',dataxml))[1];
 		no_puntos := strValor::integer;	
 		ctd_puntos = no_puntos;
@@ -666,7 +686,21 @@ begin
 		
 					hrs_ini := horario_inicio;
 					hrs_fin := horario_fin;
-				
+
+					--MSS 20/07/2026 LLenar la tabla temporal con los registros de kdctassermov y hacer el select sobre la tabla temporal
+					strXML:='';
+					strXML:=concat(strXML,'<document>');
+					strXML:=concat(strXML,'<k_sucN><r1>',sucursal_id,'</r1></k_sucN>');
+					strXML:=concat(strXML,'<fecha>',fecha_cita,'</fecha>');
+					strXML:=concat(strXML,'</document>');	
+					xmlCitas:=strXML::xml;
+					
+					--MSS 20/07/2026 Crear tabla temporal a partir de la estructura de Control_de_citas
+					drop table if exists tmpControl_de_citas;
+				    create temp table tmpControl_de_citas (like keplersc.control_de_citas including all);
+					insert into tmpControl_de_citas select * from keplersc.tmkt_panorama_de_taller(xmlCitas);
+					--El sig. codigo ya no es necesario
+					/*			
 					--Added by JMM ... To create data for fecha_cita (this will run when Cita is done not in K80)
 					select col_clave_operador into strValor from keplersc.control_de_citas where col_fecha = fecha_cita and col_clave_operador = clave_operario;
 					if not found then
@@ -687,14 +721,14 @@ begin
 						end if;
 
 					end if;
+					*/
 					strValor = '';
-					
-			
+
 					while hrs_ini < hrs_fin loop
 						
 						col_hrs := 	concat('h_',  split_part(hrs_ini::text, ':', '1') , '_',split_part(hrs_ini::text, ':', '2')) ;
-					
-						sql_select := format('select %1$s as registro from keplersc.control_de_citas 
+						--MSS 20/07/2026 Hacer el select sobre la tabla temporal tmpControl_de citas antes Control_de_citas
+						sql_select := format('select %1$s as registro from tmpControl_de_citas 
 						where col_fecha=%2$L and col_clave_operador=%3$L', col_hrs, fecha_cita, clave_operario);
 										
 						select query_to_xml(sql_select, false, true, '' ) :: xml into datos;
@@ -705,8 +739,10 @@ begin
 					    -- Se detectaron algunos errores conceptuales y se implementaron mas llamados de la Funcion en las distintas 
 						-- Operaciones de este CRUD 
 						registro := (xpath('//row/registro/text()', datos))[1];
-					
-					
+
+						--MSS 20/07/2026 Ya no se actualiza la tabla de control de citas, xq ya se actualizo la tabla kdctassermov y a partir de esta se genera la tmpControl_de_citas 
+						--Nuevo if registro <> ''
+						/*
 						if registro is null then 
 
 							expSql := format('update keplersc.control_de_citas set %1$s=%2$L where col_fecha=%3$L and col_clave_operador=%4$L',
@@ -722,6 +758,14 @@ begin
 								end if;
 							end if;
 						end if;
+						*/ 
+						if registro <> '' then
+							if registro <> 'COMIDA' then
+								raise exception 'Horario % ocupado para el operador % cita: %, verifica horarios en control de citas.', left(hrs_ini::text, 5), clave_operario, registro;
+							else 
+								raise exception 'Horario de comida % del opreador %, verifica horarios en control de citas.', left(hrs_ini::text, 5), clave_operario;
+							end if;
+						end if;
 					
 						hrs_ini := hrs_ini + interval '15 minute';
 	
@@ -735,7 +779,7 @@ begin
 					
 
 				select * into coincide_ope from keplersc.kdpuntop where c1=tipo_punto and c2=tipo_operario;
-				if found or origen = 'BPR' then --VCSS 02 jul 2026, BP no maneja tipos de punto, grabar en este caso. 
+				if found then 
 				
 					/*select * into strValor from keplersc.kdctasser as cta inner join keplersc.kdctassermov as mov
 					on cta.c1=mov.c1 and cta.c2=mov.c2 where cta.c1=sucursal_id and cta.c12=fecha_cita
@@ -836,7 +880,11 @@ begin
 	
 		mensaje := 'cita cancelada';
 		folio_cita := fol_cita_modificar; --LGLG 15/01/24 Citas en linea
-		
+
+		--MSS 20/07/2026 En lugar de regenerar la tabla de control citas, actualizar los horarios ini y fin para que ya no se considere en la nueva generacion de horarios en tmpControl_de_citas
+		update keplersc.kdctassermov set c12='', c13='' where c1=sucursal_id and c2=fol_cita_modificar;
+ 		--y el siguiente llamado de tmkt_control_de_citas ya no seria necesario
+		/*
 		-- JMM ... Aqui debe haber un llamado a la Funcion {tmkt_control_de_citas} para Liberar Horarios Originales
 		--Added by JMM ... To update data for fecha_cita (this is not run anytime)
 		
@@ -856,7 +904,7 @@ begin
 		end if;
 	
 		-- End : Added Code by JMM
-	
+		*/
 	end if;
 
 		
@@ -966,12 +1014,15 @@ begin
 		end if;
 	
 	end if;
-
 	resultado := 1;
 	if mensaje = '' then
 		mensaje := 'Cita guardada:' || folio_cita;
 	end if;
 	adicionales := folio_cita;
+
+end if; -- origen = 'BPR' 
+
+
 	return query select resultado, mensaje, adicionales;	
 
 exception

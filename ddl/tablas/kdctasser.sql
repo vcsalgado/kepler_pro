@@ -113,7 +113,7 @@ COMMENT ON COLUMN keplersc.kdctasser.c24 IS 'Folio de la nueva cita';
 COMMENT ON COLUMN keplersc.kdctasser.c23 IS 'Recepcionista';
 COMMENT ON COLUMN keplersc.kdctasser.c22 IS 'Folio de la orden';
 COMMENT ON COLUMN keplersc.kdctasser.c21 IS 'Tipo de orden';
-COMMENT ON COLUMN keplersc.kdctasser.c20 IS 'Pendiente=0; Confirmada=10; Concretada=20; Reprogramada=30; Cancelada=40; Noshow=50';
+COMMENT ON COLUMN keplersc.kdctasser.c20 IS 'Pendiente=0; Confirmada=10; Concretada=20; Reprogramada=30; Cancelada=40;';
 COMMENT ON COLUMN keplersc.kdctasser.c2 IS 'Folio de cita';
 COMMENT ON COLUMN keplersc.kdctasser.c17 IS 'Recepcionista';
 COMMENT ON COLUMN keplersc.kdctasser.c16 IS 'Fecha de registro';

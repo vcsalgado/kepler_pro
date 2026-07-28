@@ -17,6 +17,7 @@ declare
 	-- Campos Grid ...
 
 	parte text = '';
+	parteoriginal text = '';
 
 	-- Campos Grid.Text
 	pedesp_tx text = '';
@@ -144,6 +145,7 @@ begin
 		citas_tx := coalesce((xpath('//document/k_mov/r'||intCont||'/k_citas/text()',dataxml))[1],'');
 		h11_tx := coalesce((xpath('//document/k_mov/r'||intCont||'/k_h11/text()',dataxml))[1],'');
 		h12_tx := coalesce((xpath('//document/k_mov/r'||intCont||'/k_h12/text()',dataxml))[1],'');
+		parteoriginal := coalesce((xpath('//document/k_mov/r'||intCont||'/k_parteoriginal/text()',dataxml))[1],'');
 		
 		if length(parte) > 0 then no_vacios := no_vacios + 1; end if;
 		if length(pedesp_tx) > 0 then no_vacios := no_vacios + 1; end if;
@@ -169,8 +171,12 @@ begin
 			totReg := 0;
 			select count(c1) into totReg from keplersc.kdini where c1 = parte;
 			if totReg = 0 then
-				mensaje := 'No se encontro el Registro en la Tabla Kdini [Productos], [' || parte || ']';
-				raise exception '%', mensaje;
+				--Buscar como reemplazo
+				select count(*) into totReg from keplersc.kdinr where c1=parte;
+				if totReg = 0 then
+					mensaje := 'No se encontro la parte como original o reemplazo [Kdini, Kdinr], [' || parte || ']';
+					raise exception '%', mensaje;
+				end if;
 			end if;	
 	
 			numero_partida := numero_partida + 1;
@@ -208,6 +214,7 @@ begin
 		citas_tx := coalesce((xpath('//document/k_mov/r'||intCont||'/k_citas/text()',dataxml))[1],'');
 		h11_tx := coalesce((xpath('//document/k_mov/r'||intCont||'/k_h11/text()',dataxml))[1],'');
 		h12_tx := coalesce((xpath('//document/k_mov/r'||intCont||'/k_h12/text()',dataxml))[1],'');
+		parteoriginal := coalesce((xpath('//document/k_mov/r'||intCont||'/k_parteoriginal/text()',dataxml))[1],'');
 		
 		if length(parte) > 0 then no_vacios := no_vacios + 1; end if;
 		if length(pedesp_tx) > 0 then no_vacios := no_vacios + 1; end if;
@@ -278,13 +285,22 @@ begin
 			-- END Validacion Calculos
 			
 			if flag_items = 0 then
-			
-				update keplersc.kdpedrefmov  
-				set 
-					c17 = v_A5, /*surtstck*/
-					c18 = v_A6 /*cantped*/
-				where c1 = sucursal and c2 = referencia and c3 = parte;
-
+				if parteoriginal = '' then --VCSS 24 Mar 2026 Actualizacion de parte sugerida por un reemplazo
+--raise exception 'PASO 1 ';
+					update keplersc.kdpedrefmov  
+					set 
+						c17 = v_A5, /*surtstck*/
+						c18 = v_A6 /*cantped*/
+					where c1 = sucursal and c2 = referencia and c3 = parte;
+				else 
+--raise exception 'PASO 2 parte %; original %',parte,parteoriginal ;
+					update keplersc.kdpedrefmov  
+					set 
+						c3=parte,
+						c17 = v_A5, /*surtstck*/
+						c18 = v_A6 /*cantped*/
+					where c1 = sucursal and c2 = referencia and c3 = parteoriginal;
+				end if;
 				numero_partida := numero_partida + 1; 
 			
 			end if;

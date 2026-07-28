@@ -38,7 +38,6 @@ DECLARE
 	totReg int;
 	costo_origen decimal;
 	costo_destino decimal;
-	iva_origen decimal;
 
 	--Movimiento bitacora
 	usuario_movto text;
@@ -86,13 +85,7 @@ begin
 	inventario := (xpath('//document/k_claveinv/text()', dataxml))[1];
 	arrNaturaleza := array['D','A'];
 	
-	if sucursal_origen = sucursal_destino then
-		raise exception 'Verifique. La sucursal origen y destino no puede ser la misma';
-	end if;
-	if inventario is null then
-		raise exception 'Verifique. Falta el No. de Inventario';
-	end if;
-
+	
 	for i in array_lower(arrNaturaleza,1) .. array_upper(arrNaturaleza,1)
 	loop
 		if arrNaturaleza[i] = 'A' then
@@ -106,7 +99,6 @@ begin
 		expSql = 'select * from keplersc.kdmm where col_sucursal='|| E'\'' || sucursal_id || E'\'' || ' and c1='  || E'\'' || genero || E'\'' ||
 			' and c2=' || E'\'' || naturaleza || E'\'' || ' and c3=' || grupo || ' and c4=' || tipo;		
 		select query_to_xml(expSql, true, false, '') into xmlKDMM;
-
 		strValor := (xpath('//row/c90/text()', xmlKDMM))[1];
 		if strValor is not null then
 			if strValor = 'S' then
@@ -127,7 +119,8 @@ begin
 		strvalor := replace(strValor,'naturaleza_reemplazable',arrNaturaleza[i]);
 		
 		xmlFolio := strValor::xml;
-		dataxml := xmlFolio;
+		dataxml := xmlFOlio;
+
 
 			select * into get_resultado, get_mensaje, get_adicionales from keplersc.obtener_folio_documento(folio_id,0,0, xmlFolio);			
 			if get_resultado = '0' then	
@@ -211,10 +204,7 @@ begin
 		
 				update keplersc.kdinf set c31=20		--Factura e compra registrada
 					where c1=sucursal_destino and c2=inventario;
-		else 
-				update keplersc.kdinf set c31=20		--Factura e compra registrada
-					where c1=sucursal_destino and c2=inventario;
-		
+
 		end if;
 		--Actualiza estatus de inventario
 		update keplersc.kdinf set c31=0			--Cancelado
@@ -229,7 +219,8 @@ begin
 			    xmlelement(name k_tipon, xmlforest(genero as r1, arrNaturaleza[i] as r2, grupo as r3, tipo as r4)),
 			    xmlelement(name k_inventario,inventario)):: text into strValor;
 		
-		xmlEstadisticas := strValor::xml;	
+		xmlEstadisticas := strValor::xml;
+
 		select * into resultado, mensaje, adicionales from keplersc.invlib_inv_alta(xmlEstadisticas,xmlKDMM,folio_operacion); --dentro de la libreria se encuentra inv_alta_k
 
 		---------------------------------------------------------------
@@ -243,7 +234,7 @@ begin
 		xmlUsr := strValor::xml;
 	
 		select * into get_resultado, get_mensaje, get_adicionales from keplersc.usr_kdusraccess_alta(xmlUsr);
-
+		--raise notice '%',sucursal_id;	
 		if get_resultado = '0' then
 			raise exception '%',get_mensaje;
 		end if;			
@@ -258,20 +249,21 @@ begin
 			select c11 into costo_destino 
 				from keplersc.kdeinv where c1=sucursal_destino and c2=inventario and c5=genero and c6=arrNaturaleza[i] and c7=grupo::integer and c8=tipo::integer and c9=folio_operacion_entrada;
 		else 
-		select c11,c12 into costo_origen, iva_origen
+		select c11 into costo_origen 
 			from keplersc.kdeinv where c1=sucursal_origen and c2=inventario and c5=genero and c6=arrNaturaleza[i] and c7=grupo::integer and c8=tipo::integer and c9=folio_operacion_salida;
 		
 		end if;
 	end loop;
-
+ 
 	--Ajusta costo
 	if costo_origen<>costo_destino then
-		update keplersc.kdeinv set c11 = costo_origen, c12 = iva_origen
+		update keplersc.kdeinv set c11 = costo_origen
 			where c1=sucursal_destino and c2=inventario and c5=genero and c7=grupo::integer and c8=tipo::integer and c9=folio_operacion_entrada;
-		update keplersc.kdginv set c11 = costo_origen, c13 = iva_origen
+		update keplersc.kdginv set c11 = costo_origen
 			where c1=sucursal_destino and c2=inventario;
-		update keplersc.kdlinv set c5=costo_origen,c8=costo_origen, c9 = iva_origen, c10 = iva_origen
+		update keplersc.kdlinv set c5=costo_origen,c8=costo_origen
 			where c1=sucursal_destino and c2=inventario;
+
 
 	end if;
 	

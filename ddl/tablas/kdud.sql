@@ -1,5 +1,5 @@
 CREATE  TABLE keplersc.kdud (
-  c1 character varying(7) NOT NULL DEFAULT ''::character varying,
+  c1 character varying(7) NOT NULL DEFAULT '01'::character varying,
   c2 character varying(7) NOT NULL DEFAULT ''::character varying,
   c3 character varying(130) NOT NULL DEFAULT ''::character varying,
   c4 character varying(80) NOT NULL DEFAULT ''::character varying,
@@ -65,8 +65,8 @@ CREATE  TABLE keplersc.kdud (
   nombre_referencia character varying(90) NOT NULL DEFAULT ''::character varying,
   parentesco_refer_cte character varying(20) NOT NULL DEFAULT ''::character varying
 ) TABLESPACE pg_default;
-CREATE UNIQUE INDEX IF NOT EXISTS pk_kdud ON keplersc.kdud USING btree (c2) TABLESPACE pg_default;
 CREATE INDEX IF NOT EXISTS sindkdud02 ON keplersc.kdud USING btree (c3, c2) TABLESPACE pg_default;
+CREATE UNIQUE INDEX IF NOT EXISTS pk_kdud ON keplersc.kdud USING btree (c2) TABLESPACE pg_default;
 CREATE INDEX IF NOT EXISTS sindkdud03 ON keplersc.kdud USING btree (c12, c2) TABLESPACE pg_default;
 CREATE INDEX IF NOT EXISTS sindkdud04 ON keplersc.kdud USING btree (c13, c2) TABLESPACE pg_default;
 CREATE INDEX IF NOT EXISTS sindkdud05 ON keplersc.kdud USING btree (c14, c2) TABLESPACE pg_default;

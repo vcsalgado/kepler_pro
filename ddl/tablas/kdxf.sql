@@ -11,10 +11,10 @@ CREATE  TABLE keplersc.kdxf (
   c10 numeric(15,2) NOT NULL DEFAULT 0,
   c11 numeric(15,2) NOT NULL DEFAULT 0
 ) TABLESPACE pg_default;
-CREATE UNIQUE INDEX IF NOT EXISTS pk_kdxf ON keplersc.kdxf USING btree (c1, c2, c4, c5, c6, c3, c7, c8, c9) TABLESPACE pg_default;
-CREATE INDEX IF NOT EXISTS sindkdxf02 ON keplersc.kdxf USING btree (c1, c2, c7, c8, c9, c3, c4, c5, c6) TABLESPACE pg_default;
 CREATE INDEX IF NOT EXISTS sindkdxf03 ON keplersc.kdxf USING btree (c1, c4, c5, c6, c3, c7, c8, c9, c2) TABLESPACE pg_default;
 CREATE INDEX IF NOT EXISTS sindkdxf04 ON keplersc.kdxf USING btree (c1, c7, c8, c9, c3, c4, c5, c6, c2) TABLESPACE pg_default;
+CREATE UNIQUE INDEX IF NOT EXISTS pk_kdxf ON keplersc.kdxf USING btree (c1, c2, c4, c5, c6, c3, c7, c8, c9) TABLESPACE pg_default;
+CREATE INDEX IF NOT EXISTS sindkdxf02 ON keplersc.kdxf USING btree (c1, c2, c7, c8, c9, c3, c4, c5, c6) TABLESPACE pg_default;
 COMMENT ON COLUMN keplersc.kdxf.c9 IS 'Monto cargo';
 COMMENT ON COLUMN keplersc.kdxf.c8 IS 'Numero abono';
 COMMENT ON COLUMN keplersc.kdxf.c7 IS 'Tipo abono';

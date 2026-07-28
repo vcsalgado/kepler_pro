@@ -1,5 +1,5 @@
 CREATE OR REPLACE FUNCTION keplersc.prod_consulta_lista(sucursal_id text, texto text, criterio text)
- RETURNS TABLE(sucursal text, clave_actual text, clave_original text, clave_ultima text, descripcion text, cadena_reemplazo text, existencias numeric)
+ RETURNS TABLE(sucursal text, clave_actual text, clave_original text, clave_ultima text, descripcion text, cadena_reemplazo text, existencias numeric, unidad text)
  LANGUAGE plpgsql
 AS $function$
 declare
@@ -26,7 +26,8 @@ begin
 		clave_ultima text,
 		descripcion text,
 		cadena_reemplazo text,
-		existencias numeric not null default 0.00
+		existencias numeric not null default 0.00,
+		unidad text
 	);
 
 	if upper(criterio)='DESCRIPCION' then
@@ -43,7 +44,7 @@ begin
 		execute sqlExp;
 		sqlExp=concat('insert into tmpResultados 
 			select ',tilde,sucursal_id,tilde,' as sucursal, c1 as clave_actual, ',espacio, ' as clave_original,',espacio,' as clave_ultima, ',espacio,' as descripcion, ',
-			espacio, ' as cadena_reemplazo from keplersc.kdinr where c1 like ',tilde, '%',texto,'%',tilde);	
+			espacio, ' as cadena_reemplazo  from keplersc.kdinr where c1 like ',tilde, '%',texto,'%',tilde);	
 		raise notice '%',sqlExp;
 		execute sqlExp;
 	end if;
@@ -78,7 +79,7 @@ begin
 		end loop;
 
 		--Verifica que el producto original actual se encuentre en la tabla de productos
-		select coalesce(c2,'NO EXISTE') into recProd.descripcion from keplersc.kdini where c1 = recProd.clave_original;
+		select coalesce(c2,'NO EXISTE'), coalesce(c19,'')  into recProd.descripcion,recProd.unidad from keplersc.kdini where c1 = recProd.clave_original;
 		if recProd.descripcion = 'NO EXISTE' then
 			raise exception 'El producto original % no existe.',recProd.clave_original;
 		end if;
@@ -94,7 +95,8 @@ raise notice 'Existencias %',numValor;
 	
 		update tmpResultados res set clave_original=recProd.clave_original, clave_ultima=recProd.clave_ultima,
 			descripcion=recProd.descripcion, cadena_reemplazo=recProd.cadena_reemplazo, 
-			existencias=recProd.existencias
+			existencias=recProd.existencias,
+			unidad=recProd.unidad
 		where res.sucursal=recProd.sucursal and res.clave_actual=recProd.clave_actual;
 	
 	end loop;

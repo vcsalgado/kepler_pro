@@ -18,6 +18,7 @@ CREATE UNIQUE INDEX IF NOT EXISTS pk_kdms ON keplersc.kdms USING btree (c1) TABL
 CREATE INDEX IF NOT EXISTS sindkdms02 ON keplersc.kdms USING btree (c2, c1) TABLESPACE pg_default;
 COMMENT ON TABLE keplersc.kdms IS 'Sucursales';
 COMMENT ON COLUMN keplersc.kdms.col_kodawari IS 'S o N';
+COMMENT ON COLUMN keplersc.kdms.c6 IS 'Codigo Postal';
 COMMENT ON COLUMN keplersc.kdms.c5 IS 'Clave distribuidor';
 COMMENT ON COLUMN keplersc.kdms.c4 IS 'Lugar expedicion';
 COMMENT ON COLUMN keplersc.kdms.c3 IS 'Identificacion';

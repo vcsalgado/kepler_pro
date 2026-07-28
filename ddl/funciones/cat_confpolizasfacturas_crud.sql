@@ -84,6 +84,9 @@ raise notice 'PASO 1 %',k_conceptos_origen;
 		if k_campo_cuenta_plantilla <> '' then
 			k_campo_cuenta_plantilla := split_part(k_campo_cuenta_plantilla,'-',1);
 		end if;
+
+		k_descripcion_partida:=coalesce((xpath('//document/k_provision/r' || cont || '/descripcion_partida/text()', dataxml))[1]::text,'');
+
 		k_costo_inventario:=coalesce((xpath('//document/k_provision/r' || cont || '/costo_inventario/text()', dataxml))[1]::text,'N');
 		insert into keplersc.conf_polizas_facturas_det(id_tipo_factura,tipo_asiento,cuenta,complemento_cuenta,descripcion_partida,referencia_partida,tipo_movto,id_concepto,cuenta_grupo,cuenta_divisible,campo_cuenta_plantilla,costo_inventario)
 		values(k_id_tipo_factura,k_tipo_asiento,k_cuenta,k_complemento_cuenta,k_descripcion_partida,k_referencia_partida,k_tipo_movto,k_id_concepto,k_cuenta_grupo,k_cuenta_divisible,k_campo_cuenta_plantilla,k_costo_inventario);
@@ -102,7 +105,11 @@ raise notice 'PASO 1 %',k_conceptos_origen;
 		if k_campo_cuenta_plantilla <> '' then
 			k_campo_cuenta_plantilla := split_part(k_campo_cuenta_plantilla,'-',1);
 		end if;
+
+		k_descripcion_partida:=coalesce((xpath('//document/k_pago/r' || cont || '/descripcion_partida/text()', dataxml))[1]::text,'');
+
 		k_costo_inventario:=coalesce((xpath('//document/k_pago/r' || cont || '/costo_inventario/text()', dataxml))[1]::text,'N');
+
 		insert into keplersc.conf_polizas_facturas_det(id_tipo_factura,tipo_asiento,cuenta,complemento_cuenta,descripcion_partida,referencia_partida,tipo_movto,id_concepto,cuenta_grupo,cuenta_divisible,campo_cuenta_plantilla,costo_inventario)
 		values(k_id_tipo_factura,k_tipo_asiento,k_cuenta,k_complemento_cuenta,k_descripcion_partida,k_referencia_partida,k_tipo_movto,k_id_concepto,k_cuenta_grupo,k_cuenta_divisible,k_campo_cuenta_plantilla,k_costo_inventario);
 	end loop;

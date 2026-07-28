@@ -106,9 +106,9 @@ begin
 	delete from keplersc.kdcomisventas where c1=sucursal_id and c2=anio and c3=mes;
 	delete from keplersc.kdcomisquincena where c1=sucursal_id and c2=anio and c3=mes;
 
-	for rec_F_UV in select * from keplersc.kduv /*where c2='MND'*/  order by c1,c2--INI Loop sobre vendedores Alias F en K75, VIEW(F)
+	for rec_F_UV in select * from keplersc.kduv /*where c2='R0H'*/ order by c1,c2--INI Loop sobre vendedores Alias F en K75, VIEW(F)
 	loop
-raise notice 'Inicia Vendedor: %', rec_F_UV.c2;
+--raise notice 'Inicia Vendedor: %', rec_F_UV.c2;
 		--Reinicia variables de proceso
 		rec_H_VESQ:=null;
 		--INI ESTABLECE_FECHAS K75, las fechas se establecieron al inicio de la funcion
@@ -169,7 +169,7 @@ raise notice 'Inicia Vendedor: %', rec_F_UV.c2;
 					order by k.c1, k.c8
 					--Sucursal,Vendedor,Tipo de Operacion, Dentro de rango fecha: VIEW(K,2) WHILE K1=A1 AND K9=F2 AND K11=G1 AND K7>=A2 AND K7<=D(N5)					
 				loop
-raise notice 'Ciclo for: Vendedor:%, Tipo Oper:%, N5:% Vtas. comisionar:%, FecIni:%, FecFin:%',rec_F_UV.c2,rec_G_TOP.c1,N5,rec_K_COMISMOV.c8,A2_fechaIniMes,dateValor;					
+--raise notice 'Ciclo for: Vendedor:%, Tipo Oper:%, N5:% Vtas. comisionar:%, FecIni:%, FecFin:%',rec_F_UV.c2,rec_G_TOP.c1,N5,rec_K_COMISMOV.c8,A2_fechaIniMes,dateValor;					
 					--SET(0,N2,B31...B49)
 					B11_ComisionSinBonos = 0;
 					B12_GastosAdmin = 0;
@@ -248,7 +248,6 @@ raise notice 'Ciclo for: Vendedor:%, Tipo Oper:%, N5:% Vtas. comisionar:%, FecIn
 						where c1 = rec_I_VESQVEH.c5; --Clasif de Comision
 					if found then
 						B1_UtilidadBruta:=rec_K_COMISMOV.c22-rec_K_COMISMOV.c21-rec_K_COMISMOV.c20-rec_K_COMISMOV.c23;	
---raise notice 'B1_UtilidadBruta:=rec_K_COMISMOV.c22-rec_K_COMISMOV.c21-rec_K_COMISMOV.c20-rec_K_COMISMOV.c23: % = %-%-%-%',B1_UtilidadBruta,rec_K_COMISMOV.c22,rec_K_COMISMOV.c21,rec_K_COMISMOV.c20,rec_K_COMISMOV.c23;
 						--UtilBruta=Importe-IVA-ISAN-Costo
 						--COSTOS ADICIONALES Y SUBSIDIOS
 						rec_P_COMISADIS:=null;
@@ -263,12 +262,11 @@ raise notice 'Ciclo for: Vendedor:%, Tipo Oper:%, N5:% Vtas. comisionar:%, FecIn
 								-coalesce(rec_P_COMISADIS.c10,0); --Abonos de Bonificaciones
 							B6_Subsidio = coalesce(rec_P_COMISADIS.c8,0);
 						end if;
---raise notice 'B1_UtilidadBruta-rec_P_COMISADIS.c13+rec_P_COMISADIS.c14 + rec_P_COMISADIS.c9 - rec_P_COMISADIS.c10 %-%+%+%-%',B1_UtilidadBruta,rec_P_COMISADIS.c13,rec_P_COMISADIS.c14,rec_P_COMISADIS.c9,rec_P_COMISADIS.c10;					
+					
 						--NOTAS DE DESCUENTO
 						B5_NotaDescuento = coalesce(rec_K_COMISMOV.c15,0); --Descuento
 						--UTILIDAD BRUTA FINAL
 						B1_UtilidadBruta=B1_UtilidadBruta-B5_NotaDescuento-B6_Subsidio;
----raise notice 'B1_UtilidadBruta-B5_NotaDescuento-B6_Subsidio %-%+%',B1_UtilidadBruta,B5_NotaDescuento,B6_Subsidio;
 					end if;
 					if 	B1_UtilidadBruta < 0 then
 						B1_UtilidadBruta:=0;
@@ -478,8 +476,8 @@ raise notice 'Ciclo for: Vendedor:%, Tipo Oper:%, N5:% Vtas. comisionar:%, FecIn
 						B21_BonoSemanal:=rec_H_VESQ.c26;
 					end if;
 					--TO VER D5 y D6 estan en K75, pero no estan definidas, el calculo es quincenal no semanal
-raise notice 'Bono Semana % * B1_UtilidadBruta % =  %',B21_BonoSemanal,B1_UtilidadBruta,B21_BonoSemanal * B1_UtilidadBruta/100;
 					B21_BonoSemanal := B21_BonoSemanal * B1_UtilidadBruta/100;
+
 --raise notice 'Comis TMKT';
 					/*
 					SUB CALCULA_COMISION_TMKT
@@ -498,7 +496,7 @@ raise notice 'Bono Semana % * B1_UtilidadBruta % =  %',B21_BonoSemanal,B1_Utilid
 					B23_DescuentoAsesorTmkt:=0;
 					rec_V_COMISMOV2:=null;
 					--TO VER Tabla de KDCONFIGCC en Subaru esta vacia, validar registros
-
+/*
 					select * into rec_V_COMISMOV2 from keplersc.kdcomismov2 
 						where c1=rec_K_COMISMOV.c1 and c2=rec_K_COMISMOV.c2 and c3= rec_K_COMISMOV.c3 and 
 						c4=rec_K_COMISMOV.c4 and c5=rec_K_COMISMOV.c5 and c6=rec_K_COMISMOV.c6 	and 
@@ -512,7 +510,7 @@ raise notice 'Bono Semana % * B1_UtilidadBruta % =  %',B21_BonoSemanal,B1_Utilid
 							end if;
 						end if;
 					end if;
---raise notice 'B24_ComisionTotal:=B22_ComisAntesTmkt-B23_DescuentoAsesorTmkt: %-%', B22_ComisAntesTmkt,B23_DescuentoAsesorTmkt;					
+*/					
 
 					B24_ComisionTotal:=B22_ComisAntesTmkt-B23_DescuentoAsesorTmkt;
 					
@@ -681,7 +679,7 @@ raise notice 'Bono Semana % * B1_UtilidadBruta % =  %',B21_BonoSemanal,B1_Utilid
 								--INS(Z,A1,A7,A6,V9,30,
 								--	K8,N8,K10,K7,K11,K12,E4,E21,K25,M5,T39,N12,F2,B1...B7,B11,B20,B18,B19,B12,B13,B14,B17,B21,B22,-B24,-B23)							
 							end if;
-						end if ;					
+						end if ;		
 					end if; --Fin N5<5
 				end loop; --FIN Loop por ventas a comisionar rec_K_COMISMOV
    			end loop; --FIN Loop for N5 in 3..4 
@@ -926,7 +924,7 @@ raise notice 'Bono Semana % * B1_UtilidadBruta % =  %',B21_BonoSemanal,B1_Utilid
 							N6:=N5-2;
 							N8_Consecutivo:=1;
 							--BUS(Z,1,0,A1,A7,A6,N6,F2,20,K8,ULT)>0
-raise notice 'INI C mes:%',mes;
+--raise notice 'INI C mes:%',mes;
 							select max(c8) into N8_Consecutivo from keplersc.kdcomisquincena
 								where c1=sucursal_id and c2=lpad(anio,2,'0') and c3=mes --c3=lpad(mes,2,'0') 
 								and c4=N6 and c5=rec_F_UV.c2 and c6=20 and c7=rec_V_COMISMOV2.c8;

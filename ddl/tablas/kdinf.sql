@@ -183,4 +183,5 @@ COMMENT ON COLUMN keplersc.kdinf.c12 IS 'Existe eje trasero?';
 COMMENT ON COLUMN keplersc.kdinf.c11 IS 'Vestiduras';
 COMMENT ON COLUMN keplersc.kdinf.c10 IS 'Color exterior';
 COMMENT ON COLUMN keplersc.kdinf.c1 IS 'Sucursal';
+CREATE TRIGGER kdinf_notif AFTER INSERT OR DELETE OR UPDATE ON keplersc.kdinf FOR EACH ROW EXECUTE FUNCTION keplersc.notif_registrar_movto();
 
