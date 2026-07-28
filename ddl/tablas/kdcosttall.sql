@@ -9,7 +9,9 @@ CREATE  TABLE keplersc.kdcosttall (
   c8 numeric(10,5) NOT NULL DEFAULT 0,
   c9 numeric(10,2) NOT NULL DEFAULT 0,
   c10 numeric(10,2) NOT NULL DEFAULT 0,
-  c11 numeric(10,2) NOT NULL DEFAULT 0
+  c11 numeric(10,2) NOT NULL DEFAULT 0,
+  col_foliomig character varying(10) NULL,
+  col_foliofin character varying(10) NULL
 ) TABLESPACE pg_default;
 ALTER TABLE ONLY keplersc.kdcosttall ADD CONSTRAINT pk_kdcosttall PRIMARY KEY (c1, c2, c3, c4, c5, c6);
 COMMENT ON TABLE keplersc.kdcosttall IS 'Costo Taller';

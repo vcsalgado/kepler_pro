@@ -3,7 +3,7 @@ CREATE OR REPLACE FUNCTION keplersc.ser_registro_calidad(dataxml xml)
  LANGUAGE plpgsql
 AS $function$
 
---Descripcion: Realiza insercion y actualizacion del registro de calidad de una orden en KDPUNRES
+--Descripcion: Realiza inserción y actualizacion del registro de calidad de una orden en KDPUNRES
 --Autor: Miriam Santana
 --Fecha: 04/11/2022
 --Bitacora de cambios

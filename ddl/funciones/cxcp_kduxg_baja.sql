@@ -7,8 +7,6 @@ declare
 --Autor: Miriam Santana
 --Fecha: 22/08/2022
 --Bitacora de cambios
---13/05/2024 Miriam Santana: Validaciones para baja de contrarecibo con manejo de schema(tag)
-
 	--Variables de definicion de documento
 	sucursal_id text;
 	genero text;
@@ -22,7 +20,6 @@ declare
 	plazo_vencimiento text;	
 	monto_iva text;
 	monto_total text;
-	flag_gastos text;
 
 	--variables kduxg
 	identificador text;
@@ -64,15 +61,7 @@ begin
 	--factura_xg :=  lpad(referencia,10,'0');
 
 	if (/*grupo = '7' and*/ upper((xpath('//document/ambiente/uen/text()', dataxml))[1]::text) = 'VEN') then
-		flag_gastos = '';
-		if xpath_exists('//document/ambiente/schema/text()', dataxml) = true then 
-			flag_gastos := coalesce((xpath('//document/ambiente/schema/text()',dataxml))[1]::text,'')::text;
-		end if;
-		if upper(flag_gastos) = 'CXP_CONTR_REC' then
-			factura_xg := referencia;
-		else 
-			factura_xg := lpad(referencia,10,'0');
-		end if;
+		factura_xg := lpad(referencia,10,'0');
 	else
 		factura_xg := referencia;
 	end if;

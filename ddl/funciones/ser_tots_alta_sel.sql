@@ -7,16 +7,6 @@ declare
 --Autor: Miriam Santana
 --Fecha: 15/Ago/22
 --Bitacora de cambios
---31/01/2024 (JMM) :
----- Se Incluyen Campos UUID & Plazo  
----- para las Operaciones de los Documentos que aplique, dentro del Nvo Esquema de CxP 
---01/03/2024 (JMM) :
----- Se Incluyen Campos UUID.Impuesto & ProvPago  
----- para las Operaciones de los Documentos que aplique, dentro del Nvo Esquema de CxP 
---04/07/2024 (JMM) :
----- Se Incluyen Campos UUID.uuid_retisr & uuid_retiva , Actualizacion de CALC de k_porciva
----- para las Operaciones de los Documentos que aplique, dentro del Nvo Esquema de CxP 
-
 
 	--Variables de definicion de documento
 	sucursal_id text = '';
@@ -55,17 +45,9 @@ begin
 	);
 expSql= format('
 select dm1.C9 as k_fecha, dm1.c69 as k_hora, dm1.C10 as k_clave, dm1.C11 as k_refer,dm1.C16-dm1.c14 as k_subtotal,dm1.c14 as k_iva, 
-dm1.C16 as k_monto,round((dm1.c14/(dm1.c16 - dm1.c14 /*Added by JMM 20240704*/ + (dm1.c15 + dm1.c23) ))*100,2) as k_porciva,
+dm1.C16 as k_monto,round((dm1.c14/(dm1.c16 - dm1.c14))*100,2) as k_porciva,
 xd.c10 as k_rfc, xd.c3 as k_nombreprov, xd.c4 as k_calleprov, xd.c5 as k_coloniaprov, xd.c6 as k_poblacionprov, xd.c27 as k_cpprov,
 concat(regexp_replace(dm1.c24,''\r|\n'','' '', ''g''),'' '',dm1.c25,'' '',dm1.c26) as k_coment
-/*fields Added by JMM 20240131*/
-, dm1.c17 as k_plazo, dm1.c18 as k_vence
-, dm1.uuid_serie as k_uuid_serie, dm1.uuid_folio as k_uuid_folio, dm1.uuid_fecha as k_uuid_fecha, dm1.uuid_total as k_uuid_monto
-, dm1.uuid_impuesto as k_uuid_impuesto, dm1.cve_prov_pago as k_clave_pago 
-/*end fields added by JMM 20240131*/
-/*fields Added by JMM 20240626*/
-, dm1.uuid_retisr as k_uuid_retisr, dm1.uuid_retiva as k_uuid_retiva  
-/*end fields added by JMM 20240626*/
 from keplersc.kdm1 dm1 inner join keplersc.kdxd xd on xd.c2 = dm1.c10 
 where dm1.c1 = %1$L and dm1.c2 = %2$L and dm1.c3 = %3$L and dm1.c4 = %4$s and dm1.c5 = %5$s and dm1.c6 = %6$L  
 ',sucursal_id,genero,naturaleza,grupo,tipo,folio);	

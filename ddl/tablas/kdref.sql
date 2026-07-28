@@ -20,7 +20,9 @@ CREATE  TABLE keplersc.kdref (
   c19 numeric(15,2) NOT NULL DEFAULT 0,
   c20 timestamp without time zone NOT NULL DEFAULT '1800-01-01 00:00:00'::timestamp without time zone,
   c21 numeric(20,6) NOT NULL DEFAULT 0,
-  c22 numeric(20,6) NOT NULL DEFAULT 0
+  c22 numeric(20,6) NOT NULL DEFAULT 0,
+  col_foliomig character varying(10) NULL,
+  col_foliofin character varying(10) NULL
 ) TABLESPACE pg_default;
 ALTER TABLE ONLY keplersc.kdref ADD CONSTRAINT pk_kdref PRIMARY KEY (c1, c2, c3, c4, c5, c6, c7, c8, c9, c10);
 CREATE INDEX IF NOT EXISTS sindkdref02 ON keplersc.kdref USING btree (c1, c2, c3, c4) TABLESPACE pg_default;

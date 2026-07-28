@@ -22,7 +22,9 @@ CREATE  TABLE keplersc.kdvnpun (
   c21 numeric(10,2) NOT NULL DEFAULT 0,
   c22 character varying(1) NOT NULL DEFAULT ''::character varying,
   c23 numeric(10,2) NOT NULL DEFAULT 0,
-  c24 numeric(10,2) NOT NULL DEFAULT 0
+  c24 numeric(10,2) NOT NULL DEFAULT 0,
+  col_foliomig character varying(10) NULL,
+  col_foliofin character varying(10) NULL
 ) TABLESPACE pg_default;
 ALTER TABLE ONLY keplersc.kdvnpun ADD CONSTRAINT pk_kdvnpun PRIMARY KEY (c1, c2, c3, c4, c11);
 CREATE INDEX IF NOT EXISTS sindkdvnpun02 ON keplersc.kdvnpun USING btree (c1, c6, c7, c8, c9, c10, c11) TABLESPACE pg_default;

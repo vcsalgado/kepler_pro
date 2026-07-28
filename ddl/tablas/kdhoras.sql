@@ -19,8 +19,9 @@ CREATE  TABLE keplersc.kdhoras (
   c18 numeric(20,6) NOT NULL DEFAULT 0,
   c19 numeric(20,6) NOT NULL DEFAULT 0
 ) TABLESPACE pg_default;
+ALTER TABLE ONLY keplersc.kdhoras ADD CONSTRAINT pk_kdhoras PRIMARY KEY (c1, c2, c3, c4, c5);
 CREATE INDEX IF NOT EXISTS kdhoras_c1_idx ON keplersc.kdhoras USING btree (c1, c9, c12, c2, c3, c4, c5) TABLESPACE pg_default;
-CREATE UNIQUE INDEX IF NOT EXISTS kdhoras_idx ON keplersc.kdhoras USING btree (c1, c2, c3, c4, c5) TABLESPACE pg_default;
+COMMENT ON TABLE keplersc.kdhoras IS 'Horas de la orden';
 COMMENT ON COLUMN keplersc.kdhoras.c9 IS 'Mecanico';
 COMMENT ON COLUMN keplersc.kdhoras.c8 IS 'Horas';
 COMMENT ON COLUMN keplersc.kdhoras.c7 IS 'Descripcion';

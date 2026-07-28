@@ -8,6 +8,7 @@ CREATE  TABLE keplersc.kdf3ps (
   c7 character varying(50) NOT NULL DEFAULT ''::character varying
 ) TABLESPACE pg_default;
 ALTER TABLE ONLY keplersc.kdf3ps ADD CONSTRAINT pk_kdf3ps PRIMARY KEY (c1);
+COMMENT ON TABLE keplersc.kdf3ps IS 'Catalogo productos y/o servicios SAT';
 COMMENT ON COLUMN keplersc.kdf3ps.c7 IS 'Complemento que debe incluir';
 COMMENT ON COLUMN keplersc.kdf3ps.c6 IS 'Incluir IEPS';
 COMMENT ON COLUMN keplersc.kdf3ps.c5 IS 'Incluir IVA';

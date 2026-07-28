@@ -71,13 +71,6 @@ declare
 	descripcion_cuenta text = '';
 	monto_partida decimal = 0.00;
 
-
-	/* Added by JMM 20240619 to 20240701 for CM - Retenciones */
-	monto_iva_retencion decimal = 0.00; -- 20240619
-	cuenta_iva_retencion text = ''; -- 20240619
-	flag_gastos text = ''; -- 20240701
-	
-
 	--Variables autos
 	v_entradasenunidades decimal = 0.00;
 	v_salidasenunidades decimal = 0.00;
@@ -121,7 +114,7 @@ declare
 	funCuenta text = '';
 begin
 --Descripcion: Programa princpal para el registro contable de movimientos.
---Las cuetas se obtienen de la configuraci�n en la tabla kdmm y los montos de los conceptos
+--Las cuetas se obtienen de la configuración en la tabla kdmm y los montos de los conceptos
 --se toman de la tabla kdm1, en la que el movimiento se debe haber registrado de forma previa
 --Las tablas kdm1 y kdmm entran como parametros con el registro correspondiente para la operacion
 --Autor: Victor Salgado
@@ -186,7 +179,7 @@ begin
 	end if;
 	if uen='S' then
 		uen:='SER';
-	end if;
+	end if;	
 
 --raise notice 'uen:% ', uen;
 	anio_en_curso := substring(fecha_operacion,3,2);
@@ -206,17 +199,6 @@ begin
 
 	strMonto := coalesce((xpath('//row/c15/text()', xmlkdm1))[1]::text,'0.00')::text;
 	monto_isan_ieps := StrMonto::decimal;
-
-	--Added by JMM 20240619 ... Monto Retencion IVA 
-	strMonto := coalesce((xpath('//row/c23/text()', xmlkdm1))[1]::text,'0.00')::text;
-	monto_iva_retencion := StrMonto::decimal;
-
-	--Added by JMM 20240701 ... TAG para uso de Retenciones (SCH - Gastos / Compras)
-	flag_gastos = '';
-	if xpath_exists('//document/ambiente/schema/text()', dataxml) = true /*false*/ then 
-		flag_gastos := coalesce((xpath('//document/ambiente/schema/text()',dataxml))[1]::text,'')::text;
-	end if;
-	
 	
 --INICIO Cuenta cargo, campo c19 kdmm
 	cuenta_contable_kdmm := (xpath('//row/c19/text()', xmlKDMM))[1]::text;
@@ -241,31 +223,11 @@ begin
 			monto_cargo := monto_total::decimal;
 		else --Naturaleza <> 'D'
 			strValor:=coalesce((xpath('//row/c30/text()', xmlKDMM))[1]::text,''); --Divide la cta de IVA en cuentas complemetarias
-			
-			--New Condition Added by JMM 20240701, Manejo de Retenciones (con un TAG)
-			if upper(flag_gastos) = 'CXP_CM_RETENCIONES' then 
-
-				--Retencion Comentada porque No aplica para el Gpo de Docs Administrados con este TAG 
-				if strValor <> 'S' then --Divide IVA en ctas complementarias
-					--Adapted by JMM 20240702 (Retenciones se Suman al Subtotal)
-					monto_cargo := monto_total - monto_iva /* - monto_isan_ieps*/ + monto_isan_ieps + monto_iva_retencion;
-				else --CUENTA COMPLEMENTARIA DE IVA	
-					monto_cargo := monto_total /*- monto_isan_ieps*/;
-				end if;	
-			
-				--raise exception 'Monto Total%', monto_cargo;
-			
-			else
-			
-				--Codigo Original, Market-up by JMM 20240701
-				if strValor <> 'S' then --Divide IVA en ctas complementarias
-					monto_cargo := monto_total - monto_iva - monto_isan_ieps;
-				else --CUENTA COMPLEMENTARIA DE IVA	
-					monto_cargo := monto_total - monto_isan_ieps;
-				end if;	
-			
-			end if;
-		
+			if strValor <> 'S' then --Divide IVA en ctas complementarias
+				monto_cargo := monto_total - monto_iva - monto_isan_ieps;
+			else --CUENTA COMPLEMENTARIA DE IVA	
+				monto_cargo := monto_total - monto_isan_ieps;
+			end if;	
 			strValor:=coalesce((xpath('//row/c66/text()', xmlKDMM))[1]::text,''); --Ventas Contado
 			strValorB:=coalesce((xpath('//row/c52/text()', xmlKDMM))[1]::text,''); --Maneja backorder
 			if strValor <> 'S' and strValorB <> 'S' then
@@ -274,7 +236,7 @@ begin
 					monto_extra_6 + monto_extra_7);
 			end if;
 		end if;
-		select '<varcont><n5>25</n5><n6>19</n6></varcont>'::xml into varcont; --26 Campo a�adir/ 19 cta cargo
+		select '<varcont><n5>25</n5><n6>19</n6></varcont>'::xml into varcont; --26 Campo añadir/ 19 cta cargo
 		select * into resultado, mensaje, adicionales 
 			from keplersc.cont_format_account_smov(xmlKDM1, xmlKDMM,folio_operacion,varcont);	
 		--En datos adicionales viene la cuenta calculada y el nombre del cliente/proveedor separado por |
@@ -342,27 +304,10 @@ begin
 	if funCuenta = '' then	
 		if naturaleza = 'D'  then
 			strValor:=coalesce((xpath('//row/c30/text()', xmlKDMM))[1]::text,''); --Divide la cta de IVA en cuentas complemetarias
-			
-			--New Condition Added by JMM 20240701, Manejo de Retenciones (con un TAG)
-			if upper(flag_gastos) = 'CXP_CM_RETENCIONES' then
-			
-				--Retencion Comentada porque No aplica para el Gpo de Docs Administrados con este TAG, para Homogar BAJAS o Contramovimientos
-				if strValor <> 'S' then --Divide IVA en ctas complementarias
-					--Adapted by JMM 20240702 (Retenciones se Suman al Subtotal)
-					monto_abono := monto_total - monto_iva /* - monto_isan_ieps*/ + monto_isan_ieps + monto_iva_retencion;
-				else --CUENTA COMPLEMENTARIA DE IVA
-					monto_abono = monto_total /* - monto_isan_ieps*/;
-				end if;
-
-			else 
-			
-				--Codigo Original, Market-up by JMM 20240701
-				if strValor <> 'S' then --Divide IVA en ctas complementarias
-					monto_abono := monto_total - monto_iva - monto_isan_ieps;
-				else --CUENTA COMPLEMENTARIA DE IVA
-					monto_abono = monto_total - monto_isan_ieps;
-				end if;
-			
+			if strValor <> 'S' then --Divide IVA en ctas complementarias
+				monto_abono := monto_total - monto_iva - monto_isan_ieps;
+			else --CUENTA COMPLEMENTARIA DE IVA
+				monto_abono = monto_total - monto_isan_ieps;
 			end if;
 		
 			strValor:=coalesce((xpath('//row/c66/text()', xmlKDMM))[1]::text,''); --Ventas Contado
@@ -375,7 +320,7 @@ begin
 		else --Naturaleza <> 'D'
 			monto_abono := monto_total::decimal;
 		end if;
-		select '<varcont><n5>26</n5><n6>20</n6></varcont>'::xml into varcont; --26 Campo a�adir/ 20 cta abono
+		select '<varcont><n5>26</n5><n6>20</n6></varcont>'::xml into varcont; --26 Campo añadir/ 20 cta abono
 		select * into resultado, mensaje, adicionales from keplersc.cont_format_account_smov(xmlKDM1, xmlKDMM,folio_operacion,varcont);
 --raise notice 'Cuenta %, monto %',cuenta_abono, monto_abono;
 		cuenta_abono := split_part(adicionales, '|', 1);
@@ -513,27 +458,13 @@ begin
 				tipo_asiento = 'C';
 			end if;	
 		
-			-- Uncommented 20240702 by JMM validated by VCSS ... using specific TAG
-			--New Condition Added by JMM 20240702, Manejo de Retenciones (con un TAG)
-			if upper(flag_gastos) = 'CXP_CM_RETENCIONES' then 
-				strValor:=(xpath('//row/c30/text()', xmlKDMM))[1]::text;
-				strValor=coalesce(strValor,'');	
-				if strValor <> 'S' then
-					if tipo_asiento ='C' then
-						tipo_asiento := 'A';
-					else 
-						tipo_asiento := 'C';
-					end if;
-				end if;
-			else
-				strValor:=(xpath('//row/c30/text()', xmlKDMM))[1]::text;
-				strValor=coalesce(strValor,'');	
-				if strValor = 'S' then
-					if tipo_asiento ='C' then
-						tipo_asiento := 'A';
-					else 
-						tipo_asiento := 'C';
-					end if;
+			strValor:=(xpath('//row/c30/text()', xmlKDMM))[1]::text;
+			strValor=coalesce(strValor,'');	
+			if strValor = 'S' then
+				if tipo_asiento ='C' then
+					tipo_asiento := 'A';
+				else 
+					tipo_asiento := 'C';
 				end if;
 			end if;
 			
@@ -564,89 +495,6 @@ begin
 		end if;
 	end if;	
 --FIN Cuenta IEPS
-
-
-
------ START : SECTION RETENCION IVA , Added by JMM 20240619 
-
---INICIO Cuenta IVA Retencion 
-	--monto iva_retencion, viene en xmlkdm1 campo 23, variable monto_iva_retencion
-	cuenta_contable_kdmm := (xpath('//row/c64/text()', xmlKDMM))[1]::text;
-	funCuenta = '';
-	expSql = '';
-	if trim(cuenta_contable_kdmm) <> '' and position(substring(cuenta_contable_kdmm,1,1) in '1234567890') = 0 then 
---	raise exception 'entro ieps';
-		/*
-		if uen = 'VEN' then
-			funCuenta:='cont_v';
-		end if;
-		*/
-		if upper(cuenta_contable_kdmm) = 'VENTA_TALLER' or upper(cuenta_contable_kdmm) = 'SUSTITUCION' then
-			funCuenta:='cont_venta_taller';
-		end if;
-	end if;
-	if funCuenta = '' then	
-		select '<varcont><n5>0</n5><n6>64</n6></varcont>'::xml into varcont; --64 cta contable iva retencion
-		select * into resultado, mensaje, adicionales 
-			from keplersc.cont_format_account_smov(xmlKDM1, xmlKDMM,folio_operacion,varcont);	
-		cuenta_iva_retencion := split_part(adicionales, '|', 1);
-		descripcion_partida :=  split_part(adicionales, '|', 2); 
-		descripcion_cuenta := split_part(adicionales, '|', 3); 
---raise notice 'adicionales % ,% ',adicionales,monto_iva_retencion; 
-		--cuenta_iva_retencion	-->ISAN O IVA COMPLEMENTARIO
-		if cuenta_iva_retencion is not null and cuenta_iva_retencion <> '' and monto_iva_retencion <> 0 then	
-			--CONT(T,W9,B8003,B8090,B8053,B8020,W11,M18,"","","","","",W1...W6,B8095)	
-			if naturaleza = 'D' then
-				tipo_asiento = 'A';
-			else
-				tipo_asiento = 'C';
-			end if;	
-		
-			-- Uncommented 20240702 by JMM validated by VCSS ... using specific TAG
-			--New Condition Added by JMM 20240702, Manejo de Retenciones (con un TAG) ... Homologado con IEPS (Retencion ISR para estos casos)
-			if upper(flag_gastos) = 'CXP_CM_RETENCIONES' then 
-				strValor:=(xpath('//row/c30/text()', xmlKDMM))[1]::text;
-				strValor=coalesce(strValor,'');	
-				if strValor <> 'S' then
-					if tipo_asiento ='C' then
-						tipo_asiento := 'A';
-					else 
-						tipo_asiento := 'C';
-					end if;
-				end if;
-			end if;
-			
-			insert into tmpkdc2 (c3,c4,c5,c6,c7,desc_cuenta) values(cuenta_iva_retencion,tipo_asiento,monto_iva_retencion,descripcion_partida,referencia,descripcion_partida);			
-		end if;
-	else
-		strValor:=xmlKDM1::text;
-		strValorB :=xmlKDMM::text;	
-		expSql:=format('select * from keplersc.%1$s(%3$L,%4$L,%2$L)',funCuenta,'c64',strValor,strValorB);
-		execute expSql into xmlCuentas;
-		--Validar errores
-		strValor := coalesce((xpath('//poliza/poliza_enc/error/text()',xmlCuentas))[1],'');
-		if strValor='0' then
-			strValor := coalesce((xpath('//poliza/poliza_enc/no_partidas/text()',xmlCuentas))[1],'');
-			total_registros = strValor::int;
-			for cont in 1..total_registros loop
-				cuenta:=(xpath('//poliza/partidas/partida_' || cont::text || '/cuenta/text()',xmlCuentas))[1]::text;
-				descripcion_cuenta:=(xpath('//poliza/partidas/partida_' || cont::text || '/descripcion_cuenta/text()',xmlCuentas))[1]::text;				
-				tipo_asiento:=(xpath('//poliza/partidas/partida_' || cont::text || '/tipo_asiento/text()',xmlCuentas))[1]::text;
-				strValor:=(xpath('//poliza/partidas/partida_' || cont::text || '/monto/text()',xmlCuentas))[1]::text;
-				monto_partida:=strValor::decimal;
-				descripcion_partida:=(xpath('//poliza/partidas/partida_' || cont::text || '/descripcion_partida/text()',xmlCuentas))[1]::text;
-				
-			insert into tmpkdc2 (c3,c4,c5,c6,c7,desc_cuenta) values(cuenta,tipo_asiento,monto_partida,descripcion_partida,referencia,descripcion_cuenta);
-			end loop;			
-		else
-			raise exception '%', strValor;
-		end if;
-	end if;	
---FIN Cuenta IVA Retencion 
-
------ END : SECTION RETENCION IVA , Added by JMM 20240619 
-
-
 
 --INICIO Cuenta Cargo Anticipo, Extra 1 , kdmm.c23
 	cuenta_contable_kdmm := (xpath('//row/c23/text()', xmlKDMM))[1]::text;
@@ -885,7 +733,7 @@ begin
 --FIN Creacion Cuenta Abono IVA Anticipo
 
 
---INICIO Cuenta Cargo Costo, Extra 3 , kdmm.c56 Campo a�adir, kdmm.c34, cuenta costo
+--INICIO Cuenta Cargo Costo, Extra 3 , kdmm.c56 Campo añadir, kdmm.c34, cuenta costo
 	cuenta_contable_kdmm := (xpath('//row/c34/text()', xmlKDMM))[1]::text;
 	funCuenta = '';
 	expSql = '';
@@ -962,7 +810,7 @@ raise notice 'costo:% ', costo;
 --FIN Cuenta Cargo Costo
 
 
---INICIO Cuenta Abono Costo, Extra 4 , kdmm.c57 Campo a�adir, kdmm.c35, cuenta costo
+--INICIO Cuenta Abono Costo, Extra 4 , kdmm.c57 Campo añadir, kdmm.c35, cuenta costo
 	cuenta_contable_kdmm := (xpath('//row/c35/text()', xmlKDMM))[1]::text;
 	funCuenta = '';
 	expSql = '';
@@ -1045,7 +893,7 @@ else
 end if;	
 
 
---INICIO Cuenta extra 1, a�adir kdmm.58, kdmm.c36, cuenta extra
+--INICIO Cuenta extra 1, añadir kdmm.58, kdmm.c36, cuenta extra
 	cuenta_contable_kdmm := (xpath('//row/c36/text()', xmlKDMM))[1]::text;
 	funCuenta = '';
 	expSql = '';
@@ -1114,7 +962,7 @@ else
 end if;	
 */
 
---INICIO Cuenta extra 2, a�adir kdmm.59, kdmm.c37, cuenta costo
+--INICIO Cuenta extra 2, añadir kdmm.59, kdmm.c37, cuenta costo
 	cuenta_contable_kdmm := (xpath('//row/c37/text()', xmlKDMM))[1]::text;
 	funCuenta = '';
 	expSql = '';
@@ -1173,7 +1021,7 @@ end if;
 --FIN Cuenta extra 2
 
 
---INICIO Cuenta extra 3, a�adir kdmm.60, kdmm.c38, cuenta costo
+--INICIO Cuenta extra 3, añadir kdmm.60, kdmm.c38, cuenta costo
 	cuenta_contable_kdmm := (xpath('//row/c38/text()', xmlKDMM))[1]::text;
 	funCuenta = '';
 	expSql = '';
@@ -1232,7 +1080,7 @@ end if;
 --FIN Cuenta extra 3
 
 
---INICIO Cuenta extra 4, a�adir kdmm.61, kdmm.c39, cuenta costo
+--INICIO Cuenta extra 4, añadir kdmm.61, kdmm.c39, cuenta costo
 	cuenta_contable_kdmm := (xpath('//row/c39/text()', xmlKDMM))[1]::text;
 	funCuenta = '';
 	expSql = '';
@@ -1300,7 +1148,7 @@ end if;
 --FIN Cuenta extra 4
 
 
---INICIO Cuenta extra 5, a�adir kdmm.62, kdmm.c40, cuenta costo
+--INICIO Cuenta extra 5, añadir kdmm.62, kdmm.c40, cuenta costo
 	cuenta_contable_kdmm := (xpath('//row/c40/text()', xmlKDMM))[1]::text;
 	funCuenta = '';
 	expSql = '';
@@ -1358,7 +1206,7 @@ end if;
 	end if;	
 --FIN Cuenta extra 5
 
---INICIO Cuenta extra 6, a�adir kdmm.63, kdmm.c41, cuenta costo
+--INICIO Cuenta extra 6, añadir kdmm.63, kdmm.c41, cuenta costo
 	cuenta_contable_kdmm := (xpath('//row/c41/text()', xmlKDMM))[1]::text;
 	funCuenta = '';
 	expSql = '';
@@ -1444,13 +1292,13 @@ end if;
 			execute expSql into intValor;
 			if intValor > 0 then --no es cuenta de mas bajo nivel
 				cuentas_validas = 0;
-				adicionalesStr:=adicionalesStr || 'Imposible agregar, la cuenta no es de �ltimo nivel. ' || cuenta || '|';
-				update tmpkdc2 set cuenta_validacion = 'La cuenta no se puede agregar, no es de �ltimo nivel.';
+				adicionalesStr:=adicionalesStr || 'Imposible agregar, la cuenta no es de último nivel. ' || cuenta || '|';
+				update tmpkdc2 set cuenta_validacion = 'La cuenta no se puede agregar, no es de último nivel.';
 			else
 				--Obtencion de la descripcion de la cuenta
 				expSql=format('insert into %1$s (c1,c2) values(%2$L,%3$L)',tabla_cuentas,cuenta,substring(descripcion_cuenta,1,40));
 				execute expSql;
-				adicionalesStr:=adicionalesStr || 'Se agreg� la cuenta: ' || cuenta || ', ' || descripcion_cuenta  || '|';
+				adicionalesStr:=adicionalesStr || 'Se agregó la cuenta: ' || cuenta || ', ' || descripcion_cuenta  || '|';
 			end if;	
 		end if;		
 	end loop;
@@ -1469,6 +1317,7 @@ end if;
 	if total_registros = 0 then
 		raise exception 'No se crearon partidas para la poliza del movimiento, revise e intente nuevamente.';
 	end if;
+
 
 	folio_id := 'POLIZA' || tipo_poliza_kdmm || substring(fecha_operacion, 3, 2) || substring(fecha_operacion, 6, 2);
 	select * into resultado, mensaje, adicionales from keplersc.obtener_folio_poliza(folio_id);
@@ -1511,11 +1360,6 @@ end if;
 	if total_registros = 0 then
 		raise exception 'No se registraron las partidas para la poliza del movimiento, revise e intente nuevamente.';
 	end if;
-
-	/*
-	-- For Testing ... JMM 20240619
-	raise exception '%','Completo la Poliza sin Errores ...';
-	*/
 
 	resultado := 1;
 	mensaje := folio_poliza::text;

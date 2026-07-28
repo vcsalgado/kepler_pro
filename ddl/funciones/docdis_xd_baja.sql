@@ -36,9 +36,6 @@ DECLARE
 	referencia text;
 	xmlResultado xml;
 	folio_id text;
-
-	--Added by JMM 20241008 (Ctrl Gastos CxP)
-	flag_gastos text = '';
 		
 	--Variables de retorno desde funciones externas
 	get_resultado text; --retorno
@@ -63,110 +60,85 @@ begin
 
 	folio_operacion := (xpath('//document/k_folio/text()', dataxml))[1];
 
-	/*
- 	* CUENTAS POR PAGAR Genero 'X'
-	*/
+
+/*
+ * CUENTAS POR PAGAR Genero 'X'
+*/
 
 	valida_devoluciones := 0;
 
 	if genero = 'X' and naturaleza = 'D' then --Cuentas por pagar, Acredora	
 	
-	
-		--Added by JMM 20241011
-		-- * * *  VALIDACION DE GPOS DE GASTO ... PARA USO DE DOCUMENTOS INTERNOS 
-		flag_gastos = '';
-		if xpath_exists('//document/ambiente/schema/text()', dataxml) = true /*false*/ then 
-			flag_gastos := coalesce((xpath('//document/ambiente/schema/text()',dataxml))[1]::text,'')::text;
+		-- Analizar si Aplica esta Validacion o No por que es (Entrada al INV) y por la programacion
+		-- De esta opcion en K75; Por lo pronto se comenta ...
+		/*
+		if grupo = '40' and tipo = '1' then
+			valida_devoluciones = 1;
 		end if;
-		
-	
-		--Added by JMM 20241008 (condition)  
-		-- * * *  VALIDACION DE GPOS DE GASTO ... PARA USO DE DOCUMENTOS INTERNOS 
-		if upper(flag_gastos) in /*=*/ ('CXP_DEPOSITO_INTERNO_BAJA'/*, 'CXP_CONTR_REC_INTERNO_BAJA'*/) then 
-
-			paso:= 'docdis_xd.gpogasto_validacion';
-			select * into get_resultado, get_mensaje, get_adicionales from keplersc.gpogasto_validacion(dataxml);
+		*/
+		if grupo <> '31' and grupo <> '33' then
+			-- VALIDAR TOTALES Y DATOS GENERALES DE DOCTOS  ... PARA CUALQUIER X_D 
+			paso:= 'docdis_xd.valida_operacion_documentos';
+			select * into get_resultado, get_mensaje, get_adicionales from keplersc.valida_operacion_documentos(dataxml);
 			if get_resultado = '0' then
 				raise exception '%',get_mensaje;
 			end if;	
-		
-		else 
+		end if;
 	
-			--  * * *  EJECUTA TODAS LAS VALIDACIONES ORIGINALES PREVIOS A ESTA DOCUMENTACION , ADAPTED BY JMM 20241011
-		
-			
-			-- Analizar si Aplica esta Validacion o No por que es (Entrada al INV) y por la programacion
-			-- De esta opcion en K75; Por lo pronto se comenta ...
-			/*
-			if grupo = '40' and tipo = '1' then
-				valida_devoluciones = 1;
-			end if;
-			*/
-		
-			if grupo <> '31' and grupo <> '33' and grupo <> '33' then --Cheques y  VCSS Transferencias
-				-- VALIDAR TOTALES Y DATOS GENERALES DE DOCTOS  ... PARA CUALQUIER X_D 
-				paso:= 'docdis_xd.valida_operacion_documentos';
-				select * into get_resultado, get_mensaje, get_adicionales from keplersc.valida_operacion_documentos(dataxml);
-				if get_resultado = '0' then
-					raise exception '%',get_mensaje;
-				end if;	
-			end if;
-		
-			-- Analizar si Aplica esta Validacion o No por que es (Entrada al INV) y por la programacion
-			-- De esta opcion en K75; Por lo pronto se comenta ...
-			/*
-			-- VALIDAR DEVOLUCIONES COMPRA ... PARA LOS CASOS QUE APLICA ... 
-			-- Se debe incluir el PARAM del Tipo_Compra que aplique (1..3)
-			-- Actual : if grupo = '40' and tipo = '1'  
-			if valida_devoluciones = 1 then
-				paso:= 'docdis_xd.valida_operacion_devoluciones_compras';
-				select * into get_resultado, get_mensaje, get_adicionales from keplersc.valida_operacion_devoluciones_compras(dataxml, 1/*Tipo_Compra*/);
-				if get_resultado = '0' then
-					raise exception '%',get_mensaje;
-				end if;	
-			end if;
-			*/
-		
+		-- Analizar si Aplica esta Validacion o No por que es (Entrada al INV) y por la programacion
+		-- De esta opcion en K75; Por lo pronto se comenta ...
+		/*
+		-- VALIDAR DEVOLUCIONES COMPRA ... PARA LOS CASOS QUE APLICA ... 
+		-- Se debe incluir el PARAM del Tipo_Compra que aplique (1..3)
+		-- Actual : if grupo = '40' and tipo = '1'  
+		if valida_devoluciones = 1 then
+			paso:= 'docdis_xd.valida_operacion_devoluciones_compras';
+			select * into get_resultado, get_mensaje, get_adicionales from keplersc.valida_operacion_devoluciones_compras(dataxml, 1/*Tipo_Compra*/);
+			if get_resultado = '0' then
+				raise exception '%',get_mensaje;
+			end if;	
+		end if;
+		*/
 	
-			---------------------------------------------------------------
-			--Obtencion de consecutivo
-			---------------------------------------------------------------
-			--TO DO: Verificar con que variable se identifican documentos que registran movimiento	
-			--VCSS: Verificar el uso de variable folio_id ya que folio_operacion se inicia con el xml.
-			if grupo = '40' then 
-				if tipo = '1' then 
 	
-						-- * * * Para estas opciones no aplica la funcion de obtencion de Folio ..
-				
-						get_mensaje := ' , Por Procesar ... Opcion en Construccion ...';
-						folio_operacion := folio_id || get_mensaje;
-					
-						--cmnt(1).free4eg by JMM
-						raise exception '%',folio_operacion;
-									
-		   
-				end if; -- * * * Tipo 1 
-				
-			end if; -- * * * Grupo 40
-			
-			---
-			-- FIN Consecutivo
-			---
+		---------------------------------------------------------------
+		--Obtencion de consecutivo
+		---------------------------------------------------------------
+		--TO DO: Verificar con que variable se identifican documentos que registran movimiento	
+		--VCSS: Verificar el uso de variable folio_id ya que folio_operacion se inicia con el xml.
+		if grupo = '40' then 
+			if tipo = '1' then 
 
-			--Validar que la cxp se pueda dar de baja
-			if (xpath('//row/c47/text()', xmlKDMM))[1]::text  <> 'S'			--Pantalla de movtos de cxp
-				and (xpath('//row/c7/text()', xmlKDMM))[1]::text = 'S' then		--Afecta cxcp
-				select * into get_resultado, get_mensaje, get_adicionales from keplersc.verify_cxcp_baja(dataxml);
-				if get_resultado = '0' then
-					raise exception '%',get_mensaje;
-				end if;
+					-- * * * Para estas opciones no aplica la funcion de obtencion de Folio ..
+			
+					get_mensaje := ' , Por Procesar ... Opcion en Construccion ...';
+					folio_operacion := folio_id || get_mensaje;
+				
+					--cmnt(1).free4eg by JMM
+					raise exception '%',folio_operacion;
+								
+	   
+			end if; -- * * * Tipo 1 
+			
+		end if; -- * * * Grupo 40
+		
+		---
+		-- FIN Consecutivo
+		---
+		
+		--/* START cmnt by JMM ...
+		
+		
+		--Validar que la cxp se pueda dar de baja
+		if (xpath('//row/c47/text()', xmlKDMM))[1]::text  <> 'S'			--Pantalla de movtos de cxp
+			and (xpath('//row/c7/text()', xmlKDMM))[1]::text = 'S' then		--Afecta cxcp
+			select * into get_resultado, get_mensaje, get_adicionales from keplersc.verify_cxcp_baja(dataxml);
+			if get_resultado = '0' then
+				raise exception '%',get_mensaje;
 			end if;
-			--MSS: Para estos movimientos no se genera folio, es a partir del folio_operacion
-		
-		
-		end if; --  * * *  IF .. ELSE / FOR INTERNAL DOCUMENTs by JMM 20241011
-		
-		
+		end if;
+		--MSS: Para estos movimientos no se genera folio, es a partir del folio_operacion
+	
 		
 		---------------------------------------------------------------
 		--MOVIMIENTOS. Registro de movimiento en kdm1.
@@ -206,52 +178,36 @@ begin
 	
 	
 	
-		---------------------------------------------------------------
+	---------------------------------------------------------------
 		--Cuentas por Cobara y/o Pagar, ejecuta:
 		--k75:CXCPLIB.CXCPLIB.BAJA_CXCP 	Resuelve bajas de CXCP_ALTA_SINMOV
 		---------------------------------------------------------------
 		if (xpath('//row/c7/text()', xmlKDMM))[1]::text  = 'S' then --Afecta Cuentas por Cobrar o Pagar
-		
-			-- Added by JMM 20241011 
-			-- * * *  GESTION DE MONTOS DE GPOS DE GASTO ... PARA USO DE DOCUMENTOS INTERNOS 
-			if upper(flag_gastos) in (/*'CXP_DEPOSITO_INTERNO',*/'CXP_DEPOSITO_INTERNO_BAJA') then
 			
-				paso:= 'docdis_xd.gpogasto_actualiza_montos';
-				select * into get_resultado, get_mensaje, get_adicionales from keplersc.gpogasto_actualiza_montos(dataxml);
+			if (xpath('//row/c47/text()', xmlKDMM))[1]::text = 'S' then --Pantalla movimientos CXP
+			
+				paso:= 'docdis.cxcp_baja_conmov';
+				select * into get_resultado, get_mensaje, get_adicionales from keplersc.cxcp_baja_conmov(dataxml, xmlKDMM, folio_operacion);
 				if get_resultado = '0' then
 					raise exception '%',get_mensaje;
 				end if;	
 			
-			else 
-			
-				--  * * *  EJECUTA TODAS LAS FUNCIONES ORIGINALES PREVIOS A ESTA DOCUMENTACION , ADAPTED BY JMM 20241011
-			
-				if (xpath('//row/c47/text()', xmlKDMM))[1]::text = 'S' then --Pantalla movimientos CXP
+			else
 				
-					paso:= 'docdis.cxcp_baja_conmov';
-					select * into get_resultado, get_mensaje, get_adicionales from keplersc.cxcp_baja_conmov(dataxml, xmlKDMM, folio_operacion);
-					if get_resultado = '0' then
-						raise exception '%',get_mensaje;
-					end if;	
-				
-				else
+				paso:= 'docdis.cxcp_kduxg_baja';
+				select * into get_resultado, get_mensaje, get_adicionales from keplersc.cxcp_kduxg_baja(dataxml, folio_operacion);
+				if get_resultado = '0' then
+					raise exception '%',get_mensaje;
+				end if;			
+				paso:= 'docdis.cxcp_kduxe_baja';
+				select * into get_resultado, get_mensaje, get_adicionales from keplersc.cxcp_kduxe_baja(dataxml, xmlKDMM, folio_operacion);
+				if get_resultado = '0' then
+					raise exception '%',get_mensaje;
+				end if;			
 					
-					paso:= 'docdis.cxcp_kduxg_baja';
-					select * into get_resultado, get_mensaje, get_adicionales from keplersc.cxcp_kduxg_baja(dataxml, folio_operacion);
-					if get_resultado = '0' then
-						raise exception '%',get_mensaje;
-					end if;			
-					paso:= 'docdis.cxcp_kduxe_baja';
-					select * into get_resultado, get_mensaje, get_adicionales from keplersc.cxcp_kduxe_baja(dataxml, xmlKDMM, folio_operacion);
-					if get_resultado = '0' then
-						raise exception '%',get_mensaje;
-					end if;			
-						
-				end if;
-			
-			
-			end if; --  * * *  IF .. ELSE / FOR INTERNAL DOCUMENTs by JMM 20241011
+			end if;
 		
+					
 
 		end if;
 	
@@ -261,7 +217,7 @@ begin
 		--FIN CxCP
 		---------------------------------------------------------------
 
-		---------------------------------------------------------------
+---------------------------------------------------------------
 		--CONTABILIDAD. BAJA_CONT
 		---------------------------------------------------------------
 		if (xpath('//row/c6/text()', xmlKDMM))[1]::text = 'S' then --Afecta contabilidad
@@ -277,11 +233,7 @@ begin
 		---------------------------------------------------------------		
 	end if; ---*** Genero, Naturaleza
 
-	--raise exception '%',folio_operacion;
-	
-	--For Testing ... by JMM 20241008 
-	/*raise exception '%', 'La Transaccion se Procesara ... [BAJA]';*/
-	
+--raise exception '%',folio_operacion;
 	get_resultado:='1';
 	get_mensaje:=folio_operacion;
 	return query select get_resultado, get_mensaje, get_adicionales;

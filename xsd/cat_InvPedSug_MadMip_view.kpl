@@ -1,222 +1,1 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<pag xmlns="www.kepler.com.mx/2003/KSchema" roles="" tit="T&#237;tulo">
-<grp dim="40,20,15,15" 
-	  brdr="0,0" 
-	  clr="0,58,112"  
-	  bclr="192,205,213" 
-	  fnt="Arial,16" 
-	  unfont="0" id="Principal"><br/>
-			<tab/>
-			<grp bclr="236,240,243" 
-			fntClrBrdr="255,206,0" 
-			fntBrdr="Arial,18" 
-			hSpace="4" 
-			clrBrdr="0,58,112" 
-			brdr="0,5" 
-			dim="38,30,9,9" 
-			tit="Generar MAD / MIP"
-			fnt="Arial,16">
-				<br/>			
-				<tab n="3"/><txt>Esta opci&#243;n permite generar el MAD/MIP e identificar Phase In/Out</txt><br/>
-				<tab n ="2"/><txt>de todas las piezas del inventario.</txt><br/> <br/>
-				<tab n ="2"/><txt>NOTA: Esta opci&#243;n puede tardar varios minutos.</txt><br/><br/>
-				
-				<tab n="2"/><txt> Sucursal : </txt>
-				<cmb id="k_sucn" clr="64,64,64" clrBrdr="255,255,255"  
-						dim="32,15" bclr="255,255,255" brdr="2,0" fnt="Arial,16"  
-						Null="N"  available="Y" OnChange="CargarPedidoSugerido()"/><br/>
-				<br/>
-				
-				<tab n="2"/><txt>&#218;ltimo listado : </txt>
-				<inp id="k_fecha" dim="21,1" brdr="1,1" bclr="236,240,243" clr="64,64,64" clrBrdr="236,240,243" type="string" modify="N" available="Y"/><txt> d&#237;as</txt><br/>
-				<br/>
-				<br/>
-				<tab n="9"/><bot id="btn_aceptar_A100" dim="9,0" brdr="5" text="Aceptar" OnEnter="Execute(0)" default="1" visible="Y" available="Y"/>
-				<br/>
-			<br/>
-			</grp>
-</grp>
-	<script>
-		InstallDriver("KDB75");
-		class Main {			
-			var frn,
-				 kdb,
-				 frP,
-				 externo,
-				 accion,
-				 suc_usuario,
-				 perfil_usuario,
-				 asterisco,
-				 rol_usuario ,
-				 v_fecha_c7,
-				 v_l5_c5,
-				 v_l8_c8;
-				 
-			fun Main() {
-				frn = new FRNT;
-				frP = new FRNTP;
-				kdb = new KDB;
-				kdb.connect();
-				ctlrs_off();
-				suc_usuario = frn.lib("libKepler","UserInfo(1)");
-				perfil_usuario = frn.lib("libKepler","UserInfo(2)");
-				rol_usuario = frn.config("user","role");
-				asterisco = "*";
-				llenar_ctlrs_default();
-			
-				Inicializa();
-			}
-			fun Inicializa()
-			{
-				//frn.setX(1,"k_cicloReorden_A1");	
-				CargarPedidoSugerido();		
-			}			
-			fun ctlrs_off()
-			{
-				//frn.setAtt("btn_aceptar", "visible", "Y" ); -- Obj No Existe 
-				frn.setAtt("btn_aceptar_A100", "visible", "Y");
-			}
-			
-			fun llenar_ctlrs_default()
-			{
-				frn.rst("principal");
-				accion = frn.param(0);
-				var xmlRequest,
-					 cmd,
-					 ok, 
-					 cuboResultados,
-					 mensajeError;
-				
-				frn.setAtt("principal", "tit", accion );
-	
-				//Llenar combo sucursales
-				cmd = "select '['||c1||'] '||c2 as c2, c1 from keplersc.kdms";
-				if (rol_usuario &! "ADMINISTRADOR"  && rol_usuario &! "ADMINISTRATOR"){
-					cmd = cmd & " where c1='" & suc_usuario & "'";
-				}else {
-					if (suc_usuario &! asterisco && suc_usuario &! "" ){
-						cmd = cmd & " where c1='" & suc_usuario & "'";
-					}
-				}
-				
-				var cubo = frn.lib("libGeneral.kpl","EjecutarSqlSel",cmd,"srvcitacrud.Inicializa()");		
-				ok=getXmlAtt(cubo,"ok");
-				if(ok &! "" && !ok){
-					mensajeError = getXmlAtt(cubo,"native3");
-					mensajeError = frn.lib("libGeneral.kpl","ErrorBD",mensajeError);
-					frn.message(mensajeError,"Error","Aceptar");
-					return;
-				}
-					
-				frn.set("k_sucn",getXml(cubo));
-			}		
-			
-			fun Validaciones(psOpcion)
-			{
-				//var v_StockSeg_A5; v_StockSeg_A5 = frn.get("k_StockSeg_A5");
-				
-					//if(v_l5_c5 == "M" )
-					if(v_l5_c5 &= "M" )
-					{
-						if(v_l8_c8 <= 0 )
-						{
-						frn.message("Los dias habiles del mes deben ser mayor a cero", "Revise la configuracion del pedido sugerido.","&Aceptar");
-						return 0;
-						}						
-					}
-				return 1;
-			}//end fun Validaciones
-			
-			fun CargarPedidoSugerido()
-			{
-				var clave_Sucursal = frn.get("k_sucn", -1, 1);
-				var cmd,
-						ok,
-						cubo;
-				cmd = "select C1, C2,C3,C4,C5,C6,C7,C8,C9,C10,C11,C12,C13, C14, C15,C16 from keplersc.KDPEDIDOSUGERIDOCONF where c1='" & clave_Sucursal & "'";
-				cubo = frn.lib("libGeneral.kpl","EjecutarSqlSel",cmd,"cat_InvPedSug_view.Cargar()");				
-				ok=getXmlAtt(cubo,"ok");
-				if(ok &! "" && !ok)
-				{
-					var mensajeError = getXmlAtt(cubo,"native3");
-					frn.message(mensajeError,"Error","Aceptar");
-					return;
-				}				
-				if (nXml(cubo) == 0){
-					frn.message("Configuracion de sucursal no existe","Error","Aceptar");
-					//frn.rst("k_Formula");					
-					return;
-				}				
-						v_fecha_c7 = getXmlAtt(cubo,"r0", "c7");
-						v_l5_c5 = getXmlAtt(cubo,"r0", "c5");
-						v_l8_c8 = getXmlAtt(cubo,"r0", "c8");
-					   frn.set("k_fecha", v_fecha_c7 );
-			}
-			
-								
-			fun Execute(pIOpcion)
-			{
-				var xmlRequest,
-						cmd,
-						ok, 
-						cuboResultados,
-						mensajeError,
-						sucursal,						
-						strTmp,
-						xmlPantalla,
-						cubo,
-						resultado,
-						mensaje,
-						tip_ope,
-						mensaje;					
-				
-				// Added by JMM 20230826 
-				if ( frn.getAtt("btn_aceptar_A100", "text") &= "Finalizado") {
-					frn.message("Recien se completo un proceso. Debes recargar la Pantalla para generar de inmediato un nuevo proceso.","Info","Aceptar");
-					return;
-				}
-				
-				if(pIOpcion == 0) // GUARDAR
-				{				
-					if(Validaciones()<=0)
-					{
-						return;
-					}						
-					xmlPantalla = getXml(frn.dataPag()); //Obtener el xml de la pantalla;					
-					kdb.rst(cuboResultados);					
-					cuboResultados  = getXml(frn.dataPag()); //Obtener el xml de la pantalla;					
-					setXml(cuboResultados,"k_sucn",frn.get("k_sucn", -1, 1));					
-					frn.lib("libGeneral.kpl","FileSave",cuboResultados ,"C:\Basura\sqlXmlResultado");					
-					
-					cmd = "SELECT * FROM keplersc.cat_pedidosugerido_madmip_crud('<document>" & getXmlStr(cuboResultados,"EOF:13_10") & "</document>')";
-					kdb.rst(cuboResultados);
-					cuboResultados = frn.lib("libGeneral.kpl","EjecutarSql",cmd,"cat_InvPedSugMadMip.Execute");
-				
-					ok = getXmlAtt(cuboResultados,"ok");
-					if(ok &! "" && !ok)
-					{					
-						mensajeError = getXmlAtt(cuboResultados,"native3");
-						mensajeError = frn.lib("libGeneral.kpl","ErrorBD",mensajeError);
-						frn.message(mensajeError,"Error","Aceptar");
-						return;
-					}					
-					resultado= getXml(cuboResultados,"resultado");
-					mensaje= getXml(cuboResultados,"mensaje");					
-					if(resultado &= "1")
-					{
-						frn.message(mensaje, "El listado se ha generado con exito.","&Aceptar");
-					}else{
-						frn.message(mensaje, "Error","&Aceptar");
-					}
-					
-					// Added by JMM ... 20230826 
-					Inicializa();
-					frn.setAtt("btn_aceptar_A100", "text", "Finalizado");
-					//frn.setAtt("btn_aceptar_A100", "visible", "N" );
-					
-				}	//end opcion 0
-				}
-			}//end fun Execute		
-		}
-	</script>
-</pag>
+<?xml version="1.0" encoding="UTF-8"?><pag xmlns="www.kepler.com.mx/2003/KSchema" roles="" tit="T&#237;tulo"><grp dim="40,20,15,15" 	  brdr="0,0" 	  clr="0,58,112"  	  bclr="192,205,213" 	  fnt="Arial,16" 	  unfont="0" id="Principal"><br/>			<tab/>			<grp bclr="236,240,243" 			fntClrBrdr="255,206,0" 			fntBrdr="Arial,18" 			hSpace="4" 			clrBrdr="0,58,112" 			brdr="0,5" 			dim="38,30,9,9" 			tit="Generar MAD / MIP"			fnt="Arial,16">				<br/>							<tab n="3"/><txt>Esta opci&#243;n permite generar el MAD/MIP e identificar Phase In/Out</txt><br/>				<tab n ="2"/><txt>de todas las piezas del inventario.</txt><br/> <br/>				<tab n ="2"/><txt>NOTA: Esta opci&#243;n puede tardar varios minutos.</txt><br/><br/>								<tab n="2"/><txt> Sucursal : </txt>				<cmb id="k_sucn" clr="64,64,64" clrBrdr="255,255,255"  						dim="32,15" bclr="255,255,255" brdr="2,0" fnt="Arial,16"  						Null="N"  available="Y" OnChange="CargarPedidoSugerido()"/><br/>				<br/>								<tab n="2"/><txt>&#218;ltimo listado : </txt>				<inp id="k_fecha" dim="21,1" brdr="1,1" bclr="236,240,243" clr="64,64,64" clrBrdr="236,240,243" type="string" modify="N" available="Y"/><txt> d&#237;as</txt><br/>				<br/>				<br/>				<tab n="9"/><bot id="btn_aceptar_A100" dim="9,0" brdr="5" text="Aceptar" OnEnter="Execute(0)" default="1" visible="Y" available="Y"/>				<br/>			<br/>			</grp></grp>	<script>		InstallDriver("KDB75");		class Main {						var frn,				 kdb,				 frP,				 externo,				 accion,				 suc_usuario,				 perfil_usuario,				 asterisco,				 rol_usuario ,				 v_fecha_c7,				 v_l5_c5,				 v_l8_c8;				 			fun Main() {				frn = new FRNT;				frP = new FRNTP;				kdb = new KDB;				kdb.connect();				ctlrs_off();				suc_usuario = frn.lib("libKepler","UserInfo(1)");				perfil_usuario = frn.lib("libKepler","UserInfo(2)");				rol_usuario = frn.config("user","role");				asterisco = "*";				llenar_ctlrs_default();							Inicializa();			}			fun Inicializa()			{				//frn.setX(1,"k_cicloReorden_A1");					CargarPedidoSugerido();					}						fun ctlrs_off()			{				//frn.setAtt("btn_aceptar", "visible", "Y" ); -- Obj No Existe 				frn.setAtt("btn_aceptar_A100", "visible", "Y");			}						fun llenar_ctlrs_default()			{				frn.rst("principal");				accion = frn.param(0);				var xmlRequest,					 cmd,					 ok, 					 cuboResultados,					 mensajeError;								frn.setAtt("principal", "tit", accion );					//Llenar combo sucursales				cmd = "select '['||c1||'] '||c2 as c2, c1 from keplersc.kdms";				if (rol_usuario &! "ADMINISTRADOR"  && rol_usuario &! "ADMINISTRATOR"){					cmd = cmd & " where c1='" & suc_usuario & "'";				}else {					if (suc_usuario &! asterisco && suc_usuario &! "" ){						cmd = cmd & " where c1='" & suc_usuario & "'";					}				}								var cubo = frn.lib("libGeneral.kpl","EjecutarSqlSel",cmd,"srvcitacrud.Inicializa()");						ok=getXmlAtt(cubo,"ok");				if(ok &! "" && !ok){					mensajeError = getXmlAtt(cubo,"native3");					mensajeError = frn.lib("libGeneral.kpl","ErrorBD",mensajeError);					frn.message(mensajeError,"Error","Aceptar");					return;				}									frn.set("k_sucn",getXml(cubo));			}								fun Validaciones(psOpcion)			{				//var v_StockSeg_A5; v_StockSeg_A5 = frn.get("k_StockSeg_A5");									//if(v_l5_c5 == "M" )					if(v_l5_c5 &= "M" )					{						if(v_l8_c8 <= 0 )						{						frn.message("Los dias habiles del mes deben ser mayor a cero", "Revise la configuracion del pedido sugerido.","&Aceptar");						return 0;						}											}				return 1;			}//end fun Validaciones						fun CargarPedidoSugerido()			{				var clave_Sucursal = frn.get("k_sucn", -1, 1);				var cmd,						ok,						cubo;				cmd = "select C1, C2,C3,C4,C5,C6,C7,C8,C9,C10,C11,C12,C13, C14, C15,C16 from keplersc.KDPEDIDOSUGERIDOCONF where c1='" & clave_Sucursal & "'";				cubo = frn.lib("libGeneral.kpl","EjecutarSqlSel",cmd,"cat_InvPedSug_view.Cargar()");								ok=getXmlAtt(cubo,"ok");				if(ok &! "" && !ok)				{					var mensajeError = getXmlAtt(cubo,"native3");					frn.message(mensajeError,"Error","Aceptar");					return;				}								if (nXml(cubo) == 0){					frn.message("Configuracion de sucursal no existe","Error","Aceptar");					//frn.rst("k_Formula");										return;				}										v_fecha_c7 = getXmlAtt(cubo,"r0", "c7");						v_l5_c5 = getXmlAtt(cubo,"r0", "c5");						v_l8_c8 = getXmlAtt(cubo,"r0", "c8");					   frn.set("k_fecha", v_fecha_c7 );			}														fun Execute(pIOpcion)			{				var xmlRequest,						cmd,						ok, 						cuboResultados,						mensajeError,						sucursal,												strTmp,						xmlPantalla,						cubo,						resultado,						mensaje,						tip_ope,						mensaje;													// Added by JMM 20230826 				if ( frn.getAtt("btn_aceptar_A100", "text") &= "Finalizado") {					frn.message("Recien se completo un proceso. Debes recargar la Pantalla para generar de inmediato un nuevo proceso.","Info","Aceptar");					return;				}								if(pIOpcion == 0) // GUARDAR				{									if(Validaciones()<=0)					{						return;					}											xmlPantalla = getXml(frn.dataPag()); //Obtener el xml de la pantalla;										kdb.rst(cuboResultados);										cuboResultados  = getXml(frn.dataPag()); //Obtener el xml de la pantalla;										setXml(cuboResultados,"k_sucn",frn.get("k_sucn", -1, 1));										frn.lib("libGeneral.kpl","FileSave",cuboResultados ,"C:\Basura\sqlXmlResultado");															cmd = "SELECT * FROM keplersc.cat_pedidosugerido_madmip_crud('<document>" & getXmlStr(cuboResultados,"EOF:13_10") & "</document>')";					kdb.rst(cuboResultados);					cuboResultados = frn.lib("libGeneral.kpl","EjecutarSql",cmd,"cat_InvPedSugMadMip.Execute");									ok = getXmlAtt(cuboResultados,"ok");					if(ok &! "" && !ok)					{											mensajeError = getXmlAtt(cuboResultados,"native3");						mensajeError = frn.lib("libGeneral.kpl","ErrorBD",mensajeError);						frn.message(mensajeError,"Error","Aceptar");						return;					}										resultado= getXml(cuboResultados,"resultado");					mensaje= getXml(cuboResultados,"mensaje");										if(resultado &= "1")					{						frn.message(mensaje, "El listado se ha generado con exito.","&Aceptar");					}else{						frn.message(mensaje, "Error","&Aceptar");					}										// Added by JMM ... 20230826 					Inicializa();					frn.setAtt("btn_aceptar_A100", "text", "Finalizado");					//frn.setAtt("btn_aceptar_A100", "visible", "N" );									}	//end opcion 0				}			}//end fun Execute				}	</script></pag>

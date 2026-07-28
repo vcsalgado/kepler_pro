@@ -1,1485 +1,1 @@
-<?xml version="1.0" encoding="UTF-8"?><pag xmlns="www.kepler.com.mx/2003/KSchema" roles="" tit="T&#237;tulo">
-	<grp dim="1,-1,10,20" brdr="0,0" clr="0,58,112" bclr="192,205,213" fnt="Arial,16" unfont="0" OnEnter="Exit()">
-	<tab/><txt fnt=",22" clr="0,0,0">Compras Vehiculos - Asignacion - Nuevos</txt><br/>
-	<!-- dim="81,0" --> 
-	<tab/><hLine clr="0,0,0"/> 
-	<br/> 
-	<br/> 
-		<!-- <grp dim="46,9,7,12" -->		
-		<!-- <grp dim="48,7,7,12" -->
-		<tab/>
-		<grp dim="45,7,7,12" bclr="236,240,243" fntClrBrdr="236,240,243" fntBrdr="Arial,18" hSpace="4" clrBrdr="0,58,112" brdr="0,5" fnt="Arial,16" tit="Par&#225;metros">
-			<!-- <br/> -->
-			<txt id="suctxt" visible="N">  Sucursal : </txt>
-			<cmb id="k_sucn" clr="64,64,64" clrBrdr="255,255,255" dim="52,36" bclr="255,255,255" brdr="2,0" fnt="Arial,16" Null="N" hk="S" OnChange="CambiaSucursal()" available="Y" modify="Y" visible="N"/><br/>
-			<sp n="1"/>
-			<bot id="btn_view" dim="50,0" brdr="5" text="Serie(s) sin registrarse por contar con Num. Inventario ..." visible="N" OnEnter="btnviewclic()"/>
-			<br/>
-		</grp>
-		<sp/>
-		<!-- dim="34,9,7,12" -->
-		<!-- dim="36,9,7,12" -->
-		<grp dim="39,7,7,12" bclr="236,240,243" fntClrBrdr="236,240,243" fntBrdr="Arial,18" hSpace="4" clrBrdr="0,58,112" brdr="0,5" fnt="Arial,16" tit="Detalle">
-			<sp n="1"/>
-			<inp id="operacion" dim="40,1" bclr="240,240,240" clr="64,64,64" clrBrdr="255,255,255" type="string" modify="N" fnt=",18b" just="C"/><tab/> <br/>
-			<br/>
-			<txt>  Fecha : </txt> 
-			<edt id="k_fecha" dim="15,1" type="date" fmt="DD/MM/CCYY" brdr="2,0" bclr="255,255,255" clr="64,64,64" page="_ks_fecha,k_fecha" OnF9="Dialog(3,_ks_fecha,k_fecha)" clrBrdr="255,255,255" available="N"/> 
-
-			<sp n="2"/>
-			<txt id="fechFtxt" visible="N"> Hasta : </txt> 
-			<edt id="k_fecha_F" dim="15,1" type="date" fmt="DD/MM/CCYY" brdr="2,0" bclr="255,255,255" clr="64,64,64" page="_ks_fecha,k_fecha_F" OnF9="Dialog(3,_ks_fecha,k_fecha_F)" clrBrdr="255,255,255" available="N" visible="N"/> 
-
-			<sp n="3"/>
-			<img id="buscar" dim="20,20" bPx="Y" brdr="0,1"  img="_20_Find.png" OnEnter="Aplica_Filtro(1)" available="Y" clrBrdr="0,0,0" visible="N"/>
-
-			<br/>
-		</grp>
-		
-		<br/>
-		<br/> 
-		
-		<!-- dim="81,18,7,12" --> 
-		<tab/>
-		<grp id="grid" dim="85,20,7,12" bclr="236,240,243" fntClrBrdr="236,240,243" fntBrdr="Arial,18" hSpace="4" clrBrdr="0,58,112" brdr="0,5" fnt="Arial,16" tit="Asignaciones :  &lt;  [ F9 ] obtener valores de Catalogos  &gt;">
-
-			<sp n="1"/> 
-			<!-- fnt="Arial,15" dim="114,6" -->
-			<tbl id="k_mov" dim="119,14" bclr="236,240,243" clr="64,64,64" clrCur="255,255,255" clrHead="0,58,112" bclrHead="236,240,243" brdr="1,0" clrBrdr="64,64,64" fnt="Arial,15" hk="z" OnMouseD="ToDel()" Reorder="N" modify="Y" insdel="Y" visible="Y">
-				<col id="borrar" name="Borrar" OnActive="Get_Data_Row()" type="capital" nc="1" modify="N" available="Y" visible="N"/>
-				<col id="ctrlerr" name="ERR" OnActive="Get_Data_Row()" type="capital" nc="1" modify="N" available="Y" visible="Y"/>
-				<col id="modelo" name="Modelo"  OnActive="Get_Data_Row()" type="capital" nc="18" modify="Y" available="Y" visible="Y" OnF9="Get_Cat(1)" OnChange="Get_Cat_Data(1, 1)"/>
-			   <col id="invent" name="Invent." OnActive="Get_Data_Row()" type="capital" modify="Y" nc="10" visible="Y"  OnF9="Get_Cat(2)" OnChange="Get_Cat_Data(2, 1)"/>		
-				<col id="anio" name="Anio" OnActive="Get_Data_Row()" type="string" nc="4" modify="N" OnF9="" OnMouseL="" OnChange="" OnActive="" OnF10="" visible="Y"/>
-				<col id="descrip" name="Descripcion" OnActive="Get_Data_Row()" type="string" nc="50" OnChange="" OnF9="" OnMouseL="" modify="N" available="Y" visible="Y"/>
-				<col id="serie" name="Serie" OnActive="Get_Data_Row()" type="capital" nc="17" modify="Y" available="Y" visible="Y" OnChange="Get_Cat_Data(0,1)"/>
-				<col id="color" name="Color" OnActive="Get_Data_Row()" type="string" nc="10" modify="Y" available="Y" visible="Y" OnF9="Get_Cat(3)" OnChange="Get_Cat_Data(3, 1)"/>
-				<col id="vest" name="Vest" OnActive="Get_Data_Row()" type="string" nc="10" modify="Y" available="Y" visible="Y" OnF9="Get_Cat(4)" OnChange="Get_Cat_Data(4, 1)"/>
-				<col id="ref" name="Referencia" OnActive="Get_Data_Row()" type="string" nc="12" OnF9="" OnF10="" modify="Y" visible="Y" OnChange="Get_Cat_Data(0,1)"/>		
-				<col id="suc" name="Sucursal" OnActive="Get_Data_Row()" type="string" nc="5" OnF9="Get_Cat(5)" OnChange="Get_Cat_Data(5, 1)" modify="Y" visible="Y"/>
-				<col id="fech" name="fech asig" OnActive="Get_Data_Row()" type="string" nc="10" modify="N" visible="N"/>
-		   </tbl>
-			<br/>
-			
-		</grp>
-
-		<br/>
-		<br/>
-		
-		<!-- dim="81,14,7,12" -->
-		<tab/>
-		<grp dim="85,14,7,13" bclr="236,240,243" fntClrBrdr="236,240,243" fntBrdr="Arial,18" hSpace="4" clrBrdr="0,58,112" brdr="0,5" fnt="Arial,16" tit="Datos Registro Activo : ">	
-
-			<sp/><txt>Descripcion : </txt>
-			<sp n="1"/>
-			<inp id="k_descrip" clr="64,64,64" clrBrdr="255,255,255"  dim="60,1" fnt="Arial,16" type="string" modify="N" available="N" nc="60" visible="Y"/>
-			<br/>
-			<sp n="1"/><txt>Color Exterior : </txt>
-			<inp id="k_color_ext" clr="64,64,64" clrBrdr="255,255,255"  dim="40,1" fnt="Arial,16" type="string" modify="N" available="N" nc="40" visible="Y"/>
-			<sp n="6"/> <txt>Color Vestiduras : </txt>
-			<sp n="1"/>
-			<inp id="k_color_vest" clr="64,64,64" clrBrdr="255,255,255"  dim="40,1" fnt="Arial,16" type="string" modify="N" available="N" nc="40" visible="Y"/>
-			<br/>
-			<sp n="1"/><txt>Marca : </txt>
-			<inp id="k_marca" clr="64,64,64" clrBrdr="255,255,255"  dim="30,1" fnt="Arial,16" type="string" modify="N" available="N" nc="70" visible="Y"/>
-			<txt>     Clase :  </txt>
-			<inp id="k_clase" clr="64,64,64" clrBrdr="255,255,255"  dim="30,1" fnt="Arial,16" type="string" modify="N" available="N" nc="70" visible="Y"/>
-			<sp n="1"/><txt>      Nuevo / Usado : </txt>
-			<inp id="k_tipo_auto" clr="64,64,64" clrBrdr="255,255,255"  dim="12,1" fnt="Arial,16" type="string" modify="N" available="N" nc="70" visible="Y"/>
-			<br/>
-			<sp/><txt>Fecha Asignacion : </txt> <sp/>	
-			<inp id="k_fecha_asig" dim="15,1" type="string" clr="64,64,64" clrBrdr="255,255,255" available="N" nc="-1" modify="N" fmt="DD/MM/CCYY"/><txt>            Sucursal :  </txt>
-			<inp id="k_suc" dim="30,1" clr="64,64,64" clrBrdr="255,255,255" type="string" modify="N" available="N"/>
-			<br/>
-			<sp/><txt clr="132,20,7">Mensaje : </txt> 
-			<inp id="k_err" dim="107,1" clr="132,20,7" clrBrdr="255,255,255" type="string" modify="N" available="N" nc="-1"/>
-		<br/><tab n="17"/>
-				
-		<sp n="14"/><tab n="10"/><sp/>
-		<!-- OnEnter="Ejecuta_Reporte()" -->
-		<img id="Imprimir" dim="40,40" bPx="Y" brdr="0,1"  img="_60_Print.png" OnEnter="Aplica_Filtro(2)" tooltip="Imprimir documento &lt;Ctrl&gt;&lt;T&gt;" available="Y" clrBrdr="0,0,0" visible="N" modify="Y"/>
-			
-		<sp n="3"/>
-		<img id="Cancelar" dim="40,40" bPx="Y" brdr="0,1"  img="_60_DocRst.png" OnEnter="Cancela()" tooltip="Borrar datos" available="Y" clrBrdr="0,0,0" visible="Y"/>
-			
-		<sp n="3"/>
-		<img id="Aceptar" dim="40,40" bPx="Y" brdr="0,1"  img="_60_DocNew.png" OnEnter="Ejecuta()" tooltip="Crear registros &lt;Ctrl&gt;&lt;T&gt;" available="Y" clrBrdr="0,0,0" visible="Y" modify="Y"/>
-			
-		</grp>
-	
-		<br/>
-						
-	</grp>
-	
-	<script>
-		InstallDriver("KDB75");
-		
-		class Main {
-		
-			var frn,kdb, sys, rep, frP;
-			var usuario, rol_usuario, suc_usuario, anio_contable,asterisco ;
-			
-			// Our Ctrl Vars
-			var cmdQuery, cuboQuery, ok, mensajeError, sucursal_id, proveedor_id, refer_id, resVal;
-			var fileSavePath, tip_ope_original/*220726*/;
-									
-			// Vars Parameters
-         var gen_doc, nat_doc, gpo_doc, tip_doc, tip_ope, paramProd;
-         var row_grid, err_data, err_empty, fech_original, view_adicionales;
-         
-			// Vart Reports
-			var cmd, xmlResQuery, strTmp;
-			var sucursal, fech_oper, tipo_auto, xmlPar;
-			
-			
-			fun Main() {
-				frn=new FRNT;
-				kdb=new KDB;
-				rep=new REP;
-				frP=new FRNTP;
-				sys=new SYS;
-				kdb.connect();
-				kdb.kde("KDE");
-				kdb.exec();
-				anio_contable = kdb.get("KDE","14");
-				usuario = frn.config("user","name");
-				rol_usuario = frn.config("user","role");
-				suc_usuario = frn.lib("libKepler","UserInfo(1)");
-				//fileSavePath = "C:\KE\JMM\TEST_DEVELOPS\K80";
-				fileSavePath = "C:\Basura";
-				asterisco = "*";
-
-				
-				row_grid = 0;
-				err_empty = 0;
-				err_data = 0;
-				
-				//frn.message("k_mov.modify : " & frn.getAtt("k_mov", "modify") & " ; k_mov.insdel : " & frn.getAtt("k_mov", "insdel") & " ; k_mov.nren : " & frn.getAtt("k_mov", "nren"), "Info Attribs - Before", "Aceptar");
-				Inicializa();				
-				ConfiguraControlesOpcion();
-				//frn.message("k_mov.modify : " & frn.getAtt("k_mov", "modify") & " ; k_mov.insdel : " & frn.getAtt("k_mov", "insdel") & " ; k_mov.nren : " & frn.getAtt("k_mov", "nren"), "Info Attribs - After", "Aceptar");
-				
-			} /* END Func Main() */
-
-			
-			fun ToDel() {
-			
-				var irow, icol;
-			
-				if (tip_ope &= "B") {
-					if ( strlen(frn.get("k_mov",-1,"modelo")) != 0 ) {
-						if ( strlen(frn.get("k_mov",-1,"borrar")) == 0 || frn.get("k_mov",-1,"borrar") &= "" ) {
-							frn.setX("X","k_mov",-1,"borrar");
-						} else {
-							frn.setX("","k_mov",-1,"borrar");
-						}
-					}			
-				}
-				
-				//TO TEST OPEN tbl_kdinf_upd.kpl
-				if ( tip_ope &= "C" && tip_ope &= tip_ope_original ) {
-					if ( strlen(frn.get("k_mov",-1,"invent")) != 0 ) {
-						var val_param;
-						val_param = frn.get("k_mov",-1,"invent");
-						frn.dialog("tbl_kdinf_upd", val_param, "C","CambiaSucursal()");
-						//CambiaSucursal();
-					}
-				}
-				
-			} /* END Func ToDel() */
-
-
-			fun Clean_Ctrls_Panel() {
-				frn.setX("", "k_descrip");
-				frn.setX("", "k_color_ext");
-				frn.setX("", "k_color_vest");
-				frn.setX("", "k_suc");
-				frn.setX("", "k_marca");
-				frn.setX("", "k_clase");
-				frn.setX("", "k_tipo_auto");
-				frn.setX("", "k_fecha_asig");
-				frn.setX("", "k_err");	
-			} /* END Func Clean_Ctrls_Panel() */
-			
-			
-			fun Get_Cat(imodo) {
-            
-				var suc_id, dato_id;
-				var win_tit, field_key, field_col, cmdQuery;
-            
-				if ( imodo <= 0 || imodo > 5 || tip_ope &! "A" ) {
-					// No es opcion de CAT Valida ...
-					return;
-				} 
-
-				win_tit = "";
-				field_key = "";
-				field_col = "";
-				cmdQuery = "";
-
-				if (imodo == 1) {
-					if (tip_ope &= "A") {
-						win_tit = "CAT Vehiculos - Nuevos";
-						field_key = "clave";
-						field_col = "modelo";
-						cmdQuery = "select C1 as clave, C2 as descripcion from keplersc.kdiv where c8 = 'N'";
-					}
-				
-				}
-  
-				if (imodo == 2) {
-					win_tit = "CAT Inventarios";
-					field_key = "clave";
-					field_col = "invent";
-					
-					dato_id = "";
-					if (tip_ope &= "A") { 
-						cmdQuery = "select C8 as campo from keplersc.kdiv where c1 = '" & frn.get("k_mov",-1,"modelo") & "' and c8 = 'N'";
-					} else {
-						cmdQuery = "select C8 as campo from keplersc.kdiv where c1 = '" & frn.get("k_mov",-1,"modelo") & "' and c8 = 'Z'";
-					}
-					rstXml(cuboQuery);
-					cuboQuery = frn.lib("libGeneral.kpl","EjecutarSqlSel",cmdQuery,"comaltasigcrud.Get_Cat_kdiv_c8()");
-					//frn.lib("libGeneral.kpl","FileSave",cuboQuery, fileSavePath & "\Get_Cat_Get_Cat_kdiv_c8()");
-					ok=getXmlAtt(cuboQuery,"ok");
-					if(ok &! "" && !ok){
-						mensajeError = getXmlAtt(cuboQuery,"native3");
-						mensajeError = frn.lib("libGeneral.kpl","ErrorBD",mensajeError);
-						frn.message(mensajeError,"Error","Aceptar");
-						return;
-					}
-					dato_id = getXmlAtt(cuboQuery,"r0", "campo");
-
-					cmdQuery = "select d.C1 as clave, d.C2 as descripcion from keplersc.kddinv d where d.c7 = '" & dato_id & "'";
-				}
-				         
-				if (imodo == 3) {
-					if ( frn.get("k_mov",-1,"anio") &! "--" && trim(frn.get("k_mov",-1,"anio")) &! "" ) {
-						win_tit = "CAT Colores Exteriores";
-						field_key = "clave";
-						field_col = "color";
-						cmdQuery = "select C3 as clave, C4 as descripcion from keplersc.kdice2 where c1 =  '" & frn.get("k_mov",-1,"modelo") & "'";
-					}
-				}			         
-
-				if (imodo == 4) {
-					if ( frn.get("k_mov",-1,"anio") &! "--" && trim(frn.get("k_mov",-1,"anio")) &! "" ) {
-						win_tit = "CAT Colores Vestiduras";
-						field_key = "clave";
-						field_col = "vest";
-						cmdQuery = "select C3 as clave, C4 as descripcion from keplersc.kdice3 where c1 =  '" & frn.get("k_mov",-1,"modelo") & "'";
-					}
-				}					         
-
-				if (imodo == 5) {
-					if ( frn.get("k_mov",-1,"anio") &! "--" && trim(frn.get("k_mov",-1,"anio")) &! "" ) {
-						win_tit = "CAT Sucursales";
-						field_key = "clave";
-						field_col = "suc";
-						cmdQuery = "select C1 as clave, C2 as descripcion from keplersc.kdms";
-					}
-				}	
-								          
-            if ( strlen(win_tit) > 0 && strlen(field_key) > 0 && strlen(field_col) > 0 && strlen(cmdQuery) > 0 ) {                            
-					frn.dialog("genlistasel", win_tit,cmdQuery, field_key,"k_mov",-1, field_col,"S");
-				}
-				
-			} /*END Func Get_Cat()*/
-
-		   fun Get_Cat_Data(imodo, icall) {
-		
-				var suc_id, dato_id;
-				var field_ori,field_dest, tbl, field_dscr;
-				var field_add, dato_id_add;
-				var field_dest_2, dato_id_2;
-				
-				if ( imodo < 0 || imodo > 5  || ( tip_ope &! "A" && icall != 2 ) ) {
-					// No es opcion de CAT Valida ...
-					return;
-				}
-				 
-				field_dscr = "";
-				field_ori = "";
-				field_dest = "";
-				tbl = "";
-				cmdQuery = "";
-				
-				dato_id = "";
-						
-				if (imodo == 1) {
-					field_dscr = "Modelo";
-					field_ori = "modelo";
-					field_dest = "descrip";
-					if ( tip_ope &= "A" ) {
-						tbl = "kdiv";
-						//cmdQuery = "select C2 as " & field_dest & " from keplersc." & tbl & " where c1 = '" & frn.get("k_mov",-1,field_ori) & "'";
-						cmdQuery = "select k.c1 as cve, k.c2 as " & field_dest & ", k.c4 as clase, tcl.c2 as clase_descr, k.c5 as marca, tmr.c2 as marca_descr, " & 
-							"k.c6 as codISAN, tis.c2 as codISAN_descr, k.c8 as tipo_auto from keplersc." & tbl & " k " & 
-							"left join keplersc.kdic tcl on k.c4 = tcl.c1 " & 
-							"left join keplersc.kdmarca tmr on k.c5 = tmr.c1 " &  
-							"left join keplersc.kdtisan tis on k.c6 = tis.c1 " & 
-							"where k.c1 = '" & frn.get("k_mov",-1,"modelo") & "' and k.c8 = 'N'";
-					} else {
-						tbl = "kdinf";
-						cmdQuery = "select k.c3 as cve, k.c4 as " & field_dest & ", k.c18 as clase, tcl.c2 as clase_descr, k.c17 as marca, tmr.c2 as marca_descr, " & 
-							"k.c20 as codISAN, tis.c2 as codISAN_descr, k.c21 as tipo_auto from keplersc." & tbl & " k " & 
-							"left join keplersc.kdic tcl on k.c18 = tcl.c1 " & 
-							"left join keplersc.kdmarca tmr on k.c17 = tmr.c1 " &  
-							"left join keplersc.kdtisan tis on k.c20 = tis.c1 " & 
-							"where k.c3 = '" & frn.get("k_mov",-1,"modelo") & "' and k.c2 = '" & frn.get("k_mov",-1,"invent") & "'";						
-					}
-				}
-
-				if ( tip_ope &= "A" ) {
-					if (imodo == 2) {
-						field_dscr = "Inventario";
-						field_ori = "invent";
-						field_dest = "anio";
-						tbl = "kddinv";
-						//cmdQuery = "select C3 as " & field_dest & " from keplersc." & tbl & " where c1 = '" & frn.get("k_mov",-1,field_ori) & "'"; 
-						cmdQuery = "select i.C3 as anio from keplersc.kddinv i inner join keplersc.kdiv k on k.c8 = i.c7 and k.c1 = '" & frn.get("k_mov",-1,"modelo") & "'" & 
-							" where i.c1 = '" & frn.get("k_mov",-1,field_ori) & "' and i.c7 = 'N'";
-					}
-				}				
-			
-				if (imodo == 3) {
-					field_dscr = "Color Exterior";
-					field_ori = "color";
-					field_dest = "color";
-					field_dest_2 = "descrip";
-					tbl = "kdice2";
-					if ( frn.get("k_mov",-1,"anio") &! "--" && trim(frn.get("k_mov",-1,"anio")) &! "" ) {
-						cmdQuery = "select C3 as " & field_dest & ", c4 as " & field_dest_2 & " from keplersc." & tbl & " where c1 =  '" & frn.get("k_mov",-1,"modelo") & "' and c3 = '" & frn.get("k_mov",-1,field_ori) & "'";
-					} else {
-						cmdQuery = "select C3 as " & field_dest & ", c4 as " & field_dest_2 & " from keplersc." & tbl & " where c1 =  '' and c3 = ''";
-					}
-				}				
-			
-
-				if (imodo == 4) {
-					field_dscr = "Color Vestidura";
-					field_ori = "vest";
-					field_dest = "vest";
-					field_dest_2 = "descrip";
-					tbl = "kdice3";
-					if ( frn.get("k_mov",-1,"anio") &! "--" && trim(frn.get("k_mov",-1,"anio")) &! "" ) {
-						cmdQuery = "select C3 as " & field_dest & ", c4 as " & field_dest_2 & " from keplersc." & tbl & " where c1 =  '" & frn.get("k_mov",-1,"modelo") & "' and c3 = '" & frn.get("k_mov",-1,field_ori) & "'";
-					} else {
-						cmdQuery = "select C3 as " & field_dest & ", c4 as " & field_dest_2 & " from keplersc." & tbl & " where c1 =  '' and c3 = ''";
-					}
-				}				
-
-				if (imodo == 5) {
-					field_dscr = "Sucursal";
-					field_ori = "suc";
-					field_dest = "suc";
-					field_dest_2 = "descrip";
-					tbl = "kdms";
-					if ( frn.get("k_mov",-1,"anio") &! "--" && trim(frn.get("k_mov",-1,"anio")) &! "" ) {
-						cmdQuery = "select C1 as " & field_dest & ", c2 as " & field_dest_2 &" from keplersc." & tbl & " where c1 = '" & frn.get("k_mov",-1,field_ori) & "'";
-					} else {
-						cmdQuery = "select C1 as " & field_dest & ", c2 as " & field_dest_2 &" from keplersc." & tbl & " where c1 = 'none!@?'";
-					}
-				}
-				
-				if (imodo == 0 && icall == 1) {
-					Eval_Data_Row(frn.getJ("k_mov"));
-				}
-				
-				if (icall == 2 && tip_ope &! "A") {
-					frn.setX(frn.get("k_mov",-1,"fech"), "k_fecha_asig");
-				}
-							
-				field_add = "";
-				if (imodo == 1) { field_add = "k_descrip"; }
-				if (imodo == 3) { field_add = "k_color_ext"; }
-				if (imodo == 4) { field_add = "k_color_vest"; }	
-				if (imodo == 5) { field_add = "k_suc"; }	
-							
-				if ( strlen(field_dscr) > 0 && strlen(field_ori) > 0 && strlen(field_dest) > 0 && strlen(tbl) > 0 && strlen(cmdQuery) > 0 ) {
-					if ( strlen(frn.get("k_mov",-1,field_ori)) != 0 ) {
-						//dato_id = frn.get("k_mov",-1,field_ori);
-						//cmdQuery = "select C2 as descrip from keplersc.kdiv where c1 = '" & dato_id & "'";
-						rstXml(cuboQuery);
-						cuboQuery = frn.lib("libGeneral.kpl","EjecutarSqlSel",cmdQuery,"comaltasigcrud.Get_Cat_" & tbl & "()");
-						frn.lib("libGeneral.kpl","FileSave",cuboQuery, fileSavePath & "\Get_Cat_" & tbl);
-						ok=getXmlAtt(cuboQuery,"ok");
-						if(ok &! "" && !ok){
-							dato_id = "--";
-							if (imodo == 1) {
-								dato_id = "[ERR] verificando " &  field_dscr & " ...";
-							}
-							frn.setX(dato_id,"k_mov",-1, field_dest);
-							mensajeError = getXmlAtt(cuboQuery,"native3");
-							mensajeError = frn.lib("libGeneral.kpl","ErrorBD",mensajeError);
-							frn.message(mensajeError,"Error","Aceptar");
-							dato_id_add = "";
-							if (imodo == 1) { dato_id_add = dato_id; }
-							if (imodo == 3 || imodo == 4 || imodo == 5) { dato_id_add = "[ERR] verificando " &  field_dscr & " ..."; }
-							//if (imodo == 4) { dato_id_add = "[ERR] verificando " &  field_dscr & " ..."; }
-							//if (imodo == 5) { dato_id_add = "[ERR] verificando " &  field_dscr & " ..."; }
-							if ( strlen(field_add) != 0 ) { frn.setX(dato_id_add, field_add); }
-							return;
-						}
-						dato_id = "";
-						dato_id = getXmlAtt(cuboQuery,"r0", field_dest);
-					   if( strlen(dato_id) == 0 ){
-							dato_id = "--";
-							if (imodo == 1 /*&& icall ==1*/) {
-								if ( strlen(frn.get("k_mov",-1,"invent")) > 0 ) {
-									frn.setX(dato_id, "k_mov",-1, "invent");
-									frn.setX(dato_id, "k_mov",-1, "anio");
-								}
-								if ( strlen(frn.get("k_mov",-1,"color")) > 0 ) {
-									frn.setX(dato_id, "k_mov",-1, "color");
-									frn.setX("Color Exterior No Valido ...", "k_color_ext");
-								}
-								if ( strlen(frn.get("k_mov",-1,"vest")) > 0 ) {
-									frn.setX(dato_id, "k_mov",-1, "vest");
-									frn.setX("Color Vestidura No Valido ...", "k_color_vest");
-								}
-								if ( strlen(frn.get("k_mov",-1,"suc")) > 0 ) {
-									frn.setX(dato_id, "k_mov",-1, "suc");
-									frn.setX("Sucursal No Valido ...", "k_suc");
-								}
-								if ( strlen(frn.get("k_mov",-1,"serie")) > 0 ) {
-									frn.setX("", "k_mov",-1, "serie");
-								}
-								if ( strlen(frn.get("k_mov",-1,"ref")) > 0 ) {
-									frn.setX("", "k_mov",-1, "ref");
-								}
-								//frn.setX("", "k_mov",-1, "ctrlerr");
-								frn.setX("", "k_marca");
-								frn.setX("", "k_clase");
-								frn.setX("", "k_tipo_auto");
-								frn.setX("", "k_fecha_asig");
-								frn.setX("", "k_err");				
-								dato_id = field_dscr & " No existe ...";
-							}
-							frn.setX(dato_id, "k_mov",-1, field_dest);
-			
-							dato_id_add = "";
-						   if (imodo == 1) { dato_id_add = dato_id; }
-							if (imodo == 3 || imodo == 4 || imodo == 5) { dato_id_add = field_dscr & " No Existe ..."; }
-							if ( strlen(field_add) != 0 ) { frn.setX(dato_id_add, field_add); }
-		
-							Eval_Data_Row(frn.getJ("k_mov"));
-		
-							return;
-						
-						} else {
-						
-							frn.setX(dato_id,"k_mov",-1,field_dest);
-							if (imodo == 1 && icall == 1) {
-								dato_id_2 = ""; 
-								frn.setX(dato_id_2, "k_mov",-1, "invent");
-								frn.setX(dato_id_2, "k_mov",-1, "anio");
-								frn.setX(dato_id_2, "k_mov",-1, "color");
-								frn.setX(dato_id_2, "k_mov",-1, "vest");
-								frn.setX(dato_id_2, "k_mov",-1, "suc");
-								frn.setX(dato_id_2, "k_mov",-1, "serie");
-							   frn.setX(dato_id_2, "k_mov",-1, "ref");
-								Clean_Ctrls_Panel();
-							}
-							
-							// Fill Data Panel of OBJs Adds 
-							if (imodo == 3 || imodo == 4  || imodo == 5) {
-								dato_id_2 = "";
-								dato_id_2 = getXmlAtt(cuboQuery,"r0", field_dest_2); 
-							}
-							if (imodo == 1) { dato_id_add = dato_id; }
-							if (imodo == 3 || imodo == 4 || imodo == 5) { dato_id_add = dato_id_2; }
-							if ( imodo == 1 || imodo == 3 || imodo == 4 || imodo == 5 ) { frn.setX(dato_id_add, field_add); }
-							// Fill Other Data Panel of OBJs Adds related to field : modelo
-							if (imodo == 1) { 
-								frn.setX(getXmlAtt(cuboQuery,"r0", "clase_descr"), "k_clase");
-								frn.setX(getXmlAtt(cuboQuery,"r0", "marca_descr"), "k_marca");
-								frn.setX(getXmlAtt(cuboQuery,"r0", "tipo_auto"), "k_tipo_auto");
-							}
-							
-							Eval_Data_Row(frn.getJ("k_mov"));
-						
-						}
-
-					} else {
-					
-						frn.setX(dato_id,"k_mov",-1,field_dest);
-	
-						dato_id_add = dato_id;
-						
-						if ( imodo == 1 ) {
-							frn.setX(dato_id, "k_mov",-1, "ctrlerr");
-							frn.setX(dato_id, "k_mov",-1, "invent");
-							frn.setX(dato_id, "k_mov",-1, "anio");
-							frn.setX(dato_id, "k_mov",-1, "color");
-							frn.setX(dato_id, "k_mov",-1, "vest");
-							frn.setX(dato_id, "k_mov",-1, "suc");
-							frn.setX(dato_id, "k_mov",-1, "serie");
-							frn.setX(dato_id, "k_mov",-1, "ref");
-							Clean_Ctrls_Panel();					
-						}
-						
-						if ( imodo == 1 || imodo == 3 || imodo == 4 || imodo == 5 ) { frn.setX(dato_id_add, field_add); }					
-						
-						Eval_Data_Row(frn.getJ("k_mov"));
-						
-					}
-				}
-		
-			} /*END Fun Get_Cat_Data()*/
-
-			fun Get_Data_Row() {
-				
-				var irow, icol;
-				
-				icol = frn.getI("k_mov");
-				irow = frn.getJ("k_mov");
-				
-				if ( row_grid != frn.getJ("k_mov") ) {
-				
-					//Eval_Data_Row(row_grid);
-					
-					row_grid = frn.getJ("k_mov");
-				
-					if ( strlen(frn.get("k_mov",-1,"modelo")) == 0 ) {
-						Clean_Ctrls_Panel();
-					} else { 
-						for (var i=0; i<=5; i++) {
-							if ( tip_ope &! "A" ) {
-								Get_Cat_Data(i,2);
-							} else {
-								Get_Cat_Data(i);
-							}
-						}
-						Eval_Data_Row(row_grid);
-					}
-		
-				}
-				
-				//frn.setX("REN " & irow + 1 & " , COL " & icol, "k_err");
-			   //frn.setPos("k_mov",-1, icol);	
-				
-			} /*END Func Get_Data_Row()*/
-
-			fun Eval_Data_Row(nRow, imodo) {
-				var ColIni, ColEnd, EvalCols, ErrText;
-				var FieldsList;
-				
-				if ( nRow == imodo && nRow != 0 ) { return -1; }
-				
-				if ( tip_ope &! "A" ) { return; }
-				
-				ColEnd = 10;
-				ColIni = 2;
-				EvalCols = ColEnd - ColIni + 1;
-				ErrText = "";
-			
-				err_empty = 0;
-				err_data = 0;
-				
-				FieldsList = "";
-				
-				// Evaluando vacios ...
-				for (var i=ColIni; i<=ColEnd; i++) {
-					if ( strlen( frn.get("k_mov", nRow, Get_Column(i) )) == 0 ) { err_empty = err_empty + 1; } 
-				}
-				
-				// Evaluando datos ...
-				for (var i=ColIni; i<=ColEnd; i++) {
-					if ( (i == 3 || i == 4 || i == 7 || i == 8 || i == 10) && frn.get("k_mov", nRow, Get_Column(i)) &= "--"  ) { err_data = err_data + 1; } 
-					if ( i == 5 && frn.get("k_mov", nRow, Get_Column(i)) &= "Modelo No existe ..."  ) { err_data = err_data + 1; } 
-				}				 
-				
-				if ( err_data > 0 ) { ErrText = ErrText & "Datos No Validos |  "; }	
-				if ( err_empty > 0 && err_empty < EvalCols ) { ErrText = ErrText & "Faltan Datos x Registrar |  "; }
-				
-				//if ( err_empty == EvalCols && err_data == 0 ) { return; }
-				if ( strlen( ErrText ) == 0 ) { 
-					frn.setX("", "k_err");
-					frn.setX("", "k_mov", nRow, "ctrlerr");
-					return -1; 
-				}
-				
-				frn.setX(ErrText, "k_err");
-				frn.setX("X", "k_mov", nRow, "ctrlerr");
-				return nRow;
-			
-			} /*END Func Eval_Data_Row()*/
-
-			fun Get_Column(imodo) {
-				var colName;
-				switch(imodo) { 
-					case 2: colName = "modelo";break; 
-					case 3: colName = "invent";break;
-					case 4: colName = "anio";break;
-					case 5: colName = "descrip";break;
-					case 6: colName = "serie";break;
-					case 7: colName = "color";break;
-					case 8: colName = "vest";break;
-					case 9: colName = "ref";break;
-					case 10: colName = "suc";break;
-					default: colName = "";break;
-				}
-				return colName;
-			} /*END Func Get_Column()*/
-
-
-			fun Cancela() {
-				CambiaSucursal();
-				Inicializa();
-				ConfiguraControlesOpcion();
-			} /* END Func Cancela() */
-			
-			
-			fun ModoBuscar(imodo, iview) {
-				tip_ope = "C";
-				frn.set("operacion", "CONSULTA");
-				if ( ( imodo == 1 || imodo == 2 ) && tip_ope_original &= "A" ) {
-					frn.set("k_fecha", fech_original);  
-				} else { 
-					LimpiaEncabezado();
-				}
-				ConfiguraControlesOpcion(imodo);
-				CambiaSucursal(imodo);
-				if (iview == 2) { 
-					if ( tip_ope_original &= "A" ) {
-						frn.setAtt("btn_view", "text", "Serie(s) sin registrarse por contar con Num. Inventario previo ...");
-					} else {
-						frn.setAtt("btn_view", "text", "Partidas que No se pudieron Cancelar ...");
-					}
-					frn.setAtt("btn_view", "visible", "Y"); 
-				} else {
-					frn.setAtt("btn_view", "visible", "N");
-				}
-			} /*END Func ModoBuscar()*/
-		
-		
-			fun btnviewclic() {
-				if (	strlen(view_adicionales) > 0 ) {
-					if ( tip_ope_original &= "A" ) {
-						frn.message("Partidas No Registradas x Duplicidad en Numero de Serie : " & "|" & view_adicionales, "Info !!! ", "Aceptar");
-					} else {
-						frn.message("Partidas No Canceladas : " & "|" & view_adicionales, "Info !!! ", "Aceptar");
-					}
-				}
-			} /*END Func btnviewclic()*/
-	
-		
-			fun Ejecuta() {
-
-				var xmlPantalla, strFecha, fecha, hora, strTmp, strHora, strMin, strMsg;
-				var resultado, mensaje, adicionales, folio;
-				var RowErr, iLim;
-				
-				//fecha = sys.date();
-				//hora = sys.time();
-				
-				resultado = "";
-				mensaje = "";
-				adicionales = "";
-				view_adicionales = "";
-				
-				if (tip_ope &= "A") { 
-			
-					// /* COMMMENTED TO TESTING BUSCAR AFTER ADD RECORD ...
-					RowErr = -1;
-					iLim = frn.N("k_mov") - 1;
-					if ( iLim == 0 ) {
-						frn.message("No hay registros a procesar ...", "Info !!! ", "Aceptar");
-						return;		
-					}
-					for (var i=0; i<=iLim ; i++) {
-						RowErr = Eval_Data_Row(i, iLim);
-						if ( RowErr != -1 ) { break; }
-					}
-					if ( RowErr != -1 ) {
-						frn.setPos("k_mov", RowErr, "ctrlerr");
-						frn.message("Se encontraron registros con errores.", "Info !!! ", "Aceptar");
-						return;
-					}
-					// */ // END COMMMENTED TO TESTING BUSCAR AFTER ADD RECORD ...
-						
-					
-					// /* COMMMENTED TO TESTING BUSCAR AFTER ADD RECORD ... 
-					
-					xmlPantalla = getXml(frn.dataPag()); //Obtener el xml de la pantalla;
-					
-					setXml(xmlPantalla,"k_mov","no_partidas", iLim);
-								
-					frn.lib("libGeneral.kpl","FileSave",xmlPantalla, fileSavePath & "\XmltoPostgres_ComAltaAsig_N");  // XmltoPostgres_OOA1A
-					
-					// */ // END COMMMENTED TO TESTING BUSCAR AFTER ADD RECORD ...
-					
-					
-					// /* COMMMENTED TO TESTING BUSCAR AFTER ADD RECORD ... 
-			
-					cmdQuery="SELECT * FROM keplersc.autos_com_asig_crud('<document>" & getXmlStr(xmlPantalla,"EOF:13_10") & "</document>')";
-					rstXml(cuboQuery);
-					cuboQuery= frn.lib("libGeneral.kpl","EjecutarSql",cmdQuery,"autos_com_asig_crud.Ejecuta");				
-
-					frn.lib("libGeneral.kpl","FileSave",cuboQuery, fileSavePath & "\xmlResultado_ComAltaAsig_N");  // xmlResultado_OOA1A
-					
-					// */ // END COMMMENTED TO TESTING BUSCAR AFTER ADD RECORD ... 
-							
-					 /*
-					resultado = "1";
-					mensaje = "Las partidas han sido registradas exitosamente ..." & "|" & "Testing Pipe separator";
-					//adicionales = "Testing Active Button ...";
-					 */
-					
-					// /*
-					resultado = getXml(cuboQuery,"resultado");
-					mensaje = getXml(cuboQuery,"mensaje");
-					adicionales = getXml(cuboQuery,"adicionales");
-					// */
-													
-					//if(resultado &= "1") {
-					if(resultado &= "1" || resultado &= "2") {
-					
-						if (resultado &= "1") {
-							frn.message("Resultado [" & resultado & "] ; " & mensaje, "Info !!! ", "Aceptar");
-						} else {
-							view_adicionales = adicionales;
-							frn.message("Resultado [" & resultado & "] ; " & mensaje & "|" & "Partidas No Registradas x Duplicidad en Numeros de Serie : " & "|" & adicionales , "Info !!! ", "Aceptar");
-						}
-											
-						if ( strlen(adicionales) > 0 ) {
-							ModoBuscar(2, 2);
-						} else {  
-							ModoBuscar(1, 1); // 220721 ... added 
-						}
-						
-					} else {
-						frn.message(mensaje, "Error", "Aceptar");
-					}
-
-				} /*End Alta*/ else {
-					if (tip_ope &= "B") {
-						/*Ini Baja*/
-						
-						// /* COMMMENTED TO TESTING BUSCAR AFTER ADD RECORD ...
-						RowErr = 0;
-						iLim = frn.N("k_mov") - 1;
-						if ( iLim == 0 ) {
-							frn.message("No hay registros a procesar ...", "Info !!! ", "Aceptar");
-							return;		
-						}
-						for (var i=0; i<=iLim ; i++) {
-							if ( frn.get("k_mov",i,"borrar") &= "X" ) { RowErr = RowErr + 1; }
-						}
-						if ( RowErr == 0 ) {
-							frn.setPos("k_mov", RowErr, "modelo");
-							Get_Data_Row();
-							frn.message("No Se encontraron registros a procesar [Cancelar].", "Info !!! ", "Aceptar");
-							return;
-						}
-						// */ // END COMMMENTED TO TESTING BUSCAR AFTER ADD RECORD ...
-				   
-				   
-						// /* COMMMENTED TO TESTING BUSCAR AFTER ADD RECORD ... 
-						
-						xmlPantalla = getXml(frn.dataPag()); //Obtener el xml de la pantalla;
-					
-						setXml(xmlPantalla,"k_mov","no_partidas", iLim);
-						
-						frn.lib("libGeneral.kpl","FileSave",xmlPantalla, fileSavePath & "\XmltoPostgres_ComBajaAsig_N");  // XmltoPostgres_OOB3
-					
-						// */ // END COMMMENTED TO TESTING BUSCAR AFTER ADD RECORD ... 
-					
-					
-						// /* COMMMENTED TO TESTING BUSCAR AFTER ADD RECORD ... 
-			
-						cmdQuery="SELECT * FROM keplersc.autos_com_asig_crud('<document>" & getXmlStr(xmlPantalla,"EOF:13_10") & "</document>')";
-						rstXml(cuboQuery);
-						cuboQuery= frn.lib("libGeneral.kpl","EjecutarSql",cmdQuery,"autos_com_asig_crud.Ejecuta");				
-
-						frn.lib("libGeneral.kpl","FileSave",cuboQuery, fileSavePath & "\xmlResultado_ComBajaAsig_N");  // xmlResultado_OOB3
-					
-						// */ // END COMMMENTED TO TESTING BUSCAR AFTER ADD RECORD ... 
-					
-					
-						/*
-						resultado = "2";
-						mensaje = "Las partidas han sido registradas exitosamente ..." & "|" & "Testing Pipe separator";
-						adicionales = "Testing Active Button ...";
-						*/
-					
-					
-						// /*
-						resultado = getXml(cuboQuery,"resultado");
-						mensaje = getXml(cuboQuery,"mensaje");
-						adicionales = getXml(cuboQuery,"adicionales");
-						// */
-					
-													
-						//if(resultado &= "1") {
-						if(resultado &= "1" || resultado &= "2") {
-					
-							if (resultado &= "1") {
-								frn.message("Resultado [" & resultado & "] ; " & mensaje, "Info !!! ", "Aceptar");
-							} else {
-								view_adicionales = adicionales;
-								frn.message("Resultado [" & resultado & "] ; " & mensaje & "|" & "Partidas No Canceladas : " & "|" & adicionales , "Info !!! ", "Aceptar");
-							}
-						
-							if ( strlen(adicionales) > 0 ) {
-								ModoBuscar(2, 2);
-							} else {  
-								ModoBuscar(1, 1); // 220721 ... added 
-							}
-						
-						} else {
-							frn.message(mensaje, "Error", "Aceptar");
-						}
-
-						// */
-						
-					} /*End Baja*/ else {
-
-						return;
-
-					}	/*End Consulta (for exception)*/ 
-				}
-				
-			} /* END Func Ejecuta() */
-						
-
-			fun Inicializa(){ //Inicializa los valores en Pantalla
-				// Our code
-				var fech_init, strFecha, strTmp,fecha; 
-
-				// Revisa y Carga en Variables los Parametros Recibidos en la corrida
-				if( frn.nParam() == 1 ){ //Se han mandado parametros a la pagina
-				   gen_doc=""; 
-               nat_doc=""; 
-               gpo_doc="";
-               tip_doc=""; 
-               paramProd="";
-				   tip_ope = trim(frn.param(0));
-               tip_ope_original = tip_ope; 
-            } else {
-					frn.message("Operacion no valida ...", "Mensaje","&Aceptar");
-					//frn.open("anuncios",4);
-					frn.open("index",4);
-					return;
-				}
-			
-				//frn.message("Parameters : " & frn.nParam() & " ; tip_ope : " & tip_ope, "Info Parameters", "Aceptar");
-							
-				if(tip_ope &= "A"){ //Alta
-					frn.set("operacion","ALTA - NUEVOS");
-				} else {
-					if(tip_ope &= "B"){ //Baja
-						frn.set("operacion","BAJA");
-					} else {
-						if(tip_ope &= "C"){ //Consulta
-							frn.set("operacion","CONSULTA");
-						} else {
-					      frn.message("Operacion no valida ...", "Mensaje","&Aceptar");
-							//frn.open("anuncios",4);
-							frn.open("index",4);
-							return;			
-						}
-					}
-				}
-								
-				LimpiaDatosDoc();
-				
-				if(tip_ope &! "A"){
-			
-					//Llenar combo sucursales
-					cmd = "select '['||c1||'] '||c2 as c2, c1 from keplersc.kdms";
-					if (rol_usuario &! "ADMINISTRADOR"  && rol_usuario &! "ADMINISTRATOR"){
-						cmd = cmd & " where c1='" & suc_usuario & "'";
-					}else {
-						if (suc_usuario &! asterisco && suc_usuario &! "" ){
-							cmd = cmd & " where c1='" & suc_usuario & "'";
-						}
-					}
-				
-					var cubo = frn.lib("libGeneral.kpl","EjecutarSqlSel",cmd,"srvcitacrud.Inicializa()");		
-					ok=getXmlAtt(cubo,"ok");
-					if(ok &! "" && !ok){
-						mensajeError = getXmlAtt(cubo,"native3");
-						mensajeError = frn.lib("libGeneral.kpl","ErrorBD",mensajeError);
-						frn.message(mensajeError,"Error","Aceptar");
-						return;
-					}
-					
-					frn.set("k_sucn",getXml(cubo));
-					
-					
-					CambiaSucursal();
-					
-				} else {
-					row_grid = 0;
-					err_empty = 0;
-					err_data = 0;			
-				}
-				
-				//strFecha = "2022-11-03"; // 4 Testing 
-				strFecha = sys.date();
-				
-				fech_init = strFecha;
-				frn.set("k_fecha", fech_init);
-				fech_original = frn.get("k_fecha");
-				
-			} /* END Func Inicializa() */
-			
-			
-			fun PadLeft(pText,pRelleno,pCaracterRelleno) {
-				var Resultado;
-				var pos_ini = pText;
-            var nReg = strlen(pText);
-            for (var cont = nReg; cont < pRelleno; cont++) {
-					Resultado = pCaracterRelleno & Resultado;
-            }
-            Resultado = Resultado & pText;                
-            return Resultado;
-         } /* END Func PadLeft() */
-
-
-			fun ConfiguraControlesOff() {
-				
-				frn.setAtt("suctxt", "visible", "N");
-				frn.setAtt("k_sucn", "visible", "N");
-				frn.setAtt("btn_view", "visible", "N");
-				
-				frn.setAtt("grid", "tit", "Items Asignaciones : ");
-				
-				frn.setAtt("k_mov", "modify", "N");
-				frn.setAtt("k_mov", "insdel", "N");
-				//frn.setAtt("k_mov", "nren", "fijo");
-				
-				//modify="Y" insdel="N" nren="fijo"
-
-			   frn.setAtt("k_fecha", "available", "N");
-			   
-			   //Code Added 2021208 
-			   frn.setAtt("k_fecha_F", "available", "N");
-			   frn.setAtt("k_fecha_F", "visible", "N");
-			   frn.setAtt("fechFtxt", "visible", "N");
-			   frn.setAtt("buscar", "visible", "N");
-				
-				frn.setAtt("k_mov", "modify", "N", "borrar");
-				frn.setAtt("k_mov", "visible", "N", "borrar");
-				frn.setAtt("k_mov", "modify", "N", "ctrlerr");
-				frn.setAtt("k_mov", "visible", "N", "ctrlerr");	
-				frn.setAtt("k_mov", "modify", "N", "modelo");
-				frn.setAtt("k_mov", "visible", "Y", "modelo");				
-				frn.setAtt("k_mov", "modify", "N", "invent");
-				frn.setAtt("k_mov", "visible", "Y", "invent");					
-				frn.setAtt("k_mov", "modify", "N", "anio");
-				frn.setAtt("k_mov", "visible", "Y", "anio");				
-				frn.setAtt("k_mov", "modify", "N", "descrip");
-				frn.setAtt("k_mov", "visible", "Y", "descrip");	
-				frn.setAtt("k_mov", "modify", "N", "serie");
-				frn.setAtt("k_mov", "visible", "Y", "serie");	
-				frn.setAtt("k_mov", "modify", "N", "color");
-				frn.setAtt("k_mov", "visible", "Y", "color");							
-				frn.setAtt("k_mov", "modify", "N", "vest");
-				frn.setAtt("k_mov", "visible", "Y", "vest");							
-				frn.setAtt("k_mov", "modify", "N", "ref");
-				frn.setAtt("k_mov", "visible", "Y", "ref");							
-				frn.setAtt("k_mov", "modify", "N", "suc");
-				frn.setAtt("k_mov", "visible", "Y", "suc");	
-				frn.setAtt("k_mov", "modify", "N", "fech");
-				frn.setAtt("k_mov", "visible", "N", "fech");								
-											
-				frn.setAtt("Imprimir", "visible", "N");
-				frn.setAtt("Cancelar", "visible", "N");
-				frn.setAtt("Aceptar", "visible", "N");
-								
-			} /* END Func ConfiguraControlesOff() */
-			
-			fun ConfiguraControlesOpcion(imodo) {
-			
-				ConfiguraControlesOff();
-
-				if(tip_ope &= "A"){ //Alta
-
-					frn.setAtt("suctxt", "visible", "N");
-					frn.setAtt("k_sucn", "visible", "N");
-					frn.setAtt("btn_view", "visible", "N");
-
-					frn.setAtt("k_fecha", "available", "N");
-					
-					frn.setAtt("grid", "tit", "Asignaciones :  <  [ F9 ] obtener valores de Catalogos  >");
-					
-					frn.setAtt("k_mov", "modify", "Y");
-					frn.setAtt("k_mov", "insdel", "Y");
-					//frn.setAtt("k_mov", "nren", "");
-						
-					frn.setAtt("k_mov", "modify", "N", "borrar");
-					frn.setAtt("k_mov", "visible", "N", "borrar");
-					frn.setAtt("k_mov", "modify", "N", "ctrlerr");
-					frn.setAtt("k_mov", "visible", "Y", "ctrlerr");					
-					frn.setAtt("k_mov", "modify", "Y", "modelo");
-					frn.setAtt("k_mov", "visible", "Y", "modelo");				
-					frn.setAtt("k_mov", "modify", "Y", "invent");
-					frn.setAtt("k_mov", "visible", "Y", "invent");					
-					frn.setAtt("k_mov", "modify", "N", "anio");
-					frn.setAtt("k_mov", "visible", "Y", "anio");				
-					frn.setAtt("k_mov", "modify", "N", "descrip");
-					frn.setAtt("k_mov", "visible", "Y", "descrip");	
-					frn.setAtt("k_mov", "modify", "Y", "serie");
-					frn.setAtt("k_mov", "visible", "Y", "serie");	
-					frn.setAtt("k_mov", "modify", "Y", "color");
-					frn.setAtt("k_mov", "visible", "Y", "color");							
-					frn.setAtt("k_mov", "modify", "Y", "vest");
-					frn.setAtt("k_mov", "visible", "Y", "vest");							
-					frn.setAtt("k_mov", "modify", "Y", "ref");
-					frn.setAtt("k_mov", "visible", "Y", "ref");							
-					frn.setAtt("k_mov", "modify", "Y", "suc");
-					frn.setAtt("k_mov", "visible", "Y", "suc");
-					frn.setAtt("k_mov", "modify", "N", "fech");
-					frn.setAtt("k_mov", "visible", "N", "fech");
-								
-					frn.setAtt("Imprimir", "visible", "N");
-					frn.setAtt("Cancelar", "visible", "Y");
-					frn.setAtt("Aceptar", "visible", "Y");					
-				
-				} else {
-				
-					if ( ( imodo == 1 || imodo == 2 ) && tip_ope_original &= "A" ) {
-						frn.setAtt("suctxt", "visible", "N");
-						frn.setAtt("k_sucn", "visible", "N");					
-					} else {
-						frn.setAtt("suctxt", "visible", "Y");
-						frn.setAtt("k_sucn", "visible", "Y");
-					}
-					
-					if ( imodo == 2 ) {
-						frn.setAtt("btn_view", "visible", "Y");
-					} else {
-						frn.setAtt("btn_view", "visible", "N");		
-					}
-					
-					if ( ( imodo == 1 || imodo == 2 ) && tip_ope_original &= "A" ) {
-						frn.set("k_fecha", fech_original);
-					} else {
-						frn.set("k_fecha", "");
-					}
-					frn.setAtt("k_fecha", "available", "N");
-					
-					if(tip_ope &= "B"){ //Baja
-					
-						frn.setAtt("grid", "tit", "Asignaciones :  <  DblClic para  marcar / desmarcar  Registros a Eliminar  >");
-						
-						frn.setAtt("k_mov", "modify", "N");
-						frn.setAtt("k_mov", "insdel", "N");
-						//frn.setAtt("k_mov", "nren", "fijo");
-				
-						frn.setAtt("k_mov", "modify", "N", "borrar");
-						frn.setAtt("k_mov", "visible", "Y", "borrar");
-						frn.setAtt("k_mov", "modify", "N", "ctrlerr");
-						frn.setAtt("k_mov", "visible", "N", "ctrlerr");		
-						frn.setAtt("k_mov", "modify", "N", "modelo");
-						frn.setAtt("k_mov", "visible", "Y", "modelo");				
-						frn.setAtt("k_mov", "modify", "N", "invent");
-						frn.setAtt("k_mov", "visible", "Y", "invent");					
-						frn.setAtt("k_mov", "modify", "N", "anio");
-						frn.setAtt("k_mov", "visible", "Y", "anio");				
-						frn.setAtt("k_mov", "modify", "N", "descrip");
-						frn.setAtt("k_mov", "visible", "Y", "descrip");	
-						frn.setAtt("k_mov", "modify", "N", "serie");
-						frn.setAtt("k_mov", "visible", "Y", "serie");	
-						frn.setAtt("k_mov", "modify", "N", "color");
-						frn.setAtt("k_mov", "visible", "Y", "color");							
-						frn.setAtt("k_mov", "modify", "N", "vest");
-						frn.setAtt("k_mov", "visible", "Y", "vest");							
-						frn.setAtt("k_mov", "modify", "N", "ref");
-						frn.setAtt("k_mov", "visible", "N", "ref");							
-						frn.setAtt("k_mov", "modify", "N", "suc");
-						frn.setAtt("k_mov", "visible", "N", "suc");
-						frn.setAtt("k_mov", "modify", "N", "fech");
-						frn.setAtt("k_mov", "visible", "Y", "fech");
-											
-						frn.setAtt("Imprimir", "visible", "N");
-						frn.setAtt("Cancelar", "visible", "Y");
-						frn.setAtt("Aceptar", "visible", "Y");							
-			
-					} else {
-					
-						if ( tip_ope &= tip_ope_original && tip_ope &= "C" ) { //Consulta
-						   frn.setAtt("grid", "tit", "Asignaciones :  <  DblClic para poder modificar el Registro del Inventario  >");
-						} else {   
-							frn.setAtt("grid", "tit", "Asignaciones del dia : ");
-						}
-					
-						frn.setAtt("k_mov", "modify", "N");
-						frn.setAtt("k_mov", "insdel", "N");
-						//frn.setAtt("k_mov", "nren", "fijo");
-						
-						//Code Added 2021208 
-						frn.setAtt("k_fecha_F", "available", "Y");
-						frn.setAtt("k_fecha_F", "visible", "Y");
-						frn.setAtt("fechFtxt", "visible", "Y");
-						frn.setAtt("buscar", "visible", "Y");
-						frn.setAtt("k_fecha", "available", "Y");
-								
-						frn.setAtt("k_mov", "modify", "N", "borrar");
-						frn.setAtt("k_mov", "visible", "N", "borrar");
-						frn.setAtt("k_mov", "modify", "N", "ctrlerr");
-						frn.setAtt("k_mov", "visible", "N", "ctrlerr");			
-						frn.setAtt("k_mov", "modify", "N", "modelo");
-						frn.setAtt("k_mov", "visible", "Y", "modelo");				
-						frn.setAtt("k_mov", "modify", "N", "invent");
-						frn.setAtt("k_mov", "visible", "Y", "invent");					
-						frn.setAtt("k_mov", "modify", "N", "anio");
-						frn.setAtt("k_mov", "visible", "Y", "anio");				
-						frn.setAtt("k_mov", "modify", "N", "descrip");
-						frn.setAtt("k_mov", "visible", "Y", "descrip");	
-						frn.setAtt("k_mov", "modify", "N", "serie");
-						frn.setAtt("k_mov", "visible", "Y", "serie");	
-						frn.setAtt("k_mov", "modify", "N", "color");
-						frn.setAtt("k_mov", "visible", "Y", "color");							
-						frn.setAtt("k_mov", "modify", "N", "vest");
-						frn.setAtt("k_mov", "visible", "Y", "vest");							
-						frn.setAtt("k_mov", "modify", "N", "ref");
-						frn.setAtt("k_mov", "visible", "N", "ref");
-							
-						if ( imodo == 1 || imodo == 2 )	{
-							frn.setAtt("k_mov", "modify", "N", "suc");
-							frn.setAtt("k_mov", "visible", "Y", "suc");					
-						}	else	{
-							frn.setAtt("k_mov", "modify", "N", "suc");
-							frn.setAtt("k_mov", "visible", "N", "suc");
-						}
-						
-						frn.setAtt("k_mov", "modify", "N", "fech");
-						frn.setAtt("k_mov", "visible", "Y", "fech");
-						
-						frn.setAtt("Imprimir", "visible", "Y");
-						frn.setAtt("Cancelar", "visible", "N");
-						frn.setAtt("Aceptar", "visible", "N");	
-
-					}
-				}
-
-			} /* END Func ConfiguraControlesOpcion() */
-
-			fun LimpiaDatosDoc {
-				// Limpia todos los objetos asociados a los detalles incluido el k_mov
-				frn.set("k_mov", "");
-			} /* END Func LimpiaDatosDoc() */
-			
-			fun LimpiaTotalesDoc {
-				// Limpia todos los objetos totalizadores asociados a los detalles y encabezados incluido el k_mov
-				// N.A.  para este formulario ...
-			} /* END Func LimpiaTotalesDoc() */
-			
-			fun LimpiaEncabezado {
-				// Limpia todos los objetos asociados al encabezado por lo regular predecesores al k_mov
-				frn.set("k_fecha", "");
-			} /* END Func LimpiaEncabezado() */
-			
-			fun CambiaSucursal(imodo) {
-				
-				// Added Condition 20221208
-				var fechtmp;
-				if ( imodo == 3 ) { fechtmp = frn.get("k_fecha"); }
-			
-				if (imodo != 1 && imodo != 2) {
-					LimpiaEncabezado();
-					if ( imodo != 3 ) { // Added Condition 20221208
-						frn.set("k_fecha",sys.date());
-					}
-				}
-				//ArmarRefDocto();
-				row_grid = -1;			
-				if (tip_ope &! tip_ope_original && imodo != 1 && imodo != 2) {
-					tip_ope = tip_ope_original;
-					ConfiguraControlesOpcion(); 
-					if(tip_ope &= "A"){ //Alta
-						frn.set("operacion","ALTA - NUEVOS");
-					} else {
-						if(tip_ope &= "B"){ //Baja
-							frn.set("operacion","BAJA");
-						} else {
-							if(tip_ope &= "C"){ //Consulta
-								frn.set("operacion","CONSULTA");
-							}
-						}
-					}
-				} 
-				
-				if(tip_ope &! "A" || imodo == 1 || imodo == 2){
-					if (imodo != 1 && imodo != 2) {
-						if ( imodo != 3 ) { // Added Condition 20221208
-							frn.set("k_fecha","");
-						} else {
-							frn.set("k_fecha",fechtmp );
-						}
-					}
-					MostrarDatosGrd(imodo);
-					frn.setPos("k_mov", 0, "modelo");
-					Get_Data_Row();
-				}
-				
-				/*
-				// Added Condition 20221208
-				if ( imodo == 3 ) { frn.set("k_fecha",fechtmp ); }	
-				*/
-				
-			} /* END Func CambiaSucursal() */
-			
-			
-			// Code Added 20221208 
-			fun Aplica_Filtro(imodo) {
-			
-				if ( strlen(frn.get("k_fecha")) > 0 && strlen(frn.get("k_fecha_F")) > 0 ) {
-					if ( fnDate("cmp", frn.get("k_fecha"), frn.get("k_fecha_F") ) == 1 ) { 
-						frn.message("El rango de fechas es incorrecto ...","Info","Aceptar");
-						return;
-					}
-				}
-			
-				if ( imodo == 1 ) { CambiaSucursal(3); }
-				
-				if ( imodo == 2 ) { Ejecuta_Reporte(); }
-				
-			} /* END Func Aplica_Filtro() */
-			
-			
-			
-		   fun MostrarDatosGrd(imodo) {
-		   
-				var xmlGrd;
-								
-				sucursal_id = frn.get("k_sucn",-1,1);
-		
-				LimpiaDatosDoc();
-								
-				if ( ( imodo == 1 || imodo == 2 ) && tip_ope_original &= "A" ) {
-					cmdQuery = "select '' as borrar, c3 as modelo, c2 as invent, c15 as anio, c4 as descrip, c5 as serie, c10 as color, c11 as vest, c1 as suc, to_char(c24, 'dd/mm/yyyy') as fech " &
-						"from keplersc.kdinf where c24 = '" & fech_original & "'" & " and c31 = 10 and upper(c21) = 'NUEVO' order by right(c2,length(c2)-5) desc, left(c2,4) desc ";
-				} else {
-				
-					// Code modified 20221208
-					cmdQuery = "select '' as borrar, c3 as modelo, c2 as invent, c15 as anio, c4 as descrip, c5 as serie, c10 as color, c11 as vest, c1 as suc, to_char(c24, 'dd/mm/yyyy') as fech " &
-						"from keplersc.kdinf where c1 = '" & sucursal_id & "'" & " and c31 = 10 and upper(c21) = 'NUEVO' ";
-					
-					if ( strlen(frn.get("k_fecha")) > 0 ) { 
-						cmdQuery = cmdQuery & " and c24 >= '" & frn.get("k_fecha") & "'"; 
-					}
-					
-					if ( strlen(frn.get("k_fecha_F")) > 0 ) { 
-						cmdQuery = cmdQuery & " and c24 <= '" & frn.get("k_fecha_F") & "'"; 
-					}
-						
-					cmdQuery = cmdQuery & "order by right(c2,length(c2)-5) desc, left(c2,4) desc ";
-					
-					//frn.lib("libGeneral.kpl","FileSave",cmdQuery, fileSavePath & "\query_mostrardatosgrid_asignvo");
-					
-				}
-				
-				rstXml(cuboQuery);
-				cuboQuery = frn.lib("libGeneral.kpl","EjecutarSqlSel",cmdQuery,"comaltasigcrud.mostrardatosgrid()");
-				frn.lib("libGeneral.kpl","FileSave",cuboQuery, fileSavePath & "\mostrardatosgrid");
-				ok=getXmlAtt(cuboQuery,"ok");
-				if(ok &! "" && !ok){
-					mensajeError = getXmlAtt(cuboQuery,"native3");
-					mensajeError = frn.lib("libGeneral.kpl","ErrorBD",mensajeError);
-					frn.message(mensajeError,"Error","Aceptar");
-					return;	
-				}
-				if(nXml(cuboQuery) == 0){
-					frn.message("Sin Registros por mostrar ...","Info","Aceptar");
-					frn.setPos("k_sucn");
-					return;	
-				}	
-				//frn.set(cuboQuery);
-			
-				rstXml(xmlGrd);
-				xmlGrd=frn.lib("libGeneral.kpl","CreaXmlDesdeTagRow",cuboQuery,"r","k_mov");
-				frn.lib("libGeneral.kpl","FileSave",xmlGrd, fileSavePath & "\mostrardatosgrid_parsed");
-				frn.setX(xmlGrd);
-				
-		   } /* END Func MostrarDatosGrd() */
-					   
-			
-			// ZONA	CODIGO REPORTE(S) 
-			
-			fun IniParams(){//Inicializa parametros de impresion. Pueden ser cambiados por el usuario final mediante menu: Archivo -> Configurar Pagina
-				frn.set("param_paper","letter");	//Tamano de papel predefinido:	"paper=letter|legal|size"
-				frn.set("param_sizeX","21.59","param_sizeY","27.94");	//Tamano de papel personalizado	"size=21.59,27.94cm"
-				frn.set("param_borderL","1.5","param_borderT","1.5","param_borderR","1.5","param_borderB","1.5");	//Margenes Izq,Arr,Der,Aba:	"border=1.5,1.5,1.5,1.5cm"
-				frn.set("param_Fx","1.0");	//Escala de impresion (1=100 por ciento)	"F=1,1"
-				frn.set("param_landscape","Y");	//Orientacion	de la hoja (Vertical="N", Horizontal="Y")	"landscape=N|Y"
-				frn.set("param_emp","L");	//Posicion de "Razon social"(izq,der,cen)	@emp=L|R|C"
-			}
-			
-			fun setRepPage() {//Establece los parametros finales de impresion.
-				var paper="paper=" & frn.get("param_paper");var size="size=" & frn.get("param_sizeX") & "," & frn.get("param_sizeY") & "cm";
-				var brdr="border=" & frn.get("param_borderL") & "," & frn.get("param_borderT") & "," & frn.get("param_borderR") & "," & frn.get("param_borderB") & "cm";
-				var fact="F=" & frn.get("param_Fx") & "," & frn.get("param_Fx");
-				var lndsp="landscape=" & frn.get("param_landscape");
-				var emp="@emp=" & frn.get("param_emp");
-				rep.page(paper,size,brdr,fact,lndsp,"color=Y","collate=Y","copies=1","pages=1,999","prompt=N",emp);
-			}
-			
-			fun Ejecuta_Reporte() {
-			
-				// Commented 20221208 
-				//IniParams(); //Inicializa paramtros de impresion entre otros
-			
-				//Code Added 20121208 
-				rstXml(xmlPar);
-				if ( tip_ope_original &= "C" && tip_ope &= "C" ) {
-					CambiaSucursal(3); 
-				}
-					
-				// fech_original = "2022-11-03"; // 4 Testing
-				// tip_ope_original = "A"; // 4 Testing
-				
-				//...(cubos de datos e informacion necesaria)
-				sucursal = frn.get("k_sucn",-1,1);
-				if ( tip_ope_original &= "A" && tip_ope &= "C" ) {
-					fech_oper = fech_original; // frn.get("k_fecha");
-				}
-				tipo_auto = "NUEVO";
-				
-				setXml(xmlPar,"document","sucursal_id",sucursal);
-				if ( tip_ope_original &= "A" && tip_ope &= "C" ) {
-					setXml(xmlPar,"document","fech_oper", fech_oper); 
-				}
-				setXml(xmlPar,"document","tipo_auto", tipo_auto);
-				
-				//code Added 20221208 by JMM
-				if ( strlen(frn.get("k_fecha")) > 0 ) { 
-					setXml(xmlPar,"document","fech_I", frn.get("k_fecha"));
-				}
-				if ( strlen(frn.get("k_fecha_F")) > 0 ) { 
-					setXml(xmlPar,"document","fech_F", frn.get("k_fecha_F"));
-				}	
-				
-				frn.lib("libGeneral.kpl","FileSave",xmlPar, fileSavePath & "\comaltasigcrudN_rpt_xmlPar");				
-				
-				cmd="select * from keplersc.autos_com_asig_rpt('"& getXmlStr(xmlPar,"EOF:13_10") &"')";
-				rstXml(xmlResQuery);
-				xmlResQuery = frn.lib("libGeneral.kpl","EjecutarSqlSel",cmd,"comaltasigcrudN_rpt.Ejecuta_Reporte()");
-				ok=getXmlAtt(xmlResQuery ,"ok");
-				if(ok &! "" && !ok){
-					mensajeError = getXmlAtt(xmlResQuery ,"native3");
-					mensajeError = frn.lib("libGeneral.kpl","ErrorBD",mensajeError);
-					frn.message(mensajeError,"Error","Aceptar");
-					return;
-				}		
-				frn.lib("libGeneral.kpl","FileSave",xmlResQuery, fileSavePath & "\comaltasigcrudN_rpt_xmlResQuery");				
-				
-				Reporte();
-			
-			} /* END Func Ejecuta_Reporte() */
-			
-			fun Reporte() {
-			
-				// Our Vars
-				var compania, titrep;
-				var contProd, contDet, tmpStr ,xmlDet, xmlCurDocto;
-				//var folio;
-				var p_fecha, var_fecha;
-				var p_subtotal, p_utilidad, p_perce, p_costo, p_total, p_iva;
-				var gt_subtotal, gt_utilidad, gt_perce, gt_costo, gt_total, gt_iva;
-				
-				//Obtener datos generales
-				kdb.kde("KDE");//Configuracion del servidor
-				kdb.exec();
-				compania = kdb.get("KDE","1");		
-			
-				// Se define el formato a usar y se liga a la variable del reporte "rep"	// Se define el formato a usar y se liga a la variable del reporte "rep"
-				rep.rst(); // 20121208
-				IniParams(); // 20121208
-				kdb.readPage("datFto","comasigcrudfto.kpl");
-				kdb.exec();
-				rep.source(kdb.get("datFto")); 
-				//rep.rst(); // 20121208
-				setRepPage();//Establece los parametros finales de impresion(rep.page(...);), pues pueden haber cambiado por el usuario 
-				//Da valor a los inputs del reporte(rep.set();), e indica la ejecucion de "grupos de renglones de impresion" (rep.exe();)
-				
-				if ( tip_ope_original &= "A" && tip_ope &= "C" ) {
-					titrep = "Asignacion del Inventario - Autos Nuevos"; 
-					rep.set("suctx","suc.");
-					rep.set("leyendatx","Del dia " & fech_original);
-				} else {
-					titrep = "Unidades Asignadas sin dar de Entrada la Compra - Autos Nuevos";
-					rep.set("leyendatx","Sucursal " & sucursal);
-				}
-				
-				
-				//code Added 20221208
-				if ( tip_ope_original &! "A" && tip_ope &= "C" ) {
-					if ( strlen(frn.get("k_fecha")) > 0 ) { 
-						rep.set("fechItx","Desde : ");
-						rep.set("fechI",frn.get("k_fecha"));
-					}
-					if ( strlen(frn.get("k_fecha_F")) > 0 ) { 
-						rep.set("fechFtx","Hasta : ");
-						rep.set("fechF",frn.get("k_fecha_F"));		
-					}	
-				}
-				
-				
-				rep.set("fecha",sys.date());
-				rep.set("hora",sys.time());
-				rep.set("nombreempresa",compania);
-				rep.set("tituloreporte",titrep);
-	
-				contProd=nXml(xmlResQuery);
-
-				rep.exe("encabezado");
-								
-				for(var x=0; x< contProd; x++){
-				
-					rep.set("invent",getXmlAtt(xmlResQuery,"r"&x,"c_cveinv"));
-					rep.set("modelo",getXmlAtt(xmlResQuery,"r"&x,"c_cvemod"));
-					rep.set("anio",getXmlAtt(xmlResQuery,"r"&x,"c_anio"));
-					rep.set("descrip",getXmlAtt(xmlResQuery,"r"&x,"c_descrip"));
-					rep.set("serie",getXmlAtt(xmlResQuery,"r"&x,"c_serie"));
-					rep.set("color",getXmlAtt(xmlResQuery,"r"&x,"c_color"));
-					rep.set("vest",getXmlAtt(xmlResQuery,"r"&x,"c_vest"));
-					if ( tip_ope_original &= "A" && tip_ope &= "C" ) {
-						rep.set("suc",getXmlAtt(xmlResQuery,"r"&x,"c_suc"));
-					}	
-					
-					rep.exe("detalle");
-
-				}
-				
-				//Modos de impresion 
-				rep.win(); //Muestra la vista previa de la impresion. A partir de la vista previa (Preprint) se decide si se imprime o no.
-				//rep.print("\\192.168.1.100\HPLaserJet"); //Envia el reporte directamente a una impresora, sin mostrar la vista previa.
-				//frn.dialog("_ks_printdlg"); //Permite seleccionar impresora destino y manda el reporte a impresion. No muestra la vista previa.
-				//rep.export("file:Reportes\\reporteHTML.html","format:html","inputs:N");//Guardara el reporte en la carpeta local k80\Reportes, con el nombre reporteHTML.html	
-			
-			
-			} /* END Func Reporte() */
-			
-			
-			// END : ZONA	CODIGO REPORTE(S)
-			
-			
-			
-			fun Dialog(iModo,pag,par0,par1,par2,par3,par4,par5,par6,par7,par8,par9,par10,par11,par12,par13,par14,par15){
-				/*iModo: 0)No hace mayor validaci?n. Siempre despliega la ventana. NO CONCATENA PREFIJO
-							1)Solo concatena el prefijo de la carpeta del lenguaje, no hace mayor validaci?n. Siempre despliega la ventana
-							2)Modo especial. Se valida que el campo indicado en par0 se puede modificar(El par0 puede ser una tabla, y par1 la columna)
-							3)Modo especial para p?ginas de operacion:Solo si se est? en alta o modifica despliega la pagina. Simpre agrega el prefijo del lenguaje
-				*/
-				var prefix=frn.lib("libKepler","langPrefix");
-				var page=prefix&pag;
-				var b_valido=1;
-				if(iModo==0)page=pag;
-				else if(iModo==2&&(strlen(par0)>0)){//Se toma el par0 como el objeto (o grid) al que se devolver? el resultado.
-					if( frn.getAtt(par0,"modify",par1) &= "N" ) b_valido=0;
-					if( frn.getAtt(par0,"available",par1) &= "N" ) b_valido=0;
-					if( frn.getAtt(par0,"visible",par1) &= "N" ) b_valido=0;
-				}
-				if(iModo==3)frn.dialog(page,par0,par1,par2,par3,par4,par5,par6,par7,par8,par9,par10,par11,par12,par13,par14,par15);
-			}	
-			 
-			
-						
-		} // End of class Main
-		
-	</script></pag>
+<?xml version="1.0" encoding="UTF-8"?><pag xmlns="www.kepler.com.mx/2003/KSchema" roles="" tit="T&#237;tulo">	<grp dim="1,-1,10,20" brdr="0,0" clr="0,58,112" bclr="192,205,213" fnt="Arial,16" unfont="0" OnEnter="Exit()">	<tab/><txt fnt=",22" clr="0,0,0">Compras Vehiculos - Asignacion - Nuevos</txt><br/>	<!-- dim="81,0" --> 	<tab/><hLine clr="0,0,0"/> 	<br/> 	<br/> 		<!-- <grp dim="46,9,7,12" -->				<!-- <grp dim="48,7,7,12" -->		<tab/>		<grp dim="45,7,7,12" bclr="236,240,243" fntClrBrdr="236,240,243" fntBrdr="Arial,18" hSpace="4" clrBrdr="0,58,112" brdr="0,5" fnt="Arial,16" tit="Par&#225;metros">			<!-- <br/> -->			<txt id="suctxt" visible="N">  Sucursal : </txt>			<cmb id="k_sucn" clr="64,64,64" clrBrdr="255,255,255" dim="52,36" bclr="255,255,255" brdr="2,0" fnt="Arial,16" Null="N" hk="S" OnChange="CambiaSucursal()" available="Y" modify="Y" visible="N"/><br/>			<sp n="1"/>			<bot id="btn_view" dim="50,0" brdr="5" text="Serie(s) sin registrarse por contar con Num. Inventario ..." visible="N" OnEnter="btnviewclic()"/>			<br/>		</grp>		<sp/>		<!-- dim="34,9,7,12" -->		<!-- dim="36,9,7,12" -->		<grp dim="39,7,7,12" bclr="236,240,243" fntClrBrdr="236,240,243" fntBrdr="Arial,18" hSpace="4" clrBrdr="0,58,112" brdr="0,5" fnt="Arial,16" tit="Detalle">			<sp n="1"/>			<inp id="operacion" dim="40,1" bclr="240,240,240" clr="64,64,64" clrBrdr="255,255,255" type="string" modify="N" fnt=",18b" just="C"/><tab/> <br/>			<br/>			<txt>  Fecha : </txt> 			<edt id="k_fecha" dim="15,1" type="date" fmt="DD/MM/CCYY" brdr="2,0" bclr="255,255,255" clr="64,64,64" page="_ks_fecha,k_fecha" OnF9="Dialog(3,_ks_fecha,k_fecha)" clrBrdr="255,255,255" available="N"/> 			<sp n="2"/>			<txt id="fechFtxt" visible="N"> Hasta : </txt> 			<edt id="k_fecha_F" dim="15,1" type="date" fmt="DD/MM/CCYY" brdr="2,0" bclr="255,255,255" clr="64,64,64" page="_ks_fecha,k_fecha_F" OnF9="Dialog(3,_ks_fecha,k_fecha_F)" clrBrdr="255,255,255" available="N" visible="N"/> 			<sp n="3"/>			<img id="buscar" dim="20,20" bPx="Y" brdr="0,1"  img="_20_Find.png" OnEnter="Aplica_Filtro(1)" available="Y" clrBrdr="0,0,0" visible="N"/>			<br/>		</grp>				<br/>		<br/> 		<tab/>		<grp id="grid_toyota" dim="85,20,7,12" bclr="236,240,243" fntClrBrdr="236,240,243" fntBrdr="Arial,18" hSpace="4" clrBrdr="0,58,112" brdr="0,5" fnt="Arial,16" tit="Asignaciones Toyota">			<sp n="1"/>			<bot id="bot_cargar_toyota" dim="25,0" brdr="5" text="Cargar asignados toyota" OnEnter="CargarToyota()"/>									<br/>			<sp n="1"/>						<tbl id="k_toyota" dim="119,12" bclr="236,240,243" clr="64,64,64" clrCur="255,255,255" clrHead="0,58,112" bclrHead="236,240,243" brdr="1,0" clrBrdr="64,64,64" fnt="Arial,15" hk="z"  				Reorder="N" modify="N" visible="Y" OnMouseD="Agregar_Asig()">				<col id="modelo" name="Modelo"  type="capital" nc="18" modify="N" available="Y" visible="Y"/>				<col id="invent" name="Invent." type="capital" modify="N" nc="10" visible="Y" available="Y"/>						<col id="anio" name="Anio" type="string" nc="4" modify="N" visible="Y" available="N"/>				<col id="serie" name="Serie" type="capital" nc="17" modify="N" available="Y" visible="Y"/>				<col id="color" name="Color" type="string" nc="10" modify="N" available="Y" visible="Y"/>				<col id="vest" name="Vest" type="string" nc="10" modify="N" available="Y" visible="Y"/>			</tbl>		</grp>		<br/><br/>		<tab/>					<grp id="grid" dim="85,20,7,12" bclr="236,240,243" fntClrBrdr="236,240,243" fntBrdr="Arial,18" hSpace="4" clrBrdr="0,58,112" brdr="0,5" fnt="Arial,16" tit="Asignaciones :  &lt;  [ F9 ] obtener valores de Catalogos  &gt;">			<sp n="1"/>			<tbl id="k_mov" dim="119,14" bclr="236,240,243" clr="64,64,64" clrCur="255,255,255" clrHead="0,58,112" bclrHead="236,240,243" brdr="1,0" clrBrdr="64,64,64" fnt="Arial,15" hk="z" OnMouseD="ToDel()" Reorder="N" modify="Y" insdel="Y" visible="Y">				<col id="borrar" name="Borrar" OnActive="Get_Data_Row()" type="capital" nc="1" modify="N" available="Y" visible="N"/>				<col id="ctrlerr" name="ERR" OnActive="Get_Data_Row()" type="capital" nc="1" modify="N" available="Y" visible="Y"/>				<col id="modelo" name="Modelo"  OnActive="Get_Data_Row()" type="capital" nc="18" modify="Y" available="Y" visible="Y" OnF9="Get_Cat(1)" OnChange="Get_Cat_Data(1, 1)"/>				<col id="invent" name="Invent." OnActive="Get_Data_Row()" type="capital" modify="Y" nc="10" visible="Y"  OnF9="Get_Cat(2)" OnChange="Get_Cat_Data(2, 1)"/>						<col id="anio" name="Anio" OnActive="Get_Data_Row()" type="string" nc="4" modify="N" OnF9="" OnMouseL="" OnChange="" OnActive="" OnF10="" visible="Y"/>				<col id="descrip" name="Descripcion" OnActive="Get_Data_Row()" type="string" nc="50" OnChange="" OnF9="" OnMouseL="" modify="N" available="Y" visible="Y"/>				<col id="serie" name="Serie" OnActive="Get_Data_Row()" type="capital" nc="17" modify="Y" available="Y" visible="Y" OnChange="Get_Cat_Data(0,1)"/>				<col id="color" name="Color" OnActive="Get_Data_Row()" type="string" nc="10" modify="Y" available="Y" visible="Y" OnF9="Get_Cat(3)" OnChange="Get_Cat_Data(3, 1)"/>				<col id="vest" name="Vest" OnActive="Get_Data_Row()" type="string" nc="10" modify="Y" available="Y" visible="Y" OnF9="Get_Cat(4)" OnChange="Get_Cat_Data(4, 1)"/>				<col id="ref" name="Referencia" OnActive="Get_Data_Row()" type="string" nc="12" OnF9="" OnF10="" modify="Y" visible="Y" OnChange="Get_Cat_Data(0,1)"/>						<col id="suc" name="Sucursal" OnActive="Get_Data_Row()" type="string" nc="5" OnF9="Get_Cat(5)" OnChange="Get_Cat_Data(5, 1)" modify="Y" visible="Y"/>				<col id="fech" name="fech asig" OnActive="Get_Data_Row()" type="string" nc="10" modify="N" visible="N"/>			</tbl>		</grp>					<br/>		<br/>		<tab/>		<grp dim="85,14,7,13" bclr="236,240,243" fntClrBrdr="236,240,243" fntBrdr="Arial,18" hSpace="4" clrBrdr="0,58,112" brdr="0,5" fnt="Arial,16" tit="Datos Registro Activo : ">				<sp/><txt>Descripcion : </txt>			<sp n="1"/>			<inp id="k_descrip" clr="64,64,64" clrBrdr="255,255,255"  dim="60,1" fnt="Arial,16" type="string" modify="N" available="N" nc="60" visible="Y"/>			<br/>			<sp n="1"/><txt>Color Exterior : </txt>			<inp id="k_color_ext" clr="64,64,64" clrBrdr="255,255,255"  dim="40,1" fnt="Arial,16" type="string" modify="N" available="N" nc="40" visible="Y"/>			<sp n="6"/> <txt>Color Vestiduras : </txt>			<sp n="1"/>			<inp id="k_color_vest" clr="64,64,64" clrBrdr="255,255,255"  dim="40,1" fnt="Arial,16" type="string" modify="N" available="N" nc="40" visible="Y"/>			<br/>			<sp n="1"/><txt>Marca : </txt>			<inp id="k_marca" clr="64,64,64" clrBrdr="255,255,255"  dim="30,1" fnt="Arial,16" type="string" modify="N" available="N" nc="70" visible="Y"/>			<txt>     Clase :  </txt>			<inp id="k_clase" clr="64,64,64" clrBrdr="255,255,255"  dim="30,1" fnt="Arial,16" type="string" modify="N" available="N" nc="70" visible="Y"/>			<sp n="1"/><txt>      Nuevo / Usado : </txt>			<inp id="k_tipo_auto" clr="64,64,64" clrBrdr="255,255,255"  dim="12,1" fnt="Arial,16" type="string" modify="N" available="N" nc="70" visible="Y"/>			<br/>			<sp/><txt>Fecha Asignacion : </txt> <sp/>				<inp id="k_fecha_asig" dim="15,1" type="string" clr="64,64,64" clrBrdr="255,255,255" available="N" nc="-1" modify="N" fmt="DD/MM/CCYY"/><txt>            Sucursal :  </txt>			<inp id="k_suc" dim="30,1" clr="64,64,64" clrBrdr="255,255,255" type="string" modify="N" available="N"/>			<br/>			<sp/><txt clr="132,20,7">Mensaje : </txt> 			<inp id="k_err" dim="107,1" clr="132,20,7" clrBrdr="255,255,255" type="string" modify="N" available="N" nc="-1"/>		<br/><tab n="17"/>						<sp n="14"/><tab n="10"/><sp/>		<!-- OnEnter="Ejecuta_Reporte()" -->		<img id="Imprimir" dim="40,40" bPx="Y" brdr="0,1"  img="_60_Print.png" OnEnter="Aplica_Filtro(2)" tooltip="Imprimir documento &lt;Ctrl&gt;&lt;T&gt;" available="Y" clrBrdr="0,0,0" visible="N" modify="Y"/>					<sp n="3"/>		<img id="Cancelar" dim="40,40" bPx="Y" brdr="0,1"  img="_60_DocRst.png" OnEnter="Cancela()" tooltip="Borrar datos" available="Y" clrBrdr="0,0,0" visible="Y"/>					<sp n="3"/>		<img id="Aceptar" dim="40,40" bPx="Y" brdr="0,1"  img="_60_DocNew.png" OnEnter="Ejecuta()" tooltip="Crear registros &lt;Ctrl&gt;&lt;T&gt;" available="Y" clrBrdr="0,0,0" visible="Y" modify="Y"/>					</grp>			<br/>							</grp>		<script>		InstallDriver("KDB75");				class Main {					var frn,kdb, sys, rep, frP;			var usuario, rol_usuario, suc_usuario, anio_contable,asterisco ;						// Our Ctrl Vars			var cmdQuery, cuboQuery, ok, mensajeError, sucursal_id, proveedor_id, refer_id, resVal;			var fileSavePath, tip_ope_original/*220726*/;												// Vars Parameters         var gen_doc, nat_doc, gpo_doc, tip_doc, tip_ope, paramProd;         var row_grid, err_data, err_empty, fech_original, view_adicionales;         			// Vart Reports			var cmd, xmlResQuery, strTmp;			var sucursal, fech_oper, tipo_auto, xmlPar;									fun Main() {				frn=new FRNT;				kdb=new KDB;				rep=new REP;				frP=new FRNTP;				sys=new SYS;				kdb.connect();				kdb.kde("KDE");				kdb.exec();				anio_contable = kdb.get("KDE","14");				usuario = frn.config("user","name");				rol_usuario = frn.config("user","role");				suc_usuario = frn.lib("libKepler","UserInfo(1)");				//fileSavePath = "C:\KE\JMM\TEST_DEVELOPS\K80";				fileSavePath = "C:\Basura";				asterisco = "*";								row_grid = 0;				err_empty = 0;				err_data = 0;								//frn.message("k_mov.modify : " & frn.getAtt("k_mov", "modify") & " ; k_mov.insdel : " & frn.getAtt("k_mov", "insdel") & " ; k_mov.nren : " & frn.getAtt("k_mov", "nren"), "Info Attribs - Before", "Aceptar");				Inicializa();								ConfiguraControlesOpcion();				//frn.message("k_mov.modify : " & frn.getAtt("k_mov", "modify") & " ; k_mov.insdel : " & frn.getAtt("k_mov", "insdel") & " ; k_mov.nren : " & frn.getAtt("k_mov", "nren"), "Info Attribs - After", "Aceptar");							} /* END Func Main() */			fun Agregar_Asig(){				var renMov,colMov,renAsig,colAsig,curMov,curAsig,totRenMov,totRenAsig;				var movSerie, asigInvent, asigAnio, asigSerie, asigModelo, asigColor, asigVest;				if (rol_usuario &! "ADMINISTRADOR"){					frn.message("Opcion deshabilitada","Mensaje","Aceptar");					return;				}				//Validar que la serie no esté ya seleccionada				totRenMov= frn.N("k_mov") - 1;				asigSerie=frn.get("k_toyota",-1,"serie");				for (var i=0; i<=totRenMov; i++) {					movSerie=frn.get("k_mov",i,"serie");					if (movSerie &= asigSerie){						frn.message("La serie ya se ha seleccionado","Error","Aceptar");						return;					}				}				renMov=totRenMov;				//Modelo				asigModelo=frn.get("k_toyota",-1,"modelo");				asigModelo=mid(asigModelo,0,4);				frn.setX(asigModelo,"k_mov",renMov,"modelo");				frn.setPos("k_mov","internal:N","ren:"&renMov);								Get_Cat_Data(1, 1);				//Invent				asigInvent=frn.get("k_toyota",-1,"invent");				frn.setX(asigInvent,"k_mov",renMov,"invent");								//Anio				asigAnio=frn.get("k_toyota",-1,"anio");				frn.setX(asigAnio,"k_mov",renMov,"anio");								//Serie				asigSerie=frn.get("k_toyota",-1,"serie");				frn.setX(asigSerie,"k_mov",renMov,"serie");								//Color exterior				asigColor=frn.get("k_toyota",-1,"color");				asigColor=mid(asigColor,0,4);				frn.setX(asigColor,"k_mov",renMov,"color");				Get_Cat_Data(3, 1);								//Color vest				asigVest=frn.get("k_toyota",-1,"vest");//				asigVest=mid(asigColor,0,4);				frn.setX(asigVest,"k_mov",renMov,"vest");				Get_Cat_Data(4, 1);											}						fun CargarToyota(){//				if (rol_usuario &! "ADMINISTRADOR"){//					frn.message("Opcion deshabilitada","Mensaje","Aceptar");//					return;//				}				cmdQuery = "select * from keplersc.obtener_asignados_toyota()";								rstXml(cuboQuery);				cuboQuery = frn.lib("libGeneral.kpl","EjecutarSqlSel",cmdQuery,"comaltasigcrud.mostrardatosgrid()");				frn.lib("libGeneral.kpl","FileSave",cuboQuery, fileSavePath & "\cuboAsignados");				ok=getXmlAtt(cuboQuery,"ok");				if(ok &! "" && !ok){					mensajeError = getXmlAtt(cuboQuery,"native3");					mensajeError = frn.lib("libGeneral.kpl","ErrorBD",mensajeError);					frn.message(mensajeError,"Error","Aceptar");					return;					}				if(nXml(cuboQuery) == 0){					frn.message("Sin Registros por mostrar ...","Info","Aceptar");					frn.setPos("k_sucn");					return;					}				frn.setX(cuboQuery,"k_toyota");					}						fun ToDel() {							var irow, icol;							if (tip_ope &= "B") {					if ( strlen(frn.get("k_mov",-1,"modelo")) != 0 ) {						if ( strlen(frn.get("k_mov",-1,"borrar")) == 0 || frn.get("k_mov",-1,"borrar") &= "" ) {							frn.setX("X","k_mov",-1,"borrar");						} else {							frn.setX("","k_mov",-1,"borrar");						}					}							}								//TO TEST OPEN tbl_kdinf_upd.kpl				if ( tip_ope &= "C" && tip_ope &= tip_ope_original ) {					if ( strlen(frn.get("k_mov",-1,"invent")) != 0 ) {						var val_param;						val_param = frn.get("k_mov",-1,"invent");						frn.dialog("tbl_kdinf_upd", val_param, "C","CambiaSucursal()");						//CambiaSucursal();					}				}							} /* END Func ToDel() */			fun Clean_Ctrls_Panel() {				frn.setX("", "k_descrip");				frn.setX("", "k_color_ext");				frn.setX("", "k_color_vest");				frn.setX("", "k_suc");				frn.setX("", "k_marca");				frn.setX("", "k_clase");				frn.setX("", "k_tipo_auto");				frn.setX("", "k_fecha_asig");				frn.setX("", "k_err");				} /* END Func Clean_Ctrls_Panel() */									fun Get_Cat(imodo) {            				var suc_id, dato_id;				var win_tit, field_key, field_col, cmdQuery;            				if ( imodo <= 0 || imodo > 5 || tip_ope &! "A" ) {					// No es opcion de CAT Valida ...					return;				} 				win_tit = "";				field_key = "";				field_col = "";				cmdQuery = "";				if (imodo == 1) {					if (tip_ope &= "A") {						win_tit = "CAT Vehiculos - Nuevos";						field_key = "clave";						field_col = "modelo";						cmdQuery = "select C1 as clave, C2 as descripción from keplersc.kdiv where c8 = 'N'";					}								}  				if (imodo == 2) {					win_tit = "CAT Inventarios";					field_key = "clave";					field_col = "invent";										dato_id = "";					if (tip_ope &= "A") { 						cmdQuery = "select C8 as campo from keplersc.kdiv where c1 = '" & frn.get("k_mov",-1,"modelo") & "' and c8 = 'N'";					} else {						cmdQuery = "select C8 as campo from keplersc.kdiv where c1 = '" & frn.get("k_mov",-1,"modelo") & "' and c8 = 'Z'";					}					rstXml(cuboQuery);					cuboQuery = frn.lib("libGeneral.kpl","EjecutarSqlSel",cmdQuery,"comaltasigcrud.Get_Cat_kdiv_c8()");					//frn.lib("libGeneral.kpl","FileSave",cuboQuery, fileSavePath & "\Get_Cat_Get_Cat_kdiv_c8()");					ok=getXmlAtt(cuboQuery,"ok");					if(ok &! "" && !ok){						mensajeError = getXmlAtt(cuboQuery,"native3");						mensajeError = frn.lib("libGeneral.kpl","ErrorBD",mensajeError);						frn.message(mensajeError,"Error","Aceptar");						return;					}					dato_id = getXmlAtt(cuboQuery,"r0", "campo");					cmdQuery = "select d.C1 as clave, d.C2 as descripción from keplersc.kddinv d where d.c7 = '" & dato_id & "'";				}				         				if (imodo == 3) {					if ( frn.get("k_mov",-1,"anio") &! "--" && trim(frn.get("k_mov",-1,"anio")) &! "" ) {						win_tit = "CAT Colores Exteriores";						field_key = "clave";						field_col = "color";						cmdQuery = "select C3 as clave, C4 as descripción from keplersc.kdice2 where c1 =  '" & frn.get("k_mov",-1,"modelo") & "'";					}				}			         				if (imodo == 4) {					if ( frn.get("k_mov",-1,"anio") &! "--" && trim(frn.get("k_mov",-1,"anio")) &! "" ) {						win_tit = "CAT Colores Vestiduras";						field_key = "clave";						field_col = "vest";						cmdQuery = "select C3 as clave, C4 as descripción from keplersc.kdice3 where c1 =  '" & frn.get("k_mov",-1,"modelo") & "'";					}				}					         				if (imodo == 5) {					if ( frn.get("k_mov",-1,"anio") &! "--" && trim(frn.get("k_mov",-1,"anio")) &! "" ) {						win_tit = "CAT Sucursales";						field_key = "clave";						field_col = "suc";						cmdQuery = "select C1 as clave, C2 as descripción from keplersc.kdms";					}				}									                      if ( strlen(win_tit) > 0 && strlen(field_key) > 0 && strlen(field_col) > 0 && strlen(cmdQuery) > 0 ) {                            					frn.dialog("genlistasel", win_tit,cmdQuery, field_key,"k_mov",-1, field_col,"S");				}							} /*END Func Get_Cat()*/		   fun Get_Cat_Data(imodo, icall) {						var suc_id, dato_id;				var field_ori,field_dest, tbl, field_dscr;				var field_add, dato_id_add;				var field_dest_2, dato_id_2;								if ( imodo < 0 || imodo > 5  || ( tip_ope &! "A" && icall != 2 ) ) {					// No es opcion de CAT Valida ...					return;				}				 				field_dscr = "";				field_ori = "";				field_dest = "";				tbl = "";				cmdQuery = "";								dato_id = "";										if (imodo == 1) {					field_dscr = "Modelo";					field_ori = "modelo";					field_dest = "descrip";					if ( tip_ope &= "A" ) {						tbl = "kdiv";						//cmdQuery = "select C2 as " & field_dest & " from keplersc." & tbl & " where c1 = '" & frn.get("k_mov",-1,field_ori) & "'";						cmdQuery = "select k.c1 as cve, k.c2 as " & field_dest & ", k.c4 as clase, tcl.c2 as clase_descr, k.c5 as marca, tmr.c2 as marca_descr, " & 							"k.c6 as codISAN, tis.c2 as codISAN_descr, k.c8 as tipo_auto from keplersc." & tbl & " k " & 							"left join keplersc.kdic tcl on k.c4 = tcl.c1 " & 							"left join keplersc.kdmarca tmr on k.c5 = tmr.c1 " &  							"left join keplersc.kdtisan tis on k.c6 = tis.c1 " & 							"where k.c1 = '" & frn.get("k_mov",-1,"modelo") & "' and k.c8 = 'N'";					} else {						tbl = "kdinf";						cmdQuery = "select k.c3 as cve, k.c4 as " & field_dest & ", k.c18 as clase, tcl.c2 as clase_descr, k.c17 as marca, tmr.c2 as marca_descr, " & 							"k.c20 as codISAN, tis.c2 as codISAN_descr, k.c21 as tipo_auto from keplersc." & tbl & " k " & 							"left join keplersc.kdic tcl on k.c18 = tcl.c1 " & 							"left join keplersc.kdmarca tmr on k.c17 = tmr.c1 " &  							"left join keplersc.kdtisan tis on k.c20 = tis.c1 " & 							"where k.c3 = '" & frn.get("k_mov",-1,"modelo") & "' and k.c2 = '" & frn.get("k_mov",-1,"invent") & "'";											}				}				if ( tip_ope &= "A" ) {					if (imodo == 2) {						field_dscr = "Inventario";						field_ori = "invent";						field_dest = "anio";						tbl = "kddinv";						//cmdQuery = "select C3 as " & field_dest & " from keplersc." & tbl & " where c1 = '" & frn.get("k_mov",-1,field_ori) & "'"; 						cmdQuery = "select i.C3 as anio from keplersc.kddinv i inner join keplersc.kdiv k on k.c8 = i.c7 and k.c1 = '" & frn.get("k_mov",-1,"modelo") & "'" & 							" where i.c1 = '" & frn.get("k_mov",-1,field_ori) & "' and i.c7 = 'N'";					}				}											if (imodo == 3) {					field_dscr = "Color Exterior";					field_ori = "color";					field_dest = "color";					field_dest_2 = "descrip";					tbl = "kdice2";					if ( frn.get("k_mov",-1,"anio") &! "--" && trim(frn.get("k_mov",-1,"anio")) &! "" ) {						cmdQuery = "select C3 as " & field_dest & ", c4 as " & field_dest_2 & " from keplersc." & tbl & " where c1 =  '" & frn.get("k_mov",-1,"modelo") & "' and c3 = '" & frn.get("k_mov",-1,field_ori) & "'";					} else {						cmdQuery = "select C3 as " & field_dest & ", c4 as " & field_dest_2 & " from keplersc." & tbl & " where c1 =  '' and c3 = ''";					}				}											if (imodo == 4) {					field_dscr = "Color Vestidura";					field_ori = "vest";					field_dest = "vest";					field_dest_2 = "descrip";					tbl = "kdice3";					if ( frn.get("k_mov",-1,"anio") &! "--" && trim(frn.get("k_mov",-1,"anio")) &! "" ) {						cmdQuery = "select C3 as " & field_dest & ", c4 as " & field_dest_2 & " from keplersc." & tbl & " where c1 =  '" & frn.get("k_mov",-1,"modelo") & "' and c3 = '" & frn.get("k_mov",-1,field_ori) & "'";					} else {						cmdQuery = "select C3 as " & field_dest & ", c4 as " & field_dest_2 & " from keplersc." & tbl & " where c1 =  '' and c3 = ''";					}				}								if (imodo == 5) {					field_dscr = "Sucursal";					field_ori = "suc";					field_dest = "suc";					field_dest_2 = "descrip";					tbl = "kdms";					if ( frn.get("k_mov",-1,"anio") &! "--" && trim(frn.get("k_mov",-1,"anio")) &! "" ) {						cmdQuery = "select C1 as " & field_dest & ", c2 as " & field_dest_2 &" from keplersc." & tbl & " where c1 = '" & frn.get("k_mov",-1,field_ori) & "'";					} else {						cmdQuery = "select C1 as " & field_dest & ", c2 as " & field_dest_2 &" from keplersc." & tbl & " where c1 = 'none!@?'";					}				}								if (imodo == 0 && icall == 1) {					Eval_Data_Row(frn.getJ("k_mov"));				}								if (icall == 2 && tip_ope &! "A") {					frn.setX(frn.get("k_mov",-1,"fech"), "k_fecha_asig");				}											field_add = "";				if (imodo == 1) { field_add = "k_descrip"; }				if (imodo == 3) { field_add = "k_color_ext"; }				if (imodo == 4) { field_add = "k_color_vest"; }					if (imodo == 5) { field_add = "k_suc"; }												if ( strlen(field_dscr) > 0 && strlen(field_ori) > 0 && strlen(field_dest) > 0 && strlen(tbl) > 0 && strlen(cmdQuery) > 0 ) {					if ( strlen(frn.get("k_mov",-1,field_ori)) != 0 ) {						//dato_id = frn.get("k_mov",-1,field_ori);						//cmdQuery = "select C2 as descrip from keplersc.kdiv where c1 = '" & dato_id & "'";						rstXml(cuboQuery);						cuboQuery = frn.lib("libGeneral.kpl","EjecutarSqlSel",cmdQuery,"comaltasigcrud.Get_Cat_" & tbl & "()");						frn.lib("libGeneral.kpl","FileSave",cuboQuery, fileSavePath & "\Get_Cat_" & tbl);						ok=getXmlAtt(cuboQuery,"ok");						if(ok &! "" && !ok){							dato_id = "--";							if (imodo == 1) {								dato_id = "[ERR] verificando " &  field_dscr & " ...";							}							frn.setX(dato_id,"k_mov",-1, field_dest);							mensajeError = getXmlAtt(cuboQuery,"native3");							mensajeError = frn.lib("libGeneral.kpl","ErrorBD",mensajeError);							frn.message(mensajeError,"Error","Aceptar");							dato_id_add = "";							if (imodo == 1) { dato_id_add = dato_id; }							if (imodo == 3 || imodo == 4 || imodo == 5) { dato_id_add = "[ERR] verificando " &  field_dscr & " ..."; }							//if (imodo == 4) { dato_id_add = "[ERR] verificando " &  field_dscr & " ..."; }							//if (imodo == 5) { dato_id_add = "[ERR] verificando " &  field_dscr & " ..."; }							if ( strlen(field_add) != 0 ) { frn.setX(dato_id_add, field_add); }							return;						}						dato_id = "";						dato_id = getXmlAtt(cuboQuery,"r0", field_dest);					   if( strlen(dato_id) == 0 ){							dato_id = "--";							if (imodo == 1 /*&& icall ==1*/) {								if ( strlen(frn.get("k_mov",-1,"invent")) > 0 ) {									frn.setX(dato_id, "k_mov",-1, "invent");									frn.setX(dato_id, "k_mov",-1, "anio");								}								if ( strlen(frn.get("k_mov",-1,"color")) > 0 ) {									frn.setX(dato_id, "k_mov",-1, "color");									frn.setX("Color Exterior No Valido ...", "k_color_ext");								}								if ( strlen(frn.get("k_mov",-1,"vest")) > 0 ) {									frn.setX(dato_id, "k_mov",-1, "vest");									frn.setX("Color Vestidura No Valido ...", "k_color_vest");								}								if ( strlen(frn.get("k_mov",-1,"suc")) > 0 ) {									frn.setX(dato_id, "k_mov",-1, "suc");									frn.setX("Sucursal No Valido ...", "k_suc");								}								if ( strlen(frn.get("k_mov",-1,"serie")) > 0 ) {									frn.setX("", "k_mov",-1, "serie");								}								if ( strlen(frn.get("k_mov",-1,"ref")) > 0 ) {									frn.setX("", "k_mov",-1, "ref");								}								//frn.setX("", "k_mov",-1, "ctrlerr");								frn.setX("", "k_marca");								frn.setX("", "k_clase");								frn.setX("", "k_tipo_auto");								frn.setX("", "k_fecha_asig");								frn.setX("", "k_err");												dato_id = field_dscr & " No existe ...";							}							frn.setX(dato_id, "k_mov",-1, field_dest);										dato_id_add = "";						   if (imodo == 1) { dato_id_add = dato_id; }							if (imodo == 3 || imodo == 4 || imodo == 5) { dato_id_add = field_dscr & " No Existe ..."; }							if ( strlen(field_add) != 0 ) { frn.setX(dato_id_add, field_add); }									Eval_Data_Row(frn.getJ("k_mov"));									return;												} else {													frn.setX(dato_id,"k_mov",-1,field_dest);							if (imodo == 1 && icall == 1) {								dato_id_2 = ""; 								frn.setX(dato_id_2, "k_mov",-1, "invent");								frn.setX(dato_id_2, "k_mov",-1, "anio");								frn.setX(dato_id_2, "k_mov",-1, "color");								frn.setX(dato_id_2, "k_mov",-1, "vest");								frn.setX(dato_id_2, "k_mov",-1, "suc");								frn.setX(dato_id_2, "k_mov",-1, "serie");							   frn.setX(dato_id_2, "k_mov",-1, "ref");								Clean_Ctrls_Panel();							}														// Fill Data Panel of OBJs Adds 							if (imodo == 3 || imodo == 4  || imodo == 5) {								dato_id_2 = "";								dato_id_2 = getXmlAtt(cuboQuery,"r0", field_dest_2); 							}							if (imodo == 1) { dato_id_add = dato_id; }							if (imodo == 3 || imodo == 4 || imodo == 5) { dato_id_add = dato_id_2; }							if ( imodo == 1 || imodo == 3 || imodo == 4 || imodo == 5 ) { frn.setX(dato_id_add, field_add); }							// Fill Other Data Panel of OBJs Adds related to field : modelo							if (imodo == 1) { 								frn.setX(getXmlAtt(cuboQuery,"r0", "clase_descr"), "k_clase");								frn.setX(getXmlAtt(cuboQuery,"r0", "marca_descr"), "k_marca");								frn.setX(getXmlAtt(cuboQuery,"r0", "tipo_auto"), "k_tipo_auto");							}														Eval_Data_Row(frn.getJ("k_mov"));												}					} else {											frn.setX(dato_id,"k_mov",-1,field_dest);							dato_id_add = dato_id;												if ( imodo == 1 ) {							frn.setX(dato_id, "k_mov",-1, "ctrlerr");							frn.setX(dato_id, "k_mov",-1, "invent");							frn.setX(dato_id, "k_mov",-1, "anio");							frn.setX(dato_id, "k_mov",-1, "color");							frn.setX(dato_id, "k_mov",-1, "vest");							frn.setX(dato_id, "k_mov",-1, "suc");							frn.setX(dato_id, "k_mov",-1, "serie");							frn.setX(dato_id, "k_mov",-1, "ref");							Clean_Ctrls_Panel();											}												if ( imodo == 1 || imodo == 3 || imodo == 4 || imodo == 5 ) { frn.setX(dato_id_add, field_add); }																	Eval_Data_Row(frn.getJ("k_mov"));											}				}					} /*END Fun Get_Cat_Data()*/			fun Get_Data_Row() {								var irow, icol;								icol = frn.getI("k_mov");				irow = frn.getJ("k_mov");								if ( row_grid != frn.getJ("k_mov") ) {									//Eval_Data_Row(row_grid);										row_grid = frn.getJ("k_mov");									if ( strlen(frn.get("k_mov",-1,"modelo")) == 0 ) {						Clean_Ctrls_Panel();					} else { 						for (var i=0; i<=5; i++) {							if ( tip_ope &! "A" ) {								Get_Cat_Data(i,2);							} else {								Get_Cat_Data(i);							}						}						Eval_Data_Row(row_grid);					}						}								//frn.setX("REN " & irow + 1 & " , COL " & icol, "k_err");			   //frn.setPos("k_mov",-1, icol);								} /*END Func Get_Data_Row()*/			fun Eval_Data_Row(nRow, imodo) {				var ColIni, ColEnd, EvalCols, ErrText;				var FieldsList;								if ( nRow == imodo && nRow != 0 ) { return -1; }								if ( tip_ope &! "A" ) { return; }								ColEnd = 10;				ColIni = 2;				EvalCols = ColEnd - ColIni + 1;				ErrText = "";							err_empty = 0;				err_data = 0;								FieldsList = "";								// Evaluando vacios ...				for (var i=ColIni; i<=ColEnd; i++) {					if ( strlen( frn.get("k_mov", nRow, Get_Column(i) )) == 0 ) { err_empty = err_empty + 1; } 				}								// Evaluando datos ...				for (var i=ColIni; i<=ColEnd; i++) {					if ( (i == 3 || i == 4 || i == 7 || i == 8 || i == 10) && frn.get("k_mov", nRow, Get_Column(i)) &= "--"  ) { err_data = err_data + 1; } 					if ( i == 5 && frn.get("k_mov", nRow, Get_Column(i)) &= "Modelo No existe ..."  ) { err_data = err_data + 1; } 				}				 								if ( err_data > 0 ) { ErrText = ErrText & "Datos No Validos |  "; }					if ( err_empty > 0 && err_empty < EvalCols ) { ErrText = ErrText & "Faltan Datos x Registrar |  "; }								//if ( err_empty == EvalCols && err_data == 0 ) { return; }				if ( strlen( ErrText ) == 0 ) { 					frn.setX("", "k_err");					frn.setX("", "k_mov", nRow, "ctrlerr");					return -1; 				}								frn.setX(ErrText, "k_err");				frn.setX("X", "k_mov", nRow, "ctrlerr");				return nRow;						} /*END Func Eval_Data_Row()*/			fun Get_Column(imodo) {				var colName;				switch(imodo) { 					case 2: colName = "modelo";break; 					case 3: colName = "invent";break;					case 4: colName = "anio";break;					case 5: colName = "descrip";break;					case 6: colName = "serie";break;					case 7: colName = "color";break;					case 8: colName = "vest";break;					case 9: colName = "ref";break;					case 10: colName = "suc";break;					default: colName = "";break;				}				return colName;			} /*END Func Get_Column()*/			fun Cancela() {				CambiaSucursal();				Inicializa();				ConfiguraControlesOpcion();			} /* END Func Cancela() */									fun ModoBuscar(imodo, iview) {				tip_ope = "C";				frn.set("operacion", "CONSULTA");				if ( ( imodo == 1 || imodo == 2 ) && tip_ope_original &= "A" ) {					frn.set("k_fecha", fech_original);  				} else { 					LimpiaEncabezado();				}				ConfiguraControlesOpcion(imodo);				CambiaSucursal(imodo);				if (iview == 2) { 					if ( tip_ope_original &= "A" ) {						frn.setAtt("btn_view", "text", "Serie(s) sin registrarse por contar con Num. Inventario previo ...");					} else {						frn.setAtt("btn_view", "text", "Partidas que No se pudieron Cancelar ...");					}					frn.setAtt("btn_view", "visible", "Y"); 				} else {					frn.setAtt("btn_view", "visible", "N");				}			} /*END Func ModoBuscar()*/							fun btnviewclic() {				if (	strlen(view_adicionales) > 0 ) {					if ( tip_ope_original &= "A" ) {						frn.message("Partidas No Registradas x Duplicidad en Numero de Serie : " & "|" & view_adicionales, "Info !!! ", "Aceptar");					} else {						frn.message("Partidas No Canceladas : " & "|" & view_adicionales, "Info !!! ", "Aceptar");					}				}			} /*END Func btnviewclic()*/						fun Ejecuta() {				var xmlPantalla, strFecha, fecha, hora, strTmp, strHora, strMin, strMsg;				var resultado, mensaje, adicionales, folio;				var RowErr, iLim;								//fecha = sys.date();				//hora = sys.time();								resultado = "";				mensaje = "";				adicionales = "";				view_adicionales = "";								if (tip_ope &= "A") { 								// /* COMMMENTED TO TESTING BUSCAR AFTER ADD RECORD ...					RowErr = -1;					iLim = frn.N("k_mov") - 1;					if ( iLim == 0 ) {						frn.message("No hay registros a procesar ...", "Info !!! ", "Aceptar");						return;							}					for (var i=0; i<=iLim ; i++) {						RowErr = Eval_Data_Row(i, iLim);						if ( RowErr != -1 ) { break; }					}					if ( RowErr != -1 ) {						frn.setPos("k_mov", RowErr, "ctrlerr");						frn.message("Se encontraron registros con errores.", "Info !!! ", "Aceptar");						return;					}					// */ // END COMMMENTED TO TESTING BUSCAR AFTER ADD RECORD ...																// /* COMMMENTED TO TESTING BUSCAR AFTER ADD RECORD ... 										xmlPantalla = getXml(frn.dataPag()); //Obtener el xml de la pantalla;										setXml(xmlPantalla,"k_mov","no_partidas", iLim);													frn.lib("libGeneral.kpl","FileSave",xmlPantalla, fileSavePath & "\XmltoPostgres_ComAltaAsig_N");  // XmltoPostgres_OOA1A										// */ // END COMMMENTED TO TESTING BUSCAR AFTER ADD RECORD ...															// /* COMMMENTED TO TESTING BUSCAR AFTER ADD RECORD ... 								cmdQuery="SELECT * FROM keplersc.autos_com_asig_crud('<document>" & getXmlStr(xmlPantalla,"EOF:13_10") & "</document>')";					rstXml(cuboQuery);					cuboQuery= frn.lib("libGeneral.kpl","EjecutarSql",cmdQuery,"autos_com_asig_crud.Ejecuta");									frn.lib("libGeneral.kpl","FileSave",cuboQuery, fileSavePath & "\xmlResultado_ComAltaAsig_N");  // xmlResultado_OOA1A										// */ // END COMMMENTED TO TESTING BUSCAR AFTER ADD RECORD ... 												 /*					resultado = "1";					mensaje = "Las partidas han sido registradas exitosamente ..." & "|" & "Testing Pipe separator";					//adicionales = "Testing Active Button ...";					 */										// /*					resultado = getXml(cuboQuery,"resultado");					mensaje = getXml(cuboQuery,"mensaje");					adicionales = getXml(cuboQuery,"adicionales");					// */																		//if(resultado &= "1") {					if(resultado &= "1" || resultado &= "2") {											if (resultado &= "1") {							frn.message("Resultado [" & resultado & "] ; " & mensaje, "Info !!! ", "Aceptar");						} else {							view_adicionales = adicionales;							frn.message("Resultado [" & resultado & "] ; " & mensaje & "|" & "Partidas No Registradas x Duplicidad en Numeros de Serie : " & "|" & adicionales , "Info !!! ", "Aceptar");						}																	if ( strlen(adicionales) > 0 ) {							ModoBuscar(2, 2);						} else {  							ModoBuscar(1, 1); // 220721 ... added 						}											} else {						frn.message(mensaje, "Error", "Aceptar");					}				} /*End Alta*/ else {					if (tip_ope &= "B") {						/*Ini Baja*/												// /* COMMMENTED TO TESTING BUSCAR AFTER ADD RECORD ...						RowErr = 0;						iLim = frn.N("k_mov") - 1;						if ( iLim == 0 ) {							frn.message("No hay registros a procesar ...", "Info !!! ", "Aceptar");							return;								}						for (var i=0; i<=iLim ; i++) {							if ( frn.get("k_mov",i,"borrar") &= "X" ) { RowErr = RowErr + 1; }						}						if ( RowErr == 0 ) {							frn.setPos("k_mov", RowErr, "modelo");							Get_Data_Row();							frn.message("No Se encontraron registros a procesar [Cancelar].", "Info !!! ", "Aceptar");							return;						}						// */ // END COMMMENTED TO TESTING BUSCAR AFTER ADD RECORD ...				   				   						// /* COMMMENTED TO TESTING BUSCAR AFTER ADD RECORD ... 												xmlPantalla = getXml(frn.dataPag()); //Obtener el xml de la pantalla;											setXml(xmlPantalla,"k_mov","no_partidas", iLim);												frn.lib("libGeneral.kpl","FileSave",xmlPantalla, fileSavePath & "\XmltoPostgres_ComBajaAsig_N");  // XmltoPostgres_OOB3											// */ // END COMMMENTED TO TESTING BUSCAR AFTER ADD RECORD ... 																// /* COMMMENTED TO TESTING BUSCAR AFTER ADD RECORD ... 									cmdQuery="SELECT * FROM keplersc.autos_com_asig_crud('<document>" & getXmlStr(xmlPantalla,"EOF:13_10") & "</document>')";						rstXml(cuboQuery);						cuboQuery= frn.lib("libGeneral.kpl","EjecutarSql",cmdQuery,"autos_com_asig_crud.Ejecuta");										frn.lib("libGeneral.kpl","FileSave",cuboQuery, fileSavePath & "\xmlResultado_ComBajaAsig_N");  // xmlResultado_OOB3											// */ // END COMMMENTED TO TESTING BUSCAR AFTER ADD RECORD ... 																/*						resultado = "2";						mensaje = "Las partidas han sido registradas exitosamente ..." & "|" & "Testing Pipe separator";						adicionales = "Testing Active Button ...";						*/																// /*						resultado = getXml(cuboQuery,"resultado");						mensaje = getXml(cuboQuery,"mensaje");						adicionales = getXml(cuboQuery,"adicionales");						// */																								//if(resultado &= "1") {						if(resultado &= "1" || resultado &= "2") {												if (resultado &= "1") {								frn.message("Resultado [" & resultado & "] ; " & mensaje, "Info !!! ", "Aceptar");							} else {								view_adicionales = adicionales;								frn.message("Resultado [" & resultado & "] ; " & mensaje & "|" & "Partidas No Canceladas : " & "|" & adicionales , "Info !!! ", "Aceptar");							}													if ( strlen(adicionales) > 0 ) {								ModoBuscar(2, 2);							} else {  								ModoBuscar(1, 1); // 220721 ... added 							}												} else {							frn.message(mensaje, "Error", "Aceptar");						}						// */											} /*End Baja*/ else {						return;					}	/*End Consulta (for exception)*/ 				}							} /* END Func Ejecuta() */									fun Inicializa(){ //Inicializa los valores en Pantalla				// Our code				var fech_init, strFecha, strTmp,fecha; 				// Revisa y Carga en Variables los Parámetros Recibidos en la corrida				if( frn.nParam() == 1 ){ //Se han mandado parámetros a la página				   gen_doc="";                nat_doc="";                gpo_doc="";               tip_doc="";                paramProd="";				   tip_ope = trim(frn.param(0));               tip_ope_original = tip_ope;             } else {					frn.message("Operación no válida ...", "Mensaje","&Aceptar");					//frn.open("anuncios",4);					frn.open("index",4);					return;				}							//frn.message("Parameters : " & frn.nParam() & " ; tip_ope : " & tip_ope, "Info Parameters", "Aceptar");											if(tip_ope &= "A"){ //Alta					frn.set("operacion","ALTA - NUEVOS");				} else {					if(tip_ope &= "B"){ //Baja						frn.set("operacion","BAJA");					} else {						if(tip_ope &= "C"){ //Consulta							frn.set("operacion","CONSULTA");						} else {					      frn.message("Operación no válida ...", "Mensaje","&Aceptar");							//frn.open("anuncios",4);							frn.open("index",4);							return;									}					}				}												LimpiaDatosDoc();								if(tip_ope &! "A"){								//Llenar combo sucursales					cmd = "select '['||c1||'] '||c2 as c2, c1 from keplersc.kdms";					if (rol_usuario &! "ADMINISTRADOR"  && rol_usuario &! "ADMINISTRATOR"){						cmd = cmd & " where c1='" & suc_usuario & "'";					}else {						if (suc_usuario &! asterisco && suc_usuario &! "" ){							cmd = cmd & " where c1='" & suc_usuario & "'";						}					}									var cubo = frn.lib("libGeneral.kpl","EjecutarSqlSel",cmd,"srvcitacrud.Inicializa()");							ok=getXmlAtt(cubo,"ok");					if(ok &! "" && !ok){						mensajeError = getXmlAtt(cubo,"native3");						mensajeError = frn.lib("libGeneral.kpl","ErrorBD",mensajeError);						frn.message(mensajeError,"Error","Aceptar");						return;					}										frn.set("k_sucn",getXml(cubo));															CambiaSucursal();									} else {					row_grid = 0;					err_empty = 0;					err_data = 0;							}								//strFecha = "2022-11-03"; // 4 Testing 				strFecha = sys.date();								fech_init = strFecha;				frn.set("k_fecha", fech_init);				fech_original = frn.get("k_fecha");							} /* END Func Inicializa() */									fun PadLeft(pText,pRelleno,pCaracterRelleno) {				var Resultado;				var pos_ini = pText;            var nReg = strlen(pText);            for (var cont = nReg; cont < pRelleno; cont++) {					Resultado = pCaracterRelleno & Resultado;            }            Resultado = Resultado & pText;                            return Resultado;         } /* END Func PadLeft() */			fun ConfiguraControlesOff() {								frn.setAtt("suctxt", "visible", "N");				frn.setAtt("k_sucn", "visible", "N");				frn.setAtt("btn_view", "visible", "N");								frn.setAtt("grid", "tit", "Items Asignaciones : ");								frn.setAtt("k_mov", "modify", "N");				frn.setAtt("k_mov", "insdel", "N");				//frn.setAtt("k_mov", "nren", "fijo");								//modify="Y" insdel="N" nren="fijo"			   frn.setAtt("k_fecha", "available", "N");			   			   //Code Added 2021208 			   frn.setAtt("k_fecha_F", "available", "N");			   frn.setAtt("k_fecha_F", "visible", "N");			   frn.setAtt("fechFtxt", "visible", "N");			   frn.setAtt("buscar", "visible", "N");								frn.setAtt("k_mov", "modify", "N", "borrar");				frn.setAtt("k_mov", "visible", "N", "borrar");				frn.setAtt("k_mov", "modify", "N", "ctrlerr");				frn.setAtt("k_mov", "visible", "N", "ctrlerr");					frn.setAtt("k_mov", "modify", "N", "modelo");				frn.setAtt("k_mov", "visible", "Y", "modelo");								frn.setAtt("k_mov", "modify", "N", "invent");				frn.setAtt("k_mov", "visible", "Y", "invent");									frn.setAtt("k_mov", "modify", "N", "anio");				frn.setAtt("k_mov", "visible", "Y", "anio");								frn.setAtt("k_mov", "modify", "N", "descrip");				frn.setAtt("k_mov", "visible", "Y", "descrip");					frn.setAtt("k_mov", "modify", "N", "serie");				frn.setAtt("k_mov", "visible", "Y", "serie");					frn.setAtt("k_mov", "modify", "N", "color");				frn.setAtt("k_mov", "visible", "Y", "color");											frn.setAtt("k_mov", "modify", "N", "vest");				frn.setAtt("k_mov", "visible", "Y", "vest");											frn.setAtt("k_mov", "modify", "N", "ref");				frn.setAtt("k_mov", "visible", "Y", "ref");											frn.setAtt("k_mov", "modify", "N", "suc");				frn.setAtt("k_mov", "visible", "Y", "suc");					frn.setAtt("k_mov", "modify", "N", "fech");				frn.setAtt("k_mov", "visible", "N", "fech");																							frn.setAtt("Imprimir", "visible", "N");				frn.setAtt("Cancelar", "visible", "N");				frn.setAtt("Aceptar", "visible", "N");											} /* END Func ConfiguraControlesOff() */						fun ConfiguraControlesOpcion(imodo) {							ConfiguraControlesOff();				if(tip_ope &= "A"){ //Alta					frn.setAtt("suctxt", "visible", "N");					frn.setAtt("k_sucn", "visible", "N");					frn.setAtt("btn_view", "visible", "N");					frn.setAtt("k_fecha", "available", "N");										frn.setAtt("grid", "tit", "Asignaciones :  <  [ F9 ] obtener valores de Catalogos  >");										frn.setAtt("k_mov", "modify", "Y");					frn.setAtt("k_mov", "insdel", "Y");					//frn.setAtt("k_mov", "nren", "");											frn.setAtt("k_mov", "modify", "N", "borrar");					frn.setAtt("k_mov", "visible", "N", "borrar");					frn.setAtt("k_mov", "modify", "N", "ctrlerr");					frn.setAtt("k_mov", "visible", "Y", "ctrlerr");										frn.setAtt("k_mov", "modify", "Y", "modelo");					frn.setAtt("k_mov", "visible", "Y", "modelo");									frn.setAtt("k_mov", "modify", "Y", "invent");					frn.setAtt("k_mov", "visible", "Y", "invent");										frn.setAtt("k_mov", "modify", "N", "anio");					frn.setAtt("k_mov", "visible", "Y", "anio");									frn.setAtt("k_mov", "modify", "N", "descrip");					frn.setAtt("k_mov", "visible", "Y", "descrip");						frn.setAtt("k_mov", "modify", "Y", "serie");					frn.setAtt("k_mov", "visible", "Y", "serie");						frn.setAtt("k_mov", "modify", "Y", "color");					frn.setAtt("k_mov", "visible", "Y", "color");												frn.setAtt("k_mov", "modify", "Y", "vest");					frn.setAtt("k_mov", "visible", "Y", "vest");												frn.setAtt("k_mov", "modify", "Y", "ref");					frn.setAtt("k_mov", "visible", "Y", "ref");												frn.setAtt("k_mov", "modify", "Y", "suc");					frn.setAtt("k_mov", "visible", "Y", "suc");					frn.setAtt("k_mov", "modify", "N", "fech");					frn.setAtt("k_mov", "visible", "N", "fech");													frn.setAtt("Imprimir", "visible", "N");					frn.setAtt("Cancelar", "visible", "Y");					frn.setAtt("Aceptar", "visible", "Y");													} else {									if ( ( imodo == 1 || imodo == 2 ) && tip_ope_original &= "A" ) {						frn.setAtt("suctxt", "visible", "N");						frn.setAtt("k_sucn", "visible", "N");										} else {						frn.setAtt("suctxt", "visible", "Y");						frn.setAtt("k_sucn", "visible", "Y");					}										if ( imodo == 2 ) {						frn.setAtt("btn_view", "visible", "Y");					} else {						frn.setAtt("btn_view", "visible", "N");							}										if ( ( imodo == 1 || imodo == 2 ) && tip_ope_original &= "A" ) {						frn.set("k_fecha", fech_original);					} else {						frn.set("k_fecha", "");					}					frn.setAtt("k_fecha", "available", "N");										if(tip_ope &= "B"){ //Baja											frn.setAtt("grid", "tit", "Asignaciones :  <  DblClic para  marcar / desmarcar  Registros a Eliminar  >");												frn.setAtt("k_mov", "modify", "N");						frn.setAtt("k_mov", "insdel", "N");						//frn.setAtt("k_mov", "nren", "fijo");										frn.setAtt("k_mov", "modify", "N", "borrar");						frn.setAtt("k_mov", "visible", "Y", "borrar");						frn.setAtt("k_mov", "modify", "N", "ctrlerr");						frn.setAtt("k_mov", "visible", "N", "ctrlerr");								frn.setAtt("k_mov", "modify", "N", "modelo");						frn.setAtt("k_mov", "visible", "Y", "modelo");										frn.setAtt("k_mov", "modify", "N", "invent");						frn.setAtt("k_mov", "visible", "Y", "invent");											frn.setAtt("k_mov", "modify", "N", "anio");						frn.setAtt("k_mov", "visible", "Y", "anio");										frn.setAtt("k_mov", "modify", "N", "descrip");						frn.setAtt("k_mov", "visible", "Y", "descrip");							frn.setAtt("k_mov", "modify", "N", "serie");						frn.setAtt("k_mov", "visible", "Y", "serie");							frn.setAtt("k_mov", "modify", "N", "color");						frn.setAtt("k_mov", "visible", "Y", "color");													frn.setAtt("k_mov", "modify", "N", "vest");						frn.setAtt("k_mov", "visible", "Y", "vest");													frn.setAtt("k_mov", "modify", "N", "ref");						frn.setAtt("k_mov", "visible", "N", "ref");													frn.setAtt("k_mov", "modify", "N", "suc");						frn.setAtt("k_mov", "visible", "N", "suc");						frn.setAtt("k_mov", "modify", "N", "fech");						frn.setAtt("k_mov", "visible", "Y", "fech");																	frn.setAtt("Imprimir", "visible", "N");						frn.setAtt("Cancelar", "visible", "Y");						frn.setAtt("Aceptar", "visible", "Y");															} else {											if ( tip_ope &= tip_ope_original && tip_ope &= "C" ) { //Consulta						   frn.setAtt("grid", "tit", "Asignaciones :  <  DblClic para poder modificar el Registro del Inventario  >");						} else {   							frn.setAtt("grid", "tit", "Asignaciones del dia : ");						}											frn.setAtt("k_mov", "modify", "N");						frn.setAtt("k_mov", "insdel", "N");						//frn.setAtt("k_mov", "nren", "fijo");												//Code Added 2021208 						frn.setAtt("k_fecha_F", "available", "Y");						frn.setAtt("k_fecha_F", "visible", "Y");						frn.setAtt("fechFtxt", "visible", "Y");						frn.setAtt("buscar", "visible", "Y");						frn.setAtt("k_fecha", "available", "Y");														frn.setAtt("k_mov", "modify", "N", "borrar");						frn.setAtt("k_mov", "visible", "N", "borrar");						frn.setAtt("k_mov", "modify", "N", "ctrlerr");						frn.setAtt("k_mov", "visible", "N", "ctrlerr");									frn.setAtt("k_mov", "modify", "N", "modelo");						frn.setAtt("k_mov", "visible", "Y", "modelo");										frn.setAtt("k_mov", "modify", "N", "invent");						frn.setAtt("k_mov", "visible", "Y", "invent");											frn.setAtt("k_mov", "modify", "N", "anio");						frn.setAtt("k_mov", "visible", "Y", "anio");										frn.setAtt("k_mov", "modify", "N", "descrip");						frn.setAtt("k_mov", "visible", "Y", "descrip");							frn.setAtt("k_mov", "modify", "N", "serie");						frn.setAtt("k_mov", "visible", "Y", "serie");							frn.setAtt("k_mov", "modify", "N", "color");						frn.setAtt("k_mov", "visible", "Y", "color");													frn.setAtt("k_mov", "modify", "N", "vest");						frn.setAtt("k_mov", "visible", "Y", "vest");													frn.setAtt("k_mov", "modify", "N", "ref");						frn.setAtt("k_mov", "visible", "N", "ref");													if ( imodo == 1 || imodo == 2 )	{							frn.setAtt("k_mov", "modify", "N", "suc");							frn.setAtt("k_mov", "visible", "Y", "suc");											}	else	{							frn.setAtt("k_mov", "modify", "N", "suc");							frn.setAtt("k_mov", "visible", "N", "suc");						}												frn.setAtt("k_mov", "modify", "N", "fech");						frn.setAtt("k_mov", "visible", "Y", "fech");												frn.setAtt("Imprimir", "visible", "Y");						frn.setAtt("Cancelar", "visible", "N");						frn.setAtt("Aceptar", "visible", "N");						}				}			} /* END Func ConfiguraControlesOpcion() */			fun LimpiaDatosDoc {				// Limpia todos los objetos asociados a los detalles incluido el k_mov				frn.set("k_mov", "");			} /* END Func LimpiaDatosDoc() */						fun LimpiaTotalesDoc {				// Limpia todos los objetos totalizadores asociados a los detalles y encabezados incluido el k_mov				// N.A.  para este formulario ...			} /* END Func LimpiaTotalesDoc() */						fun LimpiaEncabezado {				// Limpia todos los objetos asociados al encabezado por lo regular predecesores al k_mov				frn.set("k_fecha", "");			} /* END Func LimpiaEncabezado() */						fun CambiaSucursal(imodo) {								// Added Condition 20221208				var fechtmp;				if ( imodo == 3 ) { fechtmp = frn.get("k_fecha"); }							if (imodo != 1 && imodo != 2) {					LimpiaEncabezado();					if ( imodo != 3 ) { // Added Condition 20221208						frn.set("k_fecha",sys.date());					}				}				//ArmarRefDocto();				row_grid = -1;							if (tip_ope &! tip_ope_original && imodo != 1 && imodo != 2) {					tip_ope = tip_ope_original;					ConfiguraControlesOpcion(); 					if(tip_ope &= "A"){ //Alta						frn.set("operacion","ALTA - NUEVOS");					} else {						if(tip_ope &= "B"){ //Baja							frn.set("operacion","BAJA");						} else {							if(tip_ope &= "C"){ //Consulta								frn.set("operacion","CONSULTA");							}						}					}				} 								if(tip_ope &! "A" || imodo == 1 || imodo == 2){					if (imodo != 1 && imodo != 2) {						if ( imodo != 3 ) { // Added Condition 20221208							frn.set("k_fecha","");						} else {							frn.set("k_fecha",fechtmp );						}					}					MostrarDatosGrd(imodo);					frn.setPos("k_mov", 0, "modelo");					Get_Data_Row();				}								/*				// Added Condition 20221208				if ( imodo == 3 ) { frn.set("k_fecha",fechtmp ); }					*/							} /* END Func CambiaSucursal() */									// Code Added 20221208 			fun Aplica_Filtro(imodo) {							if ( strlen(frn.get("k_fecha")) > 0 && strlen(frn.get("k_fecha_F")) > 0 ) {					if ( fnDate("cmp", frn.get("k_fecha"), frn.get("k_fecha_F") ) == 1 ) { 						frn.message("El rango de fechas es incorrecto ...","Info","Aceptar");						return;					}				}							if ( imodo == 1 ) { CambiaSucursal(3); }								if ( imodo == 2 ) { Ejecuta_Reporte(); }							} /* END Func Aplica_Filtro() */											   fun MostrarDatosGrd(imodo) {		   				var xmlGrd;												sucursal_id = frn.get("k_sucn",-1,1);						LimpiaDatosDoc();												if ( ( imodo == 1 || imodo == 2 ) && tip_ope_original &= "A" ) {					cmdQuery = "select '' as borrar, c3 as modelo, c2 as invent, c15 as anio, c4 as descrip, c5 as serie, c10 as color, c11 as vest, c1 as suc, to_char(c24, 'dd/mm/yyyy') as fech " &						"from keplersc.kdinf where c24 = '" & fech_original & "'" & " and c31 = 10 and upper(c21) = 'NUEVO' order by right(c2,length(c2)-5) desc, left(c2,4) desc ";				} else {									// Code modified 20221208					cmdQuery = "select '' as borrar, c3 as modelo, c2 as invent, c15 as anio, c4 as descrip, c5 as serie, c10 as color, c11 as vest, c1 as suc, to_char(c24, 'dd/mm/yyyy') as fech " &						"from keplersc.kdinf where c1 = '" & sucursal_id & "'" & " and c31 = 10 and upper(c21) = 'NUEVO' ";										if ( strlen(frn.get("k_fecha")) > 0 ) { 						cmdQuery = cmdQuery & " and c24 >= '" & frn.get("k_fecha") & "'"; 					}										if ( strlen(frn.get("k_fecha_F")) > 0 ) { 						cmdQuery = cmdQuery & " and c24 <= '" & frn.get("k_fecha_F") & "'"; 					}											cmdQuery = cmdQuery & "order by right(c2,length(c2)-5) desc, left(c2,4) desc ";										//frn.lib("libGeneral.kpl","FileSave",cmdQuery, fileSavePath & "\query_mostrardatosgrid_asignvo");									}								rstXml(cuboQuery);				cuboQuery = frn.lib("libGeneral.kpl","EjecutarSqlSel",cmdQuery,"comaltasigcrud.mostrardatosgrid()");				frn.lib("libGeneral.kpl","FileSave",cuboQuery, fileSavePath & "\mostrardatosgrid");				ok=getXmlAtt(cuboQuery,"ok");				if(ok &! "" && !ok){					mensajeError = getXmlAtt(cuboQuery,"native3");					mensajeError = frn.lib("libGeneral.kpl","ErrorBD",mensajeError);					frn.message(mensajeError,"Error","Aceptar");					return;					}				if(nXml(cuboQuery) == 0){					frn.message("Sin Registros por mostrar ...","Info","Aceptar");					frn.setPos("k_sucn");					return;					}					//frn.set(cuboQuery);							rstXml(xmlGrd);				xmlGrd=frn.lib("libGeneral.kpl","CreaXmlDesdeTagRow",cuboQuery,"r","k_mov");				frn.lib("libGeneral.kpl","FileSave",xmlGrd, fileSavePath & "\mostrardatosgrid_parsed");				frn.setX(xmlGrd);						   } /* END Func MostrarDatosGrd() */					   						// ZONA	CODIGO REPORTE(S) 						fun IniParams(){//Inicializa parámetros de impresión. Pueden ser cambiados por el usuario final mediante menú: Archivo -> Configurar Página				frn.set("param_paper","letter");	//Tamaño de papel predefinido:	"paper=letter|legal|size"				frn.set("param_sizeX","21.59","param_sizeY","27.94");	//Tamaño de papel personalizado	"size=21.59,27.94cm"				frn.set("param_borderL","1.5","param_borderT","1.5","param_borderR","1.5","param_borderB","1.5");	//Márgenes Izq,Arr,Der,Aba:	"border=1.5,1.5,1.5,1.5cm"				frn.set("param_Fx","1.0");	//Escala de impresión (1=100 por ciento)	"F=1,1"				frn.set("param_landscape","Y");	//Orientación	de la hoja (Vertical="N", Horizontal="Y")	"landscape=N|Y"				frn.set("param_emp","L");	//Posición de "Razón social"(izq,der,cen)	@emp=L|R|C"			}						fun setRepPage() {//Establece los parámetros finales de impresión.				var paper="paper=" & frn.get("param_paper");var size="size=" & frn.get("param_sizeX") & "," & frn.get("param_sizeY") & "cm";				var brdr="border=" & frn.get("param_borderL") & "," & frn.get("param_borderT") & "," & frn.get("param_borderR") & "," & frn.get("param_borderB") & "cm";				var fact="F=" & frn.get("param_Fx") & "," & frn.get("param_Fx");				var lndsp="landscape=" & frn.get("param_landscape");				var emp="@emp=" & frn.get("param_emp");				rep.page(paper,size,brdr,fact,lndsp,"color=Y","collate=Y","copies=1","pages=1,999","prompt=N",emp);			}						fun Ejecuta_Reporte() {							// Commented 20221208 				//IniParams(); //Inicializa parámtros de impresión entre otros							//Code Added 20121208 				rstXml(xmlPar);				if ( tip_ope_original &= "C" && tip_ope &= "C" ) {					CambiaSucursal(3); 				}									// fech_original = "2022-11-03"; // 4 Testing				// tip_ope_original = "A"; // 4 Testing								//...(cubos de datos e información necesaria)				sucursal = frn.get("k_sucn",-1,1);				if ( tip_ope_original &= "A" && tip_ope &= "C" ) {					fech_oper = fech_original; // frn.get("k_fecha");				}				tipo_auto = "NUEVO";								setXml(xmlPar,"document","sucursal_id",sucursal);				if ( tip_ope_original &= "A" && tip_ope &= "C" ) {					setXml(xmlPar,"document","fech_oper", fech_oper); 				}				setXml(xmlPar,"document","tipo_auto", tipo_auto);								//code Added 20221208 by JMM				if ( strlen(frn.get("k_fecha")) > 0 ) { 					setXml(xmlPar,"document","fech_I", frn.get("k_fecha"));				}				if ( strlen(frn.get("k_fecha_F")) > 0 ) { 					setXml(xmlPar,"document","fech_F", frn.get("k_fecha_F"));				}									frn.lib("libGeneral.kpl","FileSave",xmlPar, fileSavePath & "\comaltasigcrudN_rpt_xmlPar");												cmd="select * from keplersc.autos_com_asig_rpt('"& getXmlStr(xmlPar,"EOF:13_10") &"')";				rstXml(xmlResQuery);				xmlResQuery = frn.lib("libGeneral.kpl","EjecutarSqlSel",cmd,"comaltasigcrudN_rpt.Ejecuta_Reporte()");				ok=getXmlAtt(xmlResQuery ,"ok");				if(ok &! "" && !ok){					mensajeError = getXmlAtt(xmlResQuery ,"native3");					mensajeError = frn.lib("libGeneral.kpl","ErrorBD",mensajeError);					frn.message(mensajeError,"Error","Aceptar");					return;				}						frn.lib("libGeneral.kpl","FileSave",xmlResQuery, fileSavePath & "\comaltasigcrudN_rpt_xmlResQuery");												Reporte();						} /* END Func Ejecuta_Reporte() */						fun Reporte() {							// Our Vars				var compania, titrep;				var contProd, contDet, tmpStr ,xmlDet, xmlCurDocto;				//var folio;				var p_fecha, var_fecha;				var p_subtotal, p_utilidad, p_perce, p_costo, p_total, p_iva;				var gt_subtotal, gt_utilidad, gt_perce, gt_costo, gt_total, gt_iva;								//Obtener datos generales				kdb.kde("KDE");//Configuracion del servidor				kdb.exec();				compania = kdb.get("KDE","1");									// Se define el formato a usar y se liga a la variable del reporte "rep"	// Se define el formato a usar y se liga a la variable del reporte "rep"				rep.rst(); // 20121208				IniParams(); // 20121208				kdb.readPage("datFto","comasigcrudfto.kpl");				kdb.exec();				rep.source(kdb.get("datFto")); 				//rep.rst(); // 20121208				setRepPage();//Establece los parámetros finales de impresión(rep.page(...);), pues pueden haber cambiado por el usuario 				//Da valor a los inputs del reporte(rep.set();), e indica la ejecución de "grupos de renglones de impresión" (rep.exe();)								if ( tip_ope_original &= "A" && tip_ope &= "C" ) {					titrep = "Asignacion del Inventario - Autos Nuevos"; 					rep.set("suctx","suc.");					rep.set("leyendatx","Del dia " & fech_original);				} else {					titrep = "Unidades Asignadas sin dar de Entrada la Compra - Autos Nuevos";					rep.set("leyendatx","Sucursal " & sucursal);				}												//code Added 20221208				if ( tip_ope_original &! "A" && tip_ope &= "C" ) {					if ( strlen(frn.get("k_fecha")) > 0 ) { 						rep.set("fechItx","Desde : ");						rep.set("fechI",frn.get("k_fecha"));					}					if ( strlen(frn.get("k_fecha_F")) > 0 ) { 						rep.set("fechFtx","Hasta : ");						rep.set("fechF",frn.get("k_fecha_F"));							}					}												rep.set("fecha",sys.date());				rep.set("hora",sys.time());				rep.set("nombreempresa",compania);				rep.set("tituloreporte",titrep);					contProd=nXml(xmlResQuery);				rep.exe("encabezado");												for(var x=0; x< contProd; x++){									rep.set("invent",getXmlAtt(xmlResQuery,"r"&x,"c_cveinv"));					rep.set("modelo",getXmlAtt(xmlResQuery,"r"&x,"c_cvemod"));					rep.set("anio",getXmlAtt(xmlResQuery,"r"&x,"c_anio"));					rep.set("descrip",getXmlAtt(xmlResQuery,"r"&x,"c_descrip"));					rep.set("serie",getXmlAtt(xmlResQuery,"r"&x,"c_serie"));					rep.set("color",getXmlAtt(xmlResQuery,"r"&x,"c_color"));					rep.set("vest",getXmlAtt(xmlResQuery,"r"&x,"c_vest"));					if ( tip_ope_original &= "A" && tip_ope &= "C" ) {						rep.set("suc",getXmlAtt(xmlResQuery,"r"&x,"c_suc"));					}											rep.exe("detalle");				}								//Modos de impresión 				rep.win(); //Muestra la vista previa de la impresión. A partir de la vista previa (Preprint) se decide si se imprime o no.				//rep.print("\\192.168.1.100\HPLaserJet"); //Envía el reporte directamente a una impresora, sin mostrar la vista previa.				//frn.dialog("_ks_printdlg"); //Permite seleccionar impresora destino y manda el reporte a impresión. No muestra la vista previa.				//rep.export("file:Reportes\\reporteHTML.html","format:html","inputs:N");//Guardará el reporte en la carpeta local k80\Reportes, con el nombre reporteHTML.html										} /* END Func Reporte() */									// END : ZONA	CODIGO REPORTE(S)												fun Dialog(iModo,pag,par0,par1,par2,par3,par4,par5,par6,par7,par8,par9,par10,par11,par12,par13,par14,par15){				/*iModo: 0)No hace mayor validaci?n. Siempre despliega la ventana. NO CONCATENA PREFIJO							1)Solo concatena el prefijo de la carpeta del lenguaje, no hace mayor validaci?n. Siempre despliega la ventana							2)Modo especial. Se valida que el campo indicado en par0 se puede modificar(El par0 puede ser una tabla, y par1 la columna)							3)Modo especial para p?ginas de operacion:Solo si se est? en alta o modifica despliega la pagina. Simpre agrega el prefijo del lenguaje				*/				var prefix=frn.lib("libKepler","langPrefix");				var page=prefix&pag;				var b_valido=1;				if(iModo==0)page=pag;				else if(iModo==2&&(strlen(par0)>0)){//Se toma el par0 como el objeto (o grid) al que se devolver? el resultado.					if( frn.getAtt(par0,"modify",par1) &= "N" ) b_valido=0;					if( frn.getAtt(par0,"available",par1) &= "N" ) b_valido=0;					if( frn.getAtt(par0,"visible",par1) &= "N" ) b_valido=0;				}				if(iModo==3)frn.dialog(page,par0,par1,par2,par3,par4,par5,par6,par7,par8,par9,par10,par11,par12,par13,par14,par15);			}				 											} // End of class Main			</script></pag>

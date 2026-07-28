@@ -8,6 +8,7 @@ CREATE  TABLE keplersc.kdf3pais (
   c7 character varying NOT NULL DEFAULT ''::character varying
 ) TABLESPACE pg_default;
 ALTER TABLE ONLY keplersc.kdf3pais ADD CONSTRAINT pk_kdf3pais PRIMARY KEY (c1);
+COMMENT ON TABLE keplersc.kdf3pais IS 'Paises';
 COMMENT ON COLUMN keplersc.kdf3pais.c7 IS 'Country phone code';
 COMMENT ON COLUMN keplersc.kdf3pais.c6 IS 'Agrupaciones';
 COMMENT ON COLUMN keplersc.kdf3pais.c5 IS 'Validacion de Registro';

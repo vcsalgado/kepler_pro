@@ -2,7 +2,7 @@ CREATE OR REPLACE FUNCTION keplersc.invlib_sumas_inv(dataxml xml)
  RETURNS TABLE(resultado text, mensaje text, adicionales text)
  LANGUAGE plpgsql
 AS $function$
---Descripcion: SUMAS_INV - se adapta la funcion ISAN_INV dentro de esta funcion
+--Descripcion: SUMAS_INV - se adapta la función ISAN_INV dentro de esta función
 --Autor: Saltiel Rc
 --Fecha: 27/09/2022
 

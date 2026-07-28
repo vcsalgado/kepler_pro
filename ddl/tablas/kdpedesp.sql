@@ -34,7 +34,9 @@ CREATE  TABLE keplersc.kdpedesp (
   c33 timestamp without time zone NOT NULL DEFAULT '1800-01-01 00:00:00'::timestamp without time zone,
   c34 character varying(40) NOT NULL DEFAULT ''::character varying,
   c35 character varying(40) NOT NULL DEFAULT ''::character varying,
-  c36 character varying(40) NOT NULL DEFAULT ''::character varying
+  c36 character varying(40) NOT NULL DEFAULT ''::character varying,
+  col_foliomig character varying(10) NULL,
+  col_foliofin character varying(10) NULL
 ) TABLESPACE pg_default;
 ALTER TABLE ONLY keplersc.kdpedesp ADD CONSTRAINT pk_kdpedesp PRIMARY KEY (c1, c2, c3, c4, c5, c6, c7);
 CREATE INDEX IF NOT EXISTS sindkdpedesp02 ON keplersc.kdpedesp USING btree (c1, c13, c9) TABLESPACE pg_default;

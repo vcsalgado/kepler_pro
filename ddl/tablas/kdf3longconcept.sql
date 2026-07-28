@@ -29,6 +29,7 @@ CREATE  TABLE keplersc.kdf3longconcept (
   c28 character varying(80) NOT NULL DEFAULT ''::character varying
 ) TABLESPACE pg_default;
 ALTER TABLE ONLY keplersc.kdf3longconcept ADD CONSTRAINT pk_kdf3longconcept PRIMARY KEY (c1, c2, c3, c4, c5, c6, c7, c8);
+COMMENT ON TABLE keplersc.kdf3longconcept IS 'F3 Long concept';
 COMMENT ON COLUMN keplersc.kdf3longconcept.c9 IS 'Descripción';
 COMMENT ON COLUMN keplersc.kdf3longconcept.c8 IS 'Partida';
 COMMENT ON COLUMN keplersc.kdf3longconcept.c7 IS 'Consecutivo CFDI';

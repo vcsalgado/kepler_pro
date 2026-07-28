@@ -13,7 +13,11 @@ BEGIN
             pz.order_quantity AS k_qo,
             pz.backorder_quantity AS k_qb,
             pz.shipped_quantity AS k_q,
-            COALESCE(ini.c19, '') AS k_unidad,
+--            COALESCE(ini.c19, '') AS k_unidad,
+            coalesce((SELECT pc3.unidad 
+                FROM keplersc.prod_consulta_lista(%L, pz.item_id, 'CLAVE') pc3
+                LIMIT 1
+            ),'') AS k_unidad,
             COALESCE(pz.charge_amount, 0) AS k_precio,
             COALESCE(pz.charge_amount, 0) * pz.shipped_quantity AS k_monto,
             coalesce((SELECT pcl.clave_original 
@@ -26,9 +30,9 @@ BEGIN
             ),'') AS k_parteseldesc
         FROM keplersc.ifz_parts_shipper_embarque ipse
         JOIN keplersc.ifz_parts_shipper_piezas pz ON ipse.id = pz.shipment_id
-        LEFT JOIN keplersc.kdini ini ON ini.c1 = pz.item_id
+        LEFT outer JOIN keplersc.kdini ini ON ini.c1 = pz.item_id
         WHERE ipse.documento_id = %L
-    $f$, sucursal, sucursal, k_embarque);  -- 👈 Aquí inyectamos sucursal y k_embarque
+    $f$, sucursal, sucursal, sucursal, k_embarque);  -- 👈 Aquí inyectamos sucursal y k_embarque
 
     RAISE NOTICE 'SQL ejecutado: %', _xml;
 

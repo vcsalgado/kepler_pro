@@ -4,7 +4,7 @@ CREATE  TABLE keplersc.kdinr (
   c3 timestamp without time zone NOT NULL DEFAULT '1800-01-01 00:00:00'::timestamp without time zone,
   CONSTRAINT kdinr_unique UNIQUE (c1)
 ) TABLESPACE pg_default;
-CREATE UNIQUE INDEX IF NOT EXISTS pk_kdinr ON keplersc.kdinr USING btree (c2, c3, c1) TABLESPACE pg_default;
+ALTER TABLE ONLY keplersc.kdinr ADD CONSTRAINT pk_kdinr PRIMARY KEY (c2, c3, c1);
 CREATE INDEX IF NOT EXISTS sindkdinr02 ON keplersc.kdinr USING btree (c1) TABLESPACE pg_default;
 CREATE INDEX IF NOT EXISTS sindkdinr03 ON keplersc.kdinr USING btree (c2) TABLESPACE pg_default;
 COMMENT ON TABLE keplersc.kdinr IS 'Reemplazos';

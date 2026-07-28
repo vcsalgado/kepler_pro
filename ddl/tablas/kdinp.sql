@@ -9,7 +9,7 @@ CREATE  TABLE keplersc.kdinp (
   c8 numeric(10,2) NOT NULL DEFAULT 0,
   zona character varying(18) NOT NULL DEFAULT ''::character varying
 ) TABLESPACE pg_default;
-CREATE UNIQUE INDEX IF NOT EXISTS pk_kdinp ON keplersc.kdinp USING btree (c1, c2) TABLESPACE pg_default;
+ALTER TABLE ONLY keplersc.kdinp ADD CONSTRAINT pk_kdinp PRIMARY KEY (c1, c2);
 CREATE INDEX IF NOT EXISTS sindkdinp02 ON keplersc.kdinp USING btree (c3, c1, c2) TABLESPACE pg_default;
 CREATE INDEX IF NOT EXISTS sindkdinp03 ON keplersc.kdinp USING btree (c7) TABLESPACE pg_default;
 CREATE INDEX IF NOT EXISTS sindkdinp04 ON keplersc.kdinp USING btree (c8, c1, c2) TABLESPACE pg_default;

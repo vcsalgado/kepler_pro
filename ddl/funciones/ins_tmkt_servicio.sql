@@ -74,11 +74,6 @@ begin
 					end if;
 	
 				else
-					--VCSS 25/Mar/2026, se agregan valores por defecto cuando no hay historial de citas pero si ordenes
-					tipo_n_ult_contacto = 'NU';
-					ultimo_resultado_tmkt = 60; --Nunca se realizo contacto
-					ultimo_accion_tmkt = 50; --Terminado
-
 					agregar_contacto := 'Si';
 				end if;
 			
@@ -139,7 +134,7 @@ begin
 				end if;
 			
 				insert into keplersc.kdtmktser2(c1,c2,c3,c4,c5,c6,c7,c8,c9,c11,c12,c14,c18,c19,c20,c22,c23,c24,c25,c26,c28) 
-				values(sucursal,folio_contacto_nvo,asesor_elegido,10,fecha_programacion, 10, motivo_contacto,0,0,observacion1,
+				values(sucursal,folio_contacto_nvo,'',10,fecha_programacion, 10, motivo_contacto,0,0,observacion1,
 				observacion2,serie,tipo_servicio_tmkt, 'P', clave_cliente, 'NU', medio_contacto, current_date,'A',fecha_orden,0);
 			
 			end if;
@@ -177,13 +172,11 @@ begin
 				if motivo_contacto = 11 then
 					observacion2 := concat('Sugerido por KM, habra recorrido aprox ',km_aprox_recorridos, ' km dentro de ', tipo_N ,' dias. ', ' Promedio por dia: ', kilometros_diarios , ' km. ');
 				end if;
-				
-				--VCSS 15 oct 2025 Solo se crean contactos N-7, TO DO: Parameterizar
-				if tipo_N = 7 then
-					insert into keplersc.kdtmktser2(c1,c2,c3,c4,c5,c6,c7,c8,c9,c11,c12,c14,c18,c19,c20,c22,c23,c24,c25,c26,c28) 
-					values(sucursal,folio_contacto_nvo,asesor_elegido,10,fecha_N, 10, motivo_contacto,0,0,observacion1,observacion2,serie,
-					tipo_servicio_tmkt, 'P', clave_cliente, concat('N-', tipo_N::text), medio_contacto, current_date, 'A', fecha_orden,0);
-				end if;
+
+				insert into keplersc.kdtmktser2(c1,c2,c3,c4,c5,c6,c7,c8,c9,c11,c12,c14,c18,c19,c20,c22,c23,c24,c25,c26,c28) 
+				values(sucursal,folio_contacto_nvo,asesor_elegido,10,fecha_N, 10, motivo_contacto,0,0,observacion1,observacion2,serie,
+				tipo_servicio_tmkt, 'P', clave_cliente, concat('N-', tipo_N::text), medio_contacto, current_date, 'A', fecha_orden,0);
+			
 			end loop;
 		
 		end if;

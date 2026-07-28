@@ -16,7 +16,7 @@ CREATE  TABLE keplersc.kdctasser (
   c15 character varying(5) NOT NULL DEFAULT ''::character varying,
   c16 timestamp without time zone NOT NULL DEFAULT '1800-01-01 00:00:00'::timestamp without time zone,
   c17 character varying(6) NOT NULL DEFAULT ''::character varying,
-  c18 character varying(1) NOT NULL DEFAULT ''::character varying,
+  c18 character varying(5) NOT NULL DEFAULT ''::character varying,
   c19 character varying(1) NOT NULL DEFAULT ''::character varying,
   c20 numeric NOT NULL DEFAULT 0,
   c21 character varying(1) NOT NULL DEFAULT ''::character varying,
@@ -28,15 +28,15 @@ CREATE  TABLE keplersc.kdctasser (
   c27 character varying(5) NOT NULL DEFAULT ''::character varying,
   c28 character varying(80) NOT NULL DEFAULT ''::character varying,
   c29 character varying(1) NOT NULL DEFAULT ''::character varying,
-  c30 character varying(90) NOT NULL DEFAULT ''::character varying,
-  c31 character varying(90) NOT NULL DEFAULT ''::character varying,
-  c32 character varying(90) NOT NULL DEFAULT ''::character varying,
-  c33 character varying(90) NOT NULL DEFAULT ''::character varying,
-  c34 character varying(90) NOT NULL DEFAULT ''::character varying,
-  c35 character varying(90) NOT NULL DEFAULT ''::character varying,
+  c30 character varying(300) NOT NULL DEFAULT ''::character varying,
+  c31 character varying(110) NOT NULL DEFAULT ''::character varying,
+  c32 character varying(110) NOT NULL DEFAULT ''::character varying,
+  c33 character varying(110) NOT NULL DEFAULT ''::character varying,
+  c34 character varying(110) NOT NULL DEFAULT ''::character varying,
+  c35 character varying(110) NOT NULL DEFAULT ''::character varying,
   c36 character varying(15) NOT NULL DEFAULT ''::character varying,
   c37 character varying(1) NOT NULL DEFAULT ''::character varying,
-  c38 character varying(1) NOT NULL DEFAULT ''::character varying,
+  c38 character varying(15) NOT NULL DEFAULT ''::character varying,
   c39 character varying(1) NOT NULL DEFAULT ''::character varying,
   c40 character varying(1) NOT NULL DEFAULT ''::character varying,
   promocion character varying(7) NULL DEFAULT ''::character varying,
@@ -113,7 +113,7 @@ COMMENT ON COLUMN keplersc.kdctasser.c24 IS 'Folio de la nueva cita';
 COMMENT ON COLUMN keplersc.kdctasser.c23 IS 'Recepcionista';
 COMMENT ON COLUMN keplersc.kdctasser.c22 IS 'Folio de la orden';
 COMMENT ON COLUMN keplersc.kdctasser.c21 IS 'Tipo de orden';
-COMMENT ON COLUMN keplersc.kdctasser.c20 IS 'Pendiente=0; Confirmada=10; Concretada=20; Reprogramada=30; Cancelada=40; Noshow=50';
+COMMENT ON COLUMN keplersc.kdctasser.c20 IS 'Pendiente=0; Confirmada=10; Concretada=20; Reprogramada=30; Cancelada=40; No Show=50';
 COMMENT ON COLUMN keplersc.kdctasser.c2 IS 'Folio de cita';
 COMMENT ON COLUMN keplersc.kdctasser.c17 IS 'Recepcionista';
 COMMENT ON COLUMN keplersc.kdctasser.c16 IS 'Fecha de registro';
@@ -124,5 +124,4 @@ COMMENT ON COLUMN keplersc.kdctasser.c12 IS 'Fecha de cita';
 COMMENT ON COLUMN keplersc.kdctasser.c11 IS 'Kilometraje';
 COMMENT ON COLUMN keplersc.kdctasser.c10 IS 'Anio modelo';
 COMMENT ON COLUMN keplersc.kdctasser.c1 IS 'Sucursal';
-CREATE TRIGGER kdctasser_notif AFTER INSERT OR DELETE OR UPDATE ON keplersc.kdctasser FOR EACH ROW EXECUTE FUNCTION keplersc.notif_registrar_movto();
 

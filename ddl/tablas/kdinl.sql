@@ -20,7 +20,7 @@ CREATE  TABLE keplersc.kdinl (
   c19 character varying(1) NOT NULL DEFAULT ''::character varying,
   c20 numeric(10,2) NOT NULL DEFAULT 0
 ) TABLESPACE pg_default;
-CREATE UNIQUE INDEX IF NOT EXISTS pk_kdinl ON keplersc.kdinl USING btree (c1, c2) TABLESPACE pg_default;
+ALTER TABLE ONLY keplersc.kdinl ADD CONSTRAINT pk_kdinl PRIMARY KEY (c1, c2);
 CREATE INDEX IF NOT EXISTS sindkdinl02 ON keplersc.kdinl USING btree (c1, c12, c11, c2) TABLESPACE pg_default;
 CREATE INDEX IF NOT EXISTS sindkdinl03 ON keplersc.kdinl USING btree (c1, c11, c2) TABLESPACE pg_default;
 COMMENT ON TABLE keplersc.kdinl IS 'Resumen de movimientos en inventario';

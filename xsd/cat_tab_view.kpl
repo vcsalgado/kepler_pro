@@ -1,248 +1,1 @@
-<?xml version="1.0" encoding="UTF-8"?><pag xmlns="www.kepler.com.mx/2003/KSchema" roles="" tit="Catalogo Tabulacion">
-<grp  brdr="0,0" clr="0,58,112" fnt="Arial,16"  dim="0,0,10,12" bclr="192,205,213" unfont="0"><br/><br/><tab/>
-		<grp  unfont="0"  bclr="236,240,243" fntClrBrdr="236,240,243" fntBrdr="Arial,18"  clrBrdr="0,58,112" hSpace="4"  dim="82,45,10,10" brdr="0,5" tit="Tabulacion">
-		<tab/><txt clr="0,58,112">Clave:</txt>
-		<inp id="clave" dim="17,1" brdr="2,0" clr="64,64,64" bclr="255,255,255" clrBrdr="255,255,255"/>
-		<tab/><txt clr="0,58,112" hk="S">Marca</txt>
-		<cmb id="marca" clr="64,64,64" clrBrdr="255,255,255"  OnChange="Modelos()" dim="12,36" bclr="255,255,255" brdr="2,0" fnt="Arial,16" Null="N" hk="S"  available="Y" modify="Y"/><tab n="2"/><txt clr="0,58,112" hk="S">Modelo</txt>
-		<cmb id="modelo" clr="64,64,64" clrBrdr="255,255,255"  dim="12,36" bclr="255,255,255" brdr="2,0" fnt="Arial,16" Null="N" hk="S"  available="Y" modify="Y"/><tab n="1"/>
-		<img id="bot" dim="20,20" bPx="Y" brdr="0,1"  img="_20_Find.png" OnEnter="Buscar()" available="Y" clrBrdr="0,0,0" visible="Y" modify="Y"/>
-		<br/>
-	
-		<tab/><tbl id="tabla" bclr="236,240,243" clr="64,64,64" clrCur="255,255,255" clrHead="0,58,112" bclrHead="236,240,243" brdr="1,0" clrBrdr="64,64,64" fnt="Arial,16" OnEnter="Exit" OnMouseD="Exit" dim="76,22" modify="N" nren="fijo">
-		<col id="clave" name="Clave"/>
-		<col id="desc" name="Descripcion"/>
-		<col id="horas" name="Horas"/>
-	
-		</tbl>  <br/>
-		<tab n="7"/>
-		<bot id="k_btn_nvo" dim="10,10" brdr="5" text="Nuevo" hk="K" default="0" step="1"  OnEnter="abrir_curd(Nuevo)" fnt="Arial,16b" visible="Y"/> 
-		<bot id="k_btn_mod" dim="10,10" brdr="5" text="Modificar" hk="K" default="0" step="1"  OnEnter="abrir_curd(Modificar)" fnt="Arial,16b" visible="Y"/> 
-		<bot id="k_btn_elimnr" dim="10,10" brdr="5" text="Eliminar" hk="K" default="0" step="1"  OnEnter="abrir_curd(Eliminar)" fnt="Arial,16b" visible="Y"/> 
-		<bot id="k_btn_cons" dim="10,10" brdr="5" text="Consultar" hk="K" default="0" step="1"  OnEnter="abrir_curd(Consultar)" fnt="Arial,16b" visible="Y"/> <br/>
-		
-		</grp>
-	
-	
-</grp>
-	<script>
-		InstallDriver("KDB75");
-		class Main {
-			var frn,frP,kdb,sys,suc_usuario,rol_usuario ,perfil_usuario,asterisco ,externo, marca, modelo ;
-
-			fun Main(){
-				frn=new FRNT;
-				frP=new FRNTP;
-				kdb=new KDB;
-				sys=new SYS;
-				kdb.connect();
-				
-				suc_usuario = frn.lib("libKepler","UserInfo(1)");
-				perfil_usuario = frn.lib("libKepler","UserInfo(2)");
-				rol_usuario = frn.config("user","role");
-				asterisco = "*";
-				
-				ctrls_off();
-				
-				Inicializa();
-				
-			
-			}
-			
-			fun ctrls_off(){
-		
-				frn.setAtt("k_btn_nvo", "visible", "N");
-				frn.setAtt("k_btn_mod", "visible", "N");
-				frn.setAtt("k_btn_elimnr", "visible", "N");
-				frn.setAtt("k_btn_cons", "visible", "N");
-				frn.setAtt("marca", "modify", "N");
-				frn.setAtt("modelo", "modify", "N");
-			
-			}
-			
-			fun Inicializa(){
-			
-				externo = frn.param(0);
-				marca= frn.param(2);
-				modelo = frn.param(3);
-				
-
-				var cmd,cubo,ok;
-			
-				//Llenar combo marcas
-				cmd = "select '['||c1||'] '||c2 as c2, c1 from keplersc.kdmarcas";
-			
-				
-				cubo = frn.lib("libGeneral.kpl","EjecutarSqlSel",cmd,"cat_tab_view.Inicializa()");
-					
-				ok=getXmlAtt(cubo,"ok");
-				if(ok &! "" && !ok){
-					var mensajeError = getXmlAtt(cubo,"native3");
-					mensajeError = frn.lib("libGeneral.kpl","ErrorBD",mensajeError);
-					frn.message(mensajeError,"Error","Aceptar");
-					return;
-				}
-				
-					
-				frn.set("marca",getXml(cubo));
-				
-
-				//Llenar combo modelos
-				cmd = "select '['||c2||'] '||c3 as c3, c2 from keplersc.kdmodelos ";
-			
-				cubo = frn.lib("libGeneral.kpl","EjecutarSqlSel",cmd,"cat_tab_view.Inicializa()");
-					
-				ok=getXmlAtt(cubo,"ok");
-				if(ok &! "" && !ok){
-					var mensajeError = getXmlAtt(cubo,"native3");
-					mensajeError = frn.lib("libGeneral.kpl","ErrorBD",mensajeError);
-					frn.message(mensajeError,"Error","Aceptar");
-					return;
-				}
-				
-					
-				frn.set("modelo",getXml(cubo));
-				
-				
-				if (externo &! "s"){
-					frn.setAtt("k_btn_nvo", "visible", "Y");
-					frn.setAtt("k_btn_mod", "visible", "Y");
-					frn.setAtt("k_btn_elimnr", "visible", "Y");
-					frn.setAtt("k_btn_cons", "visible", "Y");
-					frn.setAtt("marca", "modify", "Y");
-					frn.setAtt("modelo", "modify", "Y");
-				}else{
-				
-					if ( marca &! "" ){
-						frn.set("marca",descr_combo("marca",1, marca));	
-					}
-
-					if ( modelo &! "" ){
-						frn.set("modelo",descr_combo("modelo",1, modelo ));	
-					}
-				
-				}
-
-				Buscar();
-			
-				
-			}
-			
-			fun Modelos(){
-			
-				var cmd,cubo,ok;
-			
-				//Llenar combo modelos
-				cmd = "select '['||c2||'] '||c3 as c3, c2 from keplersc.kdmodelos where c1='" & frn.get("marca" , -1, 1) & "'";
-			
-				cubo = frn.lib("libGeneral.kpl","EjecutarSqlSel",cmd,"cat_tab_view.Inicializa()");
-					
-				ok=getXmlAtt(cubo,"ok");
-				if(ok &! "" && !ok){
-					var mensajeError = getXmlAtt(cubo,"native3");
-					mensajeError = frn.lib("libGeneral.kpl","ErrorBD",mensajeError);
-					frn.message(mensajeError,"Error","Aceptar");
-					return;
-				}
-				
-					
-				frn.set("modelo",getXml(cubo));
-			
-			
-			}
-			
-			fun Buscar() {
-			
-				var xmlRequest,cmd,ok,cuboResultados, tot , cont, identificador ,serie, marca, modelo, color, ano, placs,contacto;
-		
-				var clave = frn.get("clave");
-		
-				cmd= "select c3,c4,c5 from keplersc.kdtab where c1='" & frn.get("marca", -1, 1) &  "' and c2='" & frn.get("modelo", -1, 1) & "'";
-			
-				if (clave &! ""){
-					cmd = cmd & " and c3 ='" & clave & "'";
-				}
-			
-				
-				cuboResultados = frn.lib("libGeneral.kpl","EjecutarSqlSel",cmd,"cat_tab_view.Buscar()");
-				
-				frn.lib("libGeneral.kpl","FileSave",cuboResultados,"C:\Basura\cuboResultados");
-				
-				ok=getXmlAtt(cuboResultados,"ok");
-				if(ok &! "" && !ok){
-					var mensajeError = getXmlAtt(cuboResultados,"native3");
-					frn.message(mensajeError,"Error","Aceptar");
-					return;
-				}
-				
-				tot = nXml(cuboResultados);
-			
-				frn.rst("tabla");
-				for (cont=0; cont<tot; cont++){
-					
-					frn.setX(getXmlAtt(cuboResultados,"r"&cont,"c3"),"tabla",cont,"clave");
-					frn.setX( getXmlAtt(cuboResultados,"r"&cont,"c4") ,"tabla",cont,"desc");
-					frn.setX(getXmlAtt(cuboResultados,"r"&cont,"c5"),"tabla",cont,"horas");			
-				
-				}	
-		
-	
-			}
-			
-			
-			fun abrir_curd(accion){
-			
-				var param_2 = frn.get("marca", -1, 1);
-				var param_3 = frn.get("modelo", -1, 1);
-			
-				if (accion &! "Nuevo"){
-				
-					var param_1 = frn.get("tabla", -1, "clave");
-				
-								
-					if (param_1 &= ""){
-				
-						frn.message("No has seleccionado niguna clave","Error","Aceptar");
-				
-					}else{
-				
-						frn.dialog("cat_tab_crud",accion, param_1, param_2, param_3  , "n");
-					}
-				}else {
-				
-					frn.dialog("cat_tab_crud", accion, "x",param_2 ,param_3 , "n");
-					
-				}
-				
-			}
-			
-			
-			fun descr_combo(combo,posicion,valor){
-
-				var descr, valor_actual;
-				var len_combo = frn.N(combo);
-
-				for (var cont=0; cont<len_combo ; cont++){
-					valor_actual= frn.get(combo,cont,posicion);
-					if (valor_actual &=  valor){
-						descr = frn.get(combo,cont,0);
-						return descr;
-					}
-				}
-			}
-			
-	
-			fun Exit(){
-				
-				if (externo &= "s"){
-
-					frP.setX(frn.get("tabla", -1, "clave") ,"tabla_horas",-1,frn.param(1)); 
-					frP.scriptElm("tabla_horas","OnChange",frn.param(1));
-
-					frn.exit();
-					
-				}
-		
-			}
-		}
-	</script></pag>
+<?xml version="1.0" encoding="UTF-8"?><pag xmlns="www.kepler.com.mx/2003/KSchema" roles="" tit="Catalogo Tabulacion"><grp  brdr="0,0" clr="0,58,112" fnt="Arial,16"  dim="0,0,10,12" bclr="192,205,213" unfont="0"><br/><br/><tab/>		<grp  unfont="0"  bclr="236,240,243" fntClrBrdr="236,240,243" fntBrdr="Arial,18"  clrBrdr="0,58,112" hSpace="4"  dim="82,45,10,10" brdr="0,5" tit="Tabulacion">		<tab/><txt clr="0,58,112">Clave:</txt>		<inp id="clave" dim="17,1" brdr="2,0" clr="64,64,64" bclr="255,255,255" clrBrdr="255,255,255"/>		<tab/><txt clr="0,58,112" hk="S">Marca</txt>		<cmb id="marca" clr="64,64,64" clrBrdr="255,255,255"  OnChange="Modelos()" dim="12,36" bclr="255,255,255" brdr="2,0" fnt="Arial,16" Null="N" hk="S"  available="Y" modify="Y"/><tab n="2"/><txt clr="0,58,112" hk="S">Modelo</txt>		<cmb id="modelo" clr="64,64,64" clrBrdr="255,255,255"  dim="12,36" bclr="255,255,255" brdr="2,0" fnt="Arial,16" Null="N" hk="S"  available="Y" modify="Y"/><tab n="1"/>		<img id="bot" dim="20,20" bPx="Y" brdr="0,1"  img="_20_Find.png" OnEnter="Buscar()" available="Y" clrBrdr="0,0,0" visible="Y" modify="Y"/>		<br/>			<tab/><tbl id="tabla" bclr="236,240,243" clr="64,64,64" clrCur="255,255,255" clrHead="0,58,112" bclrHead="236,240,243" brdr="1,0" clrBrdr="64,64,64" fnt="Arial,16" OnEnter="Exit" OnMouseD="Exit" dim="76,22" modify="N" nren="fijo">		<col id="clave" name="Clave"/>		<col id="desc" name="Descripcion"/>		<col id="horas" name="Horas"/>			</tbl>  <br/>		<tab n="7"/>		<bot id="k_btn_nvo" dim="10,10" brdr="5" text="Nuevo" hk="K" default="0" step="1"  OnEnter="abrir_curd(Nuevo)" fnt="Arial,16b" visible="Y"/> 		<bot id="k_btn_mod" dim="10,10" brdr="5" text="Modificar" hk="K" default="0" step="1"  OnEnter="abrir_curd(Modificar)" fnt="Arial,16b" visible="Y"/> 		<bot id="k_btn_elimnr" dim="10,10" brdr="5" text="Eliminar" hk="K" default="0" step="1"  OnEnter="abrir_curd(Eliminar)" fnt="Arial,16b" visible="Y"/> 		<bot id="k_btn_cons" dim="10,10" brdr="5" text="Consultar" hk="K" default="0" step="1"  OnEnter="abrir_curd(Consultar)" fnt="Arial,16b" visible="Y"/> <br/>				</grp>		</grp>	<script>		InstallDriver("KDB75");		class Main {			var frn,frP,kdb,sys,suc_usuario,rol_usuario ,perfil_usuario,asterisco ,externo, marca, modelo ;			var flat_rate, serie; //VCSS integracion de  labor operation			fun Main(){				frn=new FRNT;				frP=new FRNTP;				kdb=new KDB;				sys=new SYS;				kdb.connect();								suc_usuario = frn.lib("libKepler","UserInfo(1)");				perfil_usuario = frn.lib("libKepler","UserInfo(2)");				rol_usuario = frn.config("user","role");				asterisco = "*";								ctrls_off();								Inicializa();										}						fun ctrls_off(){						frn.setAtt("k_btn_nvo", "visible", "N");				frn.setAtt("k_btn_mod", "visible", "N");				frn.setAtt("k_btn_elimnr", "visible", "N");				frn.setAtt("k_btn_cons", "visible", "N");				frn.setAtt("marca", "modify", "N");				frn.setAtt("modelo", "modify", "N");						}						fun Inicializa(){							externo = frn.param(0);				marca= frn.param(2);				modelo = frn.param(3);				flat_rate=frn.param(4); //VCSS labor operation				serie=frn.param(5);	//VCSS labor operation//frn.message(serie,"Mensaje","Aceptar");				if (!flat_rate){					flat_rate = "0";				}												var cmd,cubo,ok;							//Llenar combo marcas				cmd = "select '['||c1||'] '||c2 as c2, c1 from keplersc.kdmarcas";											cubo = frn.lib("libGeneral.kpl","EjecutarSqlSel",cmd,"cat_tab_view.Inicializa()");									ok=getXmlAtt(cubo,"ok");				if(ok &! "" && !ok){					var mensajeError = getXmlAtt(cubo,"native3");					mensajeError = frn.lib("libGeneral.kpl","ErrorBD",mensajeError);					frn.message(mensajeError,"Error","Aceptar");					return;				}													frn.set("marca",getXml(cubo));								//Llenar combo modelos				cmd = "select '['||c2||'] '||c3 as c3, c2 from keplersc.kdmodelos ";							cubo = frn.lib("libGeneral.kpl","EjecutarSqlSel",cmd,"cat_tab_view.Inicializa()");									ok=getXmlAtt(cubo,"ok");				if(ok &! "" && !ok){					var mensajeError = getXmlAtt(cubo,"native3");					mensajeError = frn.lib("libGeneral.kpl","ErrorBD",mensajeError);					frn.message(mensajeError,"Error","Aceptar");					return;				}													frn.set("modelo",getXml(cubo));												if (externo &! "s"){					frn.setAtt("k_btn_nvo", "visible", "Y");					frn.setAtt("k_btn_mod", "visible", "Y");					frn.setAtt("k_btn_elimnr", "visible", "Y");					frn.setAtt("k_btn_cons", "visible", "Y");					frn.setAtt("marca", "modify", "Y");					frn.setAtt("modelo", "modify", "Y");				}else{									if ( marca &! "" ){						frn.set("marca",descr_combo("marca",1, marca));						}					if ( modelo &! "" ){						frn.set("modelo",descr_combo("modelo",1, modelo ));						}								}//frn.message(serie,"Mensaje","Aceptar");				Buscar();										}						fun Modelos(){							var cmd,cubo,ok;							//Llenar combo modelos				cmd = "select '['||c2||'] '||c3 as c3, c2 from keplersc.kdmodelos where c1='" & frn.get("marca" , -1, 1) & "'";							cubo = frn.lib("libGeneral.kpl","EjecutarSqlSel",cmd,"cat_tab_view.Inicializa()");									ok=getXmlAtt(cubo,"ok");				if(ok &! "" && !ok){					var mensajeError = getXmlAtt(cubo,"native3");					mensajeError = frn.lib("libGeneral.kpl","ErrorBD",mensajeError);					frn.message(mensajeError,"Error","Aceptar");					return;				}													frn.set("modelo",getXml(cubo));									}						fun Buscar() {							var xmlRequest,cmd,ok,cuboResultados, tot , cont, identificador , marca, modelo, color, ano, placs,contacto;						var clave = frn.get("clave");							if (flat_rate &= "0"){ //VCSS labor operation					cmd= "select c3,c4,c5 from keplersc.kdtab where c1='" & frn.get("marca", -1, 1) &  "' and c2='" & frn.get("modelo", -1, 1) & "'";					if (clave &! ""){						cmd = cmd & " and c3 ='" & clave & "'";					}				}else{					cmd= "select clave_operacion as c3, descripcion_operacion as c4, tiempo_asignado as c5 from keplersc.laboroperation where id_grupo_vehiculo='" & mid(serie, 0, 3) &  "' and id_vehiculo='" & mid(serie, 3, 5) & "'";								}//frn.message(cmd,"Mensaje","Aceptar");								cuboResultados = frn.lib("libGeneral.kpl","EjecutarSqlSel",cmd,"cat_tab_view.Buscar()");								frn.lib("libGeneral.kpl","FileSave",cuboResultados,"C:\Basura\cuboResultados");								ok=getXmlAtt(cuboResultados,"ok");				if(ok &! "" && !ok){					var mensajeError = getXmlAtt(cuboResultados,"native3");					frn.message(mensajeError,"Error","Aceptar");					return;				}								tot = nXml(cuboResultados);							frn.rst("tabla");				for (cont=0; cont<tot; cont++){										frn.setX(getXmlAtt(cuboResultados,"r"&cont,"c3"),"tabla",cont,"clave");					frn.setX( getXmlAtt(cuboResultados,"r"&cont,"c4") ,"tabla",cont,"desc");					frn.setX(getXmlAtt(cuboResultados,"r"&cont,"c5"),"tabla",cont,"horas");											}												}									fun abrir_curd(accion){							var param_2 = frn.get("marca", -1, 1);				var param_3 = frn.get("modelo", -1, 1);							if (accion &! "Nuevo"){									var param_1 = frn.get("tabla", -1, "clave");																	if (param_1 &= ""){										frn.message("No has seleccionado niguna clave","Error","Aceptar");									}else{										frn.dialog("cat_tab_crud",accion, param_1, param_2, param_3  , "n");					}				}else {									frn.dialog("cat_tab_crud", accion, "x",param_2 ,param_3 , "n");									}							}									fun descr_combo(combo,posicion,valor){				var descr, valor_actual;				var len_combo = frn.N(combo);				for (var cont=0; cont<len_combo ; cont++){					valor_actual= frn.get(combo,cont,posicion);					if (valor_actual &=  valor){						descr = frn.get(combo,cont,0);						return descr;					}				}			}							fun Exit(){								if (externo &= "s"){					frP.setX(frn.get("tabla", -1, "clave") ,"tabla_horas",-1,frn.param(1)); 					frP.scriptElm("tabla_horas","OnChange",frn.param(1));					frn.exit();									}					}		}	</script></pag>

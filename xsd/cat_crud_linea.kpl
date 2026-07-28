@@ -1,242 +1,1 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<pag xmlns="www.kepler.com.mx/2003/KSchema" roles="" tit="Catalogo de Linea">
-<grp  brdr="0,0" clr="0,58,112" fnt="Arial,16"  dim="0,0,10,10" bclr="192,205,213" unfont="0">
-	<tab/><inp id="k_titulo" dim="30,1" brdr="0,0" bclr="192,205,213" clr="0,0,0" clrBrdr="192,205,213"
-				type="string" modify="N" available="N" fnt="Arial,22"/>
-	<br/>
-	<br/><tab/>
-		<hLine clr="0,0,0"/>
-		<br/><br/>
-		<tab/>
-		<grp id="gpo_2" bclr="236,240,243" fntClrBrdr="255,255,255" unfont="0" fntBrdr="Arial,18" hSpace="4" clrBrdr="0,58,112" dim="60,15,10,9" brdr="0,5" tit="Catalogo de Linea Alta Nuevo" fnt="Arial,16">
-			<tab/>
-			<sp/>
-				<inp id="clave" dim="25,1" brdr="0,0" bclr="236,240,243" clrBrdr="192,205,213" 
-					type="string" modify="N" available="N" fnt="Arial,0"/>
-			<sp/>
-				<inp id="k_clave" dim="25,1" brdr="0,0" bclr="255,255,255" clr="0,0,0" clrBrdr="192,205,213" 
-					type="capital" modify="Y" available="Y" fnt="Arial,18"  nc="18"/>
-            <br/>
-			<tab/>
-			<sp/>
-				<inp id="desc" dim="25,1" brdr="0,0" bclr="236,240,243" clrBrdr="192,205,213" 
-					type="string" modify="N" available="N" fnt="Arial,0"/>
-			<sp/>
-				<inp id="k_desc" dim="25,1" brdr="0,0" bclr="255,255,255" clr="0,0,0" clrBrdr="192,205,213" 
-					type="capital" modify="Y" available="Y" fnt="Arial,18" nc="50"/>
-            <tab n="4"/>
-		<br/>
-		<tab/>
-		<sp/>
-		<bot id="k_btn_cons" dim="10,10" brdr="5" text="Guardar" hk="K" default="1" step="0"  OnEnter="guardar()" fnt="Arial,16"/>
-        <br/>
-		</grp>
-</grp>
-	<script>
-		InstallDriver("KDB75");
-		class Main {
-			var frn,frP,kdb,sys,suc_usuario,perfil_usuario,rol_usuario,asterisco, externo, cuboXml;
-			var tipoOper, consPlantilla, accion, gen; //Variables relacionadas con parametros (colsulta , eliminar, baja)
-			var strTitulo, strQuery, strColValor, strCtrlSet, strMostrarLlave, strRenglon, strColumna, clave; 
-			fun Main(){
-				frn=new FRNT;
-				kdb=new KDB;
-				frP=new FRNTP;
-				sys=new SYS;
-				kdb.connect();
-				
-				suc_usuario = frn.lib("libKepler","UserInfo(1)");
-				perfil_usuario = frn.lib("libKepler","UserInfo(2)");
-				rol_usuario = frn.config("user","role");
-				asterisco = "*";
-				
-                tipoOper = frn.param(0);
-                clave = frn.param(1);
-				gen = frn.param(2);
-				ConfiguraUI();
-				
-				Inicializa();
-			
-			}
-        
-        fun guardar(){
-            tipoOper = frn.param(0);
-            var query, k_clave, k_desc, resultado, mensaje, mensajeError, cuboQuery;
-            k_clave = frn.get("k_clave");
-            k_desc = frn.get("k_desc");
-            if(tipoOper&="N"){
-                if(k_clave &! "" && k_desc &! ""){
-                    query = "insert into keplersc.kdivl (c1, c2)
-                        values ('"& k_clave &"','"& k_desc &"')";
-                    cuboQuery = frn.lib("libGeneral.kpl","EjecutarSql",query,"cat_crud_Linea.guardar()");
-
-                    resultado = getXml(cuboQuery,"resultado");
-                    mensaje = "Registro "& k_clave &" Generado con Exito";
-			        if(resultado &= "0"){
-				        mensajeError = getXml(cuboQuery ,"mensaje");
-				            frn.message(mensajeError,"Error","Aceptar");
-				            return;
-				    }else{
-                        frn.message(mensaje, "Alta Correcta", "Aceptar");
-                        frP.set("k_linea", k_clave); // variable del crud principal
-                        frn.exit();	
-						if(gen &="G"){
-							frP.script("Inicializa()");
-						}
-                    }
-                }else{
-                    mensajeError = "La Clave nueva y la Descripcion no pueden estar en vacio";
-                    frn.message(mensajeError,"Error","Aceptar");
-                }
-            }else if(tipoOper&="M"){
-               if(k_clave &! "" && k_desc &! ""){
-                    query = "update keplersc.kdivl set c2 = '"& k_desc &"' where c1 = '"& k_clave &"'";
-
-                    cuboQuery = frn.lib("libGeneral.kpl","EjecutarSql",query,"cat_crud_Linea.guardar()");
-
-                    resultado = getXml(cuboQuery,"resultado");
-                    mensaje = "Registro "& k_clave &" Actualizado con Exito ";
-			        if(resultado &= "0"){
-				        mensajeError = getXml(cuboQuery ,"mensaje");
-				            frn.message(mensajeError,"Error","Aceptar");
-				            return;
-				    }else{
-                        frn.message(mensaje, "Alta Correcta", "Aceptar");
-                        frP.set("k_linea", k_clave); // variable del crud principal
-                        frn.exit();	
-						if(gen &="G"){
-							frP.script("Inicializa()");
-						}
-                    }
-                }else{
-                    mensajeError = "La Clave nueva y la Descripcion no pueden estar en vacio";
-                    frn.message(mensajeError,"Error","Aceptar");
-                }
-            }else if(tipoOper&="C"){
-				frn.exit();	
-            }
-        }
-
-		fun cargaCata(){
-			var queryCata, cubo_cata, ok, mensajeError, xml_cubo_cata, clave;
-            clave = frn.param(1);
-
-			queryCata = "select c1 as k_clave,
-							c2 as k_desc
-							from keplersc.kdivl where c1 = '"& clave &"'";
-				cubo_cata= frn.lib("libGeneral.kpl","EjecutarSqlSel",queryCata,"cat_crud_Linea.cargaCata()");
-				ok=getXmlAtt(cubo_cata,"ok");
-				if(ok &! "" && !ok){
-						mensajeError = getXmlAtt(cuboXml,"native3");
-						//mensajeError = frn.lib("libGeneral.kpl","ErrorBD",mensajeError);
-						frn.message(mensajeError,"Error","Aceptar");
-						return;
-				}	
-//			frn.lib("libGeneral.kpl","FileSave",cubo_cata,"C:\Basura\cubo_cata");
-			xml_cubo_cata=frn.lib("libGeneral.kpl","CreaXmlDesdeAtt",cubo_cata,"r0");
-//			frn.lib("libGeneral.kpl","FileSave",xml_cubo_cata,"C:\Basura\xml_cubo_cata");
-			frn.setX(xml_cubo_cata);
-			if (tipoOper &= "N" || tipoOper &="M"){
-				activaCampos();
-			 }
-		
-		}
-
-			fun ConfiguraUI(){
-				consPlantilla="PLANTILLA"; //AQUI DEFINE LA CONSTANTE PARA COMPARAR EN PARAMETROS
-				if (frn.nParam() == 0){
-					frn.message("Accion no permitida.","Error","&Aceptar");
-					frn.open("redirect",2);
-					return;
-				}
-
-
-				//Establecer titulo de la ventana
-				if (tipoOper &= "PLANTILLA"){
-					frn.setAtt("gpo_2","tit","Catalogo PLANTILLA...");
-					frn.set("k_titulo","Catalogo Linea Plantilla");
-				}
-				else if (tipoOper &= "N"){
-					frn.setAtt("gpo_2","tit","Catalogo de Linea Alta Nuevo");
-					frn.set("k_titulo","Catalogo Linea Alta");
-				}
-				else if (tipoOper &= "M"){
-					frn.setAtt("gpo_2","tit","Catalogo de Linea Modificar");
-					frn.set("k_titulo","Catalogo Linea Modificar");
-				}
-				else if (tipoOper &= "E"){
-					frn.setAtt("gpo_2","tit","Catalogo de Linea Elimina Linea");
-					frn.set("k_titulo","Catalogo Linea Eliminar");
-				}
-				else if (tipoOper &= "C"){
-					frn.setAtt("gpo_2","tit","Catalogo de Linea Consulta");
-					frn.set("k_titulo","Catalogo Linea Consulta");
-				}
-				else{
-					frn.message("Accion no permitida.","Error","&Aceptar");
-					frn.open("redirect",2);
-					return;
-				}
-			}
-					
-			fun Inicializa(){
-				frn.rst("gpo_2");
-				Inicia_Forma();
-				}
-	
-
-			fun activaCampos(){
-                if(tipoOper&="N"){
-                    frn.set("k_clave","");
-                    frn.set("k_desc","");
-                }
-                
-				frn.setAtt("k_clave", "available", "Y");
-				frn.setAtt("k_clave", "bclr", "255,255,255");
-				frn.setAtt("k_desc", "available", "Y");
-				frn.setAtt("k_desc", "bclr", "255,255,255");
-				if(tipoOper&="M"){
-					frn.setAtt("k_clave", "available", "N");
-					frn.setAtt("k_clave", "bclr", "236,240,243");
-				}
-			}
-
-			fun Inicia_Forma(){
-				var cmd,ok,mensajeError, cubo;
-				//Etiquetas 
-				frn.set("clave","Clave");
-				frn.set("desc","Descripcion ");
-
-				frn.setAtt("k_clave", "available", "N");
-				frn.setAtt("k_clave", "bclr", "236,240,243");
-				frn.setAtt("k_desc", "available", "N");
-				frn.setAtt("k_desc", "bclr", "236,240,243");
-				cargaCata();
-				//Obtencion de registros
-				if(tipoOper&="C"){
-					frn.setAtt("k_btn_cons","text","Aceptar");
-				}
-			}
-		
-//---------------------------------------------------------------EXTRAS-------------------------------------------------------------------GAD fl4r30n
-						
-			fun Dialog(iModo,pag,par0,par1,par2,par3,par4,par5,par6,par7,par8,par9,par10,par11,par12,par13,par14,par15){
-				/*iModo: 0)No hace mayor validaci?n. Siempre despliega la ventana. NO CONCATENA PREFIJO
-							1)Solo concatena el prefijo de la carpeta del lenguaje, no hace mayor validaci?n. Siempre despliega la ventana
-							2)Modo especial. Se valida que el campo indicado en par0 se puede modificar(El par0 puede ser una tabla, y par1 la columna)
-							3)Modo especial para p?ginas de operacion:Solo si se est? en alta o modifica despliega la pagina. Simpre agrega el prefijo del lenguaje
-				*/
-				var prefix=frn.lib("libKepler","langPrefix");
-				var page=prefix&pag;
-				var b_valido=1;
-				if(iModo==0)page=pag;
-				else if(iModo==2&&(strlen(par0)>0)){//Se toma el par0 como el objeto (o grid) al que se devolver? el resultado.
-					if( frn.getAtt(par0,"modify",par1) &= "N" ) b_valido=0;
-					if( frn.getAtt(par0,"available",par1) &= "N" ) b_valido=0;
-					if( frn.getAtt(par0,"visible",par1) &= "N" ) b_valido=0;
-				}
-				if(iModo==3)frn.dialog(page,par0,par1,par2,par3,par4,par5,par6,par7,par8,par9,par10,par11,par12,par13,par14,par15);
-			}
-		}
-	</script>
-</pag>
+<?xml version="1.0" encoding="UTF-8"?><pag xmlns="www.kepler.com.mx/2003/KSchema" roles="" tit="Catalogo de Linea"><grp  brdr="0,0" clr="0,58,112" fnt="Arial,16"  dim="0,0,10,10" bclr="192,205,213" unfont="0">	<tab/><inp id="k_titulo" dim="30,1" brdr="0,0" bclr="192,205,213" clr="0,0,0" clrBrdr="192,205,213"				type="string" modify="N" available="N" fnt="Arial,22"/>	<br/>	<br/><tab/>		<hLine clr="0,0,0"/>		<br/><br/>		<tab/>		<grp id="gpo_2" bclr="236,240,243" fntClrBrdr="255,255,255" unfont="0" fntBrdr="Arial,18" hSpace="4" clrBrdr="0,58,112" dim="60,15,10,9" brdr="0,5" tit="Catalogo de Linea Alta Nuevo" fnt="Arial,16">			<tab/>			<sp/>				<inp id="clave" dim="25,1" brdr="0,0" bclr="236,240,243" clrBrdr="192,205,213" 					type="string" modify="N" available="N" fnt="Arial,0"/>			<sp/>				<inp id="k_clave" dim="25,1" brdr="0,0" bclr="255,255,255" clr="0,0,0" clrBrdr="192,205,213" 					type="capital" modify="Y" available="Y" fnt="Arial,18"  nc="18"/>            <br/>			<tab/>			<sp/>				<inp id="desc" dim="25,1" brdr="0,0" bclr="236,240,243" clrBrdr="192,205,213" 					type="string" modify="N" available="N" fnt="Arial,0"/>			<sp/>				<inp id="k_desc" dim="25,1" brdr="0,0" bclr="255,255,255" clr="0,0,0" clrBrdr="192,205,213" 					type="capital" modify="Y" available="Y" fnt="Arial,18" nc="50"/>            <tab n="4"/>		<br/>		<tab/>		<sp/>		<bot id="k_btn_cons" dim="10,10" brdr="5" text="Guardar" hk="K" default="1" step="0"  OnEnter="guardar()" fnt="Arial,16"/>        <br/>		</grp></grp>	<script>		InstallDriver("KDB75");		class Main {			var frn,frP,kdb,sys,suc_usuario,perfil_usuario,rol_usuario,asterisco, externo, cuboXml;			var tipoOper, consPlantilla, accion, gen; //Variables relacionadas con parametros (colsulta , eliminar, baja)			var strTitulo, strQuery, strColValor, strCtrlSet, strMostrarLlave, strRenglon, strColumna, clave; 			fun Main(){				frn=new FRNT;				kdb=new KDB;				frP=new FRNTP;				sys=new SYS;				kdb.connect();								suc_usuario = frn.lib("libKepler","UserInfo(1)");				perfil_usuario = frn.lib("libKepler","UserInfo(2)");				rol_usuario = frn.config("user","role");				asterisco = "*";				                tipoOper = frn.param(0);                clave = frn.param(1);				gen = frn.param(2);				ConfiguraUI();								Inicializa();						}                fun guardar(){            tipoOper = frn.param(0);            var query, k_clave, k_desc, resultado, mensaje, mensajeError, cuboQuery;            k_clave = frn.get("k_clave");            k_desc = frn.get("k_desc");            if(tipoOper&="N"){                if(k_clave &! "" && k_desc &! ""){                    query = "insert into keplersc.kdivl (c1, c2)                        values ('"& k_clave &"','"& k_desc &"')";                    cuboQuery = frn.lib("libGeneral.kpl","EjecutarSql",query,"cat_crud_Linea.guardar()");                    resultado = getXml(cuboQuery,"resultado");                    mensaje = "Registro "& k_clave &" Generado con Exito";			        if(resultado &= "0"){				        mensajeError = getXml(cuboQuery ,"mensaje");				            frn.message(mensajeError,"Error","Aceptar");				            return;				    }else{                        frn.message(mensaje, "Alta Correcta", "Aceptar");                        frP.set("k_linea", k_clave); // variable del crud principal                        frn.exit();							if(gen &="G"){							frP.script("Inicializa()");						}                    }                }else{                    mensajeError = "La Clave nueva y la Descripcion no pueden estar en vacio";                    frn.message(mensajeError,"Error","Aceptar");                }            }else if(tipoOper&="M"){               if(k_clave &! "" && k_desc &! ""){                    query = "update keplersc.kdivl set c2 = '"& k_desc &"' where c1 = '"& k_clave &"'";                    cuboQuery = frn.lib("libGeneral.kpl","EjecutarSql",query,"cat_crud_Linea.guardar()");                    resultado = getXml(cuboQuery,"resultado");                    mensaje = "Registro "& k_clave &" Actualizado con Exito ";			        if(resultado &= "0"){				        mensajeError = getXml(cuboQuery ,"mensaje");				            frn.message(mensajeError,"Error","Aceptar");				            return;				    }else{                        frn.message(mensaje, "Alta Correcta", "Aceptar");                        frP.set("k_linea", k_clave); // variable del crud principal                        frn.exit();							if(gen &="G"){							frP.script("Inicializa()");						}                    }                }else{                    mensajeError = "La Clave nueva y la Descripcion no pueden estar en vacio";                    frn.message(mensajeError,"Error","Aceptar");                }            }else if(tipoOper&="C"){				frn.exit();	            }        }		fun cargaCata(){			var queryCata, cubo_cata, ok, mensajeError, xml_cubo_cata, clave;            clave = frn.param(1);			queryCata = "select c1 as k_clave,							c2 as k_desc							from keplersc.kdivl where c1 = '"& clave &"'";				cubo_cata= frn.lib("libGeneral.kpl","EjecutarSqlSel",queryCata,"cat_crud_Linea.cargaCata()");				ok=getXmlAtt(cubo_cata,"ok");				if(ok &! "" && !ok){						mensajeError = getXmlAtt(cuboXml,"native3");						//mensajeError = frn.lib("libGeneral.kpl","ErrorBD",mensajeError);						frn.message(mensajeError,"Error","Aceptar");						return;				}	//			frn.lib("libGeneral.kpl","FileSave",cubo_cata,"C:\Basura\cubo_cata");			xml_cubo_cata=frn.lib("libGeneral.kpl","CreaXmlDesdeAtt",cubo_cata,"r0");//			frn.lib("libGeneral.kpl","FileSave",xml_cubo_cata,"C:\Basura\xml_cubo_cata");			frn.setX(xml_cubo_cata);			if (tipoOper &= "N" || tipoOper &="M"){				activaCampos();			 }				}			fun ConfiguraUI(){				consPlantilla="PLANTILLA"; //AQUI DEFINE LA CONSTANTE PARA COMPARAR EN PARAMETROS				if (frn.nParam() == 0){					frn.message("Acción no permitida.","Error","&Aceptar");					frn.open("redirect",2);					return;				}				//Establecer titulo de la ventana				if (tipoOper &= "PLANTILLA"){					frn.setAtt("gpo_2","tit","Catalogo PLANTILLA...");					frn.set("k_titulo","Catalogo Linea Plantilla");				}				else if (tipoOper &= "N"){					frn.setAtt("gpo_2","tit","Catalogo de Linea Alta Nuevo");					frn.set("k_titulo","Catalogo Linea Alta");				}				else if (tipoOper &= "M"){					frn.setAtt("gpo_2","tit","Catalogo de Linea Modificar");					frn.set("k_titulo","Catalogo Linea Modificar");				}				else if (tipoOper &= "E"){					frn.setAtt("gpo_2","tit","Catalogo de Linea Elimina Linea");					frn.set("k_titulo","Catalogo Linea Eliminar");				}				else if (tipoOper &= "C"){					frn.setAtt("gpo_2","tit","Catalogo de Linea Consulta");					frn.set("k_titulo","Catalogo Linea Consulta");				}				else{					frn.message("Acción no permitida.","Error","&Aceptar");					frn.open("redirect",2);					return;				}			}								fun Inicializa(){				frn.rst("gpo_2");				Inicia_Forma();				}				fun activaCampos(){                if(tipoOper&="N"){                    frn.set("k_clave","");                    frn.set("k_desc","");                }                				frn.setAtt("k_clave", "available", "Y");				frn.setAtt("k_clave", "bclr", "255,255,255");				frn.setAtt("k_desc", "available", "Y");				frn.setAtt("k_desc", "bclr", "255,255,255");				if(tipoOper&="M"){					frn.setAtt("k_clave", "available", "N");					frn.setAtt("k_clave", "bclr", "236,240,243");				}			}			fun Inicia_Forma(){				var cmd,ok,mensajeError, cubo;				//Etiquetas 				frn.set("clave","Clave");				frn.set("desc","Descripción ");				frn.setAtt("k_clave", "available", "N");				frn.setAtt("k_clave", "bclr", "236,240,243");				frn.setAtt("k_desc", "available", "N");				frn.setAtt("k_desc", "bclr", "236,240,243");				cargaCata();				//Obtencion de registros				if(tipoOper&="C"){					frn.setAtt("k_btn_cons","text","Aceptar");				}			}		//---------------------------------------------------------------EXTRAS-------------------------------------------------------------------GAD fl4r30n									fun Dialog(iModo,pag,par0,par1,par2,par3,par4,par5,par6,par7,par8,par9,par10,par11,par12,par13,par14,par15){				/*iModo: 0)No hace mayor validaci?n. Siempre despliega la ventana. NO CONCATENA PREFIJO							1)Solo concatena el prefijo de la carpeta del lenguaje, no hace mayor validaci?n. Siempre despliega la ventana							2)Modo especial. Se valida que el campo indicado en par0 se puede modificar(El par0 puede ser una tabla, y par1 la columna)							3)Modo especial para p?ginas de operacion:Solo si se est? en alta o modifica despliega la pagina. Simpre agrega el prefijo del lenguaje				*/				var prefix=frn.lib("libKepler","langPrefix");				var page=prefix&pag;				var b_valido=1;				if(iModo==0)page=pag;				else if(iModo==2&&(strlen(par0)>0)){//Se toma el par0 como el objeto (o grid) al que se devolver? el resultado.					if( frn.getAtt(par0,"modify",par1) &= "N" ) b_valido=0;					if( frn.getAtt(par0,"available",par1) &= "N" ) b_valido=0;					if( frn.getAtt(par0,"visible",par1) &= "N" ) b_valido=0;				}				if(iModo==3)frn.dialog(page,par0,par1,par2,par3,par4,par5,par6,par7,par8,par9,par10,par11,par12,par13,par14,par15);			}		}	</script></pag>

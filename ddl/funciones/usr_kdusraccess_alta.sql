@@ -2,10 +2,6 @@ CREATE OR REPLACE FUNCTION keplersc.usr_kdusraccess_alta(dataxml xml)
  RETURNS TABLE(resultado text, mensaje text, adicionales text)
  LANGUAGE plpgsql
 AS $function$
---Bitacora de cambios
---05/08/2024 (JMM) :
----- Incluir Concepto Doc_Ref_Compl para nuevo SCH - Gastos ( C x P . Contra Recibos) 
-
 declare
 	--Variables de definicion de documento
 	usuario text = '';	
@@ -19,9 +15,6 @@ declare
 	folio text = '';
 	tipo_movto text = '';
 	detalle_movto text = '';
-
-	--Added by JMM 20240805
-	var_ref_compl text = '';
 
 	--Variables de uso general 
 	strValor text = '';
@@ -43,16 +36,6 @@ begin
 	folio := (xpath('//document/folio/text()', dataxml))[1];
 	tipo_movto := (xpath('//document/tipo_movto/text()', dataxml))[1];
 	detalle_movto:= coalesce((xpath('//document/detalle_movto/text()', dataxml))[1]::text,'');
-
-	-- Added by JMM 20240805 for (CR Unified)
-	var_ref_compl := '';
-
-	if xpath_exists('//document/ref_compl/text()', dataxml) = true /*false*/ then 
-		var_ref_compl := coalesce((xpath('//document/ref_compl/text()',dataxml))[1]::text,'')::text;
-		if length(var_ref_compl) > 0 then
-			detalle_movto := var_ref_compl;
-		end if;
-	end if;
 
 	insert into keplersc.kdusraccess (c1,c2,c3,c4,c5,c6,c7,c8,c9,c10,c11)
 		values(usuario,to_date(fecha,'YYYY-MM-DD'),hora,sucursal,genero,naturaleza,

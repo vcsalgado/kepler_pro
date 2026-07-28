@@ -7,8 +7,8 @@ declare
 	--actualizado:07/Dic/2022
 	--Variables de definicion de documento	
 	---'FACTURA DEL AUTOMOVIL 
-	--Bitacora de cambios
-	--05/03/2025 Miriam Santana: Alta/Baja de anticipos de una factura para relacionarlos en el CFDI
+--Bitacora de cambios
+--05/03/2025 Miriam Santana: Seleccion de anticipos de una factura para relacionarlos en el CFDI
 
 	v_sucursal_id text = '';
 	genero text = '';
@@ -150,7 +150,7 @@ begin
 				select * into resultado, mensaje, adicionales from keplersc.invlib_inv_alta(dataxml,xmlKDMM,folio_operacion); --dentro de la libreria se encuentra inv_alta_k				
 				
 				---------------------------------------------------------------
-				--Alta/Baja de seleccion de anticipos de una factura para relacionarlos en el CFDI.		--MSS 05032025 seleccion de anticipos
+				--Guarda la seleccion de anticipos de una factura para relacionarlos en el CFDI.		--MSS 05032025 seleccion de anticipos
 				---------------------------------------------------------------
 				select * into resultado, mensaje, adicionales from keplersc.cfd_alta_seleccion_anticipos(dataxml,folio_operacion);
 				if resultado = '0' then

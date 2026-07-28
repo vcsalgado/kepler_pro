@@ -9,7 +9,7 @@ CREATE  TABLE keplersc.kdm2 (
   c8 character varying(18) NOT NULL DEFAULT ''::character varying,
   c9 numeric(15,6) NOT NULL DEFAULT 0,
   c10 character varying(300) NOT NULL DEFAULT ''::character varying,
-  c11 character varying(3) NOT NULL DEFAULT ''::character varying,
+  c11 character varying(4) NOT NULL DEFAULT ''::character varying,
   c12 numeric(18,6) NOT NULL DEFAULT 0,
   c13 numeric(19,6) NOT NULL DEFAULT 0,
   c14 double precision NOT NULL DEFAULT 0,
@@ -38,7 +38,9 @@ CREATE  TABLE keplersc.kdm2 (
   c37 numeric(15,2) NOT NULL DEFAULT 0,
   c38 numeric(15,2) NOT NULL DEFAULT 0,
   c39 character varying(10) NOT NULL DEFAULT ''::character varying,
-  c40 character varying(10) NOT NULL DEFAULT ''::character varying
+  c40 character varying(10) NOT NULL DEFAULT ''::character varying,
+  col_foliomig character varying(10) NULL,
+  col_foliofin character varying(10) NULL
 ) TABLESPACE pg_default;
 CREATE UNIQUE INDEX IF NOT EXISTS pk_kdm2 ON keplersc.kdm2 USING btree (c1, c2, c3, c4, c5, c6, c7) TABLESPACE pg_default;
 CREATE INDEX IF NOT EXISTS sindkdm202 ON keplersc.kdm2 USING btree (c1, c2, c3, c4, c8, c5, c6, c7) TABLESPACE pg_default;

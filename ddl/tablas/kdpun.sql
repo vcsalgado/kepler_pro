@@ -13,7 +13,7 @@ CREATE  TABLE keplersc.kdpun (
   c12 character varying(50) NOT NULL DEFAULT ''::character varying,
   c13 character varying(50) NOT NULL DEFAULT ''::character varying,
   c14 character varying(50) NOT NULL DEFAULT ''::character varying,
-  c15 character varying(40) NOT NULL DEFAULT ''::character varying,
+  c15 character varying(100) NOT NULL DEFAULT ''::character varying,
   c16 timestamp without time zone NOT NULL DEFAULT '1800-01-01 00:00:00'::timestamp without time zone,
   c17 character varying(5) NOT NULL DEFAULT ''::character varying,
   c18 character varying(40) NOT NULL DEFAULT ''::character varying,

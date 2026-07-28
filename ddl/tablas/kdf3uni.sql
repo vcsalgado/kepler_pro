@@ -8,6 +8,7 @@ CREATE  TABLE keplersc.kdf3uni (
   c7 character varying(20) NOT NULL DEFAULT ''::character varying
 ) TABLESPACE pg_default;
 ALTER TABLE ONLY keplersc.kdf3uni ADD CONSTRAINT pk_kdf3uni PRIMARY KEY (c1, c2);
+COMMENT ON TABLE keplersc.kdf3uni IS 'F3 Unidades';
 COMMENT ON COLUMN keplersc.kdf3uni.c7 IS 'Simbolo';
 COMMENT ON COLUMN keplersc.kdf3uni.c6 IS 'Fin vigencia';
 COMMENT ON COLUMN keplersc.kdf3uni.c5 IS 'Inicion vigencia';

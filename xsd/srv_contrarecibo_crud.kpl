@@ -1,1330 +1,1 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<pag xmlns="www.kepler.com.mx/2003/KSchema" roles="" tit="Contrarecibo">
-	<grp dim="1,-1,10,20" brdr="0,0" clr="0,58,112" bclr="192,205,213" fnt="Arial,16" unfont="0" OnEnter="Exit()">
-	<tab/><txt fnt=",22" clr="0,0,0">Contrarecibo</txt><br/>
-	<tab/><hLine clr="0,0,0"/> 
-	<br/> <br/><tab/>
-		<grp dim="46,9,7,12" bclr="236,240,243" fntClrBrdr="236,240,243" fntBrdr="Arial,18" hSpace="4" clrBrdr="0,58,112" brdr="0,5" fnt="Arial,16" tit="Par&#225;metros"><txt>  Sucursal : </txt>
-			<cmb id="k_sucn" clr="64,64,64" clrBrdr="255,255,255" dim="52,36" bclr="255,255,255" brdr="2,0" fnt="Arial,16" Null="N" hk="S" OnChange="CambiaSucursal()" tooltip="Sucursal" available="Y" modify="Y"/>
-			<br/><br/>
-			<txt>  Tipo :        </txt>
-			<cmb id="k_tipon" dim="40,1" brdr="2,0" bclr="255,255,255" clr="64,64,64" clrBrdr="255,255,255" modify="Y" OnChange="CambiaTipo()" tooltip="Tipo de Movimiento"/>
-			<br/>
-			<tab n="4"/><inp id="statusdoc" clr="64,64,64"  dim="25,1" brdr="0,1" fnt=",16b" available="N"/>
-		</grp>
-		<sp/>
-		<grp dim="34,10,7,12" bclr="236,240,243" fntClrBrdr="236,240,243" fntBrdr="Arial,18" hSpace="4" clrBrdr="0,58,112" brdr="0,5" fnt="Arial,16" tit="Detalle">
-			<sp n="1"/>
-			<inp id="operacion" dim="40,1" bclr="240,240,240" clr="64,64,64" clrBrdr="255,255,255" type="string" modify="N" fnt=",18b" just="C"/><tab/> <br/>
-			<txt id="textFolio" visible="Y">  Folio :  </txt>
-			<edt id="k_folio" dim="30,1" brdr="2,0" OnChange="Formar_folio()" bclr="255,255,255" clr="64,64,64" clrBrdr="255,255,255" type="string" nc="10" tooltip="Folio ( F9 b&#250;squeda )" modify="Y" available="Y" visible="Y" OnF9="ObtenerFolio()" 
-			OnButton="ObtenerFolio()"/>	<sp n="2"/>
-			<img id="buscar_datos" dim="20,20" bPx="Y" brdr="0,1"  img="_20_Find.png" OnEnter="BuscarFolio()" available="Y" clrBrdr="0,0,0" visible="Y"/>
-			 <br/>
-			<sp n="1"/>
-			<inp id="k_docto" dim="40,1" bclr="240,240,240" clr="64,64,64" clrBrdr="255,255,255" type="string" modify="N" fnt=",16b" just="C"/> <br/>
-			<txt>  Fecha : </txt> 
-			<edt id="k_fecha" dim="15,1" type="date" fmt="DD/MM/CCYY" brdr="2,0" bclr="255,255,255" clr="64,64,64" page="_ks_fecha,k_fecha" OnF9="Dialog(3,_ks_fecha,k_fecha)" clrBrdr="255,255,255" available="Y" tooltip="Fecha" modify="N"/> 
-			<sp n="1"/> 
-			<txt>  Hora : </txt> 
-			<sp n="1"/> 
-			<edt id="k_hora" dim="15,1" type="time" nc="-1" bclr="240,240,240" fmt="HH:MM:SS" available="N"/> 
-			<br/>
-		</grp>
-		<br/>
-		<br/>
-		<tab/>
-		<grp dim="81,14,7,12" bclr="236,240,243" fntClrBrdr="236,240,243" fntBrdr="Arial,18" hSpace="4" clrBrdr="0,58,112" brdr="0,5" fnt="Arial,16" tit="Datos Proveedor">	
-			<grp dim="38,9,7,12" bclr="236,240,243" fntClrBrdr="236,240,243" hSpace="4" clrBrdr="0,58,112" brdr="0,5" fnt="Arial,16">
-				
-				<sp n="1"/> <txt clr="0,58,112" hk="P">Proveedor : </txt><tab/>
-				<edt id="k_clave" clr="64,64,64" clrBrdr="255,255,255"  dim="20,36" bclr="255,255,255" brdr="2,0" fnt="Arial,16" 
-					OnButton="Dialog(3,cxpcatprobus,k_clave)" OnF9="Dialog(3,cxpcatprobus,k_clave)" OnChange="BuscarProveedor()" 
-					type="capital" nc="7" tooltip="Proveedor ( F9 b&#250;squeda )" modify="Y" hk="C" available="N"/> 
-				<br/>
-				<sp n="1"/> <txt>RFC : </txt><sp n="5"/>
-				<inp id="k_rfc" clr="64,64,64"  dim="18,1" fnt="Arial,16" type="string" nc="16" modify="N" available="N"/>
-				<br/>
-			</grp>
-			<sp n="1"/>
-			<grp dim="75,9,7,12" bclr="236,240,243" fntClrBrdr="236,240,243" hSpace="4" clrBrdr="0,58,112" brdr="1,5" fnt="Arial,16">
-				<sp n="1"/> <txt>Datos del proveedor : </txt>
-				<br/>
-				<sp n="1"/>
-					<inp id="k_nombreprov" clr="64,64,64" clrBrdr="255,255,255"  dim="70,1" fnt="Arial,16" type="string" modify="N" available="N" nc="70" visible="Y"/>
-				<br/>
-				<sp n="1"/>
-				<inp id="k_calleprov" clr="64,64,64" clrBrdr="255,255,255"  dim="70,1" fnt="Arial,16" type="string" modify="N" available="N" nc="70" visible="Y"/>
-				<br/>
-				<sp n="1"/>
-				<inp id="k_coloniaprov" clr="64,64,64" clrBrdr="255,255,255"  dim="70,1" fnt="Arial,16" type="string" modify="N" available="N" nc="70" visible="Y"/>
-				<br/>
-				<sp n="1"/>
-				<inp id="k_poblacionprov" clr="64,64,64" clrBrdr="255,255,255"  dim="50,1" fnt="Arial,16" type="string" modify="N" available="N" nc="50" visible="Y"/>
-				<sp n="1"/>
-				<inp id="k_cpprov" clr="64,64,64" clrBrdr="255,255,255"  dim="15,1" fnt="Arial,16" type="string" modify="N" available="N" nc="10" visible="Y"/>
-			</grp>
-			<br/>
-			<sp n="1"/> <txt clr="0,58,112">Factura del proveedor : </txt><sp/>
-			<inp id="k_refer" clr="64,64,64" clrBrdr="255,255,255"  dim="60,1" bclr="255,255,255" brdr="2,0" nc="40" fnt="Arial,16" type="capital"  modify="Y" 
-					 tooltip="Factura del Proveedor" available="N"/>		
-			<sp n="2"/>
-				
-							
-		</grp>
-		<br/>
-		<br/>	
-		<tab/>
-		<grp dim="81,28,7,12" bclr="236,240,243" brdr="0,5" clrBrdr="0,58,112" fntClrBrdr="255,206,0" fntBrdr="Arial,18" hSpace="4" fnt=",0"><tab/>
-		<tbl id="k_mov" bclr="236,240,243" clr="64,64,64" clrCur="255,255,255" clrHead="0,58,112" bclrHead="236,240,243" brdr="1,0" clrBrdr="64,64,64" fnt="Arial,16" 
-				dim="110,8"  hk="z" Reorder="N" modify="N" OnChange="CalcTotal()"  insdel="Y">
-			<col id="k_cuenta" name="Cuenta"  type="capital" OnF9="select_cuenta()"  OnChange="Cuenta()" np="145" visible="Y" modify="Y"/>
-			<col id="k_cuentadesc" name="Nombre Cuenta" type="string" nc="35" modify="N" visible="Y" available="N" np="145"/>	
-			<col id="k_cuentasaldo" name="Cuenta Saldo"  type="number" nd="2" nc="15" np="120" modify="Y" visible="N" available="N"/>
-			<col id="k_cargo" name="Cargo"  type="number" nd="2" OnChange="Cargo()" nc="15" np="145" modify="Y" visible="Y"/>
-			<col id="k_abono" name="Abono"  type="number" nd="2" OnChange="Abono()" nc="15" np="120" modify="N" visible="N"/>
-			<col id="k_inventario" name="Inventario" visible="N" modify="N" np="145" OnChange="Inventario()" available="N"/>
-		</tbl>
-		<br/>
-		<tab/>
-		<grp dim="70,20,7,12" bclr="236,240,243" brdr="0,5" clrBrdr="0,58,112" fntClrBrdr="255,206,0" fntBrdr="Arial,18" hSpace="4" fnt=",0">
-		<sp/><txt fnt=",">Plazo:  </txt>
-		<inp id="k_plazo" dim="8,1" brdr="2,0" bclr="255,255,255" clrBrdr="255,255,255" type="number" OnChange="plazo()" just="R" clr="64,64,64" available="N"/><br/>
-		<sp/><txt fnt=",">Fecha de Pago:  </txt>
-		<edt id="k_vence" dim="15,1" type="date" OnChange="Vence()" fmt="DD/MM/CCYY" brdr="2,0" bclr="255,255,255" clr="64,64,64" page="_ks_fecha,k_vence" OnF9="Dialog(3,_ks_fecha,k_vence)" clrBrdr="255,255,255" available="N" tooltip="Fecha"/> 
-		<br/>
-		
-		<sp/><txt fnt=",">Comentarios:  </txt>
-		<inp id="k_coment" dim="50,4" brdr="2,0" bclr="255,255,255" clrBrdr="255,255,255" type="capital" modify="N" available="N" clr="64,64,64"/><br/>
-		<br/>
-		<sp n="13"/>
-		<img id="Imprimir" dim="40,40" bPx="Y" brdr="0,1"  img="_60_Print.png" OnEnter="EjecReporte()" tooltip="Imprimir documento &lt;Ctrl&gt;&lt;T&gt;" available="Y" clrBrdr="0,0,0" visible="N" modify="Y"/>
-			
-		<sp n="23"/>
-		<img id="Cancelar" dim="40,40" bPx="Y" brdr="0,1"  img="_60_DocRst.png" OnEnter="Cancela()" tooltip="Borrar datos" available="Y" clrBrdr="0,0,0" visible="N"/>
-			
-		<sp n="8"/>
-		<img id="Aceptar" dim="40,40" bPx="Y" brdr="0,1"  img="_60_DocNew.png" OnEnter="Ejecuta()" tooltip="Aceptar documento &lt;Ctrl&gt;&lt;T&gt;" available="Y" clrBrdr="0,0,0" visible="Y" modify="Y"/>
-		
-		
-		</grp>
-			<tab n="2"/>
-		<grp dim="40,20,7,12" bclr="236,240,243" brdr="0,5" clrBrdr="0,58,112" fntClrBrdr="255,206,0" fntBrdr="Arial,18" hSpace="4" fnt=",0">
-		<sp/><txt fnt=",">Subtotal:  </txt><tab n="3"/>
-		<inp id="k_subtotal" dim="15,1" brdr="2,0" bclr="255,255,255" clrBrdr="255,255,255" type="number" modify="N" just="R" nd="2" clr="64,64,64"/><br/>
-		
-		<sp/><txt fnt=",">IVA:  </txt><tab n="4"/>
-		<inp id="k_iva" dim="15,1" brdr="2,0" bclr="255,255,255" clrBrdr="255,255,255" type="number" modify="N" just="R" nd="2" clr="64,64,64"/><br/>
-		
-		<sp/><txt fnt=",">Subtotal:  </txt><tab n="3"/>
-		<inp id="k_subtotal_con_iva" dim="15,1" brdr="2,0" bclr="255,255,255" clrBrdr="255,255,255" type="number" modify="N" just="R" nd="2" clr="64,64,64"/><br/>
-
-		<sp/><txt fnt=",">Retenci&#243;n ISR:  </txt><tab n="1"/>
-		<inp id="k_retencion_isr" dim="15,1" brdr="2,0" bclr="255,255,255" clrBrdr="255,255,255" type="number" modify="N" just="R" nd="2" clr="64,64,64"/><br/>
-	
-		<sp/><txt fnt=",">Retenci&#243;n IVA:  </txt><tab n="1"/>
-		<inp id="k_retencion_iva" dim="15,1" brdr="2,0" bclr="255,255,255" clrBrdr="255,255,255" type="number" modify="N" just="R" nd="2" clr="64,64,64"/><br/>
-		
-		<sp/><txt fnt=",">Otras Retenciones:</txt><tab n="1"/>
-		<inp id="k_otras_retenciones" dim="15,1" brdr="2,0" bclr="255,255,255" clrBrdr="255,255,255" type="number" modify="N" just="R" nd="2" clr="64,64,64"/><br/>
-
-		<sp/><txt fnt=",">Importe:  </txt><tab n="3"/>
-		<inp id="k_monto" dim="15,1" brdr="2,0" bclr="255,255,255" clrBrdr="255,255,255" type="number" modify="N" just="R" nd="2" fnt=",0b" clr="64,64,64"/><br/>
-	
-		</grp>
-		
-		</grp>
-	
-						
-	</grp>
-	
-	<script>
-		InstallDriver("KDB75");
-		
-		class Main {
-			var frn,kdb, sys, rep, frP;
-			var usuario, rol_usuario, suc_usuario, anio_contable;
-			// Variables de control
-			var cmdQuery, cuboQuery, ok, mensajeError, sucursal_id, proveedor_id, refer_id, resVal, tabla, estatus_doc ;
-			var fileSavePath;
-			//Variables validacion factura
-			var	str_uuid, fecha_uuid, rfc_uuid, total_uuid;					
-			//Variables de parametros
-         var gen_doc, nat_doc, gpo_doc, tip_doc, tip_ope, paramProd;
-			var editable; //Se controla si la poliza se puede editar, cancelar o dar de baja	
-			//Porcentajes kdmm
-			var prc_retencion_isr,prc_iva ,prc_retencion_iva, prc_otras_retenciones, afecta_costo_inv  ;
-			//cont
-			var presupuesto , saldo, fecha_baja ;
-			var uen,asterisco;
-
-		fun Main() {
-			frn=new FRNT;
-			kdb=new KDB;
-			rep=new REP;
-			frP=new FRNTP;
-			sys=new SYS;
-			kdb.connect();
-			kdb.kde("KDE");
-			kdb.exec();
-			anio_contable = kdb.get("KDE","14");
-			usuario = frn.config("user","name");
-			rol_usuario = frn.config("user","role");
-			suc_usuario = frn.lib("libKepler","UserInfo(1)");
-			asterisco = "*";	
-			fileSavePath = "C:\Basura";
-			Inicializa();
-			ConfiguraControlesOpcion();				
-		
-		}
-			
-		fun Inicializa(){ //Inicializa los valores en Pantalla
-			// Revisa parametros recibidos
-			if( frn.nParam() == 7 ){ //Se han mandado parï¿½metros a la pï¿½gina
-                gen_doc=trim(frn.param(0)); 
-                nat_doc=trim(frn.param(1)); 
-                gpo_doc=trim(frn.param(2));
-                tip_doc=trim(frn.param(3)); 
-                tip_ope=trim(frn.param(4));
-                paramProd=trim(frn.param(5));
-			} else {
-				frn.message("Operación no válida ...", "Mensaje","&Aceptar");
-				frn.open("redirect",2);
-				return;
-			}
-            
-			if(tip_ope &= "A"){ //Alta
-				frn.set("operacion","ALTA");
-			} else {
-				if(tip_ope &= "B"){ //Baja
-					frn.set("operacion","BAJA");
-				} else {
-					if(tip_ope &= "C"){ //Consulta
-						frn.set("operacion","CONSULTA");
-					} else {
-						frn.message("Operación no válida ...", "Mensaje","&Aceptar");
-						frn.open("index",4);
-						return;			
-					}
-				}
-			}
-			
-			uen=trim(frn.param(6));
-			if (uen &= ""){
-				uen="XXX";
-			}
-				
-			// Fill Combo Sucursal (Con Query de PostgreSQL)
-			cmdQuery = "select '['||c1||'] '||c2 as c2, c1  from keplersc.kdms";
-			
-			//Added by JMM 20241031 
-			if (rol_usuario &! "ADMINISTRADOR"  && rol_usuario &! "ADMINISTRATOR"){
-				cmdQuery = cmdQuery & " where c1='" & suc_usuario & "'";
-			}else {
-				if (suc_usuario &! asterisco && suc_usuario &! "" ){
-					cmdQuery = cmdQuery & " where c1='" & suc_usuario & "'";
-				}
-			}
-
-			rstXml(cuboQuery);
-			cuboQuery = frn.lib("libGeneral.kpl","EjecutarSqlSel",cmdQuery,"srvtalltotscrud.IniCombos()");
-			ok=getXmlAtt(cuboQuery,"ok");
-			if(ok &! "" && !ok){
-				mensajeError = getXmlAtt(cuboQuery,"native3");
-				mensajeError = frn.lib("libGeneral.kpl","ErrorBD",mensajeError);
-				frn.message(mensajeError,"Error","Aceptar");
-				return;
-			}
-			frn.set("k_sucn",cuboQuery);	
-				
-			// Fill Combo Tipo (Con Query FTO Kepler) 
-			cmdQuery = "select /*c5*/'Contrarecibo Universal' as c0,c1,c2,c3,c4,c1||c2||lpad(c3::text,2,'0')||lpad(c4::text,3,'0')||'-'||'0000000' as c5, c16 as c6 from keplersc.kdmm where col_sucursal='" & sucursal_id & "' and c1='" & gen_doc & "' and c2='" & nat_doc & "' and c3='" & gpo_doc & "'" ;
-			cmdQuery = cmdQuery & " and c4='" & tip_doc & "'"; //Condition used by JMM 20240312 as temporary until define DOCs or DOC Type 
-			cuboQuery = frn.lib("libGeneral.kpl","EjecutarSqlSel",cmdQuery,"srvtalltotscrud.Inicializa()");
-			ok=getXmlAtt(cuboQuery,"ok");
-			if(ok &! "" && !ok){
-				mensajeError = getXmlAtt(cuboQuery,"native3");
-				mensajeError = frn.lib("libGeneral.kpl","ErrorBD",mensajeError);
-				frn.message(mensajeError,"Error BD","Aceptar");
-				return;
-			}
-			frn.set("k_tipon",getXml(cuboQuery));
-			
-			frn.set("k_fecha",sys.date());
-			frn.set("k_hora",sys.time());	
-			frn.set("k_vence",sys.date());
-				
-			// Fill k_docto | referencia docto
-			ArmarRefDocto();
-		
-			configuraciones_kdmm();
-		}
-			
-		// Armado del Docto Referencia
-		fun ArmarRefDocto {
-			var cadena = frn.get("k_tipon", -1, 5);
-			var fol = frn.get("k_folio");
-			if (tip_ope &! "A" && fol &! ""){
-				cadena = strSplit(cadena,"-",0) & "-" & fol;
-			}		
-			frn.set("k_docto", cadena);
-		}
-			
-		fun PadLeft(pText,pRelleno,pCaracterRelleno) {
-			var Resultado;
-			var pos_ini = pText;
-			var nReg = strlen(pText);
-			for (var cont = nReg; cont < pRelleno; cont++) {
-				Resultado = pCaracterRelleno & Resultado;
-			}
-			Resultado = Resultado & pText;                
-			return Resultado;
-		}
-		
-		fun CambiaTipo() {
-	
-			tip_doc  = frn.get("k_tipon", -1, 4);
-			configuraciones_kdmm();
-			borrar_datos();
-			LimpiaEncabezado();
-		
-			
-			//TODO, borrar todos los datos
-			frn.set("k_fecha",sys.date());
-			frn.set("k_hora",sys.time());	
-			ArmarRefDocto();				
-		}
-		
-		fun configuraciones_kdmm(){
-		
-				var cmd, cuboResultados ,ok,mensajeError;
-				
-				cmd= " select c15,c16,c33,c75,c77 from keplersc.kdmm where c1='" & gen_doc & "'" ;			
-				cmd = cmd & " and c2='" & nat_doc & "' and c3='" & gpo_doc & "' and c4='" & tip_doc & "'";
-	
-				cuboResultados = frn.lib("libGeneral.kpl","EjecutarSqlSel",cmd,"srv_contrarecibo_crud.configuraciones_kdmm()");
-				frn.lib("libGeneral.kpl","FileSave",cuboResultados ,"C:\Basura\cuboResultados");
-				
-				ok=getXmlAtt(cuboResultados,"ok");
-				if(ok &! "" && !ok){
-					mensajeError = getXmlAtt(cuboResultados,"native3");
-					frn.message(mensajeError,"Error","Aceptar");
-					return;
-				}
-
-				prc_retencion_isr = getXmlAtt(cuboResultados , "r0","c15");
-				prc_iva = getXmlAtt(cuboResultados , "r0","c16");
-				prc_retencion_iva = getXmlAtt(cuboResultados , "r0","c33");
-				prc_otras_retenciones = getXmlAtt(cuboResultados , "r0","c75");
-				afecta_costo_inv = getXmlAtt(cuboResultados , "r0","c77");
-				
-				if (afecta_costo_inv &= "S"){
-				
-					frn.setAtt("k_mov" ,"available" , "Y", "k_inventario");
-					frn.setAtt("k_mov" ,"visible" , "Y", "k_inventario");
-					frn.setAtt("k_mov" ,"modify" , "Y", "k_inventario");
-					frn.setAtt("k_mov" ,"OnF9" , "busca_inv()", "k_inventario");
-					
-				}else{
-				
-					frn.setAtt("k_mov" ,"available" , "N", "k_inventario");
-					frn.setAtt("k_mov" ,"visible" , "N", "k_inventario");
-					frn.setAtt("k_mov" ,"modify" , "N", "k_inventario");
-					frn.setAtt("k_mov" ,"OnF9" , "", "k_inventario");
-				}	
-			
-		}
-		
-		fun CambiaSucursal() {
-			sucursal_id = frn.get("k_sucn",-1,1);
-			LimpiaEncabezado();
-			frn.set("k_fecha",sys.date());
-			frn.set("k_hora",sys.time());	
-			ArmarRefDocto();				
-		}
-		
-		fun LimpiaEncabezado() {
-			frn.set("k_folio", "");
-			frn.set("k_docto", "");
-			frn.set("k_fecha", "");
-			frn.set("k_hora", "");
-			LimpiaDatosProv();
-			frn.set("k_clave", "");
-		}
-		
-		fun borrar_datos(){
-			frn.rst("k_mov");
-			frn.set("totalCargos", 0);
-			frn.set("totalAbonos", 0);
-			frn.set("k_vence", sys.date());
-			frn.set("k_plazo", 0);
-			frn.rst("k_coment");
-			
-			frn.set("k_subtotal", 0);
-			frn.set("k_iva", 0);
-			frn.set("k_subtotal_con_iva", 0);
-			frn.set("k_retencion_isr", 0);
-			frn.set("k_retencion_iva", 0);
-			frn.set("k_otras_retenciones", 0);
-			frn.set("k_monto", 0);
-		}
-		
-		fun BuscarFolio() {
-			var folio;
-			folio = frn.get("k_folio");
-			folio = PadLeft(folio, 7, "0");
-			ArmarRefDocto();
-			borrar_datos();
-			MostrarDatos(folio);
-						
-		}
-
-		fun Cancela() {
-			CambiaSucursal();
-			borrar_datos();
-			Inicializa();
-			ConfiguraControlesOpcion();
-		}
-
-		fun ObtenerFolio() {
-
-			sucursal_id = frn.get("k_sucn",-1,1);
-
-			cmdQuery = "select c6 as folio, substring(cast(c9 as VARCHAR),1,10) as fecha, c10 as cve_proveedor, " &
-						"c11 as factura, c16 as monto, c43 estatus " &
-						"from keplersc.kdm1 " &
-						"where c1='" &sucursal_id& "' and c2='" &gen_doc& "' and c3='" &nat_doc& "' and c4 =" &gpo_doc& " and c5= " & tip_doc & " order by c9 desc ";
-						
-			frn.lib("libGeneral.kpl","FileSave",cmdQuery ,fileSavePath & "\cmdQueryfoliomov");
-				
-			frn.dialog("genlistafiltrosel","Folios de Contrarecibos",cmdQuery,"folio","k_folio","0","","S");
-			
-		}
-		
-
-		fun Dialog(iModo,pag,par0,par1,par2,par3,par4,par5,par6,par7,par8,par9,par10,par11,par12,par13,par14,par15){ 
-			/*iModo: 0)No hace mayor validaci?n. Siempre despliega la ventana. NO CONCATENA PREFIJO    
-			1)Solo concatena el prefijo de la carpeta del lenguaje, no hace mayor validaci?n. Siempre despliega la ventana 
-			2)Modo especial. Se valida que el campo indicado en par0 se puede modificar(El par0 puede ser una tabla, y par1 la columna) 
-			3)Modo especial para p?ginas de operacion:Solo si se est? en alta o modifica despliega la pagina. Simpre agrega el prefijo del lenguaje 
-			*/
-			var prefix=frn.lib("libKepler","langPrefix");
-			var page=prefix&pag;
-			var b_valido=1;
-			// var tip_ope; 
-			var tip_oper;
-			if(iModo==0)
-				page=pag; 
-			else if(iModo==2&&(strlen(par0)>0)){
-				//Se toma el par0 como el objeto (o grid) al que se devolver? el resultado.       
-				if( frn.getAtt(par0,"modify",par1) &= "N" ) b_valido=0;
-				if( frn.getAtt(par0,"available",par1) &= "N" ) b_valido=0; 
-				if( frn.getAtt(par0,"visible",par1) &= "N" ) b_valido=0;
-			}
-			else if(iModo==3&&(tip_oper>=1)&&(tip_oper<=3))b_valido=0;
-				if(b_valido==1)frn.dialog(page,par0,par1,par2,par3,par4,par5,par6,par7,par8,par9,par10,par11,par12,par13,par14,par15);     
-		}	
-		
-		//------------------------------PROVEEDOR-----------------------	
-		fun BuscarProveedor(){
-			var xmlProd;				
-				
-			sucursal_id = frn.get("k_sucn",-1,1);
-			proveedor_id = frn.get("k_clave");
-			LimpiaDatosProv();
-		
-			if (strlen(frn.get("k_clave")) == 0) {
-				return;
-			}
-				
-			if (strlen(frn.get("k_refer")) > 0) {
-				refer_id = frn.get("k_refer");
-			} else {
-				frn.set("k_fecha_exp", "");
-			}
-				
-			cmdQuery = "select c10 as k_rfc, c3 as k_nombreprov, c4 as k_calleprov, c5 as k_coloniaprov, c6 as k_poblacionprov, c27 as k_cpprov, c16 as k_plazo " &				
-					"from keplersc.kdxd where c1='" & sucursal_id & "' and c2='" & proveedor_id & "'" ;
-					
-			rstXml(cuboQuery);
-			cuboQuery = frn.lib("libGeneral.kpl","EjecutarSqlSel",cmdQuery,"srvtalltotscrud.BuscaProveedor()");
-			ok=getXmlAtt(cuboQuery,"ok");
-			if(ok &! "" && !ok){
-				mensajeError = getXmlAtt(cuboQuery,"native3");
-				mensajeError = frn.lib("libGeneral.kpl","ErrorBD",mensajeError);
-				frn.message(mensajeError,"Error","Aceptar");
-				return;	
-			}
-			if(nXml(cuboQuery) == 0){
-				frn.setPos("k_clave");
-				frn.message("El proveedor no existe","Error","Aceptar");
-				return;	
-			}
-			//Plazo();	
-			rstXml(xmlProd);
-			xmlProd=frn.lib("libGeneral.kpl","CreaXmlDesdeAtt",cuboQuery,"r0");
-			frn.setX(xmlProd);
-							
-		}
-		
-		fun LimpiaDatosProv() {
-			frn.set("k_rfc", "");
-			frn.set("k_nombreprov", "");
-			frn.set("k_calleprov", "");
-			frn.set("k_coloniaprov", "");
-			frn.set("k_poblacionprov", "");
-			frn.set("k_fecha_exp", "");			
-			frn.set("k_refer", "");
-			frn.set("k_fecha_exp", "");
-			frn.set("k_cpprov", "");
-		}
-		
-	
-			
-
-		
-		//------------------------TABLA POLIZA------------------------
-		
-		fun select_cuenta(){
-		
-				frn.setX("", "k_mov", -1, "k_cuenta");
-				frn.setX("", "k_mov", -1, "k_cuentadesc");
-
-				var tbla = " keplersc.kdc1" & mid(strSplit(frn.get("k_fecha"), "-", 0), 2,2);
-
-				var cmdSel = "select c1 as clave_cuenta, c2 as desc_cuenta from " & tbla ;
-            frn.dialog("genlistafiltrosel","Cuentas",cmdSel ,"clave_cuenta","k_mov","", "k_cuenta","N");
-     
-		}
-			
-		
-		fun Cuenta() {
-
-            var cuenta = frn.get("k_mov", -1, "k_cuenta");
- 
-            var xmlRequest, cmd, cubo , ok, mensajeError ;
-            setXml(xmlRequest,"document","cuenta",cuenta);
-            setXml(xmlRequest,"document","anio",mid(strSplit(frn.get("k_fecha"), "-", 0), 2,2));
-            
-            frn.lib("libGeneral.kpl","FileSave",xmlRequest,"C:\Basura\requestCuenta");
-
-				cmd="select * from keplersc.caracteristicas_cuenta('" & getXmlStr(xmlRequest,"EOF:13_10") & "')";
-				cubo= frn.lib("libGeneral.kpl","EjecutarSqlSel",cmd,"srvcitacrud.buscar_datos()");
-				
-				frn.lib("libGeneral.kpl","FileSave",cubo,"C:\Basura\cuboResultadosCuenta");
-				
-				ok=getXmlAtt(cubo,"ok");
-				if(ok &! "" && !ok){
-					mensajeError = getXmlAtt(cubo,"native3");
-					mensajeError = frn.lib("libGeneral.kpl","ErrorBD",mensajeError);
-					frn.message(mensajeError,"Error","Aceptar");
-					return;
-				}
-				
-				var nivel_cuenta = getXmlAtt(cubo,"r0","nivel");
-				var descripcion_nivel = getXmlAtt(cubo,"r0","desc_nivel");
-				var tipo_cuenta = getXmlAtt(cubo,"r0","tipo");
-				
-				if (descripcion_nivel &! "Menor"){
-					frn.message("La Cuenta debe ser menor","Error","Aceptar");
-					frn.setX("", "k_mov", -1, "k_cuenta");
-					frn.setX("", "k_mov", -1, "k_cuentadesc");
-					return ;
-            }
-           
-				if (tipo_cuenta &= "Cliente"){
-					frn.message("La Cuenta no puede ser de cliente.","Error","Aceptar");
-					frn.setX("", "k_mov", -1, "k_cuenta");
-					frn.setX("", "k_mov", -1, "k_cuentadesc");
-					return ;
-            }
-            
-    
-				var tbla = " keplersc.kdc1" & mid(strSplit(frn.get("k_fecha"), "-", 0), 2,2);
-				cmd = "select c2 as desc_cuenta from " & tbla & " where c1='" & cuenta  &  "'";
-				
-				var cuboResultados = frn.lib("libGeneral.kpl","EjecutarSqlSel",cmd,"srv_contrarecibo_crud.Cuenta()");
-				frn.lib("libGeneral.kpl","FileSave",cuboResultados ,"C:\Basura\cuboResultados");
-				
-				ok=getXmlAtt(cuboResultados,"ok");
-				if(ok &! "" && !ok){
-					mensajeError = getXmlAtt(cuboResultados,"native3");
-					frn.message(mensajeError,"Error","Aceptar");
-					return;
-				}
-
-				var descr = getXmlAtt(cuboResultados , "r0","desc_cuenta");
-      
-            frn.setX(cuenta, "k_mov", -1, "k_cuenta");
-            frn.setX(descr , "k_mov", -1, "k_cuentadesc");
-		}
-			
-
-		fun Cargo() {
-				if(frn.getJ("k_mov")>0){ //Trae informaci?n del rengl?n anterior(descripci?n, depto, proyecto), si el rengl?n actual no tiene especificado algo
-					var renAnterior=frn.getJ("k_mov")-1;
-					if(strlen(frn.get("k_mov",-1,"k_descr"))==0)frn.setX(frn.get("k_mov",renAnterior,"k_descr"),"k_mov",-1,"k_descr");
-				}
-				frn.setX("","k_mov",-1,"k_abono");
-				CalcTotal();
-		}
-			
-		fun Abono() {
-				if(frn.getJ("k_mov")>0){ //Trae informaci?n del rengl?n anterior(descripci?n, depto, proyecto), si el rengl?n actual no tiene especificado algo
-					var renAnterior=frn.getJ("k_mov")-1;
-					if(strlen(frn.get("k_mov",-1,"k_descr"))==0)frn.setX(frn.get("k_mov",renAnterior,"k_descr"),"k_mov",-1,"k_descr");
-				}
-				frn.setX("","k_mov",-1,"k_cargo");
-				CalcTotal();
-		}
-		
-		fun CalcTotal() { 
-				var C=0,A=0; 
-				for (var i=0,n=frn.N("k_mov")-1;i<n;i++) { 
-					C=C+frn.get("k_mov",i,"k_cargo");
-					A=A+frn.get("k_mov",i,"k_abono");
-				}
-			
-				var subt = C - A;
-				var subt_con_iva = 0;
-				var iva = subt * prc_iva/100;
-				if (iva &! "N" ){ 
-					subt_con_iva = subt  + iva;
-				}else{ 
-					subt_con_iva = subt ;
-					iva = 0;
-				}
-				var retencion_isr = subt * prc_retencion_isr/100;
-				var retencion_iva = subt * prc_retencion_iva/100;
-				var otras_retenciones = subt * prc_otras_retenciones/100;
-				var importe = subt_con_iva;
-				
-				if (retencion_isr &! "N" ){ 
-					importe = importe  - retencion_isr ;
-				}else{ 
-					retencion_isr = 0;
-				}
-				
-				if (retencion_iva &! "N" ){ 
-					importe = importe  - retencion_iva ;
-				}else{ 
-					retencion_iva = 0;
-				}
-
-				if (otras_retenciones &! "" ){ 
-					importe = importe  - otras_retenciones;
-				}else{ 
-					otras_retenciones= 0;
-				}
-
-				frn.set("k_subtotal", subt, "k_iva" ,iva, "k_subtotal_con_iva", subt_con_iva  );
-				frn.set("k_retencion_isr", retencion_isr  , "k_retencion_iva" ,retencion_iva , "k_otras_retenciones", otras_retenciones );
-				frn.set("k_monto", importe );
-	
-		}
-		
-		fun Vence() {
-	
-	/* MSS Se quita la validación para que permita fecha anteriores
-			var fcha = frn.get("k_vence");
-			var fcha_actual = sys.date();
-			var diferencia_dias = fnDate("difc",fcha ,fcha_actual );
-			
-			if (diferencia_dias < 0 ){
-				frn.message("La fecha de pago no puede ser en el pasado", "Mensaje","&Aceptar");
-				frn.set("k_vence", fcha_actual );
-				return ;
-			}else{
-				frn.set("k_plazo", diferencia_dias );
-			}
-	*/
-		}
-		
-		
-		
-		
-		fun busca_inv(){
-		
-				var cmdSel = "select c2 as inventario, c3 as clave_vehiculo, c5 as serie, c17 as marca, c4 as descripcion from keplersc.kdinf where c1='" & frn.get("k_sucn",-1,1) & "'";
-            frn.dialog("genlistafiltrosel","Inventarios",cmdSel ,"inventario","k_mov","", "k_inventario","N");
-     
-		}
-		
-		
-		
-		
-		fun Inventario() {
-
-				var cmd, ok, mensajeError ;
-				cmd = "select c2 from keplersc.kdinf where c1='" & frn.get("k_sucn",-1,1) & "' and c2='" & frn.get("k_mov", -1, "k_inventario") & "'";
-				
-				var cuboResultados = frn.lib("libGeneral.kpl","EjecutarSqlSel",cmd,"srv_contrarecibo_crud.Inventario()");
-				frn.lib("libGeneral.kpl","FileSave",cuboResultados ,"C:\Basura\cuboResultados");
-				
-				ok=getXmlAtt(cuboResultados,"ok");
-				if(ok &! "" && !ok){
-					mensajeError = getXmlAtt(cuboResultados,"native3");
-					frn.message(mensajeError,"Error","Aceptar");
-					return;
-				}
-				
-				if (nXml(cuboResultados ) < 1){
-					frn.message("Inventario no existe","Error","Aceptar");
-					frn.setX("", "k_mov", -1, "k_inventario");
-					return;
-				}
-		}
-			
-		
-		//-----------------------------------------------
-		
-		fun ConfiguraControlesOff() {
-				
-			frn.setAtt("textFolio", "visible", "N");
-			frn.setAtt("k_folio", "available", "N");
-			frn.setAtt("k_folio", "visible", "N");
-			frn.setAtt("k_mov", "modify", "N");
-			frn.setAtt("k_clave", "available", "N");
-			frn.setAtt("k_refer", "available", "N");
-			frn.setAtt("k_vence", "available", "N");
-			frn.setAtt("k_plazo", "available", "N");
-			frn.setAtt("k_coment","modify", "N");
-			frn.setAtt("k_coment","available", "N");
-			frn.setAtt("Imprimir", "visible", "N");
-			frn.setAtt("Cancelar", "visible", "N");
-			frn.setAtt("Aceptar", "visible", "N");
-			frn.setAtt("buscar_datos", "visible", "N");
-			frn.setAtt("k_fecha", "modify", "N");
-								
-		}
-		
-		
-		fun ConfiguraControlesOpcion() {
-			
-			ConfiguraControlesOff();
-
-			if(tip_ope &= "A"){ //Alta
-				frn.setAtt("k_clave", "available", "Y");
-				frn.setAtt("k_refer", "available", "Y");
-				frn.setAtt("k_mov", "modify", "Y");
-				frn.setAtt("k_coment","modify", "Y");
-				frn.setAtt("k_plazo", "available", "Y");
-				frn.setAtt("k_coment","available", "Y");
-				//frn.setAtt("k_fecha", "available", "Y");	//MSS Habilitar fecha
-				frn.setAtt("Imprimir", "visible", "N");
-				frn.setAtt("Cancelar", "visible", "Y");
-				frn.setAtt("Aceptar", "visible", "Y");				
-				
-			} else {
-				if(tip_ope &= "B"){ //Baja
-					frn.setAtt("textFolio", "visible", "Y");
-					frn.setAtt("k_folio", "available", "Y");
-					frn.setAtt("k_folio", "visible", "Y");			
-					frn.setAtt("Aceptar", "visible", "Y");	
-					frn.setAtt("buscar_datos", "visible", "Y");						
-					//frn.setAtt("k_fecha", "available", "Y");	//MSS Habilitar fecha
-				} else {
-					if(tip_ope &= "C"){ //Consulta
-						frn.setAtt("textFolio", "visible", "Y");
-						frn.setAtt("k_folio", "available", "Y");
-						frn.setAtt("k_folio", "visible", "Y");						
-						frn.setAtt("Imprimir", "visible", "Y");
-						frn.setAtt("buscar_datos", "visible", "Y");	
-					} else {
-						frn.setAtt("textFolio", "visible", "Y");
-						frn.setAtt("k_folio", "available", "Y");
-						frn.setAtt("k_folio", "visible", "Y");
-				
-					}	
-				}
-			}
-
-		}
-		
-		//---------------------------------------EJECUTA---------------------------------
-	
-		fun Ejecuta() {
-			var xmlPantalla, strFecha, fecha, hora, strTmp, strHora, strMin, strMsg, continua;
-			var resultado, mensaje, folio;
-				
-			fecha = sys.date();
-			hora= sys.time();
-				
-			if (tip_ope &= "A") {			
-				//Validar datos, se inicia variable de modulo resVal, donde se asume que 1 es ok
-				resVal = 1;
-				ValidarDatos();
-				if(ok &! "1" || resVal == 0){
-					return;
-				}
-				continua = frn.message("¿Desea continuar con la alta?","Atención",2);
-				if (continua == 0){
-					return;
-				}	
-				xmlPantalla = getXml(frn.dataPag()); //Obtener el xml de la pantalla;
-				//Agregar usuario, fechay hora de movimiento
-				strFecha = fnDate("year",fecha) & "-";
-				strTmp = fnDate("month",fecha);
-				if(strlen(strTmp) == 1){
-					strTmp = "0" & strTmp;
-				}
-				strFecha = strFecha & strTmp & "-";
-				strTmp = fnDate("day",fecha);
-				if(strlen(strTmp) == 1){
-					strTmp = "0" & strTmp;
-				}
-				strFecha = strFecha & strTmp;
-							
-				setXml(xmlPantalla,"movimiento","usuario",usuario);
-				setXml(xmlPantalla,"movimiento","fecha",strFecha);
-				setXml(xmlPantalla,"movimiento","hora",
-				frn.lib("libGeneral.kpl","PadLeft",sys.time("hour",hora),2,"0") & ":" & 
-				frn.lib("libGeneral.kpl","PadLeft",sys.time("min",hora) ,2,"0"));
-				setXml(xmlPantalla,"k_mov","no_partidas",frn.N("k_mov") -1);
-				setXml(xmlPantalla,"ambiente","anio_contable",anio_contable);
-				setXml(xmlPantalla,"ambiente","uen",uen);
-				
-				//ajusta etiquetas con el standar de mov_prim_alta, las columnas en kdm1 tienen valores diferentes dependiendo el movimiento
-				setXml(xmlPantalla,"k_miepsret",frn.get("k_retencion_isr"));
-				setXml(xmlPantalla,"k_mivaret",frn.get("k_retencion_iva"));
-				setXml(xmlPantalla,"k_montoanticipo",frn.get("k_otras_retenciones"));
-				
-					
-				frn.lib("libGeneral.kpl","FileSave",xmlPantalla,fileSavePath & "\XmlPantallaCrudcontrarecibo");
-
-				cmdQuery="SELECT * FROM keplersc.docdis('<document>" & getXmlStr(xmlPantalla,"EOF:13_10") & "</document>')";
-				//kdb.rst(cuboQuery);
-				rstXml(cuboQuery);
-					
-				cuboQuery= frn.lib("libGeneral.kpl","EjecutarSql",cmdQuery,"srv_contrarecibo_crud.Ejecuta");				
-				frn.lib("libGeneral.kpl","FileSave",cuboQuery, fileSavePath & "\XmlResultadoCrudContrarecibo");
-					
-				resultado = getXml(cuboQuery,"resultado");
-				mensaje = getXml(cuboQuery,"mensaje");
-					
-				ok = getXmlAtt(cuboQuery,"ok");
-				if(ok &! "" && !ok) {
-					mensajeError = getXmlAtt(cuboQuery,"native3");
-					mensajeError = frn.lib("libGeneral.kpl","ErrorBD",mensajeError);
-					frn.message(mensajeError,"Error","Aceptar");
-					return;	
-				}
-
-				if(resultado &= "1") {
-					tip_ope = "C";
-					frn.set("k_folio", mensaje); 
-					frn.set("operacion", "CONSULTA");
-					strTmp = frn.get("k_docto");
-					strTmp = strSplit(strTmp,"-",0) & "-" & mensaje;
-					frn.set("k_docto", strTmp);
-					strMsg = "El Folio utilizado para esta operación fue : " & mensaje;
-					ConfiguraControlesOpcion(); 
-					frn.message(strMsg, "Mensaje", "Aceptar");
-					folio = frn.get("k_folio");
-					MostrarDatos(folio);	
-					//BuscarFolio();
-				} else {
-					frn.message(mensaje, "Error", "Aceptar");
-				}
-
-			} else {
-				if (tip_ope &= "B") {
-				
-					if (estatus_doc &= "C"){
-						frn.message("No puedes dar de baja un folio cancelado.", "Error", "Aceptar");
-						return ;
-					}
-					continua = frn.message("¿Desea continuar con la baja?","Atención",2);
-					if (continua == 0){
-						return;
-					}
-					xmlPantalla = getXml(frn.dataPag()); //Obtener el xml de la pantalla;
-					//Agregar usuario, fechay hora de movimiento
-					strFecha = fnDate("year",fecha) & "-";
-					strTmp = fnDate("month",fecha);
-					if(strlen(strTmp) == 1){
-						strTmp = "0" & strTmp;
-					}
-					strFecha = strFecha & strTmp & "-";
-					strTmp = fnDate("day",fecha);
-					if(strlen(strTmp) == 1){
-						strTmp = "0" & strTmp;
-					}
-					strFecha = strFecha & strTmp;
-								
-					setXml(xmlPantalla,"movimiento","usuario",usuario);
-					setXml(xmlPantalla,"movimiento","fecha",strFecha);
-					setXml(xmlPantalla,"movimiento","hora",
-					frn.lib("libGeneral.kpl","PadLeft",sys.time("hour",hora),2,"0") & ":" & 
-					frn.lib("libGeneral.kpl","PadLeft",sys.time("min",hora) ,2,"0"));
-					setXml(xmlPantalla,"ambiente","anio_contable",anio_contable);
-					setXml(xmlPantalla,"k_mov","no_partidas",frn.N("k_mov"));
-					setXml(xmlPantalla,"operacion","baja");
-					setXml(xmlPantalla,"ambiente","uen",uen);
-					
-						
-					frn.lib("libGeneral.kpl","FileSave",xmlPantalla,fileSavePath & "\XmlPantallaCrudcontrarecibo");
-
-					cmdQuery="SELECT * FROM keplersc.docdis('<document>" & getXmlStr(xmlPantalla,"EOF:13_10") & "</document>')";
-					//kdb.rst(cuboQuery);
-					rstXml(cuboQuery);
-						
-					cuboQuery= frn.lib("libGeneral.kpl","EjecutarSql",cmdQuery,"srv_contrarecibo_crud.Ejecuta");				
-					frn.lib("libGeneral.kpl","FileSave",cuboQuery, fileSavePath & "\XmlResultadoCrudContrarecibo");
-						
-					resultado = getXml(cuboQuery,"resultado");
-					mensaje = getXml(cuboQuery,"mensaje");
-						
-					ok = getXmlAtt(cuboQuery,"ok");
-					if(ok &! "" && !ok) {
-						mensajeError = getXmlAtt(cuboQuery,"native3");
-						mensajeError = frn.lib("libGeneral.kpl","ErrorBD",mensajeError);
-						frn.message(mensajeError,"Error","Aceptar");
-						return;	
-					}
-
-					if(resultado &= "1") {
-						tip_ope = "C";
-						frn.set("operacion", "CONSULTA");
-						ConfiguraControlesOpcion();
-						BuscarFolio();
-					} else {
-						frn.message(mensaje, "Error", "Aceptar");
-					}
-
-				} else {
-					folio = frn.get("k_folio");
-					MostrarDatos(folio);
-				}	/*End Consulta*/ 
-			}
-				
-		}
-		
-		//Validacion Datos Generales y Partidas antes de Guardar.
-		//El resultado de cada validacion se guarda en la variable global resVal.
-		fun ValidarDatos() {
-			var totReg, strTotal=0,subTotal=0, iva=0, total=0, renglones, str;
-			//Obtener variables
-			sucursal_id = frn.get("k_sucn",-1,1);
-			proveedor_id = frn.get("k_clave");
-			refer_id = frn.get("k_refer");
-							
-			//Validar Proveedor
-			cmdQuery="SELECT count(*) as totreg from keplersc.kdxd where c2 = '" & proveedor_id & "'";
-			rstXml(cuboQuery);				
-			cuboQuery = frn.lib("libGeneral.kpl","EjecutarSqlSel",cmdQuery,"srv_contrarecibo_crud.ValidarDatos()");
-			ok=getXmlAtt(cuboQuery,"ok");
-			if(ok &! "" && !ok){
-				mensajeError = getXmlAtt(cuboQuery,"native3");
-				mensajeError = frn.lib("libGeneral.kpl","ErrorBD",mensajeError);
-				frn.message(mensajeError,"Error","Aceptar");
-				return;
-			}
-			totReg=getXmlAtt(cuboQuery,"r0","totreg");
-			if(totReg==0){
-				frn.message("El proveedor no existe.","Error","Aceptar");
-				resVal=0;
-				return;
-			}
-
-			//Validar Referencia
-			if (refer_id &= ""){
-				frn.setPos("k_refer");
-				resVal=0;
-				frn.message("Es necesario seleccionar la factura del proveedor","Error","Aceptar");
-				return;
-			}
-			
-		
-			//Validar kduxg
-			cmdQuery="SELECT count(*) as totreg from keplersc.kduxg where c1='" & sucursal_id  & "' and c2 ='" & gen_doc & "' and c3='" & proveedor_id & "' and c4='" & refer_id & "'";
-			rstXml(cuboQuery);				
-			cuboQuery = frn.lib("libGeneral.kpl","EjecutarSqlSel",cmdQuery,"srv_contrarecibo_crud.ValidarDatos()");
-			ok=getXmlAtt(cuboQuery,"ok");
-			if(ok &! "" && !ok){
-				mensajeError = getXmlAtt(cuboQuery,"native3");
-				mensajeError = frn.lib("libGeneral.kpl","ErrorBD",mensajeError);
-				frn.message(mensajeError,"Error","Aceptar");
-				return;
-			}
-			totReg=getXmlAtt(cuboQuery,"r0","totreg");
-			if(totReg > 0){
-				frn.message("La Referencia ya se encuentra registrada en cuentas por pagar para el mismo proveedor","Error","Aceptar");
-				resVal=0;
-				return;
-			}
-
-			//Validar rfc y monto total de factura correspondan a datos de UUID
-			/*strTotal = frn.get("k_monto");
-			if (strTotal &! total_uuid) {
-				frn.message("El importe total del Contrarecibo no corresponde al de la factura.","Error","Aceptar");
-				resVal=0;return;
-			}
-			if (frn.get("k_rfc") &! rfc_uuid) {
-				frn.message("El RFC del Contrarecibo no corresponnde al de la factura.","Error","Aceptar");
-				resVal=0;return;
-			}*/
-		
-			//Validaciones POLIZA
-			if(frn.N("k_mov")-1==0){
-				frn.message("No es posible dar de alta una P?liza sin datos. Favor de verificar", "Error","&Aceptar");
-				resVal=0;return;
-			}
-			if(RevCol("k_cuenta") == 1){
-						frn.message("Se ha generado el siguiente error: " & "No se especificó cuenta en la póliza" ,"Error","&Aceptar");
-						frn.setPos("k_mov",-1,"k_descr");resVal=0; return;
-			}
-			if(RevCol("k_cuentadesc") == 1){
-						frn.message("Se ha generado el siguiente error: " & "No se especificó descripción en la póliza" ,"Error","&Aceptar");
-						frn.setPos("k_mov",-1,"k_descr");resVal=0;return;
-			}
-							
-		} // End ValidarDatos()
-		
-		
-		fun RevCol(param1){
-				var nreg,abono,cargo,valCol,banCol;//definicion de variables
-				nreg = frn.N("k_mov")-1;//cuantos renglones hay
-				banCol = 0;
-				for(var i=0; i<nreg; i++){
-					abono = frn.get("k_mov",i,"k_cargo");
-					cargo = frn.get("k_mov",i,"k_abono");
-					if((cargo+abono) > 0){
-						valCol = frn.get("k_mov",i,param1);//valor de la columna (proyecto, concepto, departamento)
-						if(strlen(valCol) == 0){
-							banCol = 1;//se prende la bandera de que falta definir  proyecto, concepto o departamento en una partida 
-						}//fin if valor de la columna esta vacia
-					}//fin if la suma de cargo y abono es > a 0
-				}//fin for p/recorrer las partidas en el grid
-				return banCol;
-			}
-			
-	//-----------------------BAJA,CONSULTA----------------------------	
-		fun MostrarDatos(nFolio) {
-		
-			var cmd,xmlRequest,xmlPoliza,xmlPartidas,totRen,contRen,xmlPantalla,tmpStr, cuboResultados,mensajeError,   ;
-			
-			sucursal_id = frn.get("k_sucn",-1,1);
-		
-			cmd= " select c10 as k_clave, c9 as k_fecha,c11 as k_refer ,c69 as k_hora , c18 as k_vence, c17 as k_plazo, c24 as k_coment, c43 as estatus_doc , c197 as fecha_baja " ;			
-			cmd = cmd & " from keplersc.kdm1 where c1='" & sucursal_id  & "' and c2='" & gen_doc  &"' and c3='" & nat_doc & "' and c4='" & gpo_doc & "' and c5='" & tip_doc & "' and c6='" & nFolio & "'";
-	
-			cuboResultados = frn.lib("libGeneral.kpl","EjecutarSqlSel",cmd,"srv_contrarecibo_crud.MostrarDatos()");
-			frn.lib("libGeneral.kpl","FileSave",cuboResultados ,"C:\Basura\cuboResultados");
-				
-			ok=getXmlAtt(cuboResultados,"ok");
-			if(ok &! "" && !ok){
-				mensajeError = getXmlAtt(cuboResultados,"native3");
-				frn.message(mensajeError,"Error","Aceptar");
-				return;
-			}
-
-			var xml_kdm1  = getXml(cuboResultados,"r0" );
-
-			//frn.setX(cuboResultados ); TODO, checar setX
-			frn.set("k_clave",getXmlAtt(xml_kdm1  ,"k_clave") );
-			frn.set("k_plazo",getXmlAtt(xml_kdm1  ,"k_plazo") );
-			frn.set("k_vence",getXmlAtt(xml_kdm1   ,"k_vence") );
-			frn.set("k_coment",getXmlAtt(xml_kdm1   ,"k_coment") );
-			if (tip_ope &= "C"){
-				frn.set("k_fecha",getXmlAtt(xml_kdm1 ,"k_fecha") );
-				frn.set("k_hora",getXmlAtt(xml_kdm1  ,"k_hora") );
-			}else{
-				frn.set("k_fecha",sys.date());
-				frn.set("k_hora",sys.time());	
-			}
-			BuscarProveedor();
-			frn.set("k_refer",getXmlAtt(xml_kdm1  ,"k_refer") );		
-				
-			fecha_baja = getXmlAtt(xml_kdm1  ,"fecha_baja");
-			
-			estatus_doc = getXmlAtt(xml_kdm1  ,"estatus_doc");	
-			
-			if (estatus_doc &= "C"){	// C=Cancelado
-				frn.message("El Contrarecibo se encuentra cancelado","Error","Aceptar");
-				frn.set("statusdoc", "CANCELADO");
-			}else{
-				frn.set("statusdoc", "");
-			}
-
-			rstXml(cmd);
-				
-			cmd = "select c8,c9,c10,c11,c13 from keplersc.kdm6 where c1='" & sucursal_id & "' and c2='" & gen_doc &"' and c3='" & nat_doc & "'";
-			cmd = cmd & " and c4='" & gpo_doc & "' and c5='" & tip_doc & "' and c6='" & nFolio & "'";
-			
-			cuboResultados = frn.lib("libGeneral.kpl","EjecutarSqlSel",cmd,"srv_contrarecibo_crud.MostrarDatos()");
-			frn.lib("libGeneral.kpl","FileSave",cuboResultados ,"C:\Basura\cuboResultados");
-				
-			ok=getXmlAtt(cuboResultados,"ok");
-			if(ok &! "" && !ok){
-				mensajeError = getXmlAtt(cuboResultados,"native3");
-				frn.message(mensajeError,"Error","Aceptar");
-				return;
-			}
-
-			totRen = nXml(cuboResultados);	
-						
-			for(contRen=0; contRen<totRen; contRen++){
-
-				frn.setX(getXmlAtt(cuboResultados, "r"&contRen ,"c8"),"k_mov",contRen,"k_cuenta");
-				frn.setX(getXmlAtt(cuboResultados, "r"&contRen ,"c9"),"k_mov",contRen,"k_cuentadesc");
-				var cargo_abono = getXmlAtt(cuboResultados, "r"&contRen ,"c10");
-				var monto = getXmlAtt(cuboResultados, "r"&contRen ,"c11");
-				
-				if (cargo_abono &= "C"){
-					frn.setX(monto ,"k_mov",contRen,"k_cargo");
-				}else{
-					frn.setX(monto ,"k_mov",contRen,"k_abono");
-				}
-				
-				frn.setX(getXmlAtt(cuboResultados, "r"&contRen ,"c13"),"k_mov",contRen,"k_inventario");
-			
-			}
-			
-			CalcTotal();
-			
-			ArmarRefDocto();
-			
-
-								
-		} //End MostrarDatos()
-		
-		
-		
-		//-----------------REPORTE-----------
-		
-		
-			fun EjecReporte(){
-				
-				var compania,usuario,strValor,strCriterio, fechaImpresion, horaImpresion;
-				var cuboResultados, xmlRequest,sqlXmlResultados,xmlCurDocto,xmlCurMovto,cmd,ok,mensaje;
-				
-				kdb.kde("KDE");//Configuraciï¿½n del servidor
-				kdb.exec();
-				compania = kdb.get("KDE","1");
-				usuario = kdb.get("KDE","14");
-				strValor = sys.date();	
-				fechaImpresion = sys.date();
-				horaImpresion = sys.time();
-
-				
-				kdb.readPage("datos","srv_contrarecibo_crudfto");//se define el formato a usar
-				kdb.exec();
-				rep.source(kdb.get("datos"));
-				rep.rst(); 
-				setRepPage();//Establece los parï¿½metros finales de impresiï¿½n.(rep.page(...);)
-
-				rep.set("suc_desc", frn.get("k_sucn", -1, 0));
-				rep.set("docto",frn.get("k_docto"));
-				rep.set("fecha",frn.get("k_fecha"));
-				rep.set("rep_fecha",fechaImpresion);
-				rep.set("rep_hora",horaImpresion);
-				rep.set("k_clave",frn.get("k_clave"));
-				rep.set("k_nombreprov",frn.get("k_nombreprov"));
-				rep.set("k_calleprov",frn.get("k_calleprov"));
-				rep.set("k_coloniaprov",frn.get("k_coloniaprov"));
-				rep.set("k_poblacionprov",frn.get("k_poblacionprov"));
-				rep.set("k_cpprov",frn.get("k_cpprov"));
-				rep.set("k_rfc",frn.get("k_rfc"));
-				rep.set("referencia",frn.get("k_refer"));
-				rep.set("k_monto",frn.get("k_monto"));
-				
-				//TODO
-				rep.set("cantidad_en_letra",strFormat("number",frn.get("k_monto"),0));
-				rep.exe("encabezado");
-				rep.exe("tit_reporte");
-				rep.exe("encabezadoColumnas");
-				rep.exe("linea_encabezados");
-
-				//Procesa poliza contable
-				var tablakdc1_alta = " keplersc.kdc1" & mid(strSplit(frn.get("k_fecha"), "-", 0), 2,2) ;
-				var tablakdc2_alta = " keplersc.kdc2" & mid(strSplit(frn.get("k_fecha"), "-", 0), 2,2) & strSplit(frn.get("k_fecha"), "-", 1);
-				var tablakdc1_baja = " keplersc.kdc1" & mid(strSplit(fecha_baja, "-", 0), 2,2) ;
-				var tablakdc2_baja = " keplersc.kdc2" & mid(strSplit(fecha_baja, "-", 0), 2,2) & strSplit(fecha_baja, "-", 1);
-				var tipo = ""; var nPolAlta = "" ;
-				if (tablakdc2_baja &= tablakdc2_alta ){
-					tipo = "Misma_tabla";
-					
-					cmd= " select c1 as num_pol from " & tablakdc2_alta & " where c14='" & sucursal_id  & "' and c15='" & gen_doc & "' and c16= '" & nat_doc & "'" ;
-					cmd = cmd & " and c17='" & gpo_doc & "' and c18='" & tip_doc & "' and c19='" & frn.get("k_folio")& "'";
-				
-					cuboResultados = frn.lib("libGeneral.kpl","EjecutarSqlSel",cmd,"srv_pago_operarios.GenerarReporte()");
-					frn.lib("libGeneral.kpl","FileSave",cmd ,"C:\Basura\cuboResultados");
-				
-					ok=getXmlAtt(cuboResultados,"ok");
-					if(ok &! "" && !ok){
-						mensajeError = getXmlAtt(cuboResultados,"native3");
-						frn.message(mensajeError,"Error","Aceptar");
-						return;
-					}
-				
-					nPolAlta =getXmlAtt(cuboResultados,"r0", "num_pol" );
-				
-				}
-				imprime_poliza(tablakdc1_alta , tablakdc2_alta, "Alta", tipo, nPolAlta);
-				
-				if (estatus_doc &= "C" && fecha_baja &! "1800-01-01" && fecha_baja &! "" ){
-					imprime_poliza(tablakdc1_baja , tablakdc2_baja, "Baja", tipo, nPolAlta);
-				}	
-			
-				rep.set("desc_notas",frn.get("k_coment"));
-				rep.exe("notastitulos");
-				rep.exe("extras");
-				rep.win();
-				
-		
-			}
-			
-			
-			fun imprime_poliza(tablakdc1 , tablakdc2, operacion, tipo, nPolAlta ){
-			
-				var cmd, cuboResultados , ok;
-				
-				//Procesa poliza contable
-				cmd= " select kc2.c1 as num_pol, kc2.c3 as cuenta, kc2.c4 as tipo_asiento, kc2.c5 as monto, kc1.c2 as desc_pol, kc2.c7 as refer, kc2.c8 as tipo_pol from " & tablakdc2 & " as kc2 " ;
-				cmd = cmd & " inner join " & tablakdc1 & " as kc1 on kc1.c1=kc2.c3 ";
-				cmd = cmd & " where kc2.c14='" & frn.get("k_sucn", -1, 1) & "' and kc2.c15='" & gen_doc & "' and kc2.c16= '" & nat_doc & "' and kc2.c17='" & gpo_doc & "' and kc2.c18='" & tip_doc & "' and kc2.c19='" & frn.get("k_folio")& "'";
-				if (operacion &= "Alta" && tipo &= "Misma_tabla"){
-					cmd = cmd & " and kc2.c1 = " & nPolAlta ; 
-				}
-				if (operacion &= "Baja" && tipo &= "Misma_tabla"){
-					cmd = cmd & " and kc2.c1 <> " & nPolAlta ; 
-				}
- 
-				cuboResultados = frn.lib("libGeneral.kpl","EjecutarSqlSel",cmd,"srv_pago_operarios.imprime_poliza()");
-				frn.lib("libGeneral.kpl","FileSave",cmd ,"C:\Basura\cuboResultados");
-				
-				ok=getXmlAtt(cuboResultados,"ok");
-				if(ok &! "" && !ok){
-					mensajeError = getXmlAtt(cuboResultados,"native3");
-					frn.message(mensajeError,"Error","Aceptar");
-					return;
-				}
-				
-				var nRenPol= nXml(cuboResultados);
-				var tPoliza=getXmlAtt(cuboResultados,"r0", "tipo_pol" );
-				var nPoliza=getXmlAtt(cuboResultados,"r0", "num_pol" );
-				
-				if (strlen(tPoliza)>0 && strlen(nPoliza)>0 ){
-						rep.set("tPol",tPoliza);
-						rep.set("nPol",nPoliza);
-						rep.exe("encabezadoPol");
-						var tAbonosPol=0, tCargosPol=0;
-						for(var i=0;i<nRenPol;i++){
-							if (getXmlAtt(cuboResultados,"r"&i, "tipo_asiento" )&= "A"){
-								var cuenta = getXmlAtt(cuboResultados,"r"&i, "cuenta" );
-								rep.set("PolClave2",cuenta );
-								rep.set("PolDescr2",getXmlAtt(cuboResultados,"r"&i, "desc_pol" ));
-								rep.set("PolHaber",getXmlAtt(cuboResultados,"r"&i, "monto" ));
-								tAbonosPol=tAbonosPol+getXmlAtt(cuboResultados,"r"&i, "monto" );
-								pol_saldo_presupuesto(cuenta);
-								rep.set("PolSaldo2",saldo);
-								rep.set("PolPresupuesto2",presupuesto );
-								rep.exe("partPolA");
-							}else{
-								var cuenta = getXmlAtt(cuboResultados,"r"&i, "cuenta" );
-								rep.set("PolClave",cuenta );
-								rep.set("PolDescr",getXmlAtt(cuboResultados,"r"&i, "desc_pol" ));
-								rep.set("PolDebe",getXmlAtt(cuboResultados,"r"&i, "monto" ));
-								tCargosPol=tCargosPol+getXmlAtt(cuboResultados,"r"&i, "monto" );
-								pol_saldo_presupuesto(cuenta);
-								rep.set("PolSaldo",saldo );
-								rep.set("PolPresupuesto",presupuesto );
-								rep.exe("partPolC");
-							}
-						}
-						rep.set("totCargo",tCargosPol);
-						rep.set("totAbono",tAbonosPol);
-						rep.exe("PolTotales");
-				}
-
-			}
-			
-			fun pol_saldo_presupuesto(cuenta){
-		
-				var cmd, cuboResultados , ok, mensajeError  ;
-				
-				var mes = strSplit(frn.get("k_fecha"), "-", 1);
-				tabla = " keplersc.kdc1" & mid(strSplit(frn.get("k_fecha"), "-", 0), 2,2);
-				
-				var col_cargos = 26 + mes;
-				var col_abonos = 62 + mes;
-				var col_presupuesto= 38 + mes;
-				 
-				cmd= " select c" & col_cargos & " as cargos ,c" & col_abonos & " as abonos ,c" & col_presupuesto & " as pres from " & tabla & " where c1='" & cuenta & "'";
-
-				cuboResultados = frn.lib("libGeneral.kpl","EjecutarSqlSel",cmd,"srv_contrarecibo_crud.pol_saldo_presupuesto()");
-				frn.lib("libGeneral.kpl","FileSave",cuboResultados ,"C:\Basura\cuboResultados");
-				
-				ok=getXmlAtt(cuboResultados,"ok");
-				if(ok &! "" && !ok){
-					mensajeError = getXmlAtt(cuboResultados,"native3");
-					frn.message(mensajeError,"Error","Aceptar");
-					return;
-				}
-
-				var cargos = getXmlAtt(cuboResultados,"r0", "cargos" );
-				var abonos = getXmlAtt(cuboResultados,"r0", "abonos" );
-				presupuesto = getXmlAtt(cuboResultados,"r0", "pres" );
-				saldo = cargos - abonos;
-
-			}
-			
-			
-			fun Formar_folio(){
-				var xmlReqEst, cubofol, cmd, ok, mensajeError ;
-				setXml(xmlReqEst,"document","folio_id",frn.get("k_folio"));
-				setXml(xmlReqEst,"document","k_tipon","r1",frn.get("k_tipon",-1,1));
-				setXml(xmlReqEst,"document","k_tipon","r2",frn.get("k_tipon",-1,2));
-				setXml(xmlReqEst,"document","k_tipon","r3",frn.get("k_tipon",-1,3));
-				setXml(xmlReqEst,"document","k_tipon","r4",frn.get("k_tipon",-1,4));
-				setXml(xmlReqEst,"document","uen",uen);
-				
-				cmd="select * from keplersc.consulta_folio('" & getXmlStr(xmlReqEst,"EOF:13_10") & "')";
-				cubofol=  frn.lib("libGeneral.kpl","EjecutarSqlSel",cmd,"comopecompras.Formar_folio()");
-				var resultado =getXmlAtt(cubofol,"r0", "resultado");
-				if(resultado &= "0"){
-					mensajeError = getXmlAtt(cubofol,"r0", "mensaje");
-					mensajeError = frn.lib("libGeneral.kpl","ErrorBD",mensajeError);
-					frn.message(mensajeError,"Error","Aceptar");
-					return;
-				}
-				var fol = getXmlAtt(cubofol,"r0", "mensaje");
-				frn.set("k_folio", fol);
-			}
-			
-			
-					
-			fun plazo(){
-		
-				var plazo = frn.get("k_plazo");
-		
-				frn.set("k_vence", fnDate("add",frn.get("k_vence"),plazo )  );
-			
-			}	
-			
-			fun IniParams(){//Inicializa parï¿½metros de impresiï¿½n, que pueden ser cambiados por el usuario final mediante: Archivo / Configurar Pï¿½gina
-				frn.set("param_paper","letter");//	"paper=letter|legal|size"
-				frn.set("param_sizeX","21.59","param_sizeY","27.94");//	"size=18,14cm"
-				frn.set("param_borderL","1.5","param_borderT","1.5","param_borderR","1.5","param_borderB","1.5");//	"border=1.5,1.5,1.5,1.5cm"
-				frn.set("param_Fx","1.0","param_Fy","1.0");//			"F=1,1"
-				frn.set("param_landscape","Y");//	"landscape=N|Y"
-				frn.set("param_emp","L");//			"@emp=L|R|C"
-				frn.set("param_header",1);
-			}
-
-			fun setRepPage() {//Establece los parï¿½metros finales de impresiï¿½n.
-				//Tipo de hoja, ancho, alto,margen iz, margen derecho, margen arriba, margen abajo, factor de escala en x, factor de escala en y,orientacion, color, ventana de ajuste, etc
-				//rep.page("paper=letter|legal|size","size=18,14cm","border=1.5,1.5,1.5,1.5cm","F=1,1","landscape=N|Y","color=Y|N","prompt=N|Y","@emp=L|R|C");
-				var paper="paper=" & frn.get("param_paper");var size="size=" & frn.get("param_sizeX") & "," & frn.get("param_sizeY") & "cm";
-				var brdr="border=" & frn.get("param_borderL") & "," & frn.get("param_borderT") & "," & frn.get("param_borderR") & "," & frn.get("param_borderB") & "cm";
-				var fact="F=" & frn.get("param_Fx") & "," & frn.get("param_Fy");
-				var lndsp="landscape=" & frn.get("param_landscape");
-				var emp="@emp=" & frn.get("param_emp");
-				rep.page(paper,size,brdr,fact,lndsp,"color=Y","collate=Y","copies=1","pages=1,999","prompt=N",emp);
-			}
-			
-		
-		} // End of class Main
-	</script>
-</pag>
+<?xml version="1.0" encoding="UTF-8"?><pag xmlns="www.kepler.com.mx/2003/KSchema" roles="" tit="Contrarecibo">	<grp dim="1,-1,10,20" brdr="0,0" clr="0,58,112" bclr="192,205,213" fnt="Arial,16" unfont="0" OnEnter="Exit()">	<tab/><txt fnt=",22" clr="0,0,0">Contrarecibo</txt><br/>	<tab/><hLine clr="0,0,0"/> 	<br/> <br/><tab/>		<grp dim="46,9,7,12" bclr="236,240,243" fntClrBrdr="236,240,243" fntBrdr="Arial,18" hSpace="4" clrBrdr="0,58,112" brdr="0,5" fnt="Arial,16" tit="Par&#225;metros"><txt>  Sucursal : </txt>			<cmb id="k_sucn" clr="64,64,64" clrBrdr="255,255,255" dim="52,36" bclr="255,255,255" brdr="2,0" fnt="Arial,16" Null="N" hk="S" OnChange="CambiaSucursal()" tooltip="Sucursal" available="Y" modify="Y"/>			<br/><br/>			<txt>  Tipo :        </txt>			<cmb id="k_tipon" dim="40,1" brdr="2,0" bclr="255,255,255" clr="64,64,64" clrBrdr="255,255,255" modify="Y" OnChange="CambiaTipo()" tooltip="Tipo de Movimiento"/>			<br/>			<tab n="4"/><inp id="statusdoc" clr="64,64,64"  dim="25,1" brdr="0,1" fnt=",16b" available="N"/>		</grp>		<sp/>		<grp dim="34,10,7,12" bclr="236,240,243" fntClrBrdr="236,240,243" fntBrdr="Arial,18" hSpace="4" clrBrdr="0,58,112" brdr="0,5" fnt="Arial,16" tit="Detalle">			<sp n="1"/>			<inp id="operacion" dim="40,1" bclr="240,240,240" clr="64,64,64" clrBrdr="255,255,255" type="string" modify="N" fnt=",18b" just="C"/><tab/> <br/>			<txt id="textFolio" visible="N">  Folio :  </txt>			<edt id="k_folio" dim="30,1" brdr="2,0" OnChange="Formar_folio()" bclr="255,255,255" clr="64,64,64" clrBrdr="255,255,255" type="string" nc="10" tooltip="Folio ( F9 b&#250;squeda )" modify="Y" available="N" visible="N" OnF9="ObtenerFolio()" 			OnButton="ObtenerFolio()"/>	<sp n="2"/>			<img id="buscar_datos" dim="20,20" bPx="Y" brdr="0,1"  img="_20_Find.png" OnEnter="BuscarFolio()" available="Y" clrBrdr="0,0,0" visible="N"/>			 <br/>			<sp n="1"/>			<inp id="k_docto" dim="40,1" bclr="240,240,240" clr="64,64,64" clrBrdr="255,255,255" type="string" modify="N" fnt=",16b" just="C"/> <br/>			<txt>  Fecha : </txt> 			<edt id="k_fecha" dim="15,1" type="date" fmt="DD/MM/CCYY" brdr="2,0" bclr="255,255,255" clr="64,64,64" page="_ks_fecha,k_fecha" OnF9="Dialog(3,_ks_fecha,k_fecha)" clrBrdr="255,255,255" available="Y" tooltip="Fecha" modify="N"/> 			<sp n="1"/> 			<txt>  Hora : </txt> 			<sp n="1"/> 			<edt id="k_hora" dim="15,1" type="time" nc="-1" bclr="240,240,240" fmt="HH:MM:SS" available="N"/> 			<br/>		</grp>		<br/>		<br/>		<tab/>		<grp dim="81,14,7,12" bclr="236,240,243" fntClrBrdr="236,240,243" fntBrdr="Arial,18" hSpace="4" clrBrdr="0,58,112" brdr="0,5" fnt="Arial,16" tit="Datos Proveedor">				<grp dim="38,9,7,12" bclr="236,240,243" fntClrBrdr="236,240,243" hSpace="4" clrBrdr="0,58,112" brdr="0,5" fnt="Arial,16">								<sp n="1"/> <txt clr="0,58,112" hk="P">Proveedor : </txt><tab/>				<edt id="k_clave" clr="64,64,64" clrBrdr="255,255,255"  dim="20,36" bclr="255,255,255" brdr="2,0" fnt="Arial,16" 					OnButton="Dialog(3,cxpcatprobus,k_clave)" OnF9="Dialog(3,cxpcatprobus,k_clave)" OnChange="BuscarProveedor()" 					type="capital" nc="7" tooltip="Proveedor ( F9 b&#250;squeda )" modify="Y" hk="C" available="Y"/> 				<br/>				<sp n="1"/> <txt>RFC : </txt><sp n="5"/>				<inp id="k_rfc" clr="64,64,64"  dim="18,1" fnt="Arial,16" type="string" nc="16" modify="N" available="N"/>				<br/>			</grp>			<sp n="1"/>			<grp dim="75,9,7,12" bclr="236,240,243" fntClrBrdr="236,240,243" hSpace="4" clrBrdr="0,58,112" brdr="1,5" fnt="Arial,16">				<sp n="1"/> <txt>Datos del proveedor : </txt>				<br/>				<sp n="1"/>					<inp id="k_nombreprov" clr="64,64,64" clrBrdr="255,255,255"  dim="70,1" fnt="Arial,16" type="string" modify="N" available="N" nc="70" visible="Y"/>				<br/>				<sp n="1"/>				<inp id="k_calleprov" clr="64,64,64" clrBrdr="255,255,255"  dim="70,1" fnt="Arial,16" type="string" modify="N" available="N" nc="70" visible="Y"/>				<br/>				<sp n="1"/>				<inp id="k_coloniaprov" clr="64,64,64" clrBrdr="255,255,255"  dim="70,1" fnt="Arial,16" type="string" modify="N" available="N" nc="70" visible="Y"/>				<br/>				<sp n="1"/>				<inp id="k_poblacionprov" clr="64,64,64" clrBrdr="255,255,255"  dim="50,1" fnt="Arial,16" type="string" modify="N" available="N" nc="50" visible="Y"/>				<sp n="1"/>				<inp id="k_cpprov" clr="64,64,64" clrBrdr="255,255,255"  dim="15,1" fnt="Arial,16" type="string" modify="N" available="N" nc="10" visible="Y"/>			</grp>			<br/>			<sp n="1"/> <txt clr="0,58,112">Factura del proveedor : </txt><sp/>			<inp id="k_refer" clr="64,64,64" clrBrdr="255,255,255"  dim="60,1" bclr="255,255,255" brdr="2,0" nc="40" fnt="Arial,16" type="capital"  modify="Y" 					 tooltip="Factura del Proveedor" available="Y"/>					<sp n="2"/>													</grp>		<br/>		<br/>			<tab/>		<grp dim="81,28,7,12" bclr="236,240,243" brdr="0,5" clrBrdr="0,58,112" fntClrBrdr="255,206,0" fntBrdr="Arial,18" hSpace="4" fnt=",0"><tab/>		<tbl id="k_mov" bclr="236,240,243" clr="64,64,64" clrCur="255,255,255" clrHead="0,58,112" bclrHead="236,240,243" brdr="1,0" clrBrdr="64,64,64" fnt="Arial,16" 				dim="110,8"  hk="z" Reorder="N" modify="Y" OnChange="CalcTotal()"  insdel="Y">			<col id="k_cuenta" name="Cuenta"  type="capital" OnF9="select_cuenta()"  OnChange="Cuenta()" np="145" visible="Y" modify="Y"/>			<col id="k_cuentadesc" name="Nombre Cuenta" type="string" nc="35" modify="N" visible="Y" available="N" np="145"/>				<col id="k_cuentasaldo" name="Cuenta Saldo"  type="number" nd="2" nc="15" np="120" modify="Y" visible="N" available="N"/>			<col id="k_cargo" name="Cargo"  type="number" nd="2" OnChange="Cargo()" nc="15" np="145" modify="Y" visible="Y"/>			<col id="k_abono" name="Abono"  type="number" nd="2" OnChange="Abono()" nc="15" np="120" modify="N" visible="N"/>			<col id="k_inventario" name="Inventario" visible="Y" modify="Y" np="145" OnChange="Inventario()" available="Y" OnF9="busca_inv()"/>		</tbl>		<br/>		<tab/>		<grp dim="70,20,7,12" bclr="236,240,243" brdr="0,5" clrBrdr="0,58,112" fntClrBrdr="255,206,0" fntBrdr="Arial,18" hSpace="4" fnt=",0">		<sp/><txt fnt=",">Plazo:  </txt>		<inp id="k_plazo" dim="8,1" brdr="2,0" bclr="255,255,255" clrBrdr="255,255,255" type="number" OnChange="plazo()" just="R" clr="64,64,64" available="Y"/><br/>		<sp/><txt fnt=",">Fecha de Pago:  </txt>		<edt id="k_vence" dim="15,1" type="date" OnChange="Vence()" fmt="DD/MM/CCYY" brdr="2,0" bclr="255,255,255" clr="64,64,64" page="_ks_fecha,k_vence" OnF9="Dialog(3,_ks_fecha,k_vence)" clrBrdr="255,255,255" available="N" tooltip="Fecha"/> 		<br/>				<sp/><txt fnt=",">Comentarios:  </txt><tab/><sp/>		<inp id="k_coment" dim="50,4" brdr="2,0" bclr="255,255,255" clrBrdr="255,255,255" type="capital" modify="Y" available="Y" clr="64,64,64"/><br/>		<br/>		<sp n="13"/>		<img id="Imprimir" dim="40,40" bPx="Y" brdr="0,1"  img="_60_Print.png" OnEnter="EjecReporte()" tooltip="Imprimir documento &lt;Ctrl&gt;&lt;T&gt;" available="Y" clrBrdr="0,0,0" visible="N" modify="Y"/>					<sp n="23"/>		<img id="Cancelar" dim="40,40" bPx="Y" brdr="0,1"  img="_60_DocRst.png" OnEnter="Cancela()" tooltip="Borrar datos" available="Y" clrBrdr="0,0,0" visible="Y"/>					<sp n="8"/>		<img id="Aceptar" dim="40,40" bPx="Y" brdr="0,1"  img="_60_DocNew.png" OnEnter="Ejecuta()" tooltip="Aceptar documento &lt;Ctrl&gt;&lt;T&gt;" available="Y" clrBrdr="0,0,0" visible="Y" modify="Y"/>						</grp>			<tab n="2"/>		<grp dim="40,20,7,12" bclr="236,240,243" brdr="0,5" clrBrdr="0,58,112" fntClrBrdr="255,206,0" fntBrdr="Arial,18" hSpace="4" fnt=",0">		<sp/><txt fnt=",">Subtotal:  </txt><tab n="3"/>		<inp id="k_subtotal" dim="15,1" brdr="2,0" bclr="255,255,255" clrBrdr="255,255,255" type="number" modify="N" just="R" nd="2" clr="64,64,64"/><br/>				<sp/><txt fnt=",">IVA:  </txt><tab n="4"/>		<inp id="k_iva" dim="15,1" brdr="2,0" bclr="255,255,255" clrBrdr="255,255,255" type="number" modify="N" just="R" nd="2" clr="64,64,64"/><br/>				<sp/><txt fnt=",">Subtotal:  </txt><tab n="3"/>		<inp id="k_subtotal_con_iva" dim="15,1" brdr="2,0" bclr="255,255,255" clrBrdr="255,255,255" type="number" modify="N" just="R" nd="2" clr="64,64,64"/><br/>		<sp/><txt fnt=",">Retenci&#243;n ISR:  </txt><tab n="1"/>		<inp id="k_retencion_isr" dim="15,1" brdr="2,0" bclr="255,255,255" clrBrdr="255,255,255" type="number" modify="N" just="R" nd="2" clr="64,64,64"/><br/>			<sp/><txt fnt=",">Retenci&#243;n IVA:  </txt><tab n="1"/>		<inp id="k_retencion_iva" dim="15,1" brdr="2,0" bclr="255,255,255" clrBrdr="255,255,255" type="number" modify="N" just="R" nd="2" clr="64,64,64"/><br/>				<sp/><txt fnt=",">Otras Retenciones:</txt><tab n="1"/>		<inp id="k_otras_retenciones" dim="15,1" brdr="2,0" bclr="255,255,255" clrBrdr="255,255,255" type="number" modify="N" just="R" nd="2" clr="64,64,64"/><br/>		<sp/><txt fnt=",">Importe:  </txt><tab n="3"/>		<inp id="k_monto" dim="15,1" brdr="2,0" bclr="255,255,255" clrBrdr="255,255,255" type="number" modify="N" just="R" nd="2" fnt=",0b" clr="64,64,64"/><br/>			</grp>				</grp>								</grp>		<script>		InstallDriver("KDB75");				class Main {			var frn,kdb, sys, rep, frP;			var usuario, rol_usuario, suc_usuario,asterisco,anio_contable;			// Variables de control			var cmdQuery, cuboQuery, ok, mensajeError, sucursal_id, proveedor_id, refer_id, resVal, tabla, estatus_doc ;			var fileSavePath;			//Variables validacion factura			var	str_uuid, fecha_uuid, rfc_uuid, total_uuid;								//Variables de parametros         var gen_doc, nat_doc, gpo_doc, tip_doc, tip_ope, paramProd;			var editable; //Se controla si la poliza se puede editar, cancelar o dar de baja				//Porcentajes kdmm			var prc_retencion_isr,prc_iva ,prc_retencion_iva, prc_otras_retenciones, afecta_costo_inv  ;			//cont			var presupuesto , saldo, fecha_baja ;			var uen;		fun Main() {			frn=new FRNT;			kdb=new KDB;			rep=new REP;			frP=new FRNTP;			sys=new SYS;			kdb.connect();			kdb.kde("KDE");			kdb.exec();			anio_contable = kdb.get("KDE","14");			usuario = frn.config("user","name");			rol_usuario = frn.config("user","role");			suc_usuario = frn.lib("libKepler","UserInfo(1)");			asterisco = "*";			fileSavePath = "C:\Basura";			Inicializa();			ConfiguraControlesOpcion();								}					fun Inicializa(){ //Inicializa los valores en Pantalla			// Revisa parametros recibidos			if( frn.nParam() == 7 ){ //Se han mandado parï¿½metros a la pï¿½gina                gen_doc=trim(frn.param(0));                 nat_doc=trim(frn.param(1));                 gpo_doc=trim(frn.param(2));                tip_doc=trim(frn.param(3));                 tip_ope=trim(frn.param(4));                paramProd=trim(frn.param(5));			} else {				frn.message("Operacion no valida ...", "Mensaje","&Aceptar");				frn.open("redirect",2);				return;			}            			if(tip_ope &= "A"){ //Alta				frn.set("operacion","ALTA");			} else {				if(tip_ope &= "B"){ //Baja					frn.set("operacion","BAJA");				} else {					if(tip_ope &= "C"){ //Consulta						frn.set("operacion","CONSULTA");					} else {						frn.message("Operacion no valida ...", "Mensaje","&Aceptar");						frn.open("index",4);						return;								}				}			}						uen=trim(frn.param(6));			if (uen &= ""){				uen="XXX";			}							//Llenar combo sucursales			cmdQuery = "select '['||c1||'] '||c2 as c2, c1 from keplersc.kdms";			if (rol_usuario &! "ADMINISTRADOR"  && rol_usuario &! "ADMINISTRATOR"){				cmdQuery = cmdQuery & " where c1='" & suc_usuario & "'";			}else {				if (suc_usuario &! asterisco && suc_usuario &! "" ){					cmdQuery = cmdQuery & " where c1='" & suc_usuario & "'";				}			}						rstXml(cuboQuery);			cuboQuery = frn.lib("libGeneral.kpl","EjecutarSqlSel",cmdQuery,"srvtalltotscrud.IniCombos()");			ok=getXmlAtt(cuboQuery,"ok");			if(ok &! "" && !ok){				mensajeError = getXmlAtt(cuboQuery,"native3");				mensajeError = frn.lib("libGeneral.kpl","ErrorBD",mensajeError);				frn.message(mensajeError,"Error","Aceptar");				return;			}			frn.set("k_sucn",cuboQuery);								// Fill Combo Tipo (Con Query FTO Kepler) 			LlenaCmbTipo();						frn.set("k_fecha",sys.date());			frn.set("k_hora",sys.time());				frn.set("k_vence",sys.date());							// Fill k_docto | referencia docto			ArmarRefDocto();					configuraciones_kdmm();		}				fun LlenaCmbTipo(){			// Fill Combo Tipo (Con Query FTO Kepler) 			cmdQuery = "select c5 as c0,c1,c2,c3,c4,c1||c2||lpad(c3::text,2,'0')||lpad(c4::text,3,'0')||'-'||'0000000' as c5, c16 as c6 from keplersc.kdmm 							where col_sucursal='" & frn.get("k_sucn",-1,1) & "' and c1='" & gen_doc & "' and c2='" & nat_doc & "' and c3='" & gpo_doc & "'" ;			cuboQuery = frn.lib("libGeneral.kpl","EjecutarSqlSel",cmdQuery,"srvtalltotscrud.Inicializa()");			ok=getXmlAtt(cuboQuery,"ok");			if(ok &! "" && !ok){				mensajeError = getXmlAtt(cuboQuery,"native3");				mensajeError = frn.lib("libGeneral.kpl","ErrorBD",mensajeError);				frn.message(mensajeError,"Error BD","Aceptar");				return;			}			frn.set("k_tipon",getXml(cuboQuery));		}						// Armado del Docto Referencia		fun ArmarRefDocto {			var cadena = frn.get("k_tipon", -1, 5);			var fol = frn.get("k_folio");			if (tip_ope &! "A" && fol &! ""){				cadena = strSplit(cadena,"-",0) & "-" & fol;			}					frn.set("k_docto", cadena);		}					fun PadLeft(pText,pRelleno,pCaracterRelleno) {			var Resultado;			var pos_ini = pText;			var nReg = strlen(pText);			for (var cont = nReg; cont < pRelleno; cont++) {				Resultado = pCaracterRelleno & Resultado;			}			Resultado = Resultado & pText;                			return Resultado;		}				fun CambiaTipo() {				tip_doc  = frn.get("k_tipon", -1, 4);			configuraciones_kdmm();			borrar_datos();			LimpiaEncabezado();								//TODO, borrar todos los datos			frn.set("k_fecha",sys.date());			frn.set("k_hora",sys.time());				ArmarRefDocto();						}				fun configuraciones_kdmm(){						var cmd, cuboResultados ,ok,mensajeError;								cmd= " select c15,c16,c33,c75,c77 from keplersc.kdmm where col_sucursal='" & frn.get("k_sucn",-1,1) & "' and c1='" & gen_doc & "'" ;							cmd = cmd & " and c2='" & nat_doc & "' and c3='" & gpo_doc & "' and c4='" & tip_doc & "'";					cuboResultados = frn.lib("libGeneral.kpl","EjecutarSqlSel",cmd,"srv_contrarecibo_crud.configuraciones_kdmm()");				frn.lib("libGeneral.kpl","FileSave",cuboResultados ,"C:\Basura\cuboResultados");								ok=getXmlAtt(cuboResultados,"ok");				if(ok &! "" && !ok){					mensajeError = getXmlAtt(cuboResultados,"native3");					frn.message(mensajeError,"Error","Aceptar");					return;				}				prc_retencion_isr = getXmlAtt(cuboResultados , "r0","c15");				prc_iva = getXmlAtt(cuboResultados , "r0","c16");				prc_retencion_iva = getXmlAtt(cuboResultados , "r0","c33");				prc_otras_retenciones = getXmlAtt(cuboResultados , "r0","c75");				afecta_costo_inv = getXmlAtt(cuboResultados , "r0","c77");								if (afecta_costo_inv &= "S"){									frn.setAtt("k_mov" ,"available" , "Y", "k_inventario");					frn.setAtt("k_mov" ,"visible" , "Y", "k_inventario");					frn.setAtt("k_mov" ,"modify" , "Y", "k_inventario");					frn.setAtt("k_mov" ,"OnF9" , "busca_inv()", "k_inventario");									}else{									frn.setAtt("k_mov" ,"available" , "N", "k_inventario");					frn.setAtt("k_mov" ,"visible" , "N", "k_inventario");					frn.setAtt("k_mov" ,"modify" , "N", "k_inventario");					frn.setAtt("k_mov" ,"OnF9" , "", "k_inventario");				}						}				fun CambiaSucursal() {			sucursal_id = frn.get("k_sucn",-1,1);			frn.set("k_fecha",sys.date());			frn.set("k_hora",sys.time());			LlenaCmbTipo();			CambiaTipo();		}				fun LimpiaEncabezado() {			frn.set("k_folio", "");			frn.set("k_docto", "");			frn.set("k_fecha", "");			frn.set("k_hora", "");			LimpiaDatosProv();			frn.set("k_clave", "");		}				fun borrar_datos(){			frn.rst("k_mov");			frn.set("totalCargos", 0);			frn.set("totalAbonos", 0);			frn.set("k_vence", sys.date());			frn.set("k_plazo", 0);			frn.rst("k_coment");						frn.set("k_subtotal", 0);			frn.set("k_iva", 0);			frn.set("k_subtotal_con_iva", 0);			frn.set("k_retencion_isr", 0);			frn.set("k_retencion_iva", 0);			frn.set("k_otras_retenciones", 0);			frn.set("k_monto", 0);		}				fun BuscarFolio() {			var folio;			folio = frn.get("k_folio");			folio = PadLeft(folio, 7, "0");			ArmarRefDocto();			borrar_datos();			MostrarDatos(folio);								}		fun Cancela() {			CambiaSucursal();			borrar_datos();			Inicializa();			ConfiguraControlesOpcion();		}		fun ObtenerFolio() {			sucursal_id = frn.get("k_sucn",-1,1);			cmdQuery = "select c6 as folio, to_char(c9, 'DD/MM/YYYY') as fecha, c10 as cve_proveedor, " &						"c11 as factura, c16 as monto, c43 estatus " &						"from keplersc.kdm1 " &						"where c1='" &sucursal_id& "' and c2='" &gen_doc& "' and c3='" &nat_doc& "' and c4 =" &gpo_doc& " and c5= " & tip_doc & " order by c9 desc ";									frn.lib("libGeneral.kpl","FileSave",cmdQuery ,fileSavePath & "\cmdQueryfoliomov");							frn.dialog("genlistafiltrosel","Folios de Contrarecibos",cmdQuery,"folio","k_folio","0","","S");					}				fun Dialog(iModo,pag,par0,par1,par2,par3,par4,par5,par6,par7,par8,par9,par10,par11,par12,par13,par14,par15){ 			/*iModo: 0)No hace mayor validaci?n. Siempre despliega la ventana. NO CONCATENA PREFIJO    			1)Solo concatena el prefijo de la carpeta del lenguaje, no hace mayor validaci?n. Siempre despliega la ventana 			2)Modo especial. Se valida que el campo indicado en par0 se puede modificar(El par0 puede ser una tabla, y par1 la columna) 			3)Modo especial para p?ginas de operacion:Solo si se est? en alta o modifica despliega la pagina. Simpre agrega el prefijo del lenguaje 			*/			var prefix=frn.lib("libKepler","langPrefix");			var page=prefix&pag;			var b_valido=1;			// var tip_ope; 			var tip_oper;			if(iModo==0)				page=pag; 			else if(iModo==2&&(strlen(par0)>0)){				//Se toma el par0 como el objeto (o grid) al que se devolver? el resultado.       				if( frn.getAtt(par0,"modify",par1) &= "N" ) b_valido=0;				if( frn.getAtt(par0,"available",par1) &= "N" ) b_valido=0; 				if( frn.getAtt(par0,"visible",par1) &= "N" ) b_valido=0;			}			else if(iModo==3&&(tip_oper>=1)&&(tip_oper<=3))b_valido=0;				if(b_valido==1)frn.dialog(page,par0,par1,par2,par3,par4,par5,par6,par7,par8,par9,par10,par11,par12,par13,par14,par15);     		}					//------------------------------PROVEEDOR-----------------------			fun BuscarProveedor(){			var xmlProd;											sucursal_id = frn.get("k_sucn",-1,1);			proveedor_id = frn.get("k_clave");			LimpiaDatosProv();					if (strlen(frn.get("k_clave")) == 0) {				return;			}							if (strlen(frn.get("k_refer")) > 0) {				refer_id = frn.get("k_refer");			} else {				frn.set("k_fecha_exp", "");			}							cmdQuery = "select c10 as k_rfc, c3 as k_nombreprov, c4 as k_calleprov, c5 as k_coloniaprov, c6 as k_poblacionprov, c27 as k_cpprov, c16 as k_plazo " &									"from keplersc.kdxd where c2='" & proveedor_id & "'" ;								rstXml(cuboQuery);			cuboQuery = frn.lib("libGeneral.kpl","EjecutarSqlSel",cmdQuery,"srvtalltotscrud.BuscaProveedor()");			ok=getXmlAtt(cuboQuery,"ok");			if(ok &! "" && !ok){				mensajeError = getXmlAtt(cuboQuery,"native3");				mensajeError = frn.lib("libGeneral.kpl","ErrorBD",mensajeError);				frn.message(mensajeError,"Error","Aceptar");				return;				}			if(nXml(cuboQuery) == 0){				frn.setPos("k_clave");				frn.message("El proveedor no existe","Error","Aceptar");				return;				}			//Plazo();				rstXml(xmlProd);			xmlProd=frn.lib("libGeneral.kpl","CreaXmlDesdeAtt",cuboQuery,"r0");			frn.setX(xmlProd);									}				fun LimpiaDatosProv() {			frn.set("k_rfc", "");			frn.set("k_nombreprov", "");			frn.set("k_calleprov", "");			frn.set("k_coloniaprov", "");			frn.set("k_poblacionprov", "");			frn.set("k_fecha_exp", "");						frn.set("k_refer", "");			frn.set("k_fecha_exp", "");			frn.set("k_cpprov", "");		}										//------------------------TABLA POLIZA------------------------				fun select_cuenta(){						frn.setX("", "k_mov", -1, "k_cuenta");				frn.setX("", "k_mov", -1, "k_cuentadesc");				var tbla = " keplersc.kdc1" & mid(strSplit(frn.get("k_fecha"), "-", 0), 2,2);				var cmdSel = "select c1 as clave_cuenta, c2 as desc_cuenta from " & tbla ;            frn.dialog("genlistafiltrosel","Cuentas",cmdSel ,"clave_cuenta","k_mov","", "k_cuenta","N");     		}							fun Cuenta() {            var cuenta = frn.get("k_mov", -1, "k_cuenta");             var xmlRequest, cmd, cubo , ok, mensajeError ;            setXml(xmlRequest,"document","cuenta",cuenta);            setXml(xmlRequest,"document","anio",mid(strSplit(frn.get("k_fecha"), "-", 0), 2,2));                        frn.lib("libGeneral.kpl","FileSave",xmlRequest,"C:\Basura\requestCuenta");				cmd="select * from keplersc.caracteristicas_cuenta('" & getXmlStr(xmlRequest,"EOF:13_10") & "')";				cubo= frn.lib("libGeneral.kpl","EjecutarSqlSel",cmd,"srvcitacrud.buscar_datos()");								frn.lib("libGeneral.kpl","FileSave",cubo,"C:\Basura\cuboResultadosCuenta");								ok=getXmlAtt(cubo,"ok");				if(ok &! "" && !ok){					mensajeError = getXmlAtt(cubo,"native3");					mensajeError = frn.lib("libGeneral.kpl","ErrorBD",mensajeError);					frn.message(mensajeError,"Error","Aceptar");					return;				}								var nivel_cuenta = getXmlAtt(cubo,"r0","nivel");				var descripcion_nivel = getXmlAtt(cubo,"r0","desc_nivel");				var tipo_cuenta = getXmlAtt(cubo,"r0","tipo");								if (descripcion_nivel &! "Menor"){					frn.message("La Cuenta debe ser menor","Error","Aceptar");					frn.setX("", "k_mov", -1, "k_cuenta");					frn.setX("", "k_mov", -1, "k_cuentadesc");					return ;            }           				if (tipo_cuenta &= "Cliente"){					frn.message("La Cuenta no puede ser de cliente.","Error","Aceptar");					frn.setX("", "k_mov", -1, "k_cuenta");					frn.setX("", "k_mov", -1, "k_cuentadesc");					return ;            }                				var tbla = " keplersc.kdc1" & mid(strSplit(frn.get("k_fecha"), "-", 0), 2,2);				cmd = "select c2 as desc_cuenta from " & tbla & " where c1='" & cuenta  &  "'";								var cuboResultados = frn.lib("libGeneral.kpl","EjecutarSqlSel",cmd,"srv_contrarecibo_crud.Cuenta()");				frn.lib("libGeneral.kpl","FileSave",cuboResultados ,"C:\Basura\cuboResultados");								ok=getXmlAtt(cuboResultados,"ok");				if(ok &! "" && !ok){					mensajeError = getXmlAtt(cuboResultados,"native3");					frn.message(mensajeError,"Error","Aceptar");					return;				}				var descr = getXmlAtt(cuboResultados , "r0","desc_cuenta");                  frn.setX(cuenta, "k_mov", -1, "k_cuenta");            frn.setX(descr , "k_mov", -1, "k_cuentadesc");		}					fun Cargo() {				if(frn.getJ("k_mov")>0){ //Trae informaci?n del rengl?n anterior(descripci?n, depto, proyecto), si el rengl?n actual no tiene especificado algo					var renAnterior=frn.getJ("k_mov")-1;					if(strlen(frn.get("k_mov",-1,"k_descr"))==0)frn.setX(frn.get("k_mov",renAnterior,"k_descr"),"k_mov",-1,"k_descr");				}				frn.setX("","k_mov",-1,"k_abono");				CalcTotal();		}					fun Abono() {				if(frn.getJ("k_mov")>0){ //Trae informaci?n del rengl?n anterior(descripci?n, depto, proyecto), si el rengl?n actual no tiene especificado algo					var renAnterior=frn.getJ("k_mov")-1;					if(strlen(frn.get("k_mov",-1,"k_descr"))==0)frn.setX(frn.get("k_mov",renAnterior,"k_descr"),"k_mov",-1,"k_descr");				}				frn.setX("","k_mov",-1,"k_cargo");				CalcTotal();		}				fun CalcTotal() { 				var C=0,A=0; 				for (var i=0,n=frn.N("k_mov")-1;i<n;i++) { 					C=C+frn.get("k_mov",i,"k_cargo");					A=A+frn.get("k_mov",i,"k_abono");				}							var subt = C - A;				var subt_con_iva = 0;				var iva = subt * prc_iva/100;				if (iva &! "N" ){ 					subt_con_iva = subt  + iva;				}else{ 					subt_con_iva = subt ;					iva = 0;				}				var retencion_isr = subt * prc_retencion_isr/100;				var retencion_iva = subt * prc_retencion_iva/100;				var otras_retenciones = subt * prc_otras_retenciones/100;				var importe = subt_con_iva;								if (retencion_isr &! "N" ){ 					importe = importe  - retencion_isr ;				}else{ 					retencion_isr = 0;				}								if (retencion_iva &! "N" ){ 					importe = importe  - retencion_iva ;				}else{ 					retencion_iva = 0;				}				if (otras_retenciones &! "" ){ 					importe = importe  - otras_retenciones;				}else{ 					otras_retenciones= 0;				}				frn.set("k_subtotal", subt, "k_iva" ,iva, "k_subtotal_con_iva", subt_con_iva  );				frn.set("k_retencion_isr", retencion_isr  , "k_retencion_iva" ,retencion_iva , "k_otras_retenciones", otras_retenciones );				frn.set("k_monto", importe );			}				fun Vence() {		/* MSS Se quita la validación para que permita fecha anteriores			var fcha = frn.get("k_vence");			var fcha_actual = sys.date();			var diferencia_dias = fnDate("difc",fcha ,fcha_actual );						if (diferencia_dias < 0 ){				frn.message("La fecha de pago no puede ser en el pasado", "Mensaje","&Aceptar");				frn.set("k_vence", fcha_actual );				return ;			}else{				frn.set("k_plazo", diferencia_dias );			}	*/		}										fun busca_inv(){						var cmdSel = "select c2 as inventario, c3 as clave_vehiculo, c5 as serie, c17 as marca, c4 as descripcion from keplersc.kdinf where c1='" & frn.get("k_sucn",-1,1) & "'";            frn.dialog("genlistafiltrosel","Inventarios",cmdSel ,"inventario","k_mov","", "k_inventario","N");     		}										fun Inventario() {				var cmd, ok, mensajeError ;				cmd = "select c2 from keplersc.kdinf where c1='" & frn.get("k_sucn",-1,1) & "' and c2='" & frn.get("k_mov", -1, "k_inventario") & "'";								var cuboResultados = frn.lib("libGeneral.kpl","EjecutarSqlSel",cmd,"srv_contrarecibo_crud.Inventario()");				frn.lib("libGeneral.kpl","FileSave",cuboResultados ,"C:\Basura\cuboResultados");								ok=getXmlAtt(cuboResultados,"ok");				if(ok &! "" && !ok){					mensajeError = getXmlAtt(cuboResultados,"native3");					frn.message(mensajeError,"Error","Aceptar");					return;				}								if (nXml(cuboResultados ) < 1){					frn.message("Inventario no existe","Error","Aceptar");					frn.setX("", "k_mov", -1, "k_inventario");					return;				}		}							//-----------------------------------------------				fun ConfiguraControlesOff() {							frn.setAtt("textFolio", "visible", "N");			frn.setAtt("k_folio", "available", "N");			frn.setAtt("k_folio", "visible", "N");			frn.setAtt("k_mov", "modify", "N");			frn.setAtt("k_clave", "available", "N");			frn.setAtt("k_refer", "available", "N");			frn.setAtt("k_vence", "available", "N");			frn.setAtt("k_plazo", "available", "N");			frn.setAtt("k_coment","modify", "N");			frn.setAtt("k_coment","available", "N");			frn.setAtt("Imprimir", "visible", "N");			frn.setAtt("Cancelar", "visible", "N");			frn.setAtt("Aceptar", "visible", "N");			frn.setAtt("buscar_datos", "visible", "N");			frn.setAtt("k_fecha", "modify", "N");										}						fun ConfiguraControlesOpcion() {						ConfiguraControlesOff();			if(tip_ope &= "A"){ //Alta				frn.setAtt("k_clave", "available", "Y");				frn.setAtt("k_refer", "available", "Y");				frn.setAtt("k_mov", "modify", "Y");				frn.setAtt("k_coment","modify", "Y");				frn.setAtt("k_plazo", "available", "Y");				frn.setAtt("k_coment","available", "Y");				//frn.setAtt("k_fecha", "available", "Y");	//MSS Habilitar fecha				frn.setAtt("Imprimir", "visible", "N");				frn.setAtt("Cancelar", "visible", "Y");				frn.setAtt("Aceptar", "visible", "Y");											} else {				if(tip_ope &= "B"){ //Baja					frn.setAtt("textFolio", "visible", "Y");					frn.setAtt("k_folio", "available", "Y");					frn.setAtt("k_folio", "visible", "Y");								frn.setAtt("Aceptar", "visible", "Y");						frn.setAtt("buscar_datos", "visible", "Y");					frn.setAtt("k_coment","available", "Y");											//frn.setAtt("k_fecha", "available", "Y");	//MSS Habilitar fecha				} else {					if(tip_ope &= "C"){ //Consulta						frn.setAtt("textFolio", "visible", "Y");						frn.setAtt("k_folio", "available", "Y");						frn.setAtt("k_folio", "visible", "Y");												frn.setAtt("Imprimir", "visible", "Y");						frn.setAtt("buscar_datos", "visible", "Y");						frn.setAtt("k_coment","available", "Y");						} else {						frn.setAtt("textFolio", "visible", "Y");						frn.setAtt("k_folio", "available", "Y");						frn.setAtt("k_folio", "visible", "Y");									}					}			}		}				//---------------------------------------EJECUTA---------------------------------			fun Ejecuta() {			var xmlPantalla, strFecha, fecha, hora, strTmp, strHora, strMin, strMsg, continua;			var resultado, mensaje, folio;							fecha = sys.date();			hora= sys.time();							if (tip_ope &= "A") {							//Validar datos, se inicia variable de modulo resVal, donde se asume que 1 es ok				resVal = 1;				ValidarDatos();				if(ok &! "1" || resVal == 0){					return;				}				continua = frn.message("¿Desea continuar con la alta?","Atención",2);				if (continua == 0){					return;				}					xmlPantalla = getXml(frn.dataPag()); //Obtener el xml de la pantalla;				//Agregar usuario, fechay hora de movimiento				strFecha = fnDate("year",fecha) & "-";				strTmp = fnDate("month",fecha);				if(strlen(strTmp) == 1){					strTmp = "0" & strTmp;				}				strFecha = strFecha & strTmp & "-";				strTmp = fnDate("day",fecha);				if(strlen(strTmp) == 1){					strTmp = "0" & strTmp;				}				strFecha = strFecha & strTmp;											setXml(xmlPantalla,"movimiento","usuario",usuario);				setXml(xmlPantalla,"movimiento","fecha",strFecha);				setXml(xmlPantalla,"movimiento","hora",				frn.lib("libGeneral.kpl","PadLeft",sys.time("hour",hora),2,"0") & ":" & 				frn.lib("libGeneral.kpl","PadLeft",sys.time("min",hora) ,2,"0"));				setXml(xmlPantalla,"k_mov","no_partidas",frn.N("k_mov") -1);				setXml(xmlPantalla,"ambiente","anio_contable",anio_contable);				setXml(xmlPantalla,"ambiente","uen",uen);								//ajusta etiquetas con el standar de mov_prim_alta, las columnas en kdm1 tienen valores diferentes dependiendo el movimiento				setXml(xmlPantalla,"k_miepsret",frn.get("k_retencion_isr"));				setXml(xmlPantalla,"k_mivaret",frn.get("k_retencion_iva"));				setXml(xmlPantalla,"k_montoanticipo",frn.get("k_otras_retenciones"));													frn.lib("libGeneral.kpl","FileSave",xmlPantalla,fileSavePath & "\XmlPantallaCrudcontrarecibo");				cmdQuery="SELECT * FROM keplersc.docdis('<document>" & getXmlStr(xmlPantalla,"EOF:13_10") & "</document>')";				//kdb.rst(cuboQuery);				rstXml(cuboQuery);									cuboQuery= frn.lib("libGeneral.kpl","EjecutarSql",cmdQuery,"srv_contrarecibo_crud.Ejecuta");								frn.lib("libGeneral.kpl","FileSave",cuboQuery, fileSavePath & "\XmlResultadoCrudContrarecibo");									resultado = getXml(cuboQuery,"resultado");				mensaje = getXml(cuboQuery,"mensaje");									ok = getXmlAtt(cuboQuery,"ok");				if(ok &! "" && !ok) {					mensajeError = getXmlAtt(cuboQuery,"native3");					mensajeError = frn.lib("libGeneral.kpl","ErrorBD",mensajeError);					frn.message(mensajeError,"Error","Aceptar");					return;					}				if(resultado &= "1") {					tip_ope = "C";					frn.set("k_folio", mensaje); 					frn.set("operacion", "CONSULTA");					strTmp = frn.get("k_docto");					strTmp = strSplit(strTmp,"-",0) & "-" & mensaje;					frn.set("k_docto", strTmp);					strMsg = "El Folio utilizado para esta operación fue : " & mensaje;					ConfiguraControlesOpcion(); 					frn.message(strMsg, "Mensaje", "Aceptar");					folio = frn.get("k_folio");					MostrarDatos(folio);						//BuscarFolio();				} else {					frn.message(mensaje, "Error", "Aceptar");				}			} else {				if (tip_ope &= "B") {									if (estatus_doc &= "C"){						frn.message("No puedes dar de baja un folio cancelado.", "Error", "Aceptar");						return ;					}					continua = frn.message("¿Desea continuar con la baja?","Atención",2);					if (continua == 0){						return;					}					xmlPantalla = getXml(frn.dataPag()); //Obtener el xml de la pantalla;					//Agregar usuario, fechay hora de movimiento					strFecha = fnDate("year",fecha) & "-";					strTmp = fnDate("month",fecha);					if(strlen(strTmp) == 1){						strTmp = "0" & strTmp;					}					strFecha = strFecha & strTmp & "-";					strTmp = fnDate("day",fecha);					if(strlen(strTmp) == 1){						strTmp = "0" & strTmp;					}					strFecha = strFecha & strTmp;													setXml(xmlPantalla,"movimiento","usuario",usuario);					setXml(xmlPantalla,"movimiento","fecha",strFecha);					setXml(xmlPantalla,"movimiento","hora",					frn.lib("libGeneral.kpl","PadLeft",sys.time("hour",hora),2,"0") & ":" & 					frn.lib("libGeneral.kpl","PadLeft",sys.time("min",hora) ,2,"0"));					setXml(xmlPantalla,"ambiente","anio_contable",anio_contable);					setXml(xmlPantalla,"k_mov","no_partidas",frn.N("k_mov"));					setXml(xmlPantalla,"operacion","baja");					setXml(xmlPantalla,"ambiente","uen",uen);																frn.lib("libGeneral.kpl","FileSave",xmlPantalla,fileSavePath & "\XmlPantallaCrudcontrarecibo");					cmdQuery="SELECT * FROM keplersc.docdis('<document>" & getXmlStr(xmlPantalla,"EOF:13_10") & "</document>')";					//kdb.rst(cuboQuery);					rstXml(cuboQuery);											cuboQuery= frn.lib("libGeneral.kpl","EjecutarSql",cmdQuery,"srv_contrarecibo_crud.Ejecuta");									frn.lib("libGeneral.kpl","FileSave",cuboQuery, fileSavePath & "\XmlResultadoCrudContrarecibo");											resultado = getXml(cuboQuery,"resultado");					mensaje = getXml(cuboQuery,"mensaje");											ok = getXmlAtt(cuboQuery,"ok");					if(ok &! "" && !ok) {						mensajeError = getXmlAtt(cuboQuery,"native3");						mensajeError = frn.lib("libGeneral.kpl","ErrorBD",mensajeError);						frn.message(mensajeError,"Error","Aceptar");						return;						}					if(resultado &= "1") {						tip_ope = "C";						frn.set("operacion", "CONSULTA");						ConfiguraControlesOpcion();						BuscarFolio();					} else {						frn.message(mensaje, "Error", "Aceptar");					}				} else {					folio = frn.get("k_folio");					MostrarDatos(folio);				}	/*End Consulta*/ 			}						}				//Validacion Datos Generales y Partidas antes de Guardar.		//El resultado de cada validacion se guarda en la variable global resVal.		fun ValidarDatos() {			var totReg, strTotal=0,subTotal=0, iva=0, total=0, renglones, str;			//Obtener variables			sucursal_id = frn.get("k_sucn",-1,1);			proveedor_id = frn.get("k_clave");			refer_id = frn.get("k_refer");										//Validar Proveedor			cmdQuery="SELECT count(*) as totreg from keplersc.kdxd where c2 = '" & proveedor_id & "'";			rstXml(cuboQuery);							cuboQuery = frn.lib("libGeneral.kpl","EjecutarSqlSel",cmdQuery,"srv_contrarecibo_crud.ValidarDatos()");			ok=getXmlAtt(cuboQuery,"ok");			if(ok &! "" && !ok){				mensajeError = getXmlAtt(cuboQuery,"native3");				mensajeError = frn.lib("libGeneral.kpl","ErrorBD",mensajeError);				frn.message(mensajeError,"Error","Aceptar");				return;			}			totReg=getXmlAtt(cuboQuery,"r0","totreg");			if(totReg==0){				frn.message("El proveedor no existe.","Error","Aceptar");				resVal=0;				return;			}			//Validar Referencia			if (refer_id &= ""){				frn.setPos("k_refer");				resVal=0;				frn.message("Es necesario seleccionar la factura del proveedor","Error","Aceptar");				return;			}								//Validar kduxg			cmdQuery="SELECT count(*) as totreg from keplersc.kduxg where c1='" & sucursal_id  & "' and c2 ='" & gen_doc & "' and c3='" & proveedor_id & "' and c4='" & refer_id & "'";			rstXml(cuboQuery);							cuboQuery = frn.lib("libGeneral.kpl","EjecutarSqlSel",cmdQuery,"srv_contrarecibo_crud.ValidarDatos()");			ok=getXmlAtt(cuboQuery,"ok");			if(ok &! "" && !ok){				mensajeError = getXmlAtt(cuboQuery,"native3");				mensajeError = frn.lib("libGeneral.kpl","ErrorBD",mensajeError);				frn.message(mensajeError,"Error","Aceptar");				return;			}			totReg=getXmlAtt(cuboQuery,"r0","totreg");			if(totReg > 0){				frn.message("La Referencia ya se encuentra registrada en cuentas por pagar para el mismo proveedor","Error","Aceptar");				resVal=0;				return;			}			//Validar rfc y monto total de factura correspondan a datos de UUID			/*strTotal = frn.get("k_monto");			if (strTotal &! total_uuid) {				frn.message("El importe total del Contrarecibo no corresponde al de la factura.","Error","Aceptar");				resVal=0;return;			}			if (frn.get("k_rfc") &! rfc_uuid) {				frn.message("El RFC del Contrarecibo no corresponnde al de la factura.","Error","Aceptar");				resVal=0;return;			}*/					//Validaciones POLIZA			if(frn.N("k_mov")-1==0){				frn.message("No es posible dar de alta una Poliza sin datos. Favor de verificar", "Error","&Aceptar");				resVal=0;return;			}			if(RevCol("k_cuenta") == 1){						frn.message("Se ha generado el siguiente error: " & "No se especifico cuenta en la poliza" ,"Error","&Aceptar");						frn.setPos("k_mov",-1,"k_descr");resVal=0; return;			}			if(RevCol("k_cuentadesc") == 1){						frn.message("Se ha generado el siguiente error: " & "No se especifico descripcion en la poliza" ,"Error","&Aceptar");						frn.setPos("k_mov",-1,"k_descr");resVal=0;return;			}									} // End ValidarDatos()						fun RevCol(param1){				var nreg,abono,cargo,valCol,banCol;//definicion de variables				nreg = frn.N("k_mov")-1;//cuantos renglones hay				banCol = 0;				for(var i=0; i<nreg; i++){					abono = frn.get("k_mov",i,"k_cargo");					cargo = frn.get("k_mov",i,"k_abono");					if((cargo+abono) > 0){						valCol = frn.get("k_mov",i,param1);//valor de la columna (proyecto, concepto, departamento)						if(strlen(valCol) == 0){							banCol = 1;//se prende la bandera de que falta definir  proyecto, concepto o departamento en una partida 						}//fin if valor de la columna esta vacia					}//fin if la suma de cargo y abono es > a 0				}//fin for p/recorrer las partidas en el grid				return banCol;			}				//-----------------------BAJA,CONSULTA----------------------------			fun MostrarDatos(nFolio) {					var cmd,xmlRequest,xmlPoliza,xmlPartidas,totRen,contRen,xmlPantalla,tmpStr, cuboResultados,mensajeError,   ;						sucursal_id = frn.get("k_sucn",-1,1);					cmd= " select c10 as k_clave, c9 as k_fecha,c11 as k_refer ,c69 as k_hora , c18 as k_vence, c17 as k_plazo, c24 as k_coment, c43 as estatus_doc , c197 as fecha_baja " ;						cmd = cmd & " from keplersc.kdm1 where c1='" & sucursal_id  & "' and c2='" & gen_doc  &"' and c3='" & nat_doc & "' and c4='" & gpo_doc & "' and c5='" & tip_doc & "' and c6='" & nFolio & "'";				cuboResultados = frn.lib("libGeneral.kpl","EjecutarSqlSel",cmd,"srv_contrarecibo_crud.MostrarDatos()");			frn.lib("libGeneral.kpl","FileSave",cuboResultados ,"C:\Basura\cuboResultados");							ok=getXmlAtt(cuboResultados,"ok");			if(ok &! "" && !ok){				mensajeError = getXmlAtt(cuboResultados,"native3");				frn.message(mensajeError,"Error","Aceptar");				return;			}			var xml_kdm1  = getXml(cuboResultados,"r0" );			//frn.setX(cuboResultados ); TODO, checar setX			frn.set("k_clave",getXmlAtt(xml_kdm1  ,"k_clave") );			frn.set("k_plazo",getXmlAtt(xml_kdm1  ,"k_plazo") );			frn.set("k_vence",getXmlAtt(xml_kdm1   ,"k_vence") );			frn.set("k_coment",getXmlAtt(xml_kdm1   ,"k_coment") );			if (tip_ope &= "C"){				frn.set("k_fecha",getXmlAtt(xml_kdm1 ,"k_fecha") );				frn.set("k_hora",getXmlAtt(xml_kdm1  ,"k_hora") );			}else{				frn.set("k_fecha",sys.date());				frn.set("k_hora",sys.time());				}			BuscarProveedor();			frn.set("k_refer",getXmlAtt(xml_kdm1  ,"k_refer") );									fecha_baja = getXmlAtt(xml_kdm1  ,"fecha_baja");						estatus_doc = getXmlAtt(xml_kdm1  ,"estatus_doc");							if (estatus_doc &= "C"){	// C=Cancelado				frn.message("El Contrarecibo se encuentra cancelado","Error","Aceptar");				frn.set("statusdoc", "CANCELADO");			}else{				frn.set("statusdoc", "");			}			rstXml(cmd);							cmd = "select c8,c9,c10,c11,c13 from keplersc.kdm6 where c1='" & sucursal_id & "' and c2='" & gen_doc &"' and c3='" & nat_doc & "'";			cmd = cmd & " and c4='" & gpo_doc & "' and c5='" & tip_doc & "' and c6='" & nFolio & "'";						cuboResultados = frn.lib("libGeneral.kpl","EjecutarSqlSel",cmd,"srv_contrarecibo_crud.MostrarDatos()");			frn.lib("libGeneral.kpl","FileSave",cuboResultados ,"C:\Basura\cuboResultados");							ok=getXmlAtt(cuboResultados,"ok");			if(ok &! "" && !ok){				mensajeError = getXmlAtt(cuboResultados,"native3");				frn.message(mensajeError,"Error","Aceptar");				return;			}			totRen = nXml(cuboResultados);										for(contRen=0; contRen<totRen; contRen++){				frn.setX(getXmlAtt(cuboResultados, "r"&contRen ,"c8"),"k_mov",contRen,"k_cuenta");				frn.setX(getXmlAtt(cuboResultados, "r"&contRen ,"c9"),"k_mov",contRen,"k_cuentadesc");				var cargo_abono = getXmlAtt(cuboResultados, "r"&contRen ,"c10");				var monto = getXmlAtt(cuboResultados, "r"&contRen ,"c11");								if (cargo_abono &= "C"){					frn.setX(monto ,"k_mov",contRen,"k_cargo");				}else{					frn.setX(monto ,"k_mov",contRen,"k_abono");				}								frn.setX(getXmlAtt(cuboResultados, "r"&contRen ,"c13"),"k_mov",contRen,"k_inventario");						}						CalcTotal();						ArmarRefDocto();													} //End MostrarDatos()								//-----------------REPORTE-----------							fun EjecReporte(){								var compania,usuario,strValor,strCriterio, fechaImpresion, horaImpresion;				var cuboResultados, xmlRequest,sqlXmlResultados,xmlCurDocto,xmlCurMovto,cmd,ok,mensaje;								kdb.kde("KDE");//Configuraciï¿½n del servidor				kdb.exec();				compania = kdb.get("KDE","1");				usuario = kdb.get("KDE","14");				strValor = sys.date();					fechaImpresion = sys.date();				horaImpresion = sys.time();								kdb.readPage("datos","srv_contrarecibo_crudfto");//se define el formato a usar				kdb.exec();				rep.source(kdb.get("datos"));				rep.rst(); 				setRepPage();//Establece los parï¿½metros finales de impresiï¿½n.(rep.page(...);)				rep.set("suc_desc", frn.get("k_sucn", -1, 0));				rep.set("docto",frn.get("k_docto"));				rep.set("fecha",frn.get("k_fecha"));				rep.set("rep_fecha",fechaImpresion);				rep.set("rep_hora",horaImpresion);				rep.set("k_clave",frn.get("k_clave"));				rep.set("k_nombreprov",frn.get("k_nombreprov"));				rep.set("k_calleprov",frn.get("k_calleprov"));				rep.set("k_coloniaprov",frn.get("k_coloniaprov"));				rep.set("k_poblacionprov",frn.get("k_poblacionprov"));				rep.set("k_cpprov",frn.get("k_cpprov"));				rep.set("k_rfc",frn.get("k_rfc"));				rep.set("referencia",frn.get("k_refer"));				rep.set("k_monto",frn.get("k_monto"));								//TODO				rep.set("cantidad_en_letra",strFormat("number",frn.get("k_monto"),0));				rep.exe("encabezado");				rep.exe("tit_reporte");				rep.exe("encabezadoColumnas");				rep.exe("linea_encabezados");				//Procesa poliza contable				var tablakdc1_alta = " keplersc.kdc1" & mid(strSplit(frn.get("k_fecha"), "-", 0), 2,2) ;				var tablakdc2_alta = " keplersc.kdc2" & mid(strSplit(frn.get("k_fecha"), "-", 0), 2,2) & strSplit(frn.get("k_fecha"), "-", 1);				var tablakdc1_baja = " keplersc.kdc1" & mid(strSplit(fecha_baja, "-", 0), 2,2) ;				var tablakdc2_baja = " keplersc.kdc2" & mid(strSplit(fecha_baja, "-", 0), 2,2) & strSplit(fecha_baja, "-", 1);				var tipo = ""; var nPolAlta = "" ;				if (tablakdc2_baja &= tablakdc2_alta ){					tipo = "Misma_tabla";										cmd= " select c1 as num_pol from " & tablakdc2_alta & " where c14='" & sucursal_id  & "' and c15='" & gen_doc & "' and c16= '" & nat_doc & "'" ;					cmd = cmd & " and c17='" & gpo_doc & "' and c18='" & tip_doc & "' and c19='" & frn.get("k_folio")& "'";									cuboResultados = frn.lib("libGeneral.kpl","EjecutarSqlSel",cmd,"srv_pago_operarios.GenerarReporte()");					frn.lib("libGeneral.kpl","FileSave",cmd ,"C:\Basura\cuboResultados");									ok=getXmlAtt(cuboResultados,"ok");					if(ok &! "" && !ok){						mensajeError = getXmlAtt(cuboResultados,"native3");						frn.message(mensajeError,"Error","Aceptar");						return;					}									nPolAlta =getXmlAtt(cuboResultados,"r0", "num_pol" );								}				imprime_poliza(tablakdc1_alta , tablakdc2_alta, "Alta", tipo, nPolAlta);								if (estatus_doc &= "C" && fecha_baja &! "1800-01-01" && fecha_baja &! "" ){					imprime_poliza(tablakdc1_baja , tablakdc2_baja, "Baja", tipo, nPolAlta);				}								rep.set("desc_notas",frn.get("k_coment"));				rep.exe("notastitulos");				rep.exe("extras");				rep.win();									}									fun imprime_poliza(tablakdc1 , tablakdc2, operacion, tipo, nPolAlta ){							var cmd, cuboResultados , ok;								//Procesa poliza contable				cmd= " select kc2.c1 as num_pol, kc2.c3 as cuenta, kc2.c4 as tipo_asiento, kc2.c5 as monto, kc1.c2 as desc_pol, kc2.c7 as refer, kc2.c8 as tipo_pol from " & tablakdc2 & " as kc2 " ;				cmd = cmd & " inner join " & tablakdc1 & " as kc1 on kc1.c1=kc2.c3 ";				cmd = cmd & " where kc2.c14='" & frn.get("k_sucn", -1, 1) & "' and kc2.c15='" & gen_doc & "' and kc2.c16= '" & nat_doc & "' and kc2.c17='" & gpo_doc & "' and kc2.c18='" & tip_doc & "' and kc2.c19='" & frn.get("k_folio")& "'";				if (operacion &= "Alta" && tipo &= "Misma_tabla"){					cmd = cmd & " and kc2.c1 = " & nPolAlta ; 				}				if (operacion &= "Baja" && tipo &= "Misma_tabla"){					cmd = cmd & " and kc2.c1 <> " & nPolAlta ; 				} 				cuboResultados = frn.lib("libGeneral.kpl","EjecutarSqlSel",cmd,"srv_pago_operarios.imprime_poliza()");				frn.lib("libGeneral.kpl","FileSave",cmd ,"C:\Basura\cuboResultados");								ok=getXmlAtt(cuboResultados,"ok");				if(ok &! "" && !ok){					mensajeError = getXmlAtt(cuboResultados,"native3");					frn.message(mensajeError,"Error","Aceptar");					return;				}								var nRenPol= nXml(cuboResultados);				var tPoliza=getXmlAtt(cuboResultados,"r0", "tipo_pol" );				var nPoliza=getXmlAtt(cuboResultados,"r0", "num_pol" );								if (strlen(tPoliza)>0 && strlen(nPoliza)>0 ){						rep.set("tPol",tPoliza);						rep.set("nPol",nPoliza);						rep.exe("encabezadoPol");						var tAbonosPol=0, tCargosPol=0;						for(var i=0;i<nRenPol;i++){							if (getXmlAtt(cuboResultados,"r"&i, "tipo_asiento" )&= "A"){								var cuenta = getXmlAtt(cuboResultados,"r"&i, "cuenta" );								rep.set("PolClave2",cuenta );								rep.set("PolDescr2",getXmlAtt(cuboResultados,"r"&i, "desc_pol" ));								rep.set("PolHaber",getXmlAtt(cuboResultados,"r"&i, "monto" ));								tAbonosPol=tAbonosPol+getXmlAtt(cuboResultados,"r"&i, "monto" );								pol_saldo_presupuesto(cuenta);								rep.set("PolSaldo2",saldo);								rep.set("PolPresupuesto2",presupuesto );								rep.exe("partPolA");							}else{								var cuenta = getXmlAtt(cuboResultados,"r"&i, "cuenta" );								rep.set("PolClave",cuenta );								rep.set("PolDescr",getXmlAtt(cuboResultados,"r"&i, "desc_pol" ));								rep.set("PolDebe",getXmlAtt(cuboResultados,"r"&i, "monto" ));								tCargosPol=tCargosPol+getXmlAtt(cuboResultados,"r"&i, "monto" );								pol_saldo_presupuesto(cuenta);								rep.set("PolSaldo",saldo );								rep.set("PolPresupuesto",presupuesto );								rep.exe("partPolC");							}						}						rep.set("totCargo",tCargosPol);						rep.set("totAbono",tAbonosPol);						rep.exe("PolTotales");				}			}						fun pol_saldo_presupuesto(cuenta){						var cmd, cuboResultados , ok, mensajeError  ;								var mes = strSplit(frn.get("k_fecha"), "-", 1);				tabla = " keplersc.kdc1" & mid(strSplit(frn.get("k_fecha"), "-", 0), 2,2);								var col_cargos = 26 + mes;				var col_abonos = 62 + mes;				var col_presupuesto= 38 + mes;				 				cmd= " select c" & col_cargos & " as cargos ,c" & col_abonos & " as abonos ,c" & col_presupuesto & " as pres from " & tabla & " where c1='" & cuenta & "'";				cuboResultados = frn.lib("libGeneral.kpl","EjecutarSqlSel",cmd,"srv_contrarecibo_crud.pol_saldo_presupuesto()");				frn.lib("libGeneral.kpl","FileSave",cuboResultados ,"C:\Basura\cuboResultados");								ok=getXmlAtt(cuboResultados,"ok");				if(ok &! "" && !ok){					mensajeError = getXmlAtt(cuboResultados,"native3");					frn.message(mensajeError,"Error","Aceptar");					return;				}				var cargos = getXmlAtt(cuboResultados,"r0", "cargos" );				var abonos = getXmlAtt(cuboResultados,"r0", "abonos" );				presupuesto = getXmlAtt(cuboResultados,"r0", "pres" );				saldo = cargos - abonos;			}									fun Formar_folio(){				var xmlReqEst, cubofol, cmd, ok, mensajeError ;				setXml(xmlReqEst,"document","k_sucn","r1",frn.get("k_sucn",-1,1));				setXml(xmlReqEst,"document","folio_id",frn.get("k_folio"));				setXml(xmlReqEst,"document","k_tipon","r1",frn.get("k_tipon",-1,1));				setXml(xmlReqEst,"document","k_tipon","r2",frn.get("k_tipon",-1,2));				setXml(xmlReqEst,"document","k_tipon","r3",frn.get("k_tipon",-1,3));				setXml(xmlReqEst,"document","k_tipon","r4",frn.get("k_tipon",-1,4));				setXml(xmlReqEst,"document","uen",uen);								cmd="select * from keplersc.consulta_folio('" & getXmlStr(xmlReqEst,"EOF:13_10") & "')";				cubofol=  frn.lib("libGeneral.kpl","EjecutarSqlSel",cmd,"comopecompras.Formar_folio()");				var resultado =getXmlAtt(cubofol,"r0", "resultado");				if(resultado &= "0"){					mensajeError = getXmlAtt(cubofol,"r0", "mensaje");					mensajeError = frn.lib("libGeneral.kpl","ErrorBD",mensajeError);					frn.message(mensajeError,"Error","Aceptar");					return;				}				var fol = getXmlAtt(cubofol,"r0", "mensaje");				frn.set("k_folio", fol);			}														fun plazo(){						var plazo = frn.get("k_plazo");						frn.set("k_vence", fnDate("add",frn.get("k_vence"),plazo )  );						}							fun IniParams(){//Inicializa parï¿½metros de impresiï¿½n, que pueden ser cambiados por el usuario final mediante: Archivo / Configurar Pï¿½gina				frn.set("param_paper","letter");//	"paper=letter|legal|size"				frn.set("param_sizeX","21.59","param_sizeY","27.94");//	"size=18,14cm"				frn.set("param_borderL","1.5","param_borderT","1.5","param_borderR","1.5","param_borderB","1.5");//	"border=1.5,1.5,1.5,1.5cm"				frn.set("param_Fx","1.0","param_Fy","1.0");//			"F=1,1"				frn.set("param_landscape","Y");//	"landscape=N|Y"				frn.set("param_emp","L");//			"@emp=L|R|C"				frn.set("param_header",1);			}			fun setRepPage() {//Establece los parï¿½metros finales de impresiï¿½n.				//Tipo de hoja, ancho, alto,margen iz, margen derecho, margen arriba, margen abajo, factor de escala en x, factor de escala en y,orientacion, color, ventana de ajuste, etc				//rep.page("paper=letter|legal|size","size=18,14cm","border=1.5,1.5,1.5,1.5cm","F=1,1","landscape=N|Y","color=Y|N","prompt=N|Y","@emp=L|R|C");				var paper="paper=" & frn.get("param_paper");var size="size=" & frn.get("param_sizeX") & "," & frn.get("param_sizeY") & "cm";				var brdr="border=" & frn.get("param_borderL") & "," & frn.get("param_borderT") & "," & frn.get("param_borderR") & "," & frn.get("param_borderB") & "cm";				var fact="F=" & frn.get("param_Fx") & "," & frn.get("param_Fy");				var lndsp="landscape=" & frn.get("param_landscape");				var emp="@emp=" & frn.get("param_emp");				rep.page(paper,size,brdr,fact,lndsp,"color=Y","collate=Y","copies=1","pages=1,999","prompt=N",emp);			}							} // End of class Main	</script></pag>

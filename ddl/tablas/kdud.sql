@@ -104,7 +104,7 @@ COMMENT ON COLUMN keplersc.kdud.c41 IS 'Penultimo movimiento';
 COMMENT ON COLUMN keplersc.kdud.c40 IS 'Ultimo movimiento';
 COMMENT ON COLUMN keplersc.kdud.c4 IS 'calle numero';
 COMMENT ON COLUMN keplersc.kdud.c37 IS 'Extension';
-COMMENT ON COLUMN keplersc.kdud.c36 IS 'Radio';
+COMMENT ON COLUMN keplersc.kdud.c36 IS 'Telefono referencia';
 COMMENT ON COLUMN keplersc.kdud.c35 IS 'Nombres';
 COMMENT ON COLUMN keplersc.kdud.c34 IS 'Apellido Materno';
 COMMENT ON COLUMN keplersc.kdud.c33 IS 'Apellido Paterno';

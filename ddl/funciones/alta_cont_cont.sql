@@ -2,21 +2,12 @@ CREATE OR REPLACE FUNCTION keplersc.alta_cont_cont(dataxml xml, xmlkdm1 xml, xml
  RETURNS TABLE(resultado text, mensaje text, adicionales text)
  LANGUAGE plpgsql
 AS $function$
---Descripcion: Realiza inserci?n de movimientos contables
+--Descripcion: Realiza inserción de movimientos contables
 --Autor: Luis Leal
 --Fecha: 09/10/22
---Bitacora de cambios
---08/03/2024 (JMM) :
----- Se incluyen cambios asociados con nuevo SCH - Gastos ( C x P ) 
----- para las Operaciones de los Comtrarecibos 
---17/07/2024 (JMM) : 
----- Incluir Concepto Presupuesto para nuevo SCH - Gastos ( C x P . Contra Recibos) 
---15/10/2024 (JMM) : 
----- Incluir Opciones para Manejo de CR - Interno para nuevo SCH - Gastos ( C x P . Contra Recibos) 
-
 declare
 	--Variables para xml 
-	suc_id text;
+	sucursal_id text;
 	genero text;
 	naturaleza text;
 	grupo numeric;
@@ -58,10 +49,6 @@ declare
 	monto text;
 	inventario text;
 	numero_partida_poliza_kdc numeric = 0;
-	--Added by JMM 20240308
-	afectacion text = '';
-	--Added by JMM 20240717
-	concept_prspto text = '';
 
 	--Variables de retorno
 	resultado text;
@@ -77,25 +64,10 @@ declare
 	intValor int = 0;
 	folio_id text = '';
 
-	--Added by JMM 20240308
-	flag_contrarec text = '';
-	afecta_inventario text = '';
 
-	--Added by JMM 20240717
-	var_concept_prspto text = '';
-
-	--Added by JMM 20241015 
-	cuenta_prov_int text;
-	cuenta_prov_int_dscr text;
-	prov_int text;
-	clave_gpogasto text;
-	--Added by JMM 20241016  
-	recp record;
-	cuenta_iva_param text;
-	
 begin
 	--Trasaccion
-	suc_id := (xpath('//row/c1/text()', xmlkdm1))[1]; 
+	sucursal_id := (xpath('//row/c1/text()', xmlkdm1))[1]; 
 	genero := (xpath('//row/c2/text()', xmlkdm1))[1]; 
 	naturaleza := (xpath('//row/c3/text()', xmlkdm1))[1];
 	grupo := (xpath('//row/c4/text()', xmlkdm1))[1];
@@ -119,6 +91,7 @@ begin
 	cargo_abono_al_costo := (xpath('//row/c67/text()', xmlKDMM))[1]::text;
 
 
+
 	--Obtener nombres de tablas y campos del anio-mes contable en curso
 	anio_en_curso := substring(fecha_operacion,3,2);
 	mes_en_curso := substring(fecha_operacion,6,2);
@@ -135,36 +108,18 @@ begin
 
 	if (xpath('//row/c6/text()', xmlKDMM))[1]::text  = 'S' and (xpath('//row/c71/text()', xmlKDMM))[1]::text  = 'S' then 
 	
-		for partida,clave_cuenta,descr_cuenta,tipo_asiento_kdc,monto,inventario ,afectacion/*Added by JMM 20240308*/ 
-			,concept_prspto /*Added by JMM 20240717*/
-			in select c7,c8,c9,c10,c11,c13 ,c12/*Added by JMM 20240308*/ ,ctopto/*Added by JMM 20240717*/
-			from keplersc.kdm6 
-			where c1 = suc_id and c2 = genero and c3 = naturaleza and c4 = grupo and c5 = tipo_clave and c6 = folio_operacion
+		for partida,clave_cuenta,descr_cuenta,tipo_asiento_kdc,monto,inventario in select c7,c8,c9,c10,c11,c13 from keplersc.kdm6 
+		where c1=sucursal_id and c2=genero and c3=naturaleza and c4=grupo and c5=tipo_clave and c6=folio_operacion
 		loop 
 
-			--Moved here by JMM 20240717 
-			flag_contrarec = '';
-			if xpath_exists('//document/ambiente/schema/text()', dataxml) = true /*false*/ then 
-				flag_contrarec := coalesce((xpath('//document/ambiente/schema/text()',dataxml))[1]::text,'')::text;
-			end if;
-			
-			--Added by JMM 20240717 
-			var_concept_prspto := '';
-		
-			--Adapted by JMM 20241015 
-			if upper(flag_contrarec) in /*=*/ ('CXP_CONTR_REC','CXP_CONTR_REC_INTERNO') then
-				var_concept_prspto := coalesce(concept_prspto,'');
-			end if;
-		
 			numero_partida_poliza_kdc = numero_partida_poliza_kdc + 1;
 			--CONT(T,W9,X8,X10,X11,X9,W11,M18,"","","","","",W1...W6,B8095)
 			select xmlforest(fecha_operacion as fecha, clave_cuenta as cuenta, tipo_asiento_kdc as tipo_asiento, 
 				monto,descr_cuenta as descrip, referencia as refer, 
 				tipo_poliza_kdmm as tipo_poliza,'' as moneda, '' as depto, '' as concepto, '' as proyecto,
-				suc_id as sucursal, genero, naturaleza, grupo, tipo_clave, folio_operacion,
+				sucursal_id as sucursal, genero, naturaleza, grupo, tipo_clave, folio_operacion,
 				accion_poliza_kdc as accion_poliza, folio_poliza,
-				numero_partida_poliza_kdc as numero_partida
-				, var_concept_prspto as var_concept_prspto /*Added by JMM 20240717*/)::text into strValor;					  
+				numero_partida_poliza_kdc as numero_partida)::text into strValor;					  
 			select '<varcont>'||strValor||'</varcont>' into strValor;
 			varcont := strValor::xml;
 			select * into resultado, mensaje, adicionales from keplersc.cont_poliza_partida_alta(varcont); 
@@ -173,63 +128,18 @@ begin
 			end if;
 		
 		
-			--Moved here by JMM 20240717, para que aplique para ambas opciones
-			if tipo_asiento_kdc = 'A' then
-				costo := -(monto::numeric);
-			else
-				costo := monto::numeric;
-			end if;
-		
-			--Commented & Moved Up by JMM 20240717 
-			/*
-			--Added by JMM 20240308
-			flag_contrarec = '';
-			if xpath_exists('//document/ambiente/schema/text()', dataxml) = true /*false*/ then 
-				flag_contrarec := coalesce((xpath('//document/ambiente/schema/text()',dataxml))[1]::text,'')::text;
-			end if;
-			*/
-		
-			--Adapted by JMM 20241015 
-			if upper(flag_contrarec) in /*=*/ ('CXP_CONTR_REC','CXP_CONTR_REC_INTERNO') then 
+			if afecta_costo_inventario = 'S' then
 			
-				afecta_inventario = '';
-				if length(trim(inventario)) > 0 then
-				
-					afecta_inventario := afectacion;
-					if length(trim(afecta_inventario)) = 0 then
-						mensaje := 'No se cuenta con la afectacion para el inventario registrado ' || inventario || ' , partida ' || partida::text;
-						raise exception '%' , mensaje;
-					end if;
-				
-					-- For Testing ...
-					--raise exception '%''%''%''%''%',inventario,' - ',afecta_inventario,' - ',partida;
-				
-					insert into keplersc.kdsunicosto (c1,c2,c3,c4,c5,c6,c7,c8,c9,c10,c11) 
-					values(suc_id,genero,naturaleza,grupo,tipo_clave,folio_operacion,suc_id, inventario, afecta_inventario/*Adapted by JMM 20240308*/ ,costo, partida)	;
-	
+				if tipo_asiento_kdc = 'A' then
+					costo := -(monto::numeric);
+				else
+					costo := monto::numeric;
 				end if;
-			
-			else
-			
-				---- Original Code (marked up) by JMM 20240308 
-				if afecta_costo_inventario = 'S' then
-				
-					--Moved Up by JMM 20240308, para que aplique para ambas opciones
-					/*
-					if tipo_asiento_kdc = 'A' then
-						costo := -(monto::numeric);
-					else
-						costo := monto::numeric;
-					end if;
-					*/
-							
-					insert into keplersc.kdsunicosto (c1,c2,c3,c4,c5,c6,c7,c8,c9,c10,c11) 
-					values(suc_id,genero,naturaleza,grupo,tipo_clave,folio_operacion,suc_id, inventario, cargo_abono_al_costo,costo, partida)	;
-	
-				end if;
-			
-			end if; -- if : upper(flag_contrarec)
-		
+						
+				insert into keplersc.kdsunicosto (c1,c2,c3,c4,c5,c6,c7,c8,c9,c10,c11) 
+				values(sucursal_id,genero,naturaleza,grupo,tipo_clave,folio_operacion,sucursal_id, inventario, cargo_abono_al_costo,costo, partida)	;
+
+			end if;
 		
 		end loop;
 	
@@ -259,7 +169,7 @@ begin
 		select xmlforest(fecha_operacion as fecha, clave_cuenta as cuenta, tipo_asiento_1 as tipo_asiento, 
 			str_monto_total as monto,nombre_cteprov as descrip, referencia as refer, 
 			tipo_poliza_kdmm as tipo_poliza,'' as moneda, '' as depto, '' as concepto, '' as proyecto,
-			suc_id as sucursal, genero, naturaleza, grupo, tipo_clave, folio_operacion,
+			sucursal_id as sucursal, genero, naturaleza, grupo, tipo_clave, folio_operacion,
 			accion_poliza_kdc as accion_poliza, folio_poliza,
 			numero_partida_poliza_kdc as numero_partida)::text into strValor;					  
 		select '<varcont>'||strValor||'</varcont>' into strValor;
@@ -269,135 +179,16 @@ begin
 			raise exception '%',mensaje;
 		end if;
 	
-	
-		-- Added by JMM 20241015 
-		-- START : New Section - 'CXP_CONTR_REC_INTERNO'
-		if upper(flag_contrarec) in ('CXP_CONTR_REC_INTERNO') then 
-		
-			cuenta_prov_int := '';
-			cuenta_prov_int_dscr := '';
-			prov_int := '';
-			clave_gpogasto := '';
-			cuenta_iva_param := '';
-	
-			-- Corresponde a Netear el Abono del Proveedor de la Operacion, para el DOC {CR-Interno}
-			numero_partida_poliza_kdc = numero_partida_poliza_kdc + 1;
-	    	--CONT(T,W9,B8000,B8090,W16,B8020,W11,M18,"","","","","",W1...W6,B8095)
-			select xmlforest(fecha_operacion as fecha, clave_cuenta as cuenta, tipo_asiento_2 as tipo_asiento, 
-				str_monto_total as monto,nombre_cteprov as descrip, referencia as refer, 
-				tipo_poliza_kdmm as tipo_poliza,'' as moneda, '' as depto, '' as concepto, '' as proyecto,
-				suc_id as sucursal, genero, naturaleza, grupo, tipo_clave, folio_operacion,
-				accion_poliza_kdc as accion_poliza, folio_poliza,
-				numero_partida_poliza_kdc as numero_partida)::text into strValor;					  
-			select '<varcont>'||strValor||'</varcont>' into strValor;
-			varcont := strValor::xml;
-			select * into resultado, mensaje, adicionales from keplersc.cont_poliza_partida_alta(varcont); 
-			if resultado = '0' then
-				raise exception '%',mensaje;
-			end if;
-	
-			cuenta_prov_int := coalesce((xpath('//row/c20/text()', xmlKDMM))[1]::text,'')::text;
-		
-			cuenta_prov_int := trim(cuenta_prov_int);
-		
-			if xpath_exists('//document/k_gpo_gasto/text()', dataxml) = true /*false*/ then 
-				clave_gpogasto := coalesce((xpath('//document/k_gpo_gasto/text()',dataxml))[1]::text,'')::text;
-			end if;
-		
-			if length(clave_gpogasto) = 0 then
-				mensajeError := 'No se pudo obtener el Grupo de Gasto del Documento ...';
-				raise exception '%',mensajeError;
-			end if;
-		
-			select proveedor_id into prov_int from keplersc.kdgpcontra where suc_id = suc_id and grupo_id = clave_gpogasto::int
-				and estatus = 'A';
-		
-			prov_int := trim(coalesce(prov_int,''));
-		
-			if length(prov_int) = 0 then
-				mensajeError := 'No se pudo obtener el Proveedor del Grupo de Gasto ...';
-				raise exception '%',mensajeError;
-			end if;
-		
-			select coalesce(c3,'NotFoundProvInt') into cuenta_prov_int_dscr from keplersc.kdxd where c2 = prov_int and interno = 1;
-		
-			cuenta_prov_int_dscr := (cuenta_prov_int_dscr);
-		
-			if length(cuenta_prov_int_dscr) = 0 then 
-				mensajeError := 'No se pudo obtener la Descripcion del Proveedor Interno asociado al Grupo de Gasto ...';
-				raise exception '%',mensajeError;
-			end if;
-		
-			if length(cuenta_prov_int) = 0 then
-				cuenta_prov_int := prov_int;
-			else
-				cuenta_prov_int := cuenta_prov_int || '-' || prov_int;
-			end if;
-		
-			--For Testing ...
-			--raise exception 'CtaProvInt %  DscrProvInt % ', cuenta_prov_int, cuenta_prov_int_dscr; 
-		
-			-- Corresponde al Abono del Proveedor Interno asociado al Gpo de Gasto, para el DOC {CR-Interno}
-			numero_partida_poliza_kdc = numero_partida_poliza_kdc + 1;
-	    	--CONT(T,W9,B8000,B8090,W16,B8020,W11,M18,"","","","","",W1...W6,B8095)
-			select xmlforest(fecha_operacion as fecha, cuenta_prov_int as cuenta, tipo_asiento_1 as tipo_asiento, 
-				str_monto_total as monto,cuenta_prov_int_dscr as descrip, referencia as refer, 
-				tipo_poliza_kdmm as tipo_poliza,'' as moneda, '' as depto, '' as concepto, '' as proyecto,
-				suc_id as sucursal, genero, naturaleza, grupo, tipo_clave, folio_operacion,
-				accion_poliza_kdc as accion_poliza, folio_poliza,
-				numero_partida_poliza_kdc as numero_partida)::text into strValor;					  
-			select '<varcont>'||strValor||'</varcont>' into strValor;
-			varcont := strValor::xml;
-			select * into resultado, mensaje, adicionales from keplersc.cont_poliza_partida_alta(varcont); 
-			if resultado = '0' then
-				raise exception '%',mensaje;
-			end if;
-		
-			-- Added by JMM 20241016
-			-- Manejo CTA IVA ACREDITABLE
-			if str_monto_iva::numeric <> 0 /*iva_acreditado > 0*/ then
-
-				select p.* into recp from keplersc.param_oper p 
-				where p.sucursal = suc_id and upper(p.parametro) = upper(trim('Cuenta Gastos Iva Acreditable'));
-				if not found then 
-					mensajeError := 'No se encontro el Parametro de la Cta Gastos Iva Acreditable en la Tabla PARAM_OPER ... ';
-					raise exception '%', mensajeError;
-				else
-					cuenta_iva_param := recp.valor;
-				end if;
-			
-				if length(trim(cuenta_iva_param)) = 0 then
-					mensajeError := 'El Parametro de la Cuenta Gastos Iva Acreditable en PARAM_OPER No esta Registrado ... ';
-					raise exception '%', mensajeError;
-				end if;
-			
-				select * into resultado, mensaje, adicionales from keplersc.verify_cuenta_ult_nivel(cuenta_iva_param, anio_en_curso);
-				if resultado = '0' then
-					raise exception '%', mensaje;
-				end if;
-			
-				cuenta_contable_iva := cuenta_iva_param;  -- { CTA IVA X ACREDITAR } REPLACED BY { CTA IVA ACREDITABLE } 
-		
-			end if;
-		
-		end if;
-		-- END : New Section - 'CXP_CONTR_REC_INTERNO'
-	
-	
-		--For Testing ... 20241016 by JMM 
-		--raise exception 'CtaIVA %  MontoIVA % ', cuenta_contable_iva, str_monto_iva::numeric; 
-	
-	
 		accion_poliza_kdc := '';
 	
-		if cuenta_contable_iva <> '' and str_monto_iva::numeric <> 0 /*str_monto_iva <> '0'*/ then 
+		if cuenta_contable_iva <> '' and str_monto_iva <> '0' then 
 		
 			numero_partida_poliza_kdc = numero_partida_poliza_kdc + 1;
 			-- CONT(T,W9,M21,B8091,W14,W32,W11,M18,"","","","","",W1...W6,B8095)
 			select xmlforest(fecha_operacion as fecha, cuenta_contable_iva as cuenta, tipo_asiento_2 as tipo_asiento, 
 				str_monto_iva as monto,nombre_cteprov as descrip, referencia as refer, 
 				tipo_poliza_kdmm as tipo_poliza,'' as moneda, '' as depto, '' as concepto, '' as proyecto,
-				suc_id as sucursal, genero, naturaleza, grupo, tipo_clave, folio_operacion,
+				sucursal_id as sucursal, genero, naturaleza, grupo, tipo_clave, folio_operacion,
 				accion_poliza_kdc as accion_poliza, folio_poliza,
 				numero_partida_poliza_kdc as numero_partida)::text into strValor;					  
 			select '<varcont>'||strValor||'</varcont>' into strValor;
@@ -409,7 +200,7 @@ begin
 		
 		end if;
 	
-		if (cuenta_contable_ieps <> '' or cuenta_contable_retencion_isr <> '') and str_monto_ieps_o_retencion_isr::numeric <> 0 /*str_monto_ieps_o_retencion_isr <> '0'*/ then 
+		if (cuenta_contable_ieps <> '' or cuenta_contable_retencion_isr <> '') and str_monto_ieps_o_retencion_isr <> '0' then 
 		
 			if genero = 'X' and naturaleza = 'A' and grupo = 12 and  cuenta_contable_retencion_isr <> '' then 
 				cuenta_monto_ieps_o_retencion_isr := cuenta_contable_retencion_isr;
@@ -421,7 +212,7 @@ begin
 			select xmlforest(fecha_operacion as fecha, cuenta_monto_ieps_o_retencion_isr as cuenta, tipo_asiento_1 as tipo_asiento, 
 				str_monto_ieps_o_retencion_isr as monto,nombre_cteprov as descrip, referencia as refer, 
 				tipo_poliza_kdmm as tipo_poliza,'' as moneda, '' as depto, '' as concepto, '' as proyecto,
-				suc_id as sucursal, genero, naturaleza, grupo, tipo_clave, folio_operacion,
+				sucursal_id as sucursal, genero, naturaleza, grupo, tipo_clave, folio_operacion,
 				accion_poliza_kdc as accion_poliza, folio_poliza,
 				numero_partida_poliza_kdc as numero_partida)::text into strValor;					  
 			select '<varcont>'||strValor||'</varcont>' into strValor;
@@ -433,14 +224,14 @@ begin
 		
 		end if;
 	
-		if  cuenta_contable_retencion_iva <> '' and str_retencion_iva::numeric <> 0 /*str_retencion_iva <> '0'*/ then 
+		if  cuenta_contable_retencion_iva <> '' and str_retencion_iva <> '0' then 
 		
 			numero_partida_poliza_kdc = numero_partida_poliza_kdc + 1;
 		--  CONT(T,W9,M64,B8090,W23,W32,W11,M18,"","","","","",W1...W6,B8095)
 			select xmlforest(fecha_operacion as fecha, cuenta_contable_retencion_iva as cuenta, tipo_asiento_1 as tipo_asiento, 
 				str_retencion_iva as monto,nombre_cteprov as descrip, referencia as refer, 
 				tipo_poliza_kdmm as tipo_poliza,'' as moneda, '' as depto, '' as concepto, '' as proyecto,
-				suc_id as sucursal, genero, naturaleza, grupo, tipo_clave, folio_operacion,
+				sucursal_id as sucursal, genero, naturaleza, grupo, tipo_clave, folio_operacion,
 				accion_poliza_kdc as accion_poliza, folio_poliza,
 				numero_partida_poliza_kdc as numero_partida)::text into strValor;					  
 			select '<varcont>'||strValor||'</varcont>' into strValor;
@@ -452,14 +243,14 @@ begin
 		
 		end if;
 	
-		if  cuenta_contable_otras_retenciones <> '' and str_otras_retenciones::numeric <> 0 /*str_otras_retenciones <> '0'*/ then 
+		if  cuenta_contable_otras_retenciones <> '' and str_otras_retenciones <> '0' then 
 		
 			numero_partida_poliza_kdc = numero_partida_poliza_kdc + 1;
 			--  CONT(T,W9,M74,B8090,W49,W32,W11,M18,"","","","","",W1...W6,B8095)
 			select xmlforest(fecha_operacion as fecha, cuenta_contable_otras_retenciones as cuenta, tipo_asiento_1 as tipo_asiento, 
 				str_otras_retenciones as monto,nombre_cteprov as descrip, referencia as refer, 
 				tipo_poliza_kdmm as tipo_poliza,'' as moneda, '' as depto, '' as concepto, '' as proyecto,
-				suc_id as sucursal, genero, naturaleza, grupo, tipo_clave, folio_operacion,
+				sucursal_id as sucursal, genero, naturaleza, grupo, tipo_clave, folio_operacion,
 				accion_poliza_kdc as accion_poliza, folio_poliza,
 				numero_partida_poliza_kdc as numero_partida)::text into strValor;					  
 			select '<varcont>'||strValor||'</varcont>' into strValor;

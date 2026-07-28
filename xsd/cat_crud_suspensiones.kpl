@@ -1,203 +1,1 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<pag xmlns="www.kepler.com.mx/2003/KSchema" roles="" tit="">
-	<grp dim="1,-1,7,11" brdr="0,0" clr="0,58,112" bclr="192,205,213" fnt="Arial,16" unfont="0" OnEnter="Exit()"><br/>
-
-<tab/><inp id="k_titulo" dim="65,1" brdr="0,0" bclr="192,205,213" clr="0,0,0" clrBrdr="192,205,213"
-				type="string" modify="N" available="N" fnt="Arial,22"/>
-	<br/>
-	<br/>
-		<hLine clr="0,0,0"/>
-		<br/>
-		<br/>
-		<tab/>
-		<grp id="grupo_crud" dim="80,16,7,11" bclr="236,240,243" fntClrBrdr="236,240,243" fntBrdr="Arial,18" 
-			hSpace="4" clrBrdr="0,58,112" brdr="0,5" fntBrdr="Arial,18" tit="Nuevo" available="Y"><tab/>
-			<br/><br/><tab n="4"/><txt>Clave : </txt>
-			<inp id="k_clave" dim="18,1" brdr="2,0" clr="64,64,64" bclr="255,255,255" clrBrdr="255,255,255" type="capital" nc="5" available="Y" OnChange="" tooltip="Clave de Suspension" modify="Y"/>
-			<br/><sp/><tab n="2"/><txt> Descripci&#243;n :  </txt>
-			<inp id="k_descripcion" dim="50,1" brdr="2,0" clr="64,64,64" bclr="255,255,255" type="capital" nc="40" clrBrdr="255,255,255" tooltip="Descripci&#243;n de Suspension"/>
-			<br/>
-			<tab/>
-			<txt> Punto de Suspension por Refaccion :  </txt>
-			<cmb id="k_refaccion" dim="18,1" brdr="0,0" bclr="255,255,255" clr="64,64,64" clrBrdr="255,255,255" Null="N" fnt=",16"/>
-			<br/>
-            <tab n="11"/><bot id="btn_aceptar" dim="12,0" brdr="5" text="Aceptar" OnEnter="Execute()" default="1" visible="Y" available="Y"/><br/>
-			<inp id="input_crud" dim="10,1" brdr="2,0" clr="64,64,64" bclr="255,255,255" clrBrdr="255,255,255" visible="N"/><br/><tab/>
-
-		</grp><br/><br/>
-	</grp>
-	<script>
-		InstallDriver("KDB75");
-		class Main {
-			var frn,kdb,frP, accion,externo, clave_sel,sucursal_id,cve_color,resVal,straccion;
-            var cmdQuery,xmlRequest,ok,cuboResultados,cubo,mensajeError;
-			fun Main() {
-				frn=new FRNT;
-				frP=new FRNTP;
-				kdb=new KDB;
-				kdb.connect();
-			    Inicializa();
-				ctlrs_off();
-				insertar_datos();
-				ctlrs_opcion();
-			}
-			
-			fun Inicializa(){
-				accion = frn.param(0);
-				frn.set("input_crud", accion);
-				frn.rst("grupo_crud");
-				externo	= frn.param(2);
-                if (accion &= "NUEVO"){
-                    straccion = "Nuevo" ;   
-                }else if (accion &= "CONSULTAR"){
-                    straccion = "Consultar";
-                }else if (accion &= "MODIFICAR"){
-                    straccion = "Modificar";
-                }else if (accion &= "ELIMINAR"){
-                    straccion = "Eliminar";
-                }     
-				
-				frn.setAtt("grupo_crud", "tit", straccion );
-				clave_sel = frn.param(1);
-				sucursal_id = frn.param(3);
-				if (accion &! "NUEVO"){
-					frn.set("k_clave", clave_sel);
-				}	
-			}
-			
-			fun ctlrs_off(){
-				frn.setAtt("btn_aceptar", "available", "N" );
-				frn.setAtt("btn_aceptar", "visible", "N" );
-			}
-				
-			fun ctlrs_opcion(){
-				if (accion &= "NUEVO"){
-					frn.setAtt("k_clave","available","Y");
-					frn.setAtt("k_clave", "modify", "Y" );
-				    frn.set("k_titulo","Catalogo de Suspensiones");
-				
-				}else { 
-					frn.setAtt("k_clave", "available", "Y" );
-                    frn.setAtt("k_clave", "modify", "N" );
-					if (accion &= "MODIFICAR") {
-                        frn.setAtt("grupo_crud", "available","Y");
-						frn.setAtt("k_descripcion", "available", "Y" );
-						
-                    }else{
-                        frn.setAtt("k_clave", "available","Y");
-                        frn.setAtt("k_clave", "modify", "N" );
-                        frn.setAtt("k_descripcion", "available","N");
-						frn.setAtt("btn_aceptar", "visible", "N" );
-						frn.setAtt("k_refaccion", "available","N");
-                        frn.setAtt("k_refaccion", "modify", "N" );
-                    }
-					
-				}
-				if (accion &! "CONSULTAR"){
-					frn.setAtt("btn_aceptar", "available", "Y" );
-					frn.setAtt("btn_aceptar", "visible", "Y" );
-				}
-			}
-				
-			fun insertar_datos(){	
-
-
-				frn.setX("N","k_refaccion",1,0);
-				frn.setX("Y","k_refaccion",2,0);	
-
-
-				if (accion &= "MODIFICAR"){
-					//llamada externa(padre)
-					if (externo &= "s"){
-						if (clave_sel &= ""){
-							frn.message("selecciona una clave con F9 para modificar","Error","Aceptar");
-							frn.setAtt("btn_aceptar", "visible", "N" );
-							return;
-						}
-					}
-				}
-				if (accion &! "NUEVO") {
-					cmdQuery="select c2, c3 from keplersc.kdsusp where c1='" & clave_sel & "'"; 
-					cuboResultados = frn.lib("libGeneral.kpl","EjecutarSqlSel",cmdQuery,"cat_crud_consecionarios.insertar_datos()");
-				
-					frn.lib("libGeneral.kpl","FileSave",cuboResultados,"C:\Basura\cuboResultados");
-					
-					ok=getXmlAtt(cuboResultados,"ok");
-					if(ok &! "" && !ok){
-						mensajeError = getXmlAtt(cuboResultados,"native3");
-						frn.message(mensajeError,"Error","Aceptar");
-						return;
-					}	
-					frn.set("k_descripcion",getXmlAtt(cuboResultados,"r"&0,"c2"));
-					frn.setX(getXmlAtt(cuboResultados,"r"&0,"c3"),"k_refaccion",0,0);
-                }else{
-                    frn.setAtt("grupo_crud", "available","Y");
-                    frn.setPos("k_clave");    
-
-				}
-			}
-			
-			fun ValidarDatos(){
-				if (frn.get("k_clave") &= "") {						
-					frn.setPos("k_clave");
-					resVal=0;
-					frn.message("Debe especificar la clave de Suspension, verificar","Error","Aceptar");
-				}
-				if (frn.get("k_descripcion") &= "") {						
-					frn.setPos("k_descripcion");
-					resVal=0;
-					frn.message("Debe especificar la descripcion de Suspension, verificar","Error","Aceptar");
-				}if (frn.get("k_refaccion") &= "") {						
-					frn.setPos("k_refaccion");
-					resVal=0;
-					frn.message("Debe especificar la revaccion de Suspension, verificar","Error","Aceptar");
-				}
-			}
-
-			fun Execute() {
-				resVal = 1;
-				ValidarDatos();
-				if(resVal == 0){
-					return;
-				}
-				
-				var resultado_confirmacion = frn.message("Desea continuar?","Mensaje de Confirmacion", 2);
-				if (resultado_confirmacion &! 1)  {
-					return;
-				}
-				
-				xmlRequest = getXml(frn.dataPag());	
-				frn.lib("libGeneral.kpl","FileSave",xmlRequest ,"C:\Basura\xmlRequest ");
-		
-				cmdQuery="SELECT * FROM keplersc.cat_crud_suspensiones('<document>" & getXmlStr(xmlRequest ,"EOF:13_10") & "</document>')";
-				cubo = frn.lib("libGeneral.kpl","EjecutarSql",cmdQuery,"cat_crud_suspensiones.Execute()");	
-				frn.lib("libGeneral.kpl","FileSave",cubo ,"C:\Basura\cuboResultados");					
-				var resultado=getXml(cubo ,"resultado");
-				
-				if(resultado &= "0"){
-					mensajeError = getXml(cubo ,"mensaje");
-					frn.message(mensajeError,"Error","Aceptar");
-					return;
-				}
-				frP.script("Inicia_Forma()");
-				if (accion &= "NUEVO" || accion &= "MODIFICAR") {	
-					var sms =  "";
-					if (accion &= "NUEVO"){
-						sms = "Registro guardado";
-					}else {
-						sms = "Registro modificado";
-					}
-					accion="CONSULTAR";
-					ctlrs_opcion();
-					frn.message(sms ,"Mensaje","Aceptar");	
-					frn.exit();	
-				}
-				if (accion &= "ELIMINAR"){
-					frn.message("Registro eliminado","Mensaje","Aceptar");
-					frn.exit();			
-				}
-			}		
-			
-		}
-	</script>
-</pag>
+<?xml version="1.0" encoding="UTF-8"?><pag xmlns="www.kepler.com.mx/2003/KSchema" roles="" tit="">	<grp dim="1,-1,7,11" brdr="0,0" clr="0,58,112" bclr="192,205,213" fnt="Arial,16" unfont="0" OnEnter="Exit()"><br/><tab/><inp id="k_titulo" dim="65,1" brdr="0,0" bclr="192,205,213" clr="0,0,0" clrBrdr="192,205,213"				type="string" modify="N" available="N" fnt="Arial,22"/>	<br/>	<br/>		<hLine clr="0,0,0"/>		<br/>		<br/>		<tab/>		<grp id="grupo_crud" dim="80,16,7,11" bclr="236,240,243" fntClrBrdr="236,240,243" fntBrdr="Arial,18" 			hSpace="4" clrBrdr="0,58,112" brdr="0,5" fntBrdr="Arial,18" tit="Nuevo" available="Y"><tab/>			<br/><br/><tab n="4"/><txt>Clave : </txt>			<inp id="k_clave" dim="18,1" brdr="2,0" clr="64,64,64" bclr="255,255,255" clrBrdr="255,255,255" type="capital" nc="5" available="Y" OnChange="" tooltip="Clave de Suspension" modify="Y"/>			<br/><sp/><tab n="2"/><txt> Descripci&#243;n :  </txt>			<inp id="k_descripcion" dim="50,1" brdr="2,0" clr="64,64,64" bclr="255,255,255" type="capital" nc="40" clrBrdr="255,255,255" tooltip="Descripci&#243;n de Suspension"/>			<br/>			<tab/>			<txt> Punto de Suspension por Refaccion :  </txt>			<cmb id="k_refaccion" dim="18,1" brdr="0,0" bclr="255,255,255" clr="64,64,64" clrBrdr="255,255,255" Null="N" fnt=",16"/>			<br/>            <tab n="11"/><bot id="btn_aceptar" dim="12,0" brdr="5" text="Aceptar" OnEnter="Execute()" default="1" visible="Y" available="Y"/><br/>			<inp id="input_crud" dim="10,1" brdr="2,0" clr="64,64,64" bclr="255,255,255" clrBrdr="255,255,255" visible="N"/><br/><tab/>		</grp><br/><br/>	</grp>	<script>		InstallDriver("KDB75");		class Main {			var frn,kdb,frP, accion,externo, clave_sel,sucursal_id,cve_color,resVal,straccion;            var cmdQuery,xmlRequest,ok,cuboResultados,cubo,mensajeError;			fun Main() {				frn=new FRNT;				frP=new FRNTP;				kdb=new KDB;				kdb.connect();			    Inicializa();				ctlrs_off();				insertar_datos();				ctlrs_opcion();			}						fun Inicializa(){				accion = frn.param(0);				frn.set("input_crud", accion);				frn.rst("grupo_crud");				externo	= frn.param(2);                if (accion &= "NUEVO"){                    straccion = "Nuevo" ;                   }else if (accion &= "CONSULTAR"){                    straccion = "Consultar";                }else if (accion &= "MODIFICAR"){                    straccion = "Modificar";                }else if (accion &= "ELIMINAR"){                    straccion = "Eliminar";                }     								frn.setAtt("grupo_crud", "tit", straccion );				clave_sel = frn.param(1);				sucursal_id = frn.param(3);				if (accion &! "NUEVO"){					frn.set("k_clave", clave_sel);				}				}						fun ctlrs_off(){				frn.setAtt("btn_aceptar", "available", "N" );				frn.setAtt("btn_aceptar", "visible", "N" );			}							fun ctlrs_opcion(){				if (accion &= "NUEVO"){					frn.setAtt("k_clave","available","Y");					frn.setAtt("k_clave", "modify", "Y" );				    frn.set("k_titulo","Catálogo de Suspensiones");								}else { 					frn.setAtt("k_clave", "available", "Y" );                    frn.setAtt("k_clave", "modify", "N" );					if (accion &= "MODIFICAR") {                        frn.setAtt("grupo_crud", "available","Y");						frn.setAtt("k_descripcion", "available", "Y" );						                    }else{                        frn.setAtt("k_clave", "available","Y");                        frn.setAtt("k_clave", "modify", "N" );                        frn.setAtt("k_descripcion", "available","N");						frn.setAtt("btn_aceptar", "visible", "N" );						frn.setAtt("k_refaccion", "available","N");                        frn.setAtt("k_refaccion", "modify", "N" );                    }									}				if (accion &! "CONSULTAR"){					frn.setAtt("btn_aceptar", "available", "Y" );					frn.setAtt("btn_aceptar", "visible", "Y" );				}			}							fun insertar_datos(){					frn.setX("N","k_refaccion",1,0);				frn.setX("Y","k_refaccion",2,0);					if (accion &= "MODIFICAR"){					//llamada externa(padre)					if (externo &= "s"){						if (clave_sel &= ""){							frn.message("selecciona una clave con F9 para modificar","Error","Aceptar");							frn.setAtt("btn_aceptar", "visible", "N" );							return;						}					}				}				if (accion &! "NUEVO") {					cmdQuery="select c2, c3 from keplersc.kdsusp where c1='" & clave_sel & "'"; 					cuboResultados = frn.lib("libGeneral.kpl","EjecutarSqlSel",cmdQuery,"cat_crud_consecionarios.insertar_datos()");									frn.lib("libGeneral.kpl","FileSave",cuboResultados,"C:\Basura\cuboResultados");										ok=getXmlAtt(cuboResultados,"ok");					if(ok &! "" && !ok){						mensajeError = getXmlAtt(cuboResultados,"native3");						frn.message(mensajeError,"Error","Aceptar");						return;					}						frn.set("k_descripcion",getXmlAtt(cuboResultados,"r"&0,"c2"));					frn.setX(getXmlAtt(cuboResultados,"r"&0,"c3"),"k_refaccion",0,0);                }else{                    frn.setAtt("grupo_crud", "available","Y");                    frn.setPos("k_clave");    				}			}						fun ValidarDatos(){				if (frn.get("k_clave") &= "") {											frn.setPos("k_clave");					resVal=0;					frn.message("Debe especificar la clave de Suspension, verificar","Error","Aceptar");				}				if (frn.get("k_descripcion") &= "") {											frn.setPos("k_descripcion");					resVal=0;					frn.message("Debe especificar la descripción de Suspension, verificar","Error","Aceptar");				}if (frn.get("k_refaccion") &= "") {											frn.setPos("k_refaccion");					resVal=0;					frn.message("Debe especificar la revaccion de Suspension, verificar","Error","Aceptar");				}			}			fun Execute() {				resVal = 1;				ValidarDatos();				if(resVal == 0){					return;				}								var resultado_confirmacion = frn.message("¿Desea continuar?","Mensaje de Confirmacion", 2);				if (resultado_confirmacion &! 1)  {					return;				}								xmlRequest = getXml(frn.dataPag());					frn.lib("libGeneral.kpl","FileSave",xmlRequest ,"C:\Basura\xmlRequest ");						cmdQuery="SELECT * FROM keplersc.cat_crud_suspensiones('<document>" & getXmlStr(xmlRequest ,"EOF:13_10") & "</document>')";				cubo = frn.lib("libGeneral.kpl","EjecutarSql",cmdQuery,"cat_crud_suspensiones.Execute()");					frn.lib("libGeneral.kpl","FileSave",cubo ,"C:\Basura\cuboResultados");									var resultado=getXml(cubo ,"resultado");								if(resultado &= "0"){					mensajeError = getXml(cubo ,"mensaje");					frn.message(mensajeError,"Error","Aceptar");					return;				}				frP.script("Inicia_Forma()");				if (accion &= "NUEVO" || accion &= "MODIFICAR") {						var sms =  "";					if (accion &= "NUEVO"){						sms = "Registro guardado";					}else {						sms = "Registro modificado";					}					accion="CONSULTAR";					ctlrs_opcion();					frn.message(sms ,"Mensaje","Aceptar");						frn.exit();					}				if (accion &= "ELIMINAR"){					frn.message("Registro eliminado","Mensaje","Aceptar");					frn.exit();							}			}							}	</script></pag>

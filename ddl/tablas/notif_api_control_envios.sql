@@ -5,7 +5,7 @@ CREATE  TABLE keplersc.notif_api_control_envios (
   fecha_envio timestamp without time zone NULL,
   resultado character varying(3) NULL,
   estatus character varying(1) NOT NULL DEFAULT 'P'::character varying,
-  descripcion_resultado character varying(300) NULL,
+  descripcion_resultado character varying(500) NULL,
   accion character varying(10) NULL,
   fecha_registro timestamp without time zone NOT NULL DEFAULT now(),
   oem character varying(10) NULL,

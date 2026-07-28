@@ -48,7 +48,9 @@ CREATE  TABLE keplersc.kdc2 (
   c47 character varying(1) NOT NULL DEFAULT ''::character varying,
   c48 character varying(1) NOT NULL DEFAULT ''::character varying,
   c49 character varying(1) NOT NULL DEFAULT ''::character varying,
-  c50 character varying(1) NOT NULL DEFAULT ''::character varying
+  c50 character varying(1) NOT NULL DEFAULT ''::character varying,
+  col_foliomig character varying(10) NULL,
+  col_foliofin character varying(10) NULL
 ) TABLESPACE pg_default;
 CREATE UNIQUE INDEX IF NOT EXISTS pk_kdc2 ON keplersc.kdc2 USING btree (c3, c2, c8, c1, c10) TABLESPACE pg_default;
 CREATE INDEX IF NOT EXISTS sindkdc202 ON keplersc.kdc2 USING btree (c8, c1, c10) TABLESPACE pg_default;

@@ -1,4 +1,4 @@
-CREATE OR REPLACE FUNCTION keplersc.mov_altasalidasbackorder(dataxml xml, folio_operacion text)
+CREATE OR REPLACE FUNCTION keplersc.mov_altasalidasbackorder(dataxml xml)
  RETURNS TABLE(resultado text, mensaje text, adicionales text)
  LANGUAGE plpgsql
 AS $function$
@@ -24,16 +24,13 @@ resultado text := '';
 mensaje text := '';
 adicionales text := '';
 totreg int = 0;
---folio_operacion text :='0000157';
-expSql text = '';
-fechaanio_aux text :='';
-fechames_aux text :='';
-registro int = 0;
+folio_operacion text :='0000157';
+
 begin
 
-	v_sucursal_id := upper((xpath('//document/k_sucn/r1/text()', dataxml))[1]::text); --C1
-	strValor := (xpath('//document/k_mov/no_partidas/text()',dataxml))[1];
-	no_partidas := strValor::integer;
+	v_sucursal_id := upper((xpath('//document/k_sucn/text()', dataxml))[1]::text); --C1
+strValor := (xpath('//document/k_mov/no_partidas/text()',dataxml))[1];
+no_partidas := strValor::integer;
 	genero := (xpath('//document/k_tipon/r1/text()',dataxml))[1]::text;
 	naturaleza := (xpath('//document/k_tipon/r2/text()',dataxml))[1]::text;
 	strValor := (xpath('//document/k_tipon/r3/text()',dataxml))[1]::text;
@@ -47,7 +44,7 @@ begin
 	strValor := (xpath('//document/k_monto/text()',dataxml))[1]::text;
 	montoTotal := strValor::decimal; 
 
---	raise notice '|%,|%',folio,montoTotal ;
+	raise notice '|%',montoTotal ;
 	
 	for cont in 0..no_partidas - 1 loop
 		numero_partida := cont + 1;
@@ -55,60 +52,18 @@ begin
 		idproducto := (xpath('//document/k_mov/r' ||cont||'/k_parte/text()',dataxml))[1];
 		strValor := (xpath('//document/k_mov/r' ||cont||'/k_q/text()',dataxml))[1]::text;
 		cantidad_producto := strValor::integer;
-		
-		------------- insertar en KDBOM	 L
+	raise notice '|%',v_sucursal_id;
+	raise notice '|%',genero;
+	raise notice '|%',naturaleza;
+	raise notice '|%',grupo;
+	raise notice '|%',tipo;
+	raise notice '|%',folio;
+	raise notice '|%',numero_partida;
+	raise notice '|%',idproducto;
+	raise notice '|%',cantidad_producto;
+	raise notice '|%',fecha;
+	raise notice '|%',hora;
 
-		insert into keplersc.KDBOM (c1,c2,c3,c4,c5,c6,c7,c8,c9,c10,c11,c12) values 
-		(v_sucursal_id,
-		genero,
-		naturaleza,
-		grupo,
-		tipo,
-		folio,
-		numero_partida,
-		idproducto,
-		cantidad_producto,
-		fecha,
-		hora,
-		1);   
-		
-	 select into fechaanio_aux EXTRACT(YEAR FROM fecha);
---	raise notice 'sql: %',fechaanio_aux;
-	select into fechames_aux EXTRACT(Month FROM fecha);
-	select into strValor LPAD(fechames_aux,2,'0');
-
-	------------------------insertar en KDBOK	K
-
-	 	
-	select into registro count(*) from keplersc.kdbok where c1 = v_sucursal_id and c2 = idproducto and c3 = fechaanio_aux and c4 = strValor;
-	if  registro = 0 then 
-		insert into keplersc.kdbok (c1,c2,c3,c4,c5,c6) values (v_sucursal_id,idproducto,fechaanio_aux,strValor,0,0);
-	end if;
-
-	------------------------insertar en KDBOL J
-
-	select into registro count(*) from keplersc.kdbol where c1 = v_sucursal_id and c2 = idproducto;
-	if  registro = 0 then 
-		insert into keplersc.kdbol (c1,c2,c3,c4) values (v_sucursal_id,idproducto);
-	end if;
-	
-	if naturaleza = 'A' then
-			update keplersc.kdbol 
-			set c4 = c4 + cantidad_producto
-			where c1 = v_sucursal_id and c2 = idproducto;
-		
-			update keplersc.kdbok 
-			set c6 = c6 + cantidad_producto
-			where c1 = v_sucursal_id and c2 = idproducto and c3 = fechaanio_aux and c4 = strValor;
-	else
-			update keplersc.kdbol 
-			set c3 = c3 + cantidad_producto
-			where c1 = v_sucursal_id and c2 = idproducto;
-		
-			update keplersc.kdbok 
-			set c5 = c5 + cantidad_producto
-			where c1 = v_sucursal_id and c2 = idproducto and c3 = fechaanio_aux and c4 = strValor;
-	end if;
 	
 	end loop ;	
 	

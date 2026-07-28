@@ -56,7 +56,7 @@ begin
 	tipo := (xpath('//document/k_tipon/r4/text()', dataxml))[1];
 	tipo_clave := (xpath('//document/k_tipon/r5/text()', dataxml))[1];	
 	folio_operacion := (xpath('//document/k_folio/text()', dataxml))[1];
-	uen := coalesce((xpath('//document/ambiente/uen/text()',dataxml))[1],'');
+
 
 
 	if genero = 'N' and naturaleza = 'A' then --No genero, Acreedora
@@ -99,7 +99,6 @@ begin
 			end if;	
 
 		end if;
-		
 	
 		--//TODO, Baja inventarios
 	

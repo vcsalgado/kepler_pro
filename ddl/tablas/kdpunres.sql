@@ -7,7 +7,7 @@ CREATE  TABLE keplersc.kdpunres (
   c6 timestamp without time zone NOT NULL DEFAULT '1800-01-01 00:00:00'::timestamp without time zone,
   c7 character varying(8) NOT NULL DEFAULT ''::character varying,
   c8 timestamp without time zone NOT NULL DEFAULT '1800-01-01 00:00:00'::timestamp without time zone,
-  c9 character varying(8) NOT NULL DEFAULT ''::character varying,
+  c9 character varying(10) NOT NULL DEFAULT ''::character varying,
   c10 numeric(15,2) NOT NULL DEFAULT 0,
   c11 character varying(300) NOT NULL DEFAULT ''::character varying,
   c12 character varying(1) NOT NULL DEFAULT ''::character varying,
@@ -31,12 +31,17 @@ CREATE  TABLE keplersc.kdpunres (
   c30 character varying(70) NOT NULL DEFAULT ''::character varying,
   c31 character varying(70) NOT NULL DEFAULT ''::character varying,
   c32 character varying(1) NULL,
-  c33 character varying(300) NULL
+  c33 character varying(300) NULL,
+  c34 character varying(70) NULL,
+  c35 character varying(1) NULL,
+  c37 character varying(1) NULL,
+  c38 character varying(1) NULL,
+  c39 character varying(70) NULL
 ) TABLESPACE pg_default;
 ALTER TABLE ONLY keplersc.kdpunres ADD CONSTRAINT pk_kdpunres PRIMARY KEY (c1, c2, c3, c4);
-CREATE INDEX IF NOT EXISTS sindkdpunres02 ON keplersc.kdpunres USING btree (c25, c8, c9) TABLESPACE pg_default;
 CREATE INDEX IF NOT EXISTS sindkdpunres03 ON keplersc.kdpunres USING btree (c1, c21, c6, c2, c3, c4) TABLESPACE pg_default;
 CREATE INDEX IF NOT EXISTS sindkdpunres04 ON keplersc.kdpunres USING btree (c1, c20, c8) TABLESPACE pg_default;
+CREATE INDEX IF NOT EXISTS sindkdpunres02 ON keplersc.kdpunres USING btree (c25, c8, c9) TABLESPACE pg_default;
 COMMENT ON TABLE keplersc.kdpunres IS 'Recomendaciones para Puntos de Ordenes de Servicio';
 COMMENT ON COLUMN keplersc.kdpunres.c9 IS 'Hora Final';
 COMMENT ON COLUMN keplersc.kdpunres.c8 IS 'Fecha Final';
@@ -45,7 +50,7 @@ COMMENT ON COLUMN keplersc.kdpunres.c6 IS 'Fecha Inicial';
 COMMENT ON COLUMN keplersc.kdpunres.c5 IS 'Estatus';
 COMMENT ON COLUMN keplersc.kdpunres.c4 IS 'Punto';
 COMMENT ON COLUMN keplersc.kdpunres.c33 IS 'Recomendaciones del tecnico';
-COMMENT ON COLUMN keplersc.kdpunres.c32 IS '¿El trabajo fue revisado por el Asesor Tecnico? (S,N)';
+COMMENT ON COLUMN keplersc.kdpunres.c32 IS '¿El trabajo fue revisado por el Asesor Técnico? (S,N)';
 COMMENT ON COLUMN keplersc.kdpunres.c31 IS 'Recomendaciones 3';
 COMMENT ON COLUMN keplersc.kdpunres.c30 IS 'Recomendaciones  2';
 COMMENT ON COLUMN keplersc.kdpunres.c3 IS 'Folio de la Orden';
@@ -61,14 +66,14 @@ COMMENT ON COLUMN keplersc.kdpunres.c21 IS '¿Requirio llamar a Soporte tecnico?
 COMMENT ON COLUMN keplersc.kdpunres.c20 IS 'Tecnico';
 COMMENT ON COLUMN keplersc.kdpunres.c2 IS 'Tipo de Orden';
 COMMENT ON COLUMN keplersc.kdpunres.c19 IS 'Tiempo Transcurrido';
-COMMENT ON COLUMN keplersc.kdpunres.c18 IS 'Usuario JefeTaller';
+COMMENT ON COLUMN keplersc.kdpunres.c18 IS 'Usuario JefeTaller o MDT';
 COMMENT ON COLUMN keplersc.kdpunres.c17 IS 'UsuarioTecnico';
 COMMENT ON COLUMN keplersc.kdpunres.c16 IS 'Recomendaciones';
 COMMENT ON COLUMN keplersc.kdpunres.c15 IS 'Observaciones';
 COMMENT ON COLUMN keplersc.kdpunres.c14 IS 'Comentarios';
 COMMENT ON COLUMN keplersc.kdpunres.c13 IS '¿Se reparo la falla? (S,N)';
 COMMENT ON COLUMN keplersc.kdpunres.c12 IS '¿Revisado? (S,N)';
-COMMENT ON COLUMN keplersc.kdpunres.c11 IS 'Resultado';
+COMMENT ON COLUMN keplersc.kdpunres.c11 IS 'Resultados del tecnico';
 COMMENT ON COLUMN keplersc.kdpunres.c10 IS 'Tiempo Transcurrido';
 COMMENT ON COLUMN keplersc.kdpunres.c1 IS 'Sucursal';
 

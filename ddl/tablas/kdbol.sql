@@ -4,10 +4,10 @@ CREATE  TABLE keplersc.kdbol (
   c3 numeric(10,2) NOT NULL DEFAULT 0,
   c4 numeric(10,2) NOT NULL DEFAULT 0
 ) TABLESPACE pg_default;
-CREATE UNIQUE INDEX IF NOT EXISTS pk_kdbol ON keplersc.kdbol USING btree (c1, c2) TABLESPACE pg_default;
+ALTER TABLE ONLY keplersc.kdbol ADD CONSTRAINT pk_kdbol PRIMARY KEY (c1, c2);
 COMMENT ON TABLE keplersc.kdbol IS 'Pedido sugerido resumen movimientos';
-COMMENT ON COLUMN keplersc.kdbol.c4 IS 'TotalSalidas';
-COMMENT ON COLUMN keplersc.kdbol.c3 IS 'TotalEntradas';
+COMMENT ON COLUMN keplersc.kdbol.c4 IS 'Total salidas';
+COMMENT ON COLUMN keplersc.kdbol.c3 IS 'Total entradas';
 COMMENT ON COLUMN keplersc.kdbol.c2 IS 'Producto';
-COMMENT ON COLUMN keplersc.kdbol.c1 IS 'Sucursal';
+COMMENT ON COLUMN keplersc.kdbol.c1 IS 'Clave sucursal';
 

@@ -36,7 +36,8 @@ CREATE  TABLE keplersc.kdkcaja (
   c35 numeric(15,2) NOT NULL DEFAULT 0,
   c36 numeric(15,2) NOT NULL DEFAULT 0
 ) TABLESPACE pg_default;
-CREATE UNIQUE INDEX IF NOT EXISTS pk_kdkcaja ON keplersc.kdkcaja USING btree (c1, c2) TABLESPACE pg_default;
+ALTER TABLE ONLY keplersc.kdkcaja ADD CONSTRAINT pk_kdkcaja PRIMARY KEY (c1, c2);
+COMMENT ON TABLE keplersc.kdkcaja IS 'Ingresos/Egresos de caja por mes';
 COMMENT ON COLUMN keplersc.kdkcaja.c36 IS 'Diciembre';
 COMMENT ON COLUMN keplersc.kdkcaja.c35 IS 'Noviembre';
 COMMENT ON COLUMN keplersc.kdkcaja.c34 IS 'Octubre';

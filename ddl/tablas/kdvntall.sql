@@ -24,7 +24,10 @@ CREATE  TABLE keplersc.kdvntall (
   c23 numeric(10,2) NOT NULL DEFAULT 0,
   c24 character varying(1) NOT NULL DEFAULT ''::character varying,
   c25 numeric(19,6) NOT NULL DEFAULT 0,
-  c26 numeric(10,2) NOT NULL DEFAULT 0
+  c26 numeric(10,2) NOT NULL DEFAULT 0,
+  c27 character varying(8) NOT NULL DEFAULT ''::character varying,
+  col_foliomig character varying(10) NULL,
+  col_foliofin character varying(10) NULL
 ) TABLESPACE pg_default;
 ALTER TABLE ONLY keplersc.kdvntall ADD CONSTRAINT pk_kdvntall PRIMARY KEY (c1, c2, c3, c4);
 CREATE INDEX IF NOT EXISTS sindkdvntall02 ON keplersc.kdvntall USING btree (c1, c6, c7, c8, c9, c10) TABLESPACE pg_default;

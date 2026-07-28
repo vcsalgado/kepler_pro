@@ -18,9 +18,6 @@ declare
 	folio text;
 	status text;
 
-	--Added by JMM 20240526
-	provpago text;
-
 	--Variables de uso general 
 	strValor text = '';
 	intValor int = 0;
@@ -39,20 +36,11 @@ begin
 	tipo := (xpath('//document/tipo/text()', dataxml))[1];
 	folio := (xpath('//document/folio/text()', dataxml))[1];
 
-	
-
 	-- Added : 20221024 
 	status := '';
 	if xpath_exists('//document/estatus/text()', dataxml) = true /*false*/ then 
 		status := (xpath('//document/estatus/text()', dataxml))[1];
 	end if;
-
-	-- Added : 20240526 
-	provpago := '';
-	if xpath_exists('//document/provpago/text()', dataxml) = true /*false*/ then 
-		provpago := coalesce((xpath('//document/provpago/text()',dataxml))[1],'');
-	end if;
-
 
 	drop table if exists tmpResultados;
 	create temp table tmpResultados (
@@ -68,13 +56,6 @@ begin
 		, tdm1.c10 as k_clave, tdm1.c89 as k_importe, tdm1.c14 as k_iva, tdm1.c16 as k_monto, tdm1.c54 as k_montoext4  
 		, tdm1.c17 as k_plazo, tdm1.c18 as k_vence, tdm1.c30 as k_cond, tdm1.c22 k_rfc, tdm1.c163 k_cp  
 		, tdm1.c24 as k_coment, tdm1.c25 as k_coment2, tdm1.c26 as k_coment3
-		/*fields added by JMM 20240529*/
-		, tdm1.uuid_serie as k_uuid_serie, tdm1.uuid_folio as k_uuid_folio, tdm1.uuid_fecha as k_uuid_fecha, tdm1.uuid_total as k_uuid_monto
-		, tdm1.uuid_impuesto as k_uuid_impuesto 
-		/*end fields added by JMM 20240529*/
-		/*fields Added by JMM 20240627*/
-		, tdm1.uuid_retisr as k_uuid_retisr, tdm1.uuid_retiva as k_uuid_retiva  
-		/*end fields added by JMM 20240627*/
 		, tdm1.c138 as k_kilometraje
 		, tdm1.c12 as k_vendedor, tdm1.c44 as k_proyecto, tdm1.c45 as k_subctabanco 
 		'
@@ -86,14 +67,6 @@ begin
 			expSql = expSql || ' '; 
 		end if;
 		 
-		-- Added by JMM : 20240526
-		if upper(provpago) = 'S' then
-			expSql = expSql || ', tdm1.cve_prov_pago k_clave_pago ';
-		else 
-			expSql = expSql || ' '; 	
-		end if;
-	
-	
 		expSql = format(expSql || 
 		'from keplersc.kdm1 as tdm1 
 		inner join keplersc.kdinf as inf on inf.c1 = tdm1.c1 and inf.c2 = tdm1.c100 
@@ -112,16 +85,8 @@ begin
 		, tdm1.c10 as k_clave, tdm1.c89 as k_importe, tdm1.c14 as k_iva, tdm1.c16 as k_monto, tdm1.c54 as k_montoext4  
 		, tdm1.c17 as k_plazo, tdm1.c18 as k_vence, tdm1.c30 as k_cond, tdm1.c22 k_rfc, tdm1.c163 k_cp  
 		, tdm1.c24 as k_coment, tdm1.c25 as k_coment2, tdm1.c26 as k_coment3, tdm1.c39 k_folio_ref 
-		/*fields added by JMM 20240529*/
-		, tdm1.uuid_serie as k_uuid_serie, tdm1.uuid_folio as k_uuid_folio, tdm1.uuid_fecha as k_uuid_fecha, tdm1.uuid_total as k_uuid_monto
-		, tdm1.uuid_impuesto as k_uuid_impuesto 
-		/*end fields added by JMM 20240529*/
-		/*fields Added by JMM 20240627*/
-		, tdm1.uuid_retisr as k_uuid_retisr, tdm1.uuid_retiva as k_uuid_retiva  
-		/*end fields added by JMM 20240627*/
 		, tdm1.c138 as k_kilometraje 
 		, tdm1.c12 as k_vendedor, tdm1.c44 as k_proyecto, tdm1.c45 as k_subctabanco 
-		, tdm1.cve_prov_pago k_clave_pago /*Added by JMM 20240526*/
 		from keplersc.kdm1 as tdm1  
 		where tdm1.c2 = %2$L and tdm1.c3 = %3$L and tdm1.c4 = %4$s and tdm1.c5 =  %5$s and tdm1.c6 = %6$L and tdm1.c1 = %1$L 
 		'

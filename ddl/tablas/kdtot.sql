@@ -20,6 +20,7 @@ CREATE  TABLE keplersc.kdtot (
   c19 numeric(20,6) NOT NULL DEFAULT 0
 ) TABLESPACE pg_default;
 ALTER TABLE ONLY keplersc.kdtot ADD CONSTRAINT pk_kdtot PRIMARY KEY (c1, c5, c6, c7, c8, c9, c15);
+CREATE INDEX IF NOT EXISTS kdtot_c1_idx ON keplersc.kdtot USING btree (c1, c5, c6, c7, c8, c9) TABLESPACE pg_default;
 CREATE INDEX IF NOT EXISTS sindkdtot02 ON keplersc.kdtot USING btree (c1, c2, c3, c4, c5, c6, c7, c8, c9, c15) TABLESPACE pg_default;
 CREATE INDEX IF NOT EXISTS sindkdtot03 ON keplersc.kdtot USING btree (c1, c2, c3, c4) TABLESPACE pg_default;
 CREATE INDEX IF NOT EXISTS sindkdtot04 ON keplersc.kdtot USING btree (c1, c17, c5, c6, c7, c8, c9, c15) TABLESPACE pg_default;

@@ -22,29 +22,13 @@ CREATE  TABLE keplersc.kduxe (
   monto_rollback numeric(10,2) NOT NULL DEFAULT 0,
   iva_rollback numeric(10,2) NOT NULL DEFAULT 0,
   fecha_rollback timestamp without time zone NOT NULL DEFAULT '1800-01-01 00:00:00'::timestamp without time zone,
-  hora_comprobacion character varying(10) NOT NULL DEFAULT ''::character varying,
-  ivaret numeric(10,2) NOT NULL DEFAULT 0,
-  isrret numeric(10,2) NOT NULL DEFAULT 0,
-  iepstras numeric(10,2) NOT NULL DEFAULT 0,
-  otroimptoa numeric(10,2) NOT NULL DEFAULT 0,
-  otroimptob numeric(10,2) NOT NULL DEFAULT 0,
-  totalimptoret numeric(10,2) NOT NULL DEFAULT 0,
-  totalimptotras numeric(10,2) NOT NULL DEFAULT 0,
-  subtotal numeric(10,2) NOT NULL DEFAULT 0
+  hora_comprobacion character varying(10) NOT NULL DEFAULT ''::character varying
 ) TABLESPACE pg_default;
 CREATE UNIQUE INDEX IF NOT EXISTS pk_kduxe ON keplersc.kduxe USING btree (c1, c2, c3, c4, c5, c6, c7, c8, c9, c10) TABLESPACE pg_default;
 CREATE INDEX IF NOT EXISTS sindkduxe02 ON keplersc.kduxe USING btree (c1, c5, c6, c7, c8, c9, c10) TABLESPACE pg_default;
 COMMENT ON TABLE keplersc.kduxe IS 'cuentas por cobrar o pagar';
-COMMENT ON COLUMN keplersc.kduxe.totalimptotras IS 'Total impuesto trasladado';
-COMMENT ON COLUMN keplersc.kduxe.totalimptoret IS 'Total impuesto retenido';
-COMMENT ON COLUMN keplersc.kduxe.subtotal IS 'Subtotal';
-COMMENT ON COLUMN keplersc.kduxe.otroimptob IS 'Otro impuesto B';
-COMMENT ON COLUMN keplersc.kduxe.otroimptoa IS 'Otro impuesto A';
 COMMENT ON COLUMN keplersc.kduxe.monto_rollback IS 'Importe Rollback ( Modulo Gastos - Transfers )';
-COMMENT ON COLUMN keplersc.kduxe.ivaret IS 'IVA Retenido';
 COMMENT ON COLUMN keplersc.kduxe.iva_rollback IS 'Monto IVA Rollback ( Modulo Gastos - Transfers )';
-COMMENT ON COLUMN keplersc.kduxe.isrret IS 'isr Retenido';
-COMMENT ON COLUMN keplersc.kduxe.iepstras IS 'IEPS Trasladado';
 COMMENT ON COLUMN keplersc.kduxe.hora_comprobacion IS 'Hora Auxiliar CxP ( Modulo Gastos ) e.g. Transfer Rollback';
 COMMENT ON COLUMN keplersc.kduxe.fecha_rollback IS 'Fecha Rollback ( Modulo Gastos - Transfers )';
 COMMENT ON COLUMN keplersc.kduxe.fecha_comprobacion IS 'Fecha Comprobacion CxP ( Modulo Gastos )';

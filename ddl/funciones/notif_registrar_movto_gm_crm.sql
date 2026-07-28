@@ -34,20 +34,17 @@ BEGIN
 	
 				if p_operacion='INSERT' then
 					if p_new.c9='A' then
-						if (SELECT * FROM keplersc.ifz_habilita(sucursal_id, 'GM_CrearOrden')) = 'S' then
-							procesar:='S';
-							api_id := 'ifz_gm_bp/get_gm_orden_crear_od/';
-						--elsif p_new.c9 = 'M' and p_new.c8 = 50 then --OJO NUNCA VA ENTRAR
-							--procesar:='S';
-						end if;
+						procesar:='S';
+						api_id := 'ifz_gm_bp/get_gm_orden_crear_od/';
+					--elsif p_new.c9 = 'M' and p_new.c8 = 50 then --OJO NUNCA VA ENTRAR
+						--procesar:='S';
+						
 					end if;
 				end if;
 				if p_operacion='UPDATE' then
 					if (p_new.c9 = 'A' or p_new.c9 = 'M') and p_new.c8 = 50 then
-						if (SELECT * FROM keplersc.ifz_habilita(sucursal_id, 'GM_CerrarOrden')) = 'S' then
-							procesar:='S';
-							api_id := 'ifz_gm_bp/get_gm_orden_cerrar_od/';
-						end if;
+						procesar:='S';
+						api_id := 'ifz_gm_bp/get_gm_orden_cerrar_od/';
 					end if;
 				end if;
 		end if;
@@ -70,27 +67,24 @@ BEGIN
 				if p_operacion='INSERT' then
 					if p_new.c5 = 10 then
 						--Se elimina la orden en el sistema de bp
-						if (SELECT * FROM keplersc.ifz_habilita(sucursal_id, 'GM_EliminarOrden')) = 'S' then
-							api_id := 'ifz_gm_bp/delete_gm_orden_eliminar_od/';
-							datos_interfaz:=concat('{"sucursal":"',sucursal_id,'",','"tipo_orden":"',p_new.c2,'",','"folio_orden":"',p_new.c3,'",','"agencia":"',agencia,'"}');
-							select coalesce(max(id_transaccion),0) + 1 into intTransaction from keplersc.notif_api_control_envios;
-							insert into keplersc.notif_api_control_envios (id_transaccion,api_id,datos_interfaz) values(intTransaction,api_id,datos_interfaz);
-							--Execute sin CIRDAN
-							expSql := format('notify gm, ''%s''', intTransaction);
-		        			EXECUTE expSql;
-							RAISE NOTICE 'notify gm enviado: %', intTransaction;
-						end if;
+						api_id := 'ifz_gm_bp/delete_gm_orden_eliminar_od/';
+						datos_interfaz:=concat('{"sucursal":"',sucursal_id,'",','"tipo_orden":"',p_new.c2,'",','"folio_orden":"',p_new.c3,'",','"agencia":"',agencia,'"}');
+						select coalesce(max(id_transaccion),0) + 1 into intTransaction from keplersc.notif_api_control_envios;
+						insert into keplersc.notif_api_control_envios (id_transaccion,api_id,datos_interfaz) values(intTransaction,api_id,datos_interfaz);
+						--Execute sin CIRDAN
+						expSql := format('notify gm, ''%s''', intTransaction);
+	        			EXECUTE expSql;
+						RAISE NOTICE 'notify gm enviado: %', intTransaction;
+
 						--Se vuelve a crear la orden en el sistema de bp
-						if (SELECT * FROM keplersc.ifz_habilita(sucursal_id, 'GM_CrearOrden')) = 'S' then
-							api_id := 'ifz_gm_bp/get_gm_orden_crear_od/';
-							datos_interfaz:=concat('{"sucursal":"',sucursal_id,'",','"tipo_orden":"',p_new.c2,'",','"folio_orden":"',p_new.c3,'",','"agencia":"',agencia,'"}');
-							select coalesce(max(id_transaccion),0) + 1 into intTransaction from keplersc.notif_api_control_envios;
-							insert into keplersc.notif_api_control_envios (id_transaccion,api_id,datos_interfaz) values(intTransaction,api_id,datos_interfaz);
-							--Execute sin CIRDAN
-							expSql := format('notify gm, ''%s''', intTransaction);
-		        			EXECUTE expSql;
-							RAISE NOTICE 'notify gm enviado: %', intTransaction;
-						end if;
+						api_id := 'ifz_gm_bp/get_gm_orden_crear_od/';
+						datos_interfaz:=concat('{"sucursal":"',sucursal_id,'",','"tipo_orden":"',p_new.c2,'",','"folio_orden":"',p_new.c3,'",','"agencia":"',agencia,'"}');
+						select coalesce(max(id_transaccion),0) + 1 into intTransaction from keplersc.notif_api_control_envios;
+						insert into keplersc.notif_api_control_envios (id_transaccion,api_id,datos_interfaz) values(intTransaction,api_id,datos_interfaz);
+						--Execute sin CIRDAN
+						expSql := format('notify gm, ''%s''', intTransaction);
+	        			EXECUTE expSql;
+						RAISE NOTICE 'notify gm enviado: %', intTransaction;
 					end if;
 				end if;
 		end if;
@@ -107,10 +101,8 @@ BEGIN
 			) then
 
 			if p_operacion='INSERT' then
-				if (SELECT * FROM keplersc.ifz_habilita(sucursal_id, 'GM_EliminarOrden')) = 'S' then
-					procesar:='S';
-					api_id := 'ifz_gm_bp/delete_gm_orden_eliminar_od/';
-				end if;
+				procesar:='S';
+				api_id := 'ifz_gm_bp/delete_gm_orden_eliminar_od/';
 			end if;
 		
 			--Crear cadena con datos de registro de orden eliminada
@@ -137,37 +129,28 @@ BEGIN
 				if p_operacion='INSERT' and p_new.origen = 'K80' then
 					if p_new.c20 = 0 and p_new.c19 = 'A' then
 					-- Pendiente
-						if (SELECT * FROM keplersc.ifz_habilita(sucursal_id, 'GM_CrearCita')) = 'S' then
-							procesar:='S';
-							api_id := 'ifz_gm_bp/get_gm_cita_crear_od/';
-						end if;
+						procesar:='S';
+						api_id := 'ifz_gm_bp/get_gm_cita_crear_od/';
 					elsif p_new.c19 = 'M'	then
-						if (SELECT * FROM keplersc.ifz_habilita(sucursal_id, 'GM_CrearCita')) = 'S' then
-							procesar := 'S';
-							api_id := 'ifz_gm_bp/get_gm_cita_crear_od/'; --Checar con Pepe
-						end if;
+						procesar := 'S';
+						api_id := 'ifz_gm_bp/get_gm_cita_crear_od/'; --Checar con Pepe
 					end if;
 				end if;
 				
 				if p_operacion = 'UPDATE' then
 					if p_new.c20 in (30,40) then
 					--Eliminada
-						if (SELECT * FROM keplersc.ifz_habilita(sucursal_id, 'GM_EliminarCita')) = 'S' then
-							procesar:='S';
-							api_id := 'ifz_gm_bp/delete_gm_cita_eliminar_od/';
-						end if;
+						procesar:='S';
+						api_id := 'ifz_gm_bp/delete_gm_cita_eliminar_od/';
 					elsif p_new.c20 = 20 then
 					-- Realizada
-						if (SELECT * FROM keplersc.ifz_habilita(sucursal_id, 'GM_CitaRealizada')) = 'S' then
-							procesar:='S';
-							api_id := 'ifz_gm_bp/get_gm_cita_realizada_od/';
-						end if;
+						procesar:='S';
+						api_id := 'ifz_gm_bp/get_gm_cita_realizada_od/';
+					
 					elsif p_new.c20 = 50 then
 					--No show
-						if (SELECT * FROM keplersc.ifz_habilita(sucursal_id, 'GM_CitaNoRealizada')) = 'S' then
-							procesar:='S';
-							api_id := 'ifz_gm_bp/get_gm_cita_norealizada_od/';
-						end if;
+						procesar:='S';
+						api_id := 'ifz_gm_bp/get_gm_cita_norealizada_od/';
 					end if;
 				end if;
 		end if;		

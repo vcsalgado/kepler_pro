@@ -36,7 +36,7 @@ CREATE  TABLE keplersc.kdf3header (
   c35 numeric(16,2) NOT NULL DEFAULT 0,
   c36 character varying(15) NOT NULL DEFAULT ''::character varying,
   c37 character varying(30) NOT NULL DEFAULT ''::character varying,
-  c38 character varying(10) NOT NULL DEFAULT ''::character varying,
+  c38 character varying(15) NOT NULL DEFAULT ''::character varying,
   c39 character varying(20) NOT NULL DEFAULT ''::character varying,
   c40 character varying(20) NOT NULL DEFAULT ''::character varying,
   c41 character varying(10) NOT NULL DEFAULT ''::character varying,
@@ -70,6 +70,8 @@ CREATE  TABLE keplersc.kdf3header (
   c69 character varying(10) NOT NULL DEFAULT ''::character varying
 ) TABLESPACE pg_default;
 ALTER TABLE ONLY keplersc.kdf3header ADD CONSTRAINT pk_kdf3header PRIMARY KEY (c1, c2, c3, c4, c5, c6, c7);
+CREATE INDEX IF NOT EXISTS kdf3header_c1_idx ON keplersc.kdf3header USING btree (c1, c65, c66, c67, c68, c69) TABLESPACE pg_default;
+COMMENT ON TABLE keplersc.kdf3header IS 'F3 Header';
 COMMENT ON COLUMN keplersc.kdf3header.c9 IS 'CDF Automatico';
 COMMENT ON COLUMN keplersc.kdf3header.c8 IS 'Usuario';
 COMMENT ON COLUMN keplersc.kdf3header.c7 IS 'Consecutivo';

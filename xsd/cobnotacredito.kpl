@@ -184,7 +184,7 @@
 
 		
 			fun Inicializa(){
-				kdb.kde("KDE");//								Configuracion del servidor
+				kdb.kde("KDE");//								Configuraci�n del servidor
 				kdb.exec();
 				anio_contable = kdb.get("KDE","14");
 			//MSS----------------------
@@ -813,16 +813,16 @@
 			}
 			
 			fun Dialog(iModo,pag,par0,par1,par2,par3,par4,par5,par6,par7,par8,par9,par10,par11,par12,par13,par14,par15){
-				/*iModo: 0)No hace mayor validacion. Siempre despliega la ventana. NO CONCATENA PREFIJO
-							1)Solo concatena el prefijo de la carpeta del lenguaje, no hace mayor validacion. Siempre despliega la ventana
+				/*iModo: 0)No hace mayor validaci�n. Siempre despliega la ventana. NO CONCATENA PREFIJO
+							1)Solo concatena el prefijo de la carpeta del lenguaje, no hace mayor validaci�n. Siempre despliega la ventana
 							2)Modo especial. Se valida que el campo indicado en par0 se puede modificar(El par0 puede ser una tabla, y par1 la columna)
-							3)Modo especial para paginas de operacion:Solo si se esta en alta o modifica despliega la pagina. Simpre agrega el prefijo del lenguaje
+							3)Modo especial para p�ginas de operacion:Solo si se est� en alta o modifica despliega la pagina. Simpre agrega el prefijo del lenguaje
 				*/
 				var prefix=frn.lib("libKepler","langPrefix");
 				var page=prefix&pag;
 				var b_valido=1;
 				if(iModo==0)page=pag;
-				else if(iModo==2&&(strlen(par0)>0)){//Se toma el par0 como el objeto (o grid) al que se devolvera el resultado.
+				else if(iModo==2&&(strlen(par0)>0)){//Se toma el par0 como el objeto (o grid) al que se devolver� el resultado.
 					if( frn.getAtt(par0,"modify",par1) &= "N" ) b_valido=0;
 					if( frn.getAtt(par0,"available",par1) &= "N" ) b_valido=0;
 					if( frn.getAtt(par0,"visible",par1) &= "N" ) b_valido=0;

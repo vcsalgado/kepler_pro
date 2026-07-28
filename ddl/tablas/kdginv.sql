@@ -18,6 +18,7 @@ ALTER TABLE ONLY keplersc.kdginv ADD CONSTRAINT pk_kdginv PRIMARY KEY (c1, c2, c
 CREATE INDEX IF NOT EXISTS sindkdginv02 ON keplersc.kdginv USING btree (c1, c7, c2, c3, c4) TABLESPACE pg_default;
 CREATE INDEX IF NOT EXISTS sindkdginv03 ON keplersc.kdginv USING btree (c1, c7, c3, c4) TABLESPACE pg_default;
 CREATE INDEX IF NOT EXISTS sindkdginv04 ON keplersc.kdginv USING btree (c1, c7, c2, c4, c3) TABLESPACE pg_default;
+COMMENT ON TABLE keplersc.kdginv IS 'Entradas y salidas al costo';
 COMMENT ON COLUMN keplersc.kdginv.c9 IS 'Color interior';
 COMMENT ON COLUMN keplersc.kdginv.c8 IS 'Color exterior';
 COMMENT ON COLUMN keplersc.kdginv.c7 IS 'Modelo';

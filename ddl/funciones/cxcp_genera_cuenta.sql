@@ -282,7 +282,7 @@ begin
 							strerrores_gen := strerrores_gen || folio_operacion ||'-'|| 'CUENTA CxCP GENERADA' || '~';
 						end if;
 						strbitacora := strbitacora || folio_operacion ||' | ';
-
+						str_diferencia := 0;		--Se pone en 0 para que no considere que hay diferencia y guarde la misma cadena que cuando encontro una diferencia
 					end if;	
 				end if;	
 			exception 

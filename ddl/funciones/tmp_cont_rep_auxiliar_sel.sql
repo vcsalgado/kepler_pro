@@ -169,7 +169,7 @@ begin
 		left outer join keplersc.kdm1 m1 on 
 		m1.c1=kdc2.c14 and m1.c2=kdc2.c15 and m1.c3=kdc2.c16 and m1.c4=kdc2.c17 
 		and m1.c5=kdc2.c18 and m1.c6=kdc2.c19
-		order by kdc2.c3,kdc2.c2,kdc2.c8,kdc2.c1
+		order by kdc2.c3,kdc2.c2,kdc2.c8,kdc2.c1,kdc2.c10
 	loop
 		if tmpCuenta <> ultima_cuenta then
 			--obtener saldo inicial
@@ -190,24 +190,41 @@ begin
 			ultima_cuenta:=tmpCuenta;
 			cont_orden:=cont_orden+1;
 		end if;
+
+    -- select
+    --  c3,
+    --  case 
+    -- when c4 = 'C' then c5 else 0
+    -- end as Cargos, 
+    --  case 
+    -- when c4 = 'A' then c5 else 0
+    -- end as Abonos,
+    -- sum(
+    --   case when c4 = 'C' then c5
+    --   else c5 * -1
+    --   end
+    -- ) over(partition by c3 order by c3,c2,c8,c1,c10) as acumulado
+    -- from keplersc.kdc22406
+    -- where c2 between '2024-06-01' and '2024-06-06 23:59:59';
+
 		cuenta_saldo_final:=cuenta_saldo_inicial + cargo_poliza - abono_poliza;
 raise notice 'Cuenta:% Poliza:% SI:% C:% A:% SF:%',
-	tmpCuenta,poliza,cuenta_saldo_inicial,cargo_poliza,abono_poliza,cuenta_saldo_final;
+	 tmpCuenta,poliza,cuenta_saldo_inicial,cargo_poliza,abono_poliza,cuenta_saldo_final;
 --raise notice 'Usuario %',usuario_movto;	
-		cont_movtos:=cont_movtos + 1;
-		desc_poliza:=replace(desc_poliza,'<','');
-		desc_poliza:=replace(desc_poliza,'>','');
-		desc_poliza:=replace(desc_poliza,'/','');
-		desc_poliza:=replace(desc_poliza,E'\'','');
-		desc_poliza:=replace(desc_poliza,'&','');
-		desc_poliza:=replace(desc_poliza,'"','');
-		update tmpkdc2 set cargos=cargo_poliza, abonos=abono_poliza, c6=desc_poliza,
-			saldo_inicial=cuenta_saldo_inicial, saldo_final=cuenta_saldo_final,
-			desc_cuenta=saldoDescripcion, desc_movto=desc_movto_mm, usuario=usuario_movto,
-			orden=cont_orden
-		where c1=poliza and c2=fecha and c3=tmpCuenta and c8=tipo_poliza and c10=no_partida;
-		cuenta_saldo_inicial:=cuenta_saldo_final;
-		cuenta_saldo_final:=0;
+		 cont_movtos:=cont_movtos + 1;
+		 desc_poliza:=replace(desc_poliza,'<','');
+		 desc_poliza:=replace(desc_poliza,'>','');
+		 desc_poliza:=replace(desc_poliza,'/','');
+		 desc_poliza:=replace(desc_poliza,E'\'','');
+		 desc_poliza:=replace(desc_poliza,'&','');
+		 desc_poliza:=replace(desc_poliza,'"','');
+		 update tmpkdc2 set cargos=cargo_poliza, abonos=abono_poliza, c6=desc_poliza,
+		 	saldo_inicial=cuenta_saldo_inicial, saldo_final=cuenta_saldo_final,
+		 	desc_cuenta=saldoDescripcion, desc_movto=desc_movto_mm, usuario=usuario_movto,
+		 	orden=cont_orden
+		 where c1=poliza and c2=fecha and c3=tmpCuenta and c8=tipo_poliza and c10=no_partida;
+		 cuenta_saldo_inicial:=cuenta_saldo_final;
+		 cuenta_saldo_final:=0;
 		cont_orden:=cont_orden+1;
 	end loop;
 

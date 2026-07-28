@@ -7,8 +7,6 @@ declare
 --se ejecuta desde un trigger en las tablas kdc1...
 --Autor: Miriam Santana
 --Fecha: 04/03/2024
---Bitacora de cambios
---2/10/25 Victor Salgado: Se agrega el anio en la validacion de la cuenta en polizas
 	
 	--Variables de proceso
 	cuenta_ini text = '';
@@ -43,7 +41,7 @@ begin
 	tablakdc1:= TG_TABLE_NAME;
     if TG_OP = 'INSERT' or TG_OP = 'UPDATE' then
     	if length(trim(new.c1)) = 0 then 
-			raise exception 'Verifique el numero de cuenta, no puede ser vacio %; %',new.c1,new.c2;
+			raise exception 'Verifique el numero de cuenta, no puede ser vac?o';
 		end if;
 		cuenta_ini :=new.c1;
         cuenta_fin :=new.c1;
@@ -124,18 +122,18 @@ begin
 	               exit;
 	            end if;
 	        end loop;
---raise exception 'cuenta_padre_actual %',cuenta_padre_actual;	
+	
 			--raise notice 'ACTUALIZA cuenta_actualizar:% cuenta_padre:% nivel_actual:% ',cuenta_actual.cuenta,cuenta_padre_actual,nivel_actual;
 			if TG_OP = 'INSERT' and cuenta_actual.cuenta = new.c1 then
 				select count(*) into intValor from keplersc.kdc2_view 
-					where anio= anio_cuenta and c3 = cuenta_padre_actual;
+					where c3 = cuenta_padre_actual;
 				if intValor > 0 then
 					raise exception 'La cuenta padre % tiene movimientos. No es posible agregar la cuenta %',cuenta_padre_actual, new.c1;
 				end if;
 			end if;
 			if (TG_OP = 'UPDATE' and new.c1<>old.c1) and cuenta_actual.cuenta = new.c1 then
 				select count(*) into intValor from keplersc.kdc2_view 
-					where anio= anio_cuenta and c3 = cuenta_padre_actual;
+					where c3 = cuenta_padre_actual;
 				if intValor > 0 then
 					raise exception 'La cuenta padre % tiene movimientos. No es posible agregar la cuenta %',cuenta_padre_actual, new.c1;
 				end if;

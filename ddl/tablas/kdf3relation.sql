@@ -21,6 +21,7 @@ CREATE  TABLE keplersc.kdf3relation (
 ) TABLESPACE pg_default;
 ALTER TABLE ONLY keplersc.kdf3relation ADD CONSTRAINT pk_kdf3relation PRIMARY KEY (c1, c2, c3, c4, c5, c6, c7, c8);
 CREATE INDEX IF NOT EXISTS sindkdf3relation02 ON keplersc.kdf3relation USING btree (c10, c11, c12, c13, c14, c15, c19) TABLESPACE pg_default;
+COMMENT ON TABLE keplersc.kdf3relation IS 'F3 Relation';
 COMMENT ON COLUMN keplersc.kdf3relation.c9 IS 'Tipo relación';
 COMMENT ON COLUMN keplersc.kdf3relation.c8 IS 'Partida';
 COMMENT ON COLUMN keplersc.kdf3relation.c7 IS 'Consecutivo CFDI';

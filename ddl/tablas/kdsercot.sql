@@ -29,7 +29,7 @@ CREATE  TABLE keplersc.kdsercot (
   c28 character varying(5) NULL DEFAULT ''::character varying,
   c29 character varying(1) NULL DEFAULT ''::character varying,
   c30 character varying(7) NULL DEFAULT ''::character varying,
-  c31 character varying(130) NULL DEFAULT ''::character varying
+  c31 character varying(50) NULL DEFAULT ''::character varying
 ) TABLESPACE pg_default;
 ALTER TABLE ONLY keplersc.kdsercot ADD CONSTRAINT kdsercot_pk PRIMARY KEY (c1, c2);
 CREATE UNIQUE INDEX IF NOT EXISTS kdsercot_c1_idx ON keplersc.kdsercot USING btree (c1, c2) TABLESPACE pg_default;

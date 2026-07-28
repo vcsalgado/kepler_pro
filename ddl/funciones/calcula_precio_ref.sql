@@ -16,10 +16,7 @@ declare
 	precio decimal = 0.00;
 
 begin
-	--VCSS 28 jun 2026, si no se tiene costo promedio por no haber existencias, manejar último costo.
-	if costo_prom = 0 then
-		costo_prom = ult_costo; 
-	end if; 
+	
 	--SUB CALCULA_PRECIO_PAQ_GM
 	if catalogo = 1 then
 		if metodo_calculo = 1 or metodo_calculo = 2 then
@@ -77,23 +74,6 @@ begin
 			end if;
 		end if;
 	end if; 
-
-
-	--LGLG 27/06/24 GWM precios
-	if catalogo = 4 then
-	
-		if metodo_calculo = 1 then
-		
-			select c11 into precio_publico from keplersc.kdini where c1=clave_refaccion;
-			if found then
-				precio := precio_publico;
-			else			
-				precio := costo_prom * (1+utilidad_base/100);
-			end if;
-		
-		end if ;
-	
-	end if;
 	
 	precio := round(precio::decimal,2);
 	return query select precio;

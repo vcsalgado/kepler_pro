@@ -16,5 +16,4 @@ COMMENT ON COLUMN keplersc.ifz_ddoa_rdr_notif.grupo IS 'Grupo';
 COMMENT ON COLUMN keplersc.ifz_ddoa_rdr_notif.genero IS 'Genero';
 COMMENT ON COLUMN keplersc.ifz_ddoa_rdr_notif.folio IS 'Folio del movimiento';
 COMMENT ON COLUMN keplersc.ifz_ddoa_rdr_notif.fecha IS 'Fecha del movimiento';
-CREATE TRIGGER ifzddoa_rdr_notif AFTER INSERT ON keplersc.ifz_ddoa_rdr_notif FOR EACH ROW EXECUTE FUNCTION keplersc.notif_registrar_movto();
 

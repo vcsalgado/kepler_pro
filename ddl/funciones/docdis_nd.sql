@@ -60,6 +60,7 @@ begin
 	tipo_clave := (xpath('//document/k_tipon/r5/text()', dataxml))[1];	
 	uen := coalesce((xpath('//document/ambiente/uen/text()',dataxml))[1],'');
 
+
 	if genero = 'N' and naturaleza = 'D' then --No genero, Deudora
 		---------------------------------------------------------------
 		--Obtencion de consecutivo
@@ -73,8 +74,8 @@ begin
 			select * into get_resultado, get_mensaje, get_adicionales from keplersc.obtener_folio_documento(folio_id,0,0, dataxml);			
 			if get_resultado = '0' then	
 				raise exception '%',get_mensaje;
-				end if;
-				folio_operacion := get_mensaje;
+			end if;
+			folio_operacion := get_mensaje;
 --		else
 			--TO DO: Verificar, hasta el momento para esta condición no hay ningún documento
 			--       ¿Como se procesan documentos donde no se les calcula el folio?

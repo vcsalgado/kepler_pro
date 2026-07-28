@@ -81,6 +81,7 @@ CREATE  TABLE keplersc.kdord (
   kms_salida numeric(15,2) NULL DEFAULT 0
 ) TABLESPACE pg_default;
 ALTER TABLE ONLY keplersc.kdord ADD CONSTRAINT pk_kdord PRIMARY KEY (c1, c2, c3);
+CREATE INDEX IF NOT EXISTS kdord_c1_idx ON keplersc.kdord USING btree (c1, c40, c41, c42, c43, c44) TABLESPACE pg_default;
 CREATE INDEX IF NOT EXISTS sindkdord05 ON keplersc.kdord USING btree (c1, c6, c2, c3) TABLESPACE pg_default;
 CREATE INDEX IF NOT EXISTS sindkdord06 ON keplersc.kdord USING btree (c1, c7, c2, c3) TABLESPACE pg_default;
 CREATE INDEX IF NOT EXISTS sindkdord07 ON keplersc.kdord USING btree (c1, c8, c2, c3) TABLESPACE pg_default;
@@ -151,7 +152,7 @@ COMMENT ON COLUMN keplersc.kdord.c25 IS 'Comentarios';
 COMMENT ON COLUMN keplersc.kdord.c24 IS 'Comentarios';
 COMMENT ON COLUMN keplersc.kdord.c22 IS 'Recepcionista';
 COMMENT ON COLUMN keplersc.kdord.c21 IS 'Placas';
-COMMENT ON COLUMN keplersc.kdord.c20 IS 'Kilometraje';
+COMMENT ON COLUMN keplersc.kdord.c20 IS 'Kilometraje de entrada';
 COMMENT ON COLUMN keplersc.kdord.c2 IS 'Tipo de Orden';
 COMMENT ON COLUMN keplersc.kdord.c19 IS 'Bonete';
 COMMENT ON COLUMN keplersc.kdord.c18 IS 'Codigo Postal';

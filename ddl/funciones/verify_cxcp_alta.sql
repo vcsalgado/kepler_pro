@@ -7,9 +7,6 @@ declare
 --Autor: Miriam Santana
 --Fecha: 04/09/2022
 --Bitacora de cambios
---24/04/2024 (JMM) :
----- Se Incluyen Campos Asociados a la Referencia Complementaria ( DOC.Devolucion_Clientes) 
----- para las Operaciones de los Comtrarecibos Tipo DEV CLIE, dentro del Nvo Esquema de CxP 
 --17/03/2025 Miriam Santana: Incuir validaciones para Aplicacion de anticipos, no validar la fecha de vencimiento
 --03/06/2025 Miriam Santana: Anulacion por sustitucion, validar que no tenga movimientos pendientes por cancelar
 	
@@ -37,15 +34,6 @@ declare
 	saldo decimal;
 	importe text;
 	n_importe decimal;
-
-	-- Added by JMM 20240424
-	flag_gastos text = '';
-	ref_compl text = '';
-	aux_gen text = ''; 
-	aux_nat text = '';
-	aux_gpo text = '0'; 
-	aux_tip text = '0';
-	aux_folio text = '';
 
 	flag_anulacion text = '';	--MSS 03062025 Anulacion por sustitucion
 	anulacion decimal;			--MSS 03062025 Anulacion por sustitucion
@@ -85,57 +73,7 @@ begin
 	importe := coalesce((xpath('//document/k_monto/text()',dataxml))[1]::text,'0')::text;
 
 	flag_anulacion :=coalesce((xpath('//document/ambiente/flag_anulacion/text()',dataxml))[1]::text,'')::text;	--MSS 03062025 Anulacion por sustitucion
-	----- SECTION ADDED BY JMM 20240424 ... NEW SCH GASTOS 
-
-	flag_gastos = '';
-	ref_compl = '';
-
-	aux_gen := ''; 
-	aux_nat := '';
-	aux_gpo := '0'; 
-	aux_tip := '0';
-	aux_folio := '';
-
-	if xpath_exists('//document/ambiente/schema/text()', dataxml) = true /*false*/ then 
-		flag_gastos := coalesce((xpath('//document/ambiente/schema/text()',dataxml))[1]::text,'')::text;
-	end if;
-
-	if upper(flag_gastos) = 'CXP_CONTR_REC_DEVCLI' then
-		
-		if xpath_exists('//document/c_gen/text()', dataxml) = true then 
-			aux_gen := coalesce((xpath('//document/c_gen/text()',dataxml))[1]::text,'')::text;
-		end if;
-		if xpath_exists('//document/c_nat/text()', dataxml) = true then 
-			aux_nat := coalesce((xpath('//document/c_nat/text()',dataxml))[1]::text,'')::text;
-		end if;
-		if xpath_exists('//document/c_gpo/text()', dataxml) = true then 
-			aux_gpo := coalesce((xpath('//document/c_gpo/text()',dataxml))[1]::text,'')::text;
-		end if;
-		if xpath_exists('//document/c_tip/text()', dataxml) = true then 
-			aux_tip := coalesce((xpath('//document/c_tip/text()',dataxml))[1]::text,'')::text;
-		end if;
-		if xpath_exists('//document/c_folio/text()', dataxml) = true then 
-			aux_folio := coalesce((xpath('//document/c_folio/text()',dataxml))[1]::text,'')::text;
-		end if;
-		if xpath_exists('//document/c_ref/text()', dataxml) = true then 
-			ref_compl := coalesce((xpath('//document/c_ref/text()',dataxml))[1]::text,'')::text;
-		end if;
 	
-		if length(aux_gen) = 0 or length(aux_nat) = 0 or length(aux_gpo) = 0 or length(aux_tip) = 0 
-			or length(referencia) = 0 or length(aux_folio) = 0 or length(ref_compl) = 0 
-		then 
-			raise exception '%', 'Los Datos de Devolucion estan Incompletos ...';
-		else
-			-- For testing ...
-			/*raise exception '%', 'Es un Gasto de Devolucion a Cliente ...';*/
-			-- THIS CONTINUE ... 
-		end if;
-	
-	end if;
-
-	----- END : SECTION ADDED BY JMM 20240424 ... NEW SCH GASTOS 
-
-
 	if (genero = 'U' and naturaleza = 'D') or (genero = 'X' and naturaleza = 'A') then
 		if genero = 'X' then
 			if (xpath('//row/c47/text()', xmlKDMM))[1]::text  = 'S' then		--Tiene pantalla de movtos cxcp
@@ -146,7 +84,7 @@ begin
 				-- Podran incluirse nuevas CxP si las otras estan Saldadas ... 
 			
 				if upper((xpath('//document/ambiente/uen/text()', dataxml))[1]::text) = 'VEN' 
-					and ( grupo = '7' or grupo = '6' /* or gpo.6 Added by JMM 20240709*/ )
+					and grupo = '7' 
 				then
 					
 					select count(*) into totReg, abonos from keplersc.kduxg k
@@ -156,20 +94,10 @@ begin
 				else
 				
 					-- Codigo Original, incluido en este if el 221202 por JMM
-					/*
+				
 					select count(*) into totReg, abonos from keplersc.kduxg k
 					where c1 = sucursal_id and c2 = genero and c3 = clave_cteprov and c4 = referencia and (c6 <> 0 or c7 <> 0);
-					*/
-				
-					--UPD by JMM 20240424 
-					-- Para discriminar Operaciones de Contrarecibos Tipo DEV Cliente 
-					-- Incluyendo en el Filtro la Referencia Complemento correspondiente a la Devolucion Asociada  
-					-- No tiene impactos en otros Documentos porque este campo debe estar vacio
-					select count(*) into totReg, abonos from keplersc.kduxg k
-					where c1 = sucursal_id and c2 = genero and c3 = clave_cteprov 
-						and c4 = referencia and (c6 <> 0 or c7 <> 0)
-						and doc_refer_compl like '%' || aux_folio || '%'; /*line added by JMM 20240424*/
-				
+						 
 				end if;
 			
 				raise notice '%', 'paso 2';
@@ -211,8 +139,8 @@ begin
 			where c1 = sucursal_id and c2 = genero and c3 = clave_cteprov and c4 = ref_doc /*referencia*/;
 	
 			if totReg = 0 then
-				mensaje = concat('No se encuentra la cuenta ', ref_doc ,' [TBL kduxg] ...');
-				raise exception '%', mensaje;
+			
+				raise exception 'No se encuentra la cuenta [TBL kduxg] ...';
 			
 			else
 			

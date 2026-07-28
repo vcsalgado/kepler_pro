@@ -1,0 +1,30 @@
+CREATE  TABLE keplersc.ddoa_showpartsmasterline (
+  consecutivo_pml integer NOT NULL,
+  consecutivo_pmh integer NOT NULL,
+  partname character varying(100) NOT NULL,
+  itemid character varying(30) NOT NULL,
+  packagequantity integer NOT NULL,
+  programcode character varying(3) NOT NULL,
+  supersedingpartnumberid character varying(30) NOT NULL,
+  supersedingpartquantity integer NOT NULL,
+  brand character varying(5) NOT NULL,
+  stratificationcode character varying(5) NOT NULL,
+  parttobereturnedindicator character varying(5) NOT NULL,
+  minimumbuyquantity integer NOT NULL,
+  unitcode character varying(10) NOT NULL,
+  itemweightmeasure numeric(19,5) NOT NULL,
+  maximumbuyquantity integer NOT NULL,
+  supersedingreason integer NOT NULL,
+  partchangestatus character varying(17) NULL,
+  unitpriceamount numeric(19,5) NOT NULL,
+  unitpriceamount_currencyid character varying(3) NOT NULL,
+  retailpriceamount numeric(19,5) NOT NULL,
+  retailpriceamount_currencyid character varying(3) NOT NULL,
+  wholesalepriceamount numeric(19,5) NOT NULL,
+  wholesalepriceamount_currencyid character varying(3) NOT NULL,
+  fechaoperacion timestamp without time zone NOT NULL,
+  procesado integer NULL,
+  fechaprocesado timestamp without time zone NULL
+) TABLESPACE pg_default;
+ALTER TABLE ONLY keplersc.ddoa_showpartsmasterline ADD CONSTRAINT ddoa_showpartsmasterline_pkey PRIMARY KEY (consecutivo_pml);
+

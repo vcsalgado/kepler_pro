@@ -17,7 +17,6 @@ declare
 	factor_valor decimal = 0.00;
 	factor_3 decimal = 0.00;
 	factor_utilidad_base decimal = 0.00;
-	factor_conversion_precio decimal = 0.00;
 	factor_iva decimal = 0.00;
 	ultimo_costo decimal = 0.00;
 	distribuidor_costo decimal = 0.00;
@@ -58,18 +57,14 @@ begin
 	((xpath('//table/row/c8/text()', xmlKDINL))[1]::text::decimal - (xpath('//table/row/c9/text()', xmlKDINL))[1]::text::decimal);
 		factor_existencia := ((xpath('//table/row/c5/text()', xmlKDINL))[1]::text::decimal - (xpath('//table/row/c6/text()', xmlKDINL))[1]::text::decimal);
 		factor_utilidad_base := (1+I4::decimal/100)::decimal;
-		factor_iva := (1+I5::decimal/100)::decimal;
+		factor_iva := (1+I4::decimal/100)::decimal;
 		ultimo_costo = (xpath('//table/row/c14/text()', xmlKDINL))[1]::text::decimal;	
-	--Obtener factor de conversion de precio
-	select ini.c16 into factor_conversion_precio from keplersc.kdini ini where ini.c1=producto;
-	if factor_conversion_precio is null or factor_conversion_precio=0 then
-		factor_conversion_precio=1;
-	end if;
+
 --raise notice 'FV %', factor_valor;
 --raise notice 'FE %', factor_existencia;
 --raise notice 'FUB %, %, :%',I4 , nombre_precio, factor_Utilidad_Base;
 --raise notice 'UC %', ultimo_costo;	
-raise notice 'I6=%, I3=%',I6,I3;
+
 		precio := 0;
 		case 
 			when I6 = 1 then ---Resuelve OIS.CALCULA_PRECIO_INVR_GM
@@ -88,52 +83,48 @@ raise notice 'I6=%, I3=%',I6,I3;
 				end if;	
 				case
 					when I3 = 1 then --'ULTIMO COSTO + MARGEN DE UTILIDAD
-						--A(B10041)=K14*(1+I4/100)
+						--A(B10041)=(K8-K9)/(K5-K6)*(1+I4/100)
 						if factor_existencia > 0 then
-							precio:= ultimo_costo * factor_Utilidad_Base;
+							precio:= factor_valor/factor_existencia * factor_Utilidad_Base;
 						end if;
 					when I3 = 2 then --'COSTO PROMEDIO + MARGEN DE UTILIDAD
 						--A(B10041)=(K8-K9)/(K5-K6)*(1+I4/100)
-   						--IF A(B10041)=0 THEN A(B10041)=K14*(1+I4/100): ENDIF
-  						--ENDIF
-						precio:=factor_valor/factor_existencia * factor_Utilidad_Base;
---raise exception 'regProveedor %; publico %, factor_iva %, precio%, factor_conversion_precio%, factor_existencia%, distribuidor_costo%, unidad_empaque%,  factor_Utilidad_Base%, ultimo_costo%, factor_valor% '
---	,regProveedor,distribuidor_precio_publico,factor_iva,precio,factor_conversion_precio,factor_existencia,distribuidor_costo,unidad_empaque,factor_Utilidad_Base,ultimo_costo,factor_valor;
-						if precio=0 then
-							precio:=ultimo_costo  * factor_Utilidad_Base;
+						if factor_existencia > 0 then
+							precio:= factor_valor/factor_existencia * factor_Utilidad_Base;
 						end if;
-					when I3 = 3 then --'PRECIO PUBLICO DE PLANTA
-					    --IF BUS(J,1,0,H1)>0 THEN
-					    -- A(B10041)=J7/(1+I5/100)/B10017
-					    --ELSE
-					    -- A(B10041)=K14*(1+I4/100)
-					    --ENDIF				
+						--TO DO: Verificar esta validacion en el origina para es la misma
+						--precio:=factor_valor / factor_existencia * factor_Utilidad_Base; 
+						--if precio = 0 then
+							--A(B10041)=(K8-K9)/(K5-K6)*(1+I4/100)
+							--precio:=factor_valor / factor_existencia * factor_Utilidad_Base; 
+						--end if;
+					when I3 = 3 then --'PRECIO PUBLICO DE PLANTA					
 						if regProveedor = 'S' then
+							--A(B10041)=J7/(1+I5/100)
 							if factor_iva > 0 then
-								precio := distribuidor_precio_publico/factor_iva/factor_conversion_precio;
+								precio := distribuidor_precio_publico/factor_iva;
 							end if;	
 						else
+							--A(B10041)=(K8-K9)/(K5-K6)*(1+I4/100)
 							if factor_existencia > 0 then
-								precio:=factor_valor/factor_existencia * factor_Utilidad_Base;
+								precio:=factor_valor / factor_existencia * factor_Utilidad_Base;
 							end if;	 						
 						end if;						
 					when I3 = 4 then --'COSTO DE PLANTA + MARGEN
-					    --IF BUS(J,1,0,H1)>0 THEN
-					    -- A(B10041)=J5*(1+I4/100)/B10017
-					    --ELSE
-					    -- A(B10041)=K14*(1+I4/100)
-					    --ENDIF
 						if regProveedor = 'S' then
-							precio:=(distribuidor_costo * factor_Utilidad_Base)/factor_conversion_precio;
+							--A(B10041)=(J5/J13)*(1+I4/100)
+							if factor_existencia > 0 then
+								precio:=distribuidor_costo / unidad_empaque * factor_Utilidad_Base;
+							end if;	
 						else
-							precio:=factor_valor/factor_existencia * factor_Utilidad_Base;
+							--A(B10041)=(K8-K9)/(K5-K6)*(1+I4/100)
+							if factor_existencia > 0 then
+								precio:=factor_valor / factor_existencia * factor_Utilidad_Base;
+							else
+								precio := ultimo_costo * factor_Utilidad_Base;
+							end if;	
 						end if;
 					when I3 = 5 then --'PRECIO DE PLANTA + MARGEN
-					    --IF BUS(J,1,0,H1)>0 THEN
-					    -- A(B10041)=J7/(1+I5/100)/B10017*(1+I4/100)
-					    --ELSE
-					    -- A(B10041)=K14*(1+I4/100)
-					    --ENDIF
 						if regProveedor = 'S' then
 							--A(B10041)=J7/(1+I5/100)/(1+I4/100)
 							if factor_iva > 0 and factor_utilidad_base > 0 then
@@ -142,7 +133,7 @@ raise notice 'I6=%, I3=%',I6,I3;
 						else
 							--A(B10041)=(K8-K9)/(K5-K6)*(1+I4/100)
 							if factor_existencia > 0 then
-								precio:=factor_valor/factor_existencia * factor_Utilidad_Base;
+								precio:=factor_valor / factor_existencia * factor_Utilidad_Base;
 							end if;	
 						end if;
 					else
@@ -165,7 +156,9 @@ raise notice 'expSql=%', expSql;
 					distribuidor_precio_publico = (xpath('//table/row/c8/text()', xmlArmadora))[1]::text::decimal;
 				else
 					regProveedor = 'N';
-				end if;		
+				end if;
+raise notice 'I6=%, I3=%, regProveedor=%',I6,I3,regProveedor;
+raise notice 'precio:=%; factor_valor:%; factor_existencia:%; factor_Utilidad_Base:%' ,precio,factor_valor,factor_existencia,factor_Utilidad_Base;
 				case
 					when I3 = 1 then --'ULTIMO COSTO + MARGEN DE UTILIDAD
 						--A(B10041)=K14*(1+I4/100)
@@ -216,7 +209,8 @@ raise notice 'expSql=%', expSql;
 	end if;	
 
 	precio := round(precio::decimal,2);
+raise notice 'nombre_precio:%, producto,%, precio final:%',nombre_precio,producto,precio;
 	return query select precio;
-
+ 
 end;
 $function$

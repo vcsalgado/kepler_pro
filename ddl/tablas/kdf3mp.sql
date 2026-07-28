@@ -5,6 +5,7 @@ CREATE  TABLE keplersc.kdf3mp (
   c4 timestamp without time zone NOT NULL DEFAULT '1800-01-01 00:00:00'::timestamp without time zone
 ) TABLESPACE pg_default;
 ALTER TABLE ONLY keplersc.kdf3mp ADD CONSTRAINT pk_kdf3mp PRIMARY KEY (c1);
+COMMENT ON TABLE keplersc.kdf3mp IS 'Metodos de pago';
 COMMENT ON COLUMN keplersc.kdf3mp.c4 IS 'Vigencia fin';
 COMMENT ON COLUMN keplersc.kdf3mp.c3 IS 'Vigencia ini';
 COMMENT ON COLUMN keplersc.kdf3mp.c2 IS 'Descripcion';

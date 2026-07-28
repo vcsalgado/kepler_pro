@@ -7,7 +7,7 @@ CREATE  TABLE keplersc.kdm6 (
   c6 character varying(10) NOT NULL DEFAULT ''::character varying,
   c7 numeric NOT NULL DEFAULT 0,
   c8 character varying(20) NOT NULL DEFAULT ''::character varying,
-  c9 character varying(40) NOT NULL DEFAULT ''::character varying,
+  c9 character varying(30) NOT NULL DEFAULT ''::character varying,
   c10 character varying(1) NOT NULL DEFAULT ''::character varying,
   c11 numeric(15,2) NOT NULL DEFAULT 0,
   c12 character varying(10) NOT NULL DEFAULT ''::character varying,
@@ -17,14 +17,12 @@ CREATE  TABLE keplersc.kdm6 (
   c16 character varying(10) NOT NULL DEFAULT ''::character varying,
   c17 numeric(15,2) NOT NULL DEFAULT 0,
   c18 numeric(15,2) NOT NULL DEFAULT 0,
-  ctopto character varying(10) NOT NULL DEFAULT ''::character varying,
-  referencia character varying(40) NULL
+  col_foliomig character varying(10) NULL,
+  col_foliofin character varying(10) NULL
 ) TABLESPACE pg_default;
 CREATE UNIQUE INDEX IF NOT EXISTS pk_kdm6 ON keplersc.kdm6 USING btree (c1, c2, c3, c4, c5, c6, c7) TABLESPACE pg_default;
 CREATE INDEX IF NOT EXISTS sindkdm602 ON keplersc.kdm6 USING btree (c13, c1, c2, c3, c4, c5, c6, c7) TABLESPACE pg_default;
 COMMENT ON TABLE keplersc.kdm6 IS 'Movimientos contables por documento';
-COMMENT ON COLUMN keplersc.kdm6.referencia IS 'Referencia UUID';
-COMMENT ON COLUMN keplersc.kdm6.ctopto IS 'Concepto Presupuesto';
 COMMENT ON COLUMN keplersc.kdm6.c9 IS 'Descripcion de la cuenta';
 COMMENT ON COLUMN keplersc.kdm6.c8 IS 'Cuenta contable';
 COMMENT ON COLUMN keplersc.kdm6.c7 IS 'No Partida';

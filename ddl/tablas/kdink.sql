@@ -63,7 +63,7 @@ CREATE  TABLE keplersc.kdink (
   c62 numeric(15,2) NOT NULL DEFAULT 0,
   c63 numeric(15,2) NOT NULL DEFAULT 0
 ) TABLESPACE pg_default;
-CREATE UNIQUE INDEX IF NOT EXISTS pk_kdink ON keplersc.kdink USING btree (c1, c2, c3) TABLESPACE pg_default;
+ALTER TABLE ONLY keplersc.kdink ADD CONSTRAINT pk_kdink PRIMARY KEY (c1, c2, c3);
 COMMENT ON TABLE keplersc.kdink IS 'Resumen mensual movtos inventario';
 COMMENT ON COLUMN keplersc.kdink.c63 IS 'Diciembre';
 COMMENT ON COLUMN keplersc.kdink.c62 IS 'Noviembre';

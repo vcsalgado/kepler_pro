@@ -80,6 +80,7 @@ begin
 
 	--Tabla KDINK, estadisticas por anio-mes. Buscar Sucursal, producto y Anio
 	select count(*) into totReg from keplersc.kdink where c1=sucursal_id and c2=clave_original;
+
 	if totReg > 0 then
 		select count(*) into totReg from keplersc.kdinl where c1=sucursal_id and c2=clave_original;	
 		if totReg > 0 then

@@ -7,7 +7,8 @@ AS $function$
 --Fecha: 31/Ene/2023
 --Bitacora de cambios
 --24/Oct/2023 Miriam Santana: En una alta precargar datos que se tengan registrados en otras tablas
---03/Nov/2023 Miriam Santana: Si hay cambio de contacto(perfil propietario) actualizar contactos en KDTMKTSER2 y citas pendientes en KDCTASSER 
+--03/Nov/2023 Miriam Santana: Si hay cambio de contacto(perfil propietario) actualizar contactos en KDTMKTSER2 y citas pendientes en KDCTASSER
+--13/Ene/2026 Miriam Santana: Grabar nuevos datos de notas, usuario y fecha de ultima modificacion
 declare
 	--Variables de definicion de documento
 	Identificador text = '';
@@ -75,6 +76,11 @@ declare
 	isidentificadornumeric bool;
 	valInt int;
 
+	--MSS 13/01/2026 Grabar datos de notas, usuario y fecha de ultima modificacion  
+	fec_ult_modificacion text = '';
+  	usuario text = '';
+  	notas_serie text = '';
+
 	totReg integer = 0;
 	resultado text = '';
 	mensaje text = '0';
@@ -130,6 +136,10 @@ begin
 	crud := (xpath('//document/input_crud/text()', dataxml))[1];
 	origen := coalesce((xpath('//document/origen/text()', dataxml))[1]::text,'')::text;
 	anioActual = extract(year from now());
+	fec_ult_modificacion := coalesce((xpath('//document/fec_ult_modif/text()', dataxml))[1]::text,'1800-01-01')::text;
+	usuario := upper(coalesce((xpath('//document/usuario_ult_modif/text()', dataxml))[1]::text,'')::text);
+	notas_serie := upper(coalesce((xpath('//document/notas/text()', dataxml))[1]::text,'')::text);
+
 
 	if origen <> 'Bienvenida' then
 		if crud <> 'ELIMINAR' then
@@ -167,7 +177,7 @@ begin
 				raise exception 'El identificador no coincide con los ultimos 8 caracteres de la serie';
 			end if;
 			select Identificador ~ '^(?=.*[a-zA-Z])(?=.*[0-9])[A-Za-z0-9]+$' into isidentificadoralfanumeric; 
-			select Identificador ~ '^[0-9\.]+$' into isidentificadornumeric; 
+			select Identificador ~ '^[0-9]+$' into isidentificadornumeric; 
 			if not isidentificadoralfanumeric and not isidentificadornumeric then 
 				raise exception 'Los ultimos digitos deben ser numerico o alfanumerico';
 			end if;
@@ -270,7 +280,7 @@ begin
 					if length(tel_usuario) <> 10 then
 						raise exception 'El telefono del usuario debe ser de 10 digitos';
 					else
-						select tel_usuario ~ '^[0-9\.]+$' into isidentificadornumeric; 
+						select tel_usuario ~ '^[0-9]+$' into isidentificadornumeric; 
 						if not isidentificadornumeric then 
 							raise exception 'El telefono del usuario debe ser numerico';
 						end if;
@@ -279,7 +289,7 @@ begin
 					if length(tel_autoriza) <> 10 then
 						raise exception 'El telefono del resp. mantto. debe ser de 10 digitos';
 					else
-						select tel_autoriza ~ '^[0-9\.]+$' into isidentificadornumeric; 
+						select tel_autoriza ~ '^[0-9]+$' into isidentificadornumeric; 
 						if not isidentificadornumeric then 
 							raise exception 'El telefono del resp. mantto. debe ser numerico';
 						end if;
@@ -305,7 +315,7 @@ begin
 						if length(tel_mediopref_usuario) <> 10 then
 							raise exception 'El num. medio preferido de contacto del usuario debe ser de 10 digitos';
 						else
-							select tel_mediopref_autoriza ~ '^[0-9\.]+$' into isidentificadornumeric; 
+							select tel_mediopref_autoriza ~ '^[0-9]+$' into isidentificadornumeric; 
 							if not isidentificadornumeric then 
 								raise exception 'El num. medio preferido de contacto del usuario debe ser numerico';
 							end if;
@@ -315,7 +325,7 @@ begin
 						if length(tel_mediopref_autoriza) <> 10 then
 							raise exception 'El num. medio preferido de contacto del resp. mantto. debe ser de 10 digitos';
 						else
-							select tel_mediopref_autoriza ~ '^[0-9\.]+$' into isidentificadornumeric; 
+							select tel_mediopref_autoriza ~ '^[0-9]+$' into isidentificadornumeric; 
 							if not isidentificadornumeric then 
 								raise exception 'El num. medio preferido de contacto del resp. mantto. debe ser numerico';
 							end if;
@@ -340,7 +350,8 @@ begin
 				c26,c27,c28,c29,c30,
 				c31,c32,c33,c34,c35,
 				c36,c37,c38,c39,c40,
-				c41,c42,c43,c44,c45) 
+				c41,c42,c43,c44,c45,
+				fec_ultima_modif,usuario_ultima_modif,notas) 
 			values(
 				Identificador,Marca, Modelo, Serie, Motor, 
 				Transmision,Eje_trasero, Placas, Contacto, Color,
@@ -350,7 +361,8 @@ begin
 				correo_usuario,ap_paterno_autoriza,ap_materno_autoriza,correo_autoriza,rfc_usuario,
 				rfc_autoriza,medio_pref_usuario,tel_mediopref_usuario,medio_pref_autoriza,tel_mediopref_autoriza,
 				cond_unidad::integer,subcond_unidad::integer,garantia_ext,to_date(fec_expgarantia,'YYYY-MM-DD'),segvehicular,
-				to_date(fec_vigseguro,'YYYY-MM-DD'),aseg_garantext,poliza_garantext,aseg_segvehicular,poliza_segvehicular);
+				to_date(fec_vigseguro,'YYYY-MM-DD'),aseg_garantext,poliza_garantext,aseg_segvehicular,poliza_segvehicular,
+				to_date(fec_ult_modificacion,'YYYY-MM-DD'),usuario,notas_serie);
 		end if;
 	end if;
 
@@ -371,7 +383,8 @@ begin
 				c26=correo_usuario,c27=ap_paterno_autoriza,c28=ap_materno_autoriza,c29=correo_autoriza,c30=rfc_usuario,
 				c31=rfc_autoriza,c32=medio_pref_usuario,c33=tel_mediopref_usuario,c34=medio_pref_autoriza,c35=tel_mediopref_autoriza,
 				c36=cond_unidad::integer,c37=subcond_unidad::integer,c38=garantia_ext,c39=to_date(fec_expgarantia,'YYYY-MM-DD'),c40=segvehicular,
-				c41=to_date(fec_vigseguro,'YYYY-MM-DD'),c42=aseg_garantext,c43=poliza_garantext,c44=aseg_segvehicular,c45=poliza_segvehicular
+				c41=to_date(fec_vigseguro,'YYYY-MM-DD'),c42=aseg_garantext,c43=poliza_garantext,c44=aseg_segvehicular,c45=poliza_segvehicular,
+				fec_ultima_modif=to_date(fec_ult_modificacion,'YYYY-MM-DD'),usuario_ultima_modif=usuario,notas=notas_serie
 		where c1=Identificador;
 		if cliente_ant <> cliente_nvo then
 			--Actualiza contactos tmkt pendientes

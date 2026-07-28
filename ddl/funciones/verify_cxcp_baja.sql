@@ -7,8 +7,6 @@ declare
 --Autor: Miriam Santana
 --Fecha: 22/08/2022
 --Bitacora de cambios
---13/05/2024 Miriam Santana: Validaciones para baja de contrarecibo con manejo de schema(tag)
-
 	--Variables de definicion de documento
 	no_partidas int = 0;
 	clave_producto text = '';
@@ -21,15 +19,12 @@ declare
 	referencia text = '';
 	clave_cteprov text = '';
 	monto_total text = '';
-	folio text = '';
-	flag_gastos text = '';
 	
 	--Variables de uso general
 	cargos decimal;
 	abonos decimal;
    	var_monto decimal;
  	strValor text = '';
- 	st_comprobar text = '';
 
 	--Variables de retorno
 	resultado text;
@@ -46,20 +41,8 @@ begin
 	monto_total := (xpath('//document/k_monto/text()', dataxml))[1];
 	referencia := (xpath('//document/k_refer/text()', dataxml))[1];
 	clave_cteprov := (xpath('//document/k_clave/text()', dataxml))[1];
-	folio := (xpath('//document/k_folio/text()', dataxml))[1]; 
 
 	if genero = 'X' and naturaleza = 'A' then
-		flag_gastos = '';
-		if xpath_exists('//document/ambiente/schema/text()', dataxml) = true then 
-			flag_gastos := coalesce((xpath('//document/ambiente/schema/text()',dataxml))[1]::text,'')::text;
-		end if;
-		if upper(flag_gastos) = 'CXP_CONTR_REC' then
-			select st_x_comprobar into st_comprobar from keplersc.kdm1
-				where c1=sucursal_id and c2=genero and c3=naturaleza and c4=grupo::integer and c5=tipo_clave::integer and c6=folio;
-			if upper(st_comprobar) = 'X' then
-				raise exception 'No puede dar de baja un Contrarecibo que ya ha sido comprobado';
-			end if;
-		end if;	
 		select c6,c7 into cargos, abonos from keplersc.kduxg k
 			where c1=sucursal_id and c2=genero and c3=clave_cteprov and c4=referencia and C5=1;
 		var_monto := abonos - cargos - monto_total::decimal;

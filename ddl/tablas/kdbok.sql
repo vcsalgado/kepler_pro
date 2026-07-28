@@ -11,7 +11,7 @@ COMMENT ON TABLE keplersc.kdbok IS 'Backorder resumen movimientos';
 COMMENT ON COLUMN keplersc.kdbok.c6 IS 'Salidas';
 COMMENT ON COLUMN keplersc.kdbok.c5 IS 'Entradas';
 COMMENT ON COLUMN keplersc.kdbok.c4 IS 'Mes';
-COMMENT ON COLUMN keplersc.kdbok.c3 IS 'Anio';
+COMMENT ON COLUMN keplersc.kdbok.c3 IS 'Año';
 COMMENT ON COLUMN keplersc.kdbok.c2 IS 'Producto';
-COMMENT ON COLUMN keplersc.kdbok.c1 IS 'Sucursal';
+COMMENT ON COLUMN keplersc.kdbok.c1 IS 'Clave sucursal';
 

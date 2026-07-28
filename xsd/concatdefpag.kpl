@@ -1,181 +1,1 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<pag xmlns="www.kepler.com.mx/2003/KSchema" dim="0,0,10,10" tit="Definici&#243;n de cuentas">
-	<grp brdr="0,0" clr="0,58,112" fnt="Arial,16" dim="-1,-1,10,20" clrBrdr="0,97,181"  bclr="192,205,213" unfont="0"
-		tit="Definici&#243;n de cuentas" OnPgUp="PgUp" OnPgDn="PgDn" OnCtrPgUp="CtrPgUp" OnCtrPgDn="CtrPgDn" 
-		OnF1="Dialog(1,concatdefayu)" OnCtrIni="CtrIni" OnCtrEnd="CtrEnd" OnCtrDel="CtrDel" OnEnter="Exit">
-		<tab n="5"/><br/>
-		<grp bclr="236,240,243" fntClrBrdr="255,206,0" fntBrdr="Arial,18" hSpace="4" clrBrdr="0,58,112" brdr="0,5" dim="52,38,7,12"  tit="Definici&#243;n de grupo de cuentas" fnt="Arial,16" unfont="0"><tab/><txt fnt="Arial,16" clr="0,58,112" bclr="255,255,255">Grupo de cuentas</txt>
-			<tab n="7"/><br/>
-			<tab n="12"/><txt fnt="Arial,16" clr="0,58,112">Inicial</txt>
-			<tab n="6"/><txt fnt="Arial,16" clr="0,58,112">Final</txt><br/><br/><tab/><txt fnt="Arial,16" clr="0,58,112" bclr="255,255,255">Activo circulante</txt>
-			<tab n="6"/><inp id="actcicrculanteini" clr="64,64,64" clrBrdr="255,255,255"  dim="18,1" bclr="255,255,255" brdr="2,0" type="string" nc="16" fnt="Arial,16"/>
-			<tab/><inp id="actcirculantefin" clr="64,64,64" clrBrdr="255,255,255"  nc="16" dim="18,1" bclr="255,255,255" brdr="2,0" type="string"/><br/><tab/><txt fnt="Arial,16" clr="0,58,112" bclr="255,255,255">Activo fijo</txt>
-			<tab n="8"/><inp id="actfijoini" clr="64,64,64" clrBrdr="255,255,255"  nc="16" dim="18,1" bclr="255,255,255" brdr="2,0" type="string"/>
-			<tab/><inp id="actfijofin" clr="64,64,64" clrBrdr="255,255,255"  dim="18,1" nc="16" bclr="255,255,255" brdr="2,0" type="string"/><br/><tab/><txt fnt="Arial,16" clr="0,58,112" bclr="255,255,255"> Activo diferido</txt>
-			<tab n="6"/><inp id="actdiferidoini" clr="64,64,64" clrBrdr="255,255,255"  dim="18,1" nc="16" bclr="255,255,255" brdr="2,0" type="string"/>
-			<tab/><inp id="actdiferidofin" clr="64,64,64" clrBrdr="255,255,255"  dim="18,1" bclr="255,255,255" brdr="2,0" nc="16" type="string"/>
-			<tab/><br/><tab/><txt fnt="Arial,16" clr="0,58,112" bclr="255,255,255">Pasivo circulante</txt>
-			<tab n="6"/><inp id="pascirculanteini" clr="64,64,64" clrBrdr="255,255,255"  dim="18,1" nc="16" bclr="255,255,255" brdr="2,0" type="string"/>
-			<tab/><inp id="pascirculantefin" clr="64,64,64" clrBrdr="255,255,255"  dim="18,1" nc="16" bclr="255,255,255" brdr="2,0" type="string"/><br/><tab/><txt fnt="Arial,16" clr="0,58,112" bclr="255,255,255">Pasivo a largo plazo</txt>
-			<tab n="5"/><inp id="paslargoini" clr="64,64,64" clrBrdr="255,255,255"  dim="18,1" nc="16" bclr="255,255,255" brdr="2,0" type="string"/>
-			<tab/><inp id="paslargofin" clr="64,64,64" clrBrdr="255,255,255"  dim="18,1" bclr="255,255,255" brdr="2,0" nc="16" type="string"/>
-			<tab/><br/><tab/><txt fnt="Arial,16" clr="0,58,112" bclr="255,255,255">Capital contable</txt>
-			<tab n="6"/><inp id="capcontini" clr="64,64,64" clrBrdr="255,255,255"  dim="18,1" nc="16" bclr="255,255,255" brdr="2,0" type="string"/>
-			<tab/><inp id="capcontfin" clr="64,64,64" clrBrdr="255,255,255"  dim="18,1" bclr="255,255,255" brdr="2,0" nc="16" type="string"/>
-			<tab/><br/><tab/><txt fnt="Arial,16" clr="0,58,112" bclr="255,255,255">Ventas</txt>
-			<tab n="8"/><inp id="ventasini" clr="64,64,64" clrBrdr="255,255,255"  dim="18,1" bclr="255,255,255" brdr="2,0" nc="16" type="string"/>
-			<tab/><inp id="ventasfin" clr="64,64,64" clrBrdr="255,255,255"  dim="18,1" bclr="255,255,255" brdr="2,0" nc="16" type="string"/><br/><tab/><txt fnt="Arial,16" clr="0,58,112" bclr="255,255,255">Costo de ventas</txt>
-			<tab n="6"/><inp id="ctoventasini" clr="64,64,64" clrBrdr="255,255,255"  dim="18,1" bclr="255,255,255" brdr="2,0" nc="16" type="string"/>
-			<tab/><inp id="ctoventasfin" clr="64,64,64" clrBrdr="255,255,255"  dim="18,1" bclr="255,255,255" brdr="2,0" nc="16" type="string"/><br/><tab/><txt fnt="Arial,16" clr="0,58,112" bclr="255,255,255">Gastos</txt>
-			<tab n="8"/><inp id="gastosini" clr="64,64,64" clrBrdr="255,255,255"  dim="18,1" bclr="255,255,255" brdr="2,0" nc="16" type="string"/>
-			<tab/><inp id="gastosfin" clr="64,64,64" clrBrdr="255,255,255"  dim="18,1" bclr="255,255,255" brdr="2,0" nc="16" type="string"/><br/><tab/><txt fnt="Arial,16" clr="0,58,112" bclr="255,255,255">Gastos/Productos financieros</txt>
-			<tab n="2"/><inp id="gastospfini" clr="64,64,64" clrBrdr="255,255,255"  dim="18,1" nc="16" bclr="255,255,255" brdr="2,0" type="string"/>
-			<tab/><inp id="gastospffin" clr="64,64,64" clrBrdr="255,255,255"  dim="18,1" nc="16" bclr="255,255,255" brdr="2,0" type="string"/><br/><tab/><txt fnt="Arial,16" clr="0,58,112" bclr="255,255,255">ISR y PTU</txt>
-			<tab n="7"/><inp id="isrini" clr="64,64,64" clrBrdr="255,255,255"  dim="18,1" bclr="255,255,255" brdr="2,0" nc="16" type="string"/>
-			<tab/><inp id="isrfin" clr="64,64,64" clrBrdr="255,255,255"  dim="18,1" bclr="255,255,255" brdr="2,0" nc="16" type="string"/><br/><tab/><txt fnt="Arial,16" clr="0,58,112" bclr="255,255,255">Cuentas de orden</txt>
-			<tab n="5"/><inp id="cuentasini" clr="64,64,64" clrBrdr="255,255,255"  dim="18,1" nc="16" bclr="255,255,255" brdr="2,0" type="string"/>
-			<tab/><inp id="cuentasfin" clr="64,64,64" clrBrdr="255,255,255"  dim="18,1" bclr="255,255,255" brdr="2,0" nc="16" type="string"/><br/><br/>
-<tab n="20"/><img id="guardar" dim="40,40" brdr="0,1"  img="_60_Save.png" OnEnter="GuardarCambios()" available="Y" clrBrdr="0,0,0" tooltip="Guardar cambios" bPx="1" default="1"/><br/><br/>
-		</grp><br/>
-	</grp>
-	<script>
-		InstallDriver("KDB75");
-		class Main {
-			var frn,frP,kdb;
-			var tabla_base;//Tabla base del catalogo (Se abre con el alias "a")
-			var camposDeseados;//Campos de la tabla que se requieren(Ej: a1...a4)
-			fun Main() { 
-				frn=new FRNT; 
-				frP=new FRNTP; 
-				kdb=new KDB;
-				kdb.connect();
-				TraeDatos();
-			}
-			
-			fun TraeDatos(){
-				kdb.iov("GET,CUENTAS,a1...a24,$,datos");
-				kdb.exec();
-				if (kdb.get("datos","a1") &= ""){
-					LlenaCampos();
-					kdb.iov("GET,CUENTAS,a1...a24,$,datos");
-					kdb.exec();
-				}
-				frn.set("actcicrculanteini",kdb.get("datos","a1"));
-				frn.set("actcirculantefin",kdb.get("datos","a2"));
-				frn.set("actfijoini",kdb.get("datos","a3"));
-				frn.set("actfijofin",kdb.get("datos","a4"));
-				frn.set("actdiferidoini",kdb.get("datos","a5"));
-				frn.set("actdiferidofin",kdb.get("datos","a6"));
-				frn.set("pascirculanteini",kdb.get("datos","a7"));
-				frn.set("pascirculantefin",kdb.get("datos","a8"));
-				frn.set("paslargoini",kdb.get("datos","a9"));
-				frn.set("paslargofin",kdb.get("datos","a10"));
-				frn.set("capcontini",kdb.get("datos","a11"));
-				frn.set("capcontfin",kdb.get("datos","a12"));
-				frn.set("ventasini",kdb.get("datos","a13"));
-				frn.set("ventasfin",kdb.get("datos","a14"));
-				frn.set("ctoventasini",kdb.get("datos","a15"));
-				frn.set("ctoventasfin",kdb.get("datos","a16"));
-				frn.set("gastosini",kdb.get("datos","a17"));
-				frn.set("gastosfin",kdb.get("datos","a18"));
-				frn.set("gastospfini",kdb.get("datos","a19"));
-				frn.set("gastospffin",kdb.get("datos","a20"));
-				frn.set("isrini",kdb.get("datos","a21"));
-				frn.set("isrfin",kdb.get("datos","a22"));
-				frn.set("cuentasini",kdb.get("datos","a23"));
-				frn.set("cuentasfin",kdb.get("datos","a24"));
-			}
-			
-			fun LlenaCampos(){
-				frn.set("actcicrculanteini","100");
-				frn.set("actcirculantefin","119");
-				frn.set("actfijoini","120");
-				frn.set("actfijofin","129");
-				frn.set("actdiferidoini","130");
-				frn.set("actdiferidofin","199");
-				frn.set("pascirculanteini","200");
-				frn.set("pascirculantefin","219");
-				frn.set("paslargoini","220");
-				frn.set("paslargofin","229");
-				frn.set("capcontini","230");
-				frn.set("capcontfin","399");
-				frn.set("ventasini","400");
-				frn.set("ventasfin","419");
-				frn.set("ctoventasini","420");
-				frn.set("ctoventasfin","499");
-				frn.set("gastosini","500");
-				frn.set("gastosfin","599");
-				frn.set("gastospfini","600");
-				frn.set("gastospffin","699");
-				frn.set("isrini","700");
-				frn.set("isrfin","999");
-				frn.set("cuentasini",kdb.get("datos","a23"));
-				frn.set("cuentasfin",kdb.get("datos","a24"));
-				GuardarCambios();
-			}
-			
-			fun GuardarCambios(){
-				var ca1=frn.get("actcicrculanteini");
-				var ca2=frn.get("actcirculantefin");
-				var ca3=frn.get("actfijoini");
-				var ca4=frn.get("actfijofin");
-				var ca5=frn.get("actdiferidoini");
-				var ca6=frn.get("actdiferidofin");
-				var ca7=frn.get("pascirculanteini");
-				var ca8=frn.get("pascirculantefin");
-				var ca9=frn.get("paslargoini");
-				var ca10=frn.get("paslargofin");
-				var ca11=frn.get("capcontini");
-				var ca12=frn.get("capcontfin");
-				var ca13=frn.get("ventasini");
-				var ca14=frn.get("ventasfin");
-				var ca15=frn.get("ctoventasini");
-				var ca16=frn.get("ctoventasfin");
-				var ca17=frn.get("gastosini");
-				var ca18=frn.get("gastosfin");
-				var ca19=frn.get("gastospfini");
-				var ca20=frn.get("gastospffin");
-				var ca21=frn.get("isrini");
-				var ca22=frn.get("isrfin");
-				var ca23=frn.get("cuentasini");
-				var ca24=frn.get("cuentasfin");
-				var campos=ca1 & "," & ca2 & "," & ca3 & "," & ca4 & "," & ca5 & "," & ca6 & "," & ca7 & "," & ca8 & "," & ca9 & ",";
-				campos=campos & ca10 & "," & ca11 & "," & ca12 & "," & ca13 & "," & ca14 & "," & ca15 & "," & ca16 & "," & ca17 & "," & ca18 & ",";
-				campos=campos & ca19 & "," & ca20 & "," & ca21 & "," & ca22 & "," & ca23 & "," & ca24;
-				
-				kdb.iov("PUT,CUENTAS,"	&	campos);
-				frn.message("Se ha guardado correctamente la informacion.","Grupos de Cuentas","&Aceptar");
-				
-			}
-						
-			fun Error(string){frn.messageBar(string,1); frn.sound(1);}//Establece un mensaje de error en la barra de estado. Y emite un sonido de alerta.
-			fun Dialog(iModo,pag,par0,par1,par2,par3,par4,par5,par6,par7,par8,par9,par10,par11,par12,par13,par14,par15){
-				/*iModo: 0)No hace mayor validacion. Siempre despliega la ventana. NO CONCATENA PREFIJO
-							1)Solo concatena el prefijo de la carpeta del lenguaje, no hace mayor validacion. Siempre despliega la ventana
-							2)Modo especial. Se valida que el campo indicado en par0 se puede modificar(El par0 puede ser una tabla, y par1 la columna)
-							3)Modo especial para paginas de operacion:Solo si se esta en alta o modifica despliega la pagina. Simpre agrega el prefijo del lenguaje
-				*/
-				var prefix=frn.lib("libKepler","langPrefix");
-				var page=prefix&pag;
-				var b_valido=1;
-				if(iModo==0)page=pag;
-				else if(iModo==2&&(strlen(par0)>0)){//Se toma el par0 como el objeto (o grid) al que se devolvera el resultado.
-					if( frn.getAtt(par0,"modify",par1) &= "N" ) b_valido=0;
-					if( frn.getAtt(par0,"available",par1) &= "N" ) b_valido=0;
-					if( frn.getAtt(par0,"visible",par1) &= "N" ) b_valido=0;
-				}
-				else if(iModo==3)b_valido=0;
-				if(b_valido==1)frn.dialog(page,par0,par1,par2,par3,par4,par5,par6,par7,par8,par9,par10,par11,par12,par13,par14,par15);
-			}
-			
-		}
-			/*
-		AUTOR						FECHA						CAMBIO
-		------------------------------------------------------------
-		Eliana Carrera		05/07/2011		Se agrega un frn.message indicando que se termino de ejecutar la opcion.
-		
-		*/
-	
-		
-	</script>
-</pag>
+<?xml version="1.0" encoding="UTF-8"?><pag xmlns="www.kepler.com.mx/2003/KSchema" dim="0,0,10,10" tit="Definici&#243;n de cuentas">	<grp brdr="0,0" clr="0,58,112" fnt="Arial,16" dim="-1,-1,10,20" clrBrdr="0,97,181"  bclr="192,205,213" unfont="0"		tit="Definici&#243;n de cuentas" OnPgUp="PgUp" OnPgDn="PgDn" OnCtrPgUp="CtrPgUp" OnCtrPgDn="CtrPgDn" 		OnF1="Dialog(1,concatdefayu)" OnCtrIni="CtrIni" OnCtrEnd="CtrEnd" OnCtrDel="CtrDel" OnEnter="Exit">		<tab n="5"/><br/>		<grp bclr="236,240,243" fntClrBrdr="255,206,0" fntBrdr="Arial,18" hSpace="4" clrBrdr="0,58,112" brdr="0,5" dim="52,38,7,12"  tit="Definici&#243;n de grupo de cuentas" fnt="Arial,16" unfont="0"><tab/><txt fnt="Arial,16" clr="0,58,112" bclr="255,255,255">Grupo de cuentas</txt>			<tab n="7"/><br/>			<tab n="12"/><txt fnt="Arial,16" clr="0,58,112">Inicial</txt>			<tab n="6"/><txt fnt="Arial,16" clr="0,58,112">Final</txt><br/><br/><tab/><txt fnt="Arial,16" clr="0,58,112" bclr="255,255,255">Activo circulante</txt>			<tab n="6"/><inp id="actcicrculanteini" clr="64,64,64" clrBrdr="255,255,255"  dim="18,1" bclr="255,255,255" brdr="2,0" type="string" nc="16" fnt="Arial,16"/>			<tab/><inp id="actcirculantefin" clr="64,64,64" clrBrdr="255,255,255"  nc="16" dim="18,1" bclr="255,255,255" brdr="2,0" type="string"/><br/><tab/><txt fnt="Arial,16" clr="0,58,112" bclr="255,255,255">Activo fijo</txt>			<tab n="8"/><inp id="actfijoini" clr="64,64,64" clrBrdr="255,255,255"  nc="16" dim="18,1" bclr="255,255,255" brdr="2,0" type="string"/>			<tab/><inp id="actfijofin" clr="64,64,64" clrBrdr="255,255,255"  dim="18,1" nc="16" bclr="255,255,255" brdr="2,0" type="string"/><br/><tab/><txt fnt="Arial,16" clr="0,58,112" bclr="255,255,255"> Activo diferido</txt>			<tab n="6"/><inp id="actdiferidoini" clr="64,64,64" clrBrdr="255,255,255"  dim="18,1" nc="16" bclr="255,255,255" brdr="2,0" type="string"/>			<tab/><inp id="actdiferidofin" clr="64,64,64" clrBrdr="255,255,255"  dim="18,1" bclr="255,255,255" brdr="2,0" nc="16" type="string"/>			<tab/><br/><tab/><txt fnt="Arial,16" clr="0,58,112" bclr="255,255,255">Pasivo circulante</txt>			<tab n="6"/><inp id="pascirculanteini" clr="64,64,64" clrBrdr="255,255,255"  dim="18,1" nc="16" bclr="255,255,255" brdr="2,0" type="string"/>			<tab/><inp id="pascirculantefin" clr="64,64,64" clrBrdr="255,255,255"  dim="18,1" nc="16" bclr="255,255,255" brdr="2,0" type="string"/><br/><tab/><txt fnt="Arial,16" clr="0,58,112" bclr="255,255,255">Pasivo a largo plazo</txt>			<tab n="5"/><inp id="paslargoini" clr="64,64,64" clrBrdr="255,255,255"  dim="18,1" nc="16" bclr="255,255,255" brdr="2,0" type="string"/>			<tab/><inp id="paslargofin" clr="64,64,64" clrBrdr="255,255,255"  dim="18,1" bclr="255,255,255" brdr="2,0" nc="16" type="string"/>			<tab/><br/><tab/><txt fnt="Arial,16" clr="0,58,112" bclr="255,255,255">Capital contable</txt>			<tab n="6"/><inp id="capcontini" clr="64,64,64" clrBrdr="255,255,255"  dim="18,1" nc="16" bclr="255,255,255" brdr="2,0" type="string"/>			<tab/><inp id="capcontfin" clr="64,64,64" clrBrdr="255,255,255"  dim="18,1" bclr="255,255,255" brdr="2,0" nc="16" type="string"/>			<tab/><br/><tab/><txt fnt="Arial,16" clr="0,58,112" bclr="255,255,255">Ventas</txt>			<tab n="8"/><inp id="ventasini" clr="64,64,64" clrBrdr="255,255,255"  dim="18,1" bclr="255,255,255" brdr="2,0" nc="16" type="string"/>			<tab/><inp id="ventasfin" clr="64,64,64" clrBrdr="255,255,255"  dim="18,1" bclr="255,255,255" brdr="2,0" nc="16" type="string"/><br/><tab/><txt fnt="Arial,16" clr="0,58,112" bclr="255,255,255">Costo de ventas</txt>			<tab n="6"/><inp id="ctoventasini" clr="64,64,64" clrBrdr="255,255,255"  dim="18,1" bclr="255,255,255" brdr="2,0" nc="16" type="string"/>			<tab/><inp id="ctoventasfin" clr="64,64,64" clrBrdr="255,255,255"  dim="18,1" bclr="255,255,255" brdr="2,0" nc="16" type="string"/><br/><tab/><txt fnt="Arial,16" clr="0,58,112" bclr="255,255,255">Gastos</txt>			<tab n="8"/><inp id="gastosini" clr="64,64,64" clrBrdr="255,255,255"  dim="18,1" bclr="255,255,255" brdr="2,0" nc="16" type="string"/>			<tab/><inp id="gastosfin" clr="64,64,64" clrBrdr="255,255,255"  dim="18,1" bclr="255,255,255" brdr="2,0" nc="16" type="string"/><br/><tab/><txt fnt="Arial,16" clr="0,58,112" bclr="255,255,255">Gastos/Productos financieros</txt>			<tab n="2"/><inp id="gastospfini" clr="64,64,64" clrBrdr="255,255,255"  dim="18,1" nc="16" bclr="255,255,255" brdr="2,0" type="string"/>			<tab/><inp id="gastospffin" clr="64,64,64" clrBrdr="255,255,255"  dim="18,1" nc="16" bclr="255,255,255" brdr="2,0" type="string"/><br/><tab/><txt fnt="Arial,16" clr="0,58,112" bclr="255,255,255">ISR y PTU</txt>			<tab n="7"/><inp id="isrini" clr="64,64,64" clrBrdr="255,255,255"  dim="18,1" bclr="255,255,255" brdr="2,0" nc="16" type="string"/>			<tab/><inp id="isrfin" clr="64,64,64" clrBrdr="255,255,255"  dim="18,1" bclr="255,255,255" brdr="2,0" nc="16" type="string"/><br/><tab/><txt fnt="Arial,16" clr="0,58,112" bclr="255,255,255">Cuentas de orden</txt>			<tab n="5"/><inp id="cuentasini" clr="64,64,64" clrBrdr="255,255,255"  dim="18,1" nc="16" bclr="255,255,255" brdr="2,0" type="string"/>			<tab/><inp id="cuentasfin" clr="64,64,64" clrBrdr="255,255,255"  dim="18,1" bclr="255,255,255" brdr="2,0" nc="16" type="string"/><br/><br/><tab n="20"/><img id="guardar" dim="40,40" brdr="0,1"  img="_60_Save.png" OnEnter="GuardarCambios()" available="Y" clrBrdr="0,0,0" tooltip="Guardar cambios" bPx="1" default="1"/><br/><br/>		</grp><br/>	</grp>	<tools>		<tool name="endleft" OnMouseL="CtrIni()" img="_TL_First.png"/>		<tool name="left" OnMouseL="PgUp()" img="_TL_Previous.png"/>		<tool name="right" OnMouseL="PgDn()" img="_TL_Next.png"/>		<tool name="endright" OnMouseL="CtrEnd()" img="_TL_Last.png"/>	</tools>		<script>		InstallDriver("KDB75");		class Main {			var frn,frP,kdb;			var tabla_base;//Tabla base del catalogo (Se abre con el alias "a")			var camposDeseados;//Campos de la tabla que se requieren(Ej: a1...a4)			fun Main() { 				frn=new FRNT; 				frP=new FRNTP; 				kdb=new KDB;				kdb.connect();				TraeDatos();			}						fun TraeDatos(){				kdb.iov("GET,CUENTAS,a1...a24,$,datos");				kdb.exec();				if (kdb.get("datos","a1") &= ""){					LlenaCampos();					kdb.iov("GET,CUENTAS,a1...a24,$,datos");					kdb.exec();				}				frn.set("actcicrculanteini",kdb.get("datos","a1"));				frn.set("actcirculantefin",kdb.get("datos","a2"));				frn.set("actfijoini",kdb.get("datos","a3"));				frn.set("actfijofin",kdb.get("datos","a4"));				frn.set("actdiferidoini",kdb.get("datos","a5"));				frn.set("actdiferidofin",kdb.get("datos","a6"));				frn.set("pascirculanteini",kdb.get("datos","a7"));				frn.set("pascirculantefin",kdb.get("datos","a8"));				frn.set("paslargoini",kdb.get("datos","a9"));				frn.set("paslargofin",kdb.get("datos","a10"));				frn.set("capcontini",kdb.get("datos","a11"));				frn.set("capcontfin",kdb.get("datos","a12"));				frn.set("ventasini",kdb.get("datos","a13"));				frn.set("ventasfin",kdb.get("datos","a14"));				frn.set("ctoventasini",kdb.get("datos","a15"));				frn.set("ctoventasfin",kdb.get("datos","a16"));				frn.set("gastosini",kdb.get("datos","a17"));				frn.set("gastosfin",kdb.get("datos","a18"));				frn.set("gastospfini",kdb.get("datos","a19"));				frn.set("gastospffin",kdb.get("datos","a20"));				frn.set("isrini",kdb.get("datos","a21"));				frn.set("isrfin",kdb.get("datos","a22"));				frn.set("cuentasini",kdb.get("datos","a23"));				frn.set("cuentasfin",kdb.get("datos","a24"));			}						fun LlenaCampos(){				frn.set("actcicrculanteini","100");				frn.set("actcirculantefin","119");				frn.set("actfijoini","120");				frn.set("actfijofin","129");				frn.set("actdiferidoini","130");				frn.set("actdiferidofin","199");				frn.set("pascirculanteini","200");				frn.set("pascirculantefin","219");				frn.set("paslargoini","220");				frn.set("paslargofin","229");				frn.set("capcontini","230");				frn.set("capcontfin","399");				frn.set("ventasini","400");				frn.set("ventasfin","419");				frn.set("ctoventasini","420");				frn.set("ctoventasfin","499");				frn.set("gastosini","500");				frn.set("gastosfin","599");				frn.set("gastospfini","600");				frn.set("gastospffin","699");				frn.set("isrini","700");				frn.set("isrfin","999");				frn.set("cuentasini",kdb.get("datos","a23"));				frn.set("cuentasfin",kdb.get("datos","a24"));				GuardarCambios();			}						fun GuardarCambios(){				var ca1=frn.get("actcicrculanteini");				var ca2=frn.get("actcirculantefin");				var ca3=frn.get("actfijoini");				var ca4=frn.get("actfijofin");				var ca5=frn.get("actdiferidoini");				var ca6=frn.get("actdiferidofin");				var ca7=frn.get("pascirculanteini");				var ca8=frn.get("pascirculantefin");				var ca9=frn.get("paslargoini");				var ca10=frn.get("paslargofin");				var ca11=frn.get("capcontini");				var ca12=frn.get("capcontfin");				var ca13=frn.get("ventasini");				var ca14=frn.get("ventasfin");				var ca15=frn.get("ctoventasini");				var ca16=frn.get("ctoventasfin");				var ca17=frn.get("gastosini");				var ca18=frn.get("gastosfin");				var ca19=frn.get("gastospfini");				var ca20=frn.get("gastospffin");				var ca21=frn.get("isrini");				var ca22=frn.get("isrfin");				var ca23=frn.get("cuentasini");				var ca24=frn.get("cuentasfin");				var campos=ca1 & "," & ca2 & "," & ca3 & "," & ca4 & "," & ca5 & "," & ca6 & "," & ca7 & "," & ca8 & "," & ca9 & ",";				campos=campos & ca10 & "," & ca11 & "," & ca12 & "," & ca13 & "," & ca14 & "," & ca15 & "," & ca16 & "," & ca17 & "," & ca18 & ",";				campos=campos & ca19 & "," & ca20 & "," & ca21 & "," & ca22 & "," & ca23 & "," & ca24;								kdb.iov("PUT,CUENTAS,"	&	campos);				frn.message("Se ha guardado correctamente la informacion.","Grupos de Cuentas","&Aceptar");							}									fun Error(string){frn.messageBar(string,1); frn.sound(1);}//Establece un mensaje de error en la barra de estado. Y emite un sonido de alerta.			fun Dialog(iModo,pag,par0,par1,par2,par3,par4,par5,par6,par7,par8,par9,par10,par11,par12,par13,par14,par15){				/*iModo: 0)No hace mayor validación. Siempre despliega la ventana. NO CONCATENA PREFIJO							1)Solo concatena el prefijo de la carpeta del lenguaje, no hace mayor validación. Siempre despliega la ventana							2)Modo especial. Se valida que el campo indicado en par0 se puede modificar(El par0 puede ser una tabla, y par1 la columna)							3)Modo especial para páginas de operacion:Solo si se está en alta o modifica despliega la pagina. Simpre agrega el prefijo del lenguaje				*/				var prefix=frn.lib("libKepler","langPrefix");				var page=prefix&pag;				var b_valido=1;				if(iModo==0)page=pag;				else if(iModo==2&&(strlen(par0)>0)){//Se toma el par0 como el objeto (o grid) al que se devolverá el resultado.					if( frn.getAtt(par0,"modify",par1) &= "N" ) b_valido=0;					if( frn.getAtt(par0,"available",par1) &= "N" ) b_valido=0;					if( frn.getAtt(par0,"visible",par1) &= "N" ) b_valido=0;				}				else if(iModo==3)b_valido=0;				if(b_valido==1)frn.dialog(page,par0,par1,par2,par3,par4,par5,par6,par7,par8,par9,par10,par11,par12,par13,par14,par15);			}					}			/*		AUTOR						FECHA						CAMBIO		------------------------------------------------------------		Eliana Carrera		05/07/2011		Se agrega un frn.message indicando que se termino de ejecutar la opcion.				*/				</script></pag>

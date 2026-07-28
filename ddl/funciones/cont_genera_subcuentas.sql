@@ -3,7 +3,7 @@ CREATE OR REPLACE FUNCTION keplersc.cont_genera_subcuentas(cuenta_inicial text, 
  LANGUAGE plpgsql
 AS $function$
 declare
---Descripcion: Genera saldos de subcuentas y llena tabla KDTEMP700, resuelve ORNA 
+--Descripcion: Genera saldos de subcuentas y llena tabla KDTEMP700 
 --Autor: Miriam Santana
 --Fecha: 28/12/2022
 

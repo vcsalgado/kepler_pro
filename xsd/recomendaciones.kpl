@@ -1,1 +1,180 @@
-<?xml version="1.0" encoding="UTF-8"?><pag xmlns="www.kepler.com.mx/2003/KSchema" roles="" tit="Recomendaciones"><grp  brdr="0,0" clr="0,58,112" fnt="Arial,16"  dim="0,0,10,12" bclr="192,205,213" unfont="0"><br/><br/><tab/>		<grp bclr="236,240,243" fntClrBrdr="236,240,243" unfont="0" fntBrdr="Arial,18" hSpace="4" clrBrdr="0,58,112" dim="75,67,10,10" brdr="0,5" tit="Recomendaciones para la Unidad" fnt="Arial,16">				<tab n="1"/><txt clr="0,58,112">Serie:</txt>		<inp id="input_serie"  nc="8" dim="7,1" brdr="2,0" clr="64,64,64" bclr="255,255,255" clrBrdr="255,255,255"  available="S"/>	<sp/>		<img id="buscar_datos" dim="20,20" bPx="Y" brdr="0,1"  img="_20_Find.png" OnEnter="buscar_datos()" available="Y" clrBrdr="0,0,0"/>				<br/>		<tab/><tbl id="tabla" bclr="236,240,243" clr="64,64,64" OnEnter="detalles" OnMouseD="detalles" clrCur="255,255,255" clrHead="0,58,112" bclrHead="236,240,243" brdr="1,0" clrBrdr="64,64,64" fnt="Arial,16"  dim="69,22" modify="N" nren="fijo">		<col id="fecha" name="Fecha"/>		<col id="hora" name="Hora"/>		<col id="orden" name="Orden"/>		<col id="tipo_orden" name="Tipo"/>		<col id="recomendaciones" name="Recomendaciones"/>		<col id="status" name="Status"/>		</tbl> 		<tab n="7"/>		<br/>					<tab/><sp/><txt fnt=",bs">DETALLES:</txt>				<br/>	<tab n="1"/>			<grp bclr="236,240,243" fntClrBrdr="255,206,0" unfont="0" fntBrdr="Arial,18" hSpace="4" clrBrdr="0,58,112" dim="30,30,10,10" brdr="0,5" fnt="Arial,16">				<sp/><txt fnt=",bs">Resultado:</txt><br/> 				<sp/><inp id="resultado" dim="28,2" bclr="192,205,213" clr="64,64,64" clrBrdr="255,255,255" type="string" brdr="0,2"/><br/>				<sp/><txt fnt=",bs">Comentarios:</txt><br/> 				<sp/><inp id="coments" dim="28,2" bclr="192,205,213" clr="64,64,64" clrBrdr="255,255,255" type="string" brdr="0,2"/><br/>				<sp/><txt fnt=",bs">Observaciones:</txt><br/> 				<sp/><inp id="observaciones" dim="28,2" bclr="192,205,213" clr="64,64,64" clrBrdr="255,255,255" type="string" brdr="0,2"/><br/>				<sp/><txt fnt=",bs">Recomendaciones:</txt><br/> 				<sp/><inp id="recomendaciones" dim="28,2" bclr="192,205,213" clr="64,64,64" clrBrdr="255,255,255" type="string" brdr="0,2"/>				<br/>				</grp>						<grp bclr="236,240,243" fntClrBrdr="255,206,0" unfont="0" fntBrdr="Arial,18" hSpace="4" clrBrdr="0,58,112" dim="42,30,10,10" brdr="0,5" fnt="Arial,16">				<br/>				<sp/><txt>&#191;El trabajo fue revisado por el Jefe de Taller?</txt>				<inp id="revisado" dim="1,1" bclr="192,205,213" clr="64,64,64" clrBrdr="255,255,255" type="string" brdr="0,2"/>				<br/>								<sp/><txt>&#191;El servicio fue concluido o en caso de falla esta fue reparada?</txt>				<inp id="concluido" dim="1,1" bclr="192,205,213" clr="64,64,64" clrBrdr="255,255,255" type="string" brdr="0,2"/><br/>								<sp/><txt>&#191;Este trabajo requirio elaboracion de reporte tecnico?</txt>				<inp id="reporte_tecnico" dim="1,1" bclr="192,205,213" clr="64,64,64" clrBrdr="255,255,255" type="string" brdr="0,2"/><br/>								<sp/><txt>&#191;Este trabajo aplico a garantia?</txt>				<inp id="garantia" dim="1,1" bclr="192,205,213" clr="64,64,64" clrBrdr="255,255,255" type="string" brdr="0,2"/><br/>				<br/>				<sp/><txt fnt=",bs">Observaciones Extra:</txt><br/> 				<sp/><inp id="obs_extra" dim="35,2" bclr="192,205,213" clr="64,64,64" clrBrdr="255,255,255" type="string" brdr="0,2"/>				<br/> 				<sp/><txt fnt=",bs">Recomendaciones Extra:</txt><br/> 				<sp/><inp id="rec_extra" dim="35,2" bclr="192,205,213" clr="64,64,64" clrBrdr="255,255,255" type="string" brdr="0,2"/>			</grp>				</grp>		</grp>	<script>		InstallDriver("KDB75");		class Main {			var frn,frP,kdb,sys,sucursal,serie,suc_usuario ;			fun Main(){				frn=new FRNT;				kdb=new KDB;				frP=new FRNTP;				sys=new SYS;				kdb.connect();								suc_usuario = frn.lib("libKepler","UserInfo(1)");				sucursal = frP.get("k_sucN", -1, 1);					serie =  frP.get("vin");								if (sucursal &= ""){					sucursal = suc_usuario ;				}								frn.set("input_serie",serie);									buscar_datos();											}											fun buscar_datos() {							var xmlRequest,cmd,ok,cuboResultados, totresultados , contresultados;								cmd= "select to_char(c8,'DD/MM/YYYY') as c8,c9,c2,c3,c16,c5 from keplersc.kdpunres where c1='" & sucursal & "' and RIGHT(c25,8)='" &  frn.get("input_serie") & "' order by c3 desc";							cuboResultados = frn.lib("libGeneral.kpl","EjecutarSqlSel",cmd,"recomendaciones.Inicializa()");								frn.lib("libGeneral.kpl","FileSave",cuboResultados,"C:\Basura\cuboResultados");								ok=getXmlAtt(cuboResultados,"ok");				if(ok &! "" && !ok){					var mensajeError = getXmlAtt(cuboResultados,"native3");					frn.message(mensajeError,"Error","Aceptar");					return;				}								totresultados = nXml(cuboResultados);							frn.rst("tabla");				for (contresultados=0; contresultados<totresultados ; contresultados++){								frn.setX( getXmlAtt(cuboResultados,"r"&contresultados,"c8"),"tabla",contresultados,"fecha");					frn.setX( getXmlAtt(cuboResultados,"r"&contresultados,"c9"),"tabla",contresultados,"hora");					frn.setX( getXmlAtt(cuboResultados,"r"&contresultados,"c2"),"tabla",contresultados,"tipo_orden");					frn.setX( getXmlAtt(cuboResultados,"r"&contresultados,"c3"),"tabla",contresultados,"orden");					frn.setX( getXmlAtt(cuboResultados,"r"&contresultados,"c16"),"tabla",contresultados,"recomendaciones");					frn.setX( getXmlAtt(cuboResultados,"r"&contresultados,"c5"),"tabla",contresultados,"status");								}						}									fun detalles() {							borrar_datos();								var xmlRequest,cmd,ok,cuboResultados;					var orden = frn.get("tabla", -1, "orden");				var tipo_orden= frn.get("tabla", -1, "tipo_orden");								cmd= "select c11,c12,c13,c14,c15,c16,c21,c22,c26,c29 from keplersc.kdpunres where c1='" & sucursal & "' and c2='" &  tipo_orden & "' and c3='" & orden & "'";							cuboResultados = frn.lib("libGeneral.kpl","EjecutarSqlSel",cmd,"recomendaciones.detalles()");								frn.lib("libGeneral.kpl","FileSave",cuboResultados,"C:\Basura\cuboResultados");								ok=getXmlAtt(cuboResultados,"ok");				if(ok &! "" && !ok){					var mensajeError = getXmlAtt(cuboResultados,"native3");					frn.message(mensajeError,"Error","Aceptar");					return;				}								frn.set("resultado",getXmlAtt(cuboResultados,"r0","c11"));				frn.set("coments",getXmlAtt(cuboResultados,"r0","c14"));				frn.set("observaciones",getXmlAtt(cuboResultados,"r0","c15"));				frn.set("recomendaciones",getXmlAtt(cuboResultados,"r0","c16"));				frn.set("revisado",getXmlAtt(cuboResultados,"r0","c12"));				frn.set("concluido",getXmlAtt(cuboResultados,"r0","c13"));				frn.set("reporte_tecnico",getXmlAtt(cuboResultados,"r0","c21"));				frn.set("garantia",getXmlAtt(cuboResultados,"r0","c22"));				frn.set("obs_extra",getXmlAtt(cuboResultados,"r0","c26"));				frn.set("rec_extra",getXmlAtt(cuboResultados,"r0","c29"));								}						fun borrar_datos(){				frn.rst("resultado");				frn.rst("coments");				frn.rst("observaciones");				frn.rst("recomendaciones");				frn.rst("revisado");				frn.rst("concluido");				frn.rst("reporte_tecnico");				frn.rst("garantia");				frn.rst("obs_extra");				frn.rst("rec_extra");							}					}	</script></pag>
+<?xml version="1.0" encoding="UTF-8"?>
+<pag xmlns="www.kepler.com.mx/2003/KSchema" roles="" tit="Recomendaciones">
+<grp  brdr="0,0" clr="0,58,112" fnt="Arial,16"  dim="0,0,10,12" bclr="192,205,213" unfont="0"><br/><br/><tab/>
+		<grp bclr="236,240,243" fntClrBrdr="236,240,243" unfont="0" fntBrdr="Arial,18" hSpace="4" clrBrdr="0,58,112" dim="75,67,10,10" brdr="0,5" tit="Recomendaciones para la Unidad" fnt="Arial,16">
+		
+		<tab n="1"/><txt clr="0,58,112">Serie:</txt>
+		<inp id="input_serie"  nc="8" dim="7,1" brdr="2,0" clr="64,64,64" bclr="255,255,255" clrBrdr="255,255,255"  available="S"/>	<sp/>
+		<img id="buscar_datos" dim="20,20" bPx="Y" brdr="0,1"  img="_20_Find.png" OnEnter="buscar_datos()" available="Y" clrBrdr="0,0,0"/>
+		
+		<br/>
+		<tab/><tbl id="tabla" bclr="236,240,243" clr="64,64,64" OnEnter="detalles" OnMouseD="detalles" clrCur="255,255,255" clrHead="0,58,112" bclrHead="236,240,243" brdr="1,0" clrBrdr="64,64,64" fnt="Arial,16"  dim="69,22" modify="N" nren="fijo">
+		<col id="fecha" name="Fecha"/>
+		<col id="hora" name="Hora"/>
+		<col id="orden" name="Orden"/>
+		<col id="tipo_orden" name="Tipo"/>
+		<col id="recomendaciones" name="Recomendaciones"/>
+		<col id="status" name="Status"/>
+		</tbl> 
+		<tab n="7"/>
+		<br/>	
+		
+		<tab/><sp/><txt fnt=",bs">DETALLES:</txt>
+		
+		<br/>	<tab n="1"/>
+			<grp bclr="236,240,243" fntClrBrdr="255,206,0" unfont="0" fntBrdr="Arial,18" hSpace="4" clrBrdr="0,58,112" dim="30,30,10,10" brdr="0,5" fnt="Arial,16">
+				<sp/><txt fnt=",bs">Resultado:</txt><br/> 
+				<sp/><inp id="resultado" dim="28,2" bclr="192,205,213" clr="64,64,64" clrBrdr="255,255,255" type="string" brdr="0,2"/><br/>
+				<sp/><txt fnt=",bs">Comentarios:</txt><br/> 
+				<sp/><inp id="coments" dim="28,2" bclr="192,205,213" clr="64,64,64" clrBrdr="255,255,255" type="string" brdr="0,2"/><br/>
+				<sp/><txt fnt=",bs">Observaciones:</txt><br/> 
+				<sp/><inp id="observaciones" dim="28,2" bclr="192,205,213" clr="64,64,64" clrBrdr="255,255,255" type="string" brdr="0,2"/><br/>
+				<sp/><txt fnt=",bs">Recomendaciones:</txt><br/> 
+				<sp/><inp id="recomendaciones" dim="28,2" bclr="192,205,213" clr="64,64,64" clrBrdr="255,255,255" type="string" brdr="0,2"/>
+				<br/>
+	
+			</grp>
+			
+			<grp bclr="236,240,243" fntClrBrdr="255,206,0" unfont="0" fntBrdr="Arial,18" hSpace="4" clrBrdr="0,58,112" dim="42,30,10,10" brdr="0,5" fnt="Arial,16">
+				<br/>
+				<sp/><txt>&#191;El trabajo fue revisado por el Jefe de Taller?</txt>
+				<inp id="revisado" dim="1,1" bclr="192,205,213" clr="64,64,64" clrBrdr="255,255,255" type="string" brdr="0,2"/>
+				<br/>
+				
+				<sp/><txt>&#191;El servicio fue concluido o en caso de falla esta fue reparada?</txt>
+				<inp id="concluido" dim="1,1" bclr="192,205,213" clr="64,64,64" clrBrdr="255,255,255" type="string" brdr="0,2"/><br/>
+				
+				<sp/><txt>&#191;Este trabajo requirio elaboracion de reporte tecnico?</txt>
+				<inp id="reporte_tecnico" dim="1,1" bclr="192,205,213" clr="64,64,64" clrBrdr="255,255,255" type="string" brdr="0,2"/><br/>
+				
+				<sp/><txt>&#191;Este trabajo aplico a garantia?</txt>
+				<inp id="garantia" dim="1,1" bclr="192,205,213" clr="64,64,64" clrBrdr="255,255,255" type="string" brdr="0,2"/><br/>
+				<br/>
+				<sp/><txt fnt=",bs">Observaciones Extra:</txt><br/> 
+				<sp/><inp id="obs_extra" dim="35,2" bclr="192,205,213" clr="64,64,64" clrBrdr="255,255,255" type="string" brdr="0,2"/>
+				<br/> 
+				<sp/><txt fnt=",bs">Recomendaciones Extra:</txt><br/> 
+				<sp/><inp id="rec_extra" dim="35,2" bclr="192,205,213" clr="64,64,64" clrBrdr="255,255,255" type="string" brdr="0,2"/>
+			</grp>
+		
+		</grp>
+	
+	
+</grp>
+	<script>
+		InstallDriver("KDB75");
+		class Main {
+			var frn,frP,kdb,sys,sucursal,serie,suc_usuario ;
+
+			fun Main(){
+				frn=new FRNT;
+				kdb=new KDB;
+				frP=new FRNTP;
+				sys=new SYS;
+				kdb.connect();
+				
+				suc_usuario = frn.lib("libKepler","UserInfo(1)");
+				sucursal = frP.get("k_sucN", -1, 1);	
+				serie =  frP.get("vin");
+				
+				if (sucursal &= ""){
+					sucursal = suc_usuario ;
+				}
+				
+				frn.set("input_serie",serie);
+					
+				buscar_datos();
+		
+			
+			
+			}
+			
+		
+			
+			fun buscar_datos() {
+			
+				var xmlRequest,cmd,ok,cuboResultados, totresultados , contresultados;
+				
+				cmd= "select to_char(c8,'DD/MM/YYYY') as c8,c9,c2,c3,c16,c5 from keplersc.kdpunres where c1='" & sucursal & "' and RIGHT(c25,8)='" &  frn.get("input_serie") & "' order by c3 desc";
+			
+				cuboResultados = frn.lib("libGeneral.kpl","EjecutarSqlSel",cmd,"recomendaciones.Inicializa()");
+				
+				frn.lib("libGeneral.kpl","FileSave",cuboResultados,"C:\Basura\cuboResultados");
+				
+				ok=getXmlAtt(cuboResultados,"ok");
+				if(ok &! "" && !ok){
+					var mensajeError = getXmlAtt(cuboResultados,"native3");
+					frn.message(mensajeError,"Error","Aceptar");
+					return;
+				}
+				
+				totresultados = nXml(cuboResultados);
+			
+				frn.rst("tabla");
+				for (contresultados=0; contresultados<totresultados ; contresultados++){
+			
+					frn.setX( getXmlAtt(cuboResultados,"r"&contresultados,"c8"),"tabla",contresultados,"fecha");
+					frn.setX( getXmlAtt(cuboResultados,"r"&contresultados,"c9"),"tabla",contresultados,"hora");
+					frn.setX( getXmlAtt(cuboResultados,"r"&contresultados,"c2"),"tabla",contresultados,"tipo_orden");
+					frn.setX( getXmlAtt(cuboResultados,"r"&contresultados,"c3"),"tabla",contresultados,"orden");
+					frn.setX( getXmlAtt(cuboResultados,"r"&contresultados,"c16"),"tabla",contresultados,"recomendaciones");
+					frn.setX( getXmlAtt(cuboResultados,"r"&contresultados,"c5"),"tabla",contresultados,"status");
+				
+				}	
+		
+			}
+			
+			
+			fun detalles() {
+			
+				borrar_datos();
+				
+				var xmlRequest,cmd,ok,cuboResultados;
+	
+				var orden = frn.get("tabla", -1, "orden");
+				var tipo_orden= frn.get("tabla", -1, "tipo_orden");
+				
+				cmd= "select c11,c12,c13,c14,c15,c16,c21,c22,c26,c29 from keplersc.kdpunres where c1='" & sucursal & "' and c2='" &  tipo_orden & "' and c3='" & orden & "'";
+			
+				cuboResultados = frn.lib("libGeneral.kpl","EjecutarSqlSel",cmd,"recomendaciones.detalles()");
+				
+				frn.lib("libGeneral.kpl","FileSave",cuboResultados,"C:\Basura\cuboResultados");
+				
+				ok=getXmlAtt(cuboResultados,"ok");
+				if(ok &! "" && !ok){
+					var mensajeError = getXmlAtt(cuboResultados,"native3");
+					frn.message(mensajeError,"Error","Aceptar");
+					return;
+				}
+				
+				frn.set("resultado",getXmlAtt(cuboResultados,"r0","c11"));
+				frn.set("coments",getXmlAtt(cuboResultados,"r0","c14"));
+				frn.set("observaciones",getXmlAtt(cuboResultados,"r0","c15"));
+				frn.set("recomendaciones",getXmlAtt(cuboResultados,"r0","c16"));
+				frn.set("revisado",getXmlAtt(cuboResultados,"r0","c12"));
+				frn.set("concluido",getXmlAtt(cuboResultados,"r0","c13"));
+				frn.set("reporte_tecnico",getXmlAtt(cuboResultados,"r0","c21"));
+				frn.set("garantia",getXmlAtt(cuboResultados,"r0","c22"));
+				frn.set("obs_extra",getXmlAtt(cuboResultados,"r0","c26"));
+				frn.set("rec_extra",getXmlAtt(cuboResultados,"r0","c29"));
+			
+		
+			}
+			
+			fun borrar_datos(){
+				frn.rst("resultado");
+				frn.rst("coments");
+				frn.rst("observaciones");
+				frn.rst("recomendaciones");
+				frn.rst("revisado");
+				frn.rst("concluido");
+				frn.rst("reporte_tecnico");
+				frn.rst("garantia");
+				frn.rst("obs_extra");
+				frn.rst("rec_extra");
+				
+			}
+			
+		}
+	</script>
+</pag>

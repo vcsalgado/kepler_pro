@@ -7,7 +7,6 @@ AS $function$
 --Fecha: 15/09/2022
 --Bitacora de cambios
 --Miriam Santana: 07/10/24 No permitir baja de pedido si ya esta vendido
---Miriam Santana:25/05/2026 Deseleccionar anticipos
 
 declare
 v_sucursal_id text = ''; 
@@ -25,13 +24,6 @@ v_diacontable text='';
 v_mescontable text='';
 v_fechacontable text = '';
 estado_venta int;		--MSS 
-
---MSS Deseleccionar anticipos
-gen_ant	text;
-nat_ant text;
-gpo_ant int;
-tipo_ant int;
-folio_ant text;
 
 resultado text= '';
 mensaje text = '0';
@@ -119,14 +111,6 @@ BEGIN
 							  c5 = tipo::numeric  and 
 							  c6 = v_folio;
 				 		
-						--MSS 25052026: Deseleccionar anticipos
-						select c2,c3,c4,c5,c6 into gen_ant,nat_ant,gpo_ant,tipo_ant,folio_ant from keplersc.kdf3ncant
-							where c1=v_sucursal_id and tipo_relacion ='' and folio_relacionado = v_inventario;
-					
-						update keplersc.kdf3ncant set
-							folio_relacionado = ''				
-							where c1=v_sucursal_id and c2=gen_ant and c3=nat_ant and c4=gpo_ant and c5=tipo_ant and c6=folio_ant;
-						
 						insert into keplersc.KDUSRACCESS (c1,c2,c3,c4,c5,c6,c7,c8,c9,c10)
 						values(v_rol_usuario,
 								(select now()),

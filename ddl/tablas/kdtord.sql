@@ -13,6 +13,7 @@ CREATE  TABLE keplersc.kdtord (
   c12 timestamp without time zone NOT NULL DEFAULT '1800-01-01 00:00:00'::timestamp without time zone
 ) TABLESPACE pg_default;
 ALTER TABLE ONLY keplersc.kdtord ADD CONSTRAINT pk_kdtord PRIMARY KEY (c1, c2, c3);
+CREATE INDEX IF NOT EXISTS kdtord_c1_idx ON keplersc.kdtord USING btree (c1, c7, c8, c9, c10, c11) TABLESPACE pg_default;
 CREATE INDEX IF NOT EXISTS sindkdtord02 ON keplersc.kdtord USING btree (c1, c5, c2, c3) TABLESPACE pg_default;
 CREATE INDEX IF NOT EXISTS sindkdtord03 ON keplersc.kdtord USING btree (c1, c6, c2, c3) TABLESPACE pg_default;
 CREATE INDEX IF NOT EXISTS sindkdtord04 ON keplersc.kdtord USING btree (c1, c4, c5, c2, c3) TABLESPACE pg_default;

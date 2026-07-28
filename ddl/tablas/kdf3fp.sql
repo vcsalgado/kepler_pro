@@ -15,6 +15,7 @@ CREATE  TABLE keplersc.kdf3fp (
   c14 timestamp without time zone NOT NULL DEFAULT '1800-01-01 00:00:00'::timestamp without time zone
 ) TABLESPACE pg_default;
 CREATE UNIQUE INDEX IF NOT EXISTS pk_kdf3fp ON keplersc.kdf3fp USING btree (c1) TABLESPACE pg_default;
+COMMENT ON TABLE keplersc.kdf3fp IS 'Formas de pago';
 COMMENT ON COLUMN keplersc.kdf3fp.c9 IS 'Cuenta Beneficiario';
 COMMENT ON COLUMN keplersc.kdf3fp.c8 IS 'RFC Emisor';
 COMMENT ON COLUMN keplersc.kdf3fp.c7 IS 'Patron';

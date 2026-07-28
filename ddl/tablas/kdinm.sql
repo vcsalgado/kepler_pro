@@ -11,13 +11,16 @@ CREATE  TABLE keplersc.kdinm (
   c10 numeric NOT NULL DEFAULT 0,
   c11 numeric(10,2) NOT NULL DEFAULT 0,
   c12 numeric(15,2) NOT NULL DEFAULT 0,
-  c13 numeric NOT NULL DEFAULT 0
+  c13 numeric NOT NULL DEFAULT 0,
+  col_foliomig character varying(10) NULL,
+  col_foliofin character varying(10) NULL
 ) TABLESPACE pg_default;
-CREATE UNIQUE INDEX IF NOT EXISTS pk_kdinm ON keplersc.kdinm USING btree (c1, c5, c6, c7, c8, c9, c10, c13) TABLESPACE pg_default;
+ALTER TABLE ONLY keplersc.kdinm ADD CONSTRAINT pk_kdinm PRIMARY KEY (c1, c5, c6, c7, c8, c9, c10, c13);
 CREATE INDEX IF NOT EXISTS sindkdinm02 ON keplersc.kdinm USING btree (c1, c2, c3, c4, c5, c6, c7, c8, c9, c10) TABLESPACE pg_default;
 CREATE INDEX IF NOT EXISTS sindkdinm03 ON keplersc.kdinm USING btree (c1, c3, c2, c5, c6, c7, c8, c9, c10) TABLESPACE pg_default;
 CREATE INDEX IF NOT EXISTS sindkdinm04 ON keplersc.kdinm USING btree (c1, c5, c6, c7, c8, c9, c10, c3, c4) TABLESPACE pg_default;
 CREATE INDEX IF NOT EXISTS sindkdinm05 ON keplersc.kdinm USING btree (c1, c6, c3, c2, c5, c7, c8, c9, c10) TABLESPACE pg_default;
+COMMENT ON TABLE keplersc.kdinm IS 'Detalle movimientos de inventario';
 COMMENT ON COLUMN keplersc.kdinm.c9 IS 'Folio';
 COMMENT ON COLUMN keplersc.kdinm.c8 IS 'Tipo';
 COMMENT ON COLUMN keplersc.kdinm.c7 IS 'Grupo';

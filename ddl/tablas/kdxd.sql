@@ -14,7 +14,7 @@ CREATE  TABLE keplersc.kdxd (
   c13 character varying(5) NOT NULL DEFAULT ''::character varying,
   c14 character varying(5) NOT NULL DEFAULT ''::character varying,
   c15 numeric(15,2) NOT NULL DEFAULT 0,
-  c16 character varying NOT NULL DEFAULT '0'::character varying,
+  c16 character varying NOT NULL DEFAULT 0,
   c17 character varying(4) NOT NULL DEFAULT ''::character varying,
   c18 character varying(4) NOT NULL DEFAULT ''::character varying,
   c19 character varying(4) NOT NULL DEFAULT ''::character varying,
@@ -27,11 +27,7 @@ CREATE  TABLE keplersc.kdxd (
   c26 character varying(40) NOT NULL DEFAULT ''::character varying,
   c27 character varying(10) NOT NULL DEFAULT ''::character varying,
   c28 character varying(1) NULL,
-  c29 character varying(1) NULL DEFAULT 'S'::character varying,
-  pagador numeric NOT NULL DEFAULT 0,
-  ctadep character varying(18) NOT NULL DEFAULT ''::character varying,
-  pagdev numeric NOT NULL DEFAULT 0,
-  interno numeric NOT NULL DEFAULT 0
+  c29 character varying(1) NULL DEFAULT 'S'::character varying
 ) TABLESPACE pg_default;
 CREATE UNIQUE INDEX IF NOT EXISTS pk_kdxd ON keplersc.kdxd USING btree (c2) TABLESPACE pg_default;
 CREATE INDEX IF NOT EXISTS sindkdxd02 ON keplersc.kdxd USING btree (c3, c2) TABLESPACE pg_default;
@@ -39,10 +35,6 @@ CREATE INDEX IF NOT EXISTS sindkdxd03 ON keplersc.kdxd USING btree (c12, c2) TAB
 CREATE INDEX IF NOT EXISTS sindkdxd04 ON keplersc.kdxd USING btree (c13, c2) TABLESPACE pg_default;
 CREATE INDEX IF NOT EXISTS sindkdxd05 ON keplersc.kdxd USING btree (c14, c2) TABLESPACE pg_default;
 COMMENT ON TABLE keplersc.kdxd IS 'Proveedores';
-COMMENT ON COLUMN keplersc.kdxd.pagdev IS 'Para Ctrl Interno Proveedor Generico Pago Devoluciones Clientes';
-COMMENT ON COLUMN keplersc.kdxd.pagador IS 'Proveedor de Pago';
-COMMENT ON COLUMN keplersc.kdxd.interno IS 'ST Proveedor Interno / Empleados Recibiendo Despositos para Gastos Operativos';
-COMMENT ON COLUMN keplersc.kdxd.ctadep IS 'Cuenta Deposito del Proveedor - Transferencias';
 COMMENT ON COLUMN keplersc.kdxd.c9 IS 'Fax';
 COMMENT ON COLUMN keplersc.kdxd.c8 IS 'Telefono 2';
 COMMENT ON COLUMN keplersc.kdxd.c7 IS 'Telefono';

@@ -23,6 +23,7 @@ CREATE  TABLE keplersc.kdf3headextras (
   movto_sustitucion character varying(21) NOT NULL DEFAULT ''::character varying
 ) TABLESPACE pg_default;
 ALTER TABLE ONLY keplersc.kdf3headextras ADD CONSTRAINT pk_kdf3headextras PRIMARY KEY (c1, c2, c3, c4, c5, c6, c7);
+COMMENT ON TABLE keplersc.kdf3headextras IS 'F3 Header extras';
 COMMENT ON COLUMN keplersc.kdf3headextras.movto_sustitucion IS 'Movimiento sustitucion';
 COMMENT ON COLUMN keplersc.kdf3headextras.motivo_cancelacion IS 'Motivo cancelacion CFDI';
 COMMENT ON COLUMN keplersc.kdf3headextras.c9 IS 'Descripción';

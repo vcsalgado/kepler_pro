@@ -1,5 +1,5 @@
 CREATE  TABLE keplersc.kdtmktserconf (
-  c1 character varying(7) NOT NULL DEFAULT '0'::character varying,
+  c1 character varying(7) NOT NULL DEFAULT 0,
   c2 character varying NOT NULL DEFAULT ''::character varying,
   c3 numeric NOT NULL DEFAULT 0,
   c4 numeric NOT NULL DEFAULT 0,
@@ -25,9 +25,9 @@ CREATE  TABLE keplersc.kdtmktserconf (
   c24 numeric NOT NULL DEFAULT 0,
   c25 numeric NOT NULL DEFAULT 0,
   c26 numeric NOT NULL DEFAULT 1,
-  c27 character varying NOT NULL DEFAULT '0'::character varying,
-  col_suc_ventas character varying(7) NOT NULL DEFAULT '0'::character varying,
-  c28 numeric NOT NULL DEFAULT 2
+  c27 character varying NOT NULL DEFAULT 0,
+  c28 numeric NOT NULL DEFAULT 2,
+  col_suc_ventas character varying(7) NOT NULL DEFAULT 0
 ) TABLESPACE pg_default;
 ALTER TABLE ONLY keplersc.kdtmktserconf ADD CONSTRAINT pk_kdtmktserconf PRIMARY KEY (c1);
 COMMENT ON TABLE keplersc.kdtmktserconf IS 'Configuracion de Telemarketing de Servicios';

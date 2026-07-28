@@ -91,7 +91,7 @@ begin
 	--Actualizar localizacion 
 	if crud = 'Nuevo' or crud = 'Modificar' then
 		if sucursal='' then
-			raise exception 'No se proporciono la sucursal';
+			raise exception 'No se proporcionó la sucursal';
 		end if;
 		select count(*) into totReg from keplersc.kdlocref where c1=sucursal and c2=clave;
 		if totReg = 0 then
@@ -101,7 +101,7 @@ begin
 	end if;
 
 	if crud = 'Eliminar' then
-		raise exception 'Operacion no permitida.';
+		raise exception 'Operación no permitida.';
 		delete from keplersc.kdini where c1 = clave;	
 	end if;
 

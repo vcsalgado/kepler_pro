@@ -11,9 +11,9 @@ ALTER TABLE ONLY keplersc.kddinv ADD CONSTRAINT pk_kddinv PRIMARY KEY (c1);
 COMMENT ON TABLE keplersc.kddinv IS 'Inventario Autos';
 COMMENT ON COLUMN keplersc.kddinv.c7 IS 'Nuevo o Usado';
 COMMENT ON COLUMN keplersc.kddinv.c6 IS 'Consecutivo';
-COMMENT ON COLUMN keplersc.kddinv.c5 IS 'Dígitos del Modelo';
-COMMENT ON COLUMN keplersc.kddinv.c4 IS 'Dígitos de Identificación';
+COMMENT ON COLUMN keplersc.kddinv.c5 IS 'Digitos del Modelo';
+COMMENT ON COLUMN keplersc.kddinv.c4 IS 'Digitos de Identificacion';
 COMMENT ON COLUMN keplersc.kddinv.c3 IS 'Año Modelo';
-COMMENT ON COLUMN keplersc.kddinv.c2 IS 'Descripción';
+COMMENT ON COLUMN keplersc.kddinv.c2 IS 'Descripcion';
 COMMENT ON COLUMN keplersc.kddinv.c1 IS 'Clave';
 

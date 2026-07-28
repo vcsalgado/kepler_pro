@@ -46,9 +46,8 @@ begin
 	end if;
 
 	if crud = 'ELIMINAR' then
-		raise exception 'Funcion no implementada';
-		--delete from keplersc.kdclaspaq
-		--	where c1=cve_claspaq;
+		delete from keplersc.kdclaspaq
+			where c1=cve_claspaq;
 	end if;
 
 	resultado := 1;

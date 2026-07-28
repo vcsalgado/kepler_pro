@@ -27,6 +27,7 @@ CREATE  TABLE keplersc.kdivcl (
   c26 character varying(16) NOT NULL DEFAULT ''::character varying
 ) TABLESPACE pg_default;
 ALTER TABLE ONLY keplersc.kdivcl ADD CONSTRAINT pk_kdivcl PRIMARY KEY (c1, c2, c3);
+COMMENT ON TABLE keplersc.kdivcl IS 'Catalogo de cuentas autos';
 COMMENT ON COLUMN keplersc.kdivcl.c3 IS 'Sucursal';
 COMMENT ON COLUMN keplersc.kdivcl.c26 IS 'Precio de Venta traspasos';
 COMMENT ON COLUMN keplersc.kdivcl.c25 IS 'Costo de Venta traspasos';

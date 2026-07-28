@@ -10,7 +10,7 @@ CREATE  TABLE keplersc.kdecaja (
   c9 timestamp without time zone NOT NULL DEFAULT '1800-01-01 00:00:00'::timestamp without time zone,
   c10 numeric(15,2) NOT NULL DEFAULT 0
 ) TABLESPACE pg_default;
-CREATE UNIQUE INDEX IF NOT EXISTS pk_kdecaja ON keplersc.kdecaja USING btree (c1, c3, c4, c5, c6, c7, c8) TABLESPACE pg_default;
+ALTER TABLE ONLY keplersc.kdecaja ADD CONSTRAINT pk_kdecaja PRIMARY KEY (c1, c3, c4, c5, c6, c7, c8);
 CREATE INDEX IF NOT EXISTS sindkdecaja02 ON keplersc.kdecaja USING btree (c1, c2, c9, c3, c4, c5, c6, c7, c8) TABLESPACE pg_default;
 CREATE INDEX IF NOT EXISTS sindkdecaja03 ON keplersc.kdecaja USING btree (c1, c3, c4, c5, c6, c2, c9, c7, c8) TABLESPACE pg_default;
 COMMENT ON TABLE keplersc.kdecaja IS 'Caja movimientos';

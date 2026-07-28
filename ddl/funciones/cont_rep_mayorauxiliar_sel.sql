@@ -271,7 +271,7 @@ begin
 
 	-- crear tabla tempora a partir de kdc2, sin registros
 	drop table if exists tmpkdc2;
-	create temp table tmpkdc2 as select * from keplersc.kdc2;
+	create temp table tmpkdc2 as select * from keplersc.kdc22312;
 	create index tmpKdc2_1_idx on tmpkdc2 (c1,c2);
 	create index tmpKdc2_2_idx on tmpkdc2 (c5,c16,c17,c18,c19);
 	create index tmpKdc2_3_idx on tmpkdc2 (c3,c2,c1);

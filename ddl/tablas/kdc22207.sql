@@ -5,7 +5,7 @@ CREATE  TABLE keplersc.kdc22207 (
   c4 character varying(1) NOT NULL DEFAULT ''::character varying,
   c5 numeric(15,2) NOT NULL DEFAULT 0,
   c6 character varying(40) NOT NULL DEFAULT ''::character varying,
-  c7 character varying(40) NULL DEFAULT ''::character varying,
+  c7 character varying(40) NOT NULL DEFAULT ''::character varying,
   c8 character varying(1) NOT NULL DEFAULT ''::character varying,
   c9 numeric(15,4) NOT NULL DEFAULT 0,
   c10 numeric NOT NULL DEFAULT 0,
@@ -48,16 +48,16 @@ CREATE  TABLE keplersc.kdc22207 (
   c47 character varying(1) NOT NULL DEFAULT ''::character varying,
   c48 character varying(1) NOT NULL DEFAULT ''::character varying,
   c49 character varying(1) NOT NULL DEFAULT ''::character varying,
-  c50 character varying(1) NOT NULL DEFAULT ''::character varying
+  c50 character varying(1) NOT NULL DEFAULT ''::character varying,
+  col_foliomig character varying(10) NULL,
+  col_foliofin character varying(10) NULL
 ) TABLESPACE pg_default;
 ALTER TABLE ONLY keplersc.kdc22207 ADD CONSTRAINT pk_kdc22207 PRIMARY KEY (c3, c2, c8, c1, c10);
-CREATE INDEX IF NOT EXISTS kdc22207_c13_c2_c3_c8_c1_c10_idx ON keplersc.kdc22207 USING btree (c13, c2, c3, c8, c1, c10) TABLESPACE pg_default;
-CREATE INDEX IF NOT EXISTS kdc22207_c14_c15_c16_c17_c18_c19_c8_c1_c10_idx ON keplersc.kdc22207 USING btree (c14, c15, c16, c17, c18, c19, c8, c1, c10) TABLESPACE pg_default;
-CREATE INDEX IF NOT EXISTS kdc22207_c21_c2_c3_c8_c1_c10_idx ON keplersc.kdc22207 USING btree (c21, c2, c3, c8, c1, c10) TABLESPACE pg_default;
-CREATE INDEX IF NOT EXISTS kdc22207_c2_c8_c1_c10_idx ON keplersc.kdc22207 USING btree (c2, c8, c1, c10) TABLESPACE pg_default;
-CREATE UNIQUE INDEX IF NOT EXISTS kdc22207_c3_c2_c8_c1_c10_idx ON keplersc.kdc22207 USING btree (c3, c2, c8, c1, c10) TABLESPACE pg_default;
-CREATE INDEX IF NOT EXISTS kdc22207_c8_c1_c10_idx ON keplersc.kdc22207 USING btree (c8, c1, c10) TABLESPACE pg_default;
+CREATE INDEX IF NOT EXISTS sindkdc2220702 ON keplersc.kdc22207 USING btree (c8, c1, c10) TABLESPACE pg_default;
+CREATE INDEX IF NOT EXISTS sindkdc2220703 ON keplersc.kdc22207 USING btree (c2, c8, c1, c10) TABLESPACE pg_default;
+CREATE INDEX IF NOT EXISTS sindkdc2220704 ON keplersc.kdc22207 USING btree (c13, c2, c3, c8, c1, c10) TABLESPACE pg_default;
 CREATE INDEX IF NOT EXISTS sindkdc2220705 ON keplersc.kdc22207 USING btree (c14, c15, c16, c17, c18, c19, c8, c1, c10) TABLESPACE pg_default;
+CREATE INDEX IF NOT EXISTS sindkdc2220706 ON keplersc.kdc22207 USING btree (c21, c2, c3, c8, c1, c10) TABLESPACE pg_default;
 COMMENT ON COLUMN keplersc.kdc22207.c9 IS 'Monto en moneda de origen';
 COMMENT ON COLUMN keplersc.kdc22207.c8 IS 'Tipo de póliza';
 COMMENT ON COLUMN keplersc.kdc22207.c7 IS 'Referencia';
@@ -82,5 +82,5 @@ COMMENT ON COLUMN keplersc.kdc22207.c14 IS 'Sucursal';
 COMMENT ON COLUMN keplersc.kdc22207.c11 IS 'Clave del departamento';
 COMMENT ON COLUMN keplersc.kdc22207.c10 IS 'Número consecutivo de partida';
 COMMENT ON COLUMN keplersc.kdc22207.c1 IS 'Número de póliza';
-CREATE TRIGGER kdc22207_upd_nivel_after_crud AFTER INSERT OR DELETE OR UPDATE ON keplersc.kdc22207 FOR EACH ROW EXECUTE FUNCTION keplersc.cont_upd_saldos();
+CREATE TRIGGER kdc22207_upd_saldos_after_crud AFTER INSERT OR DELETE OR UPDATE ON keplersc.kdc22207 FOR EACH ROW EXECUTE FUNCTION keplersc.cont_upd_saldos();
 

@@ -11,6 +11,7 @@ CREATE  TABLE keplersc.kdisan (
   c10 numeric(15,2) NOT NULL DEFAULT 0
 ) TABLESPACE pg_default;
 ALTER TABLE ONLY keplersc.kdisan ADD CONSTRAINT pk_kdisan PRIMARY KEY (c1, c2);
+COMMENT ON TABLE keplersc.kdisan IS 'ISAN';
 COMMENT ON COLUMN keplersc.kdisan.c9 IS 'Cuota de Excedente';
 COMMENT ON COLUMN keplersc.kdisan.c8 IS 'Porcentaje de Reducción';
 COMMENT ON COLUMN keplersc.kdisan.c7 IS 'Tarifa';

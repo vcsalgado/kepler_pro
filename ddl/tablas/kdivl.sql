@@ -4,6 +4,7 @@ CREATE  TABLE keplersc.kdivl (
 ) TABLESPACE pg_default;
 ALTER TABLE ONLY keplersc.kdivl ADD CONSTRAINT pk_kdivl PRIMARY KEY (c1);
 CREATE INDEX IF NOT EXISTS sindkdivl02 ON keplersc.kdivl USING btree (c2, c1) TABLESPACE pg_default;
+COMMENT ON TABLE keplersc.kdivl IS 'Catalogo de lineas';
 COMMENT ON COLUMN keplersc.kdivl.c2 IS 'Descripcion';
 COMMENT ON COLUMN keplersc.kdivl.c1 IS 'Linea';
 

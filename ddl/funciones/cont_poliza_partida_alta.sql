@@ -2,13 +2,6 @@ CREATE OR REPLACE FUNCTION keplersc.cont_poliza_partida_alta(datacontxml xml)
  RETURNS TABLE(resultado text, mensaje text, adicionales text)
  LANGUAGE plpgsql
 AS $function$
---Bitacora de cambios
---04/06/2024 (JMM) :
----- Se incluyen cambios asociados con nuevo SCH - Gastos ( C x P ) 
----- para las Operaciones de los Comtrarecibos 
---17/07/2024 (JMM) : 
----- Incluir Concepto Presupuesto para nuevo SCH - Gastos ( C x P . Contra Recibos) 
-
 declare
 	--Variables para xml 
 	fecha text = ''; --aaaa-mm-dd
@@ -51,20 +44,8 @@ declare
 	expSql text='';
 	campo_base_pesos_cargos_kdc1 int = 27;
 	campo_base_pesos_abonos_kdc1 int = 63;
-
-	--Added by JMM 20240406
-	var_st_compr text = '';
-
-	--Added by JMM 20240717
-	var_concept_prspto text = '';
-
-	--Added by JMM 20240902
-	resultado_verificar text;
-  	dia text ='';
-    mes text ='';
-    anio text ='';
-   	fech_valid text ='';
 	
+
 begin
 	--Obtener valores de xml
 	fecha := (xpath('//varcont/fecha/text()',datacontxml))[1]::text;
@@ -90,54 +71,6 @@ begin
 	accion_poliza := (xpath('//varcont/accion_poliza/text()',datacontxml))[1]::text;
 	folio_poliza := (xpath('//varcont/folio_poliza/text()',datacontxml))[1]::text;
 	numero_partida := (xpath('//varcont/numero_partida/text()',datacontxml))[1]::text;
-
-
-	-----  Start : Section to Validate Period ... Added by JMM 20240902 
-
-	-- Se toma la fecha del Parametro que se envia para esta Funcion 
-    /*fecha := (xpath('//document/k_fecha/text()',dataxml))[1];*/
-
-	fech_valid := left(fecha,10);
-
-    select split_part(fech_valid,'-', 3) into dia;
-    select split_part(fech_valid,'-', 2) into mes;
-    select split_part(fech_valid,'-', 1) into anio;
-    fech_valid := concat(dia,'/',mes,'/',anio);
-    
-    resultado_verificar := '1';
-   
-   	--raise exception 'fech_valid %', fech_valid;
-   
-    select * into resultado_verificar, mensaje from keplersc.verify_year(fech_valid);
-    if resultado_verificar = '0' then
-        raise exception '%', mensaje;
-    end if;
-   
-   	--raise exception '%', 'Paso Validacion Periodo CT ...';
-   
-    -----  End : Section to Validate Period ... Added by JMM 20240902 
-   
-   
-	-- Added by JMM 20240406 to Fill Data c33 as st_compr or st_x_comprobar (expenses doc convert)
-	var_st_compr := '';
-
-	if xpath_exists('//varcont/var_st_compr/text()', datacontxml) = true /*false*/ then 
-		var_st_compr := coalesce((xpath('//varcont/var_st_compr/text()',datacontxml))[1]::text,'')::text;
-	end if;
-
-	-- To Test by JMM 20240407 
-	/*raise exception 'var var_st_compr : %', var_st_compr;*/
-
-
-	-- Added by JMM 20240717 to Fill Data c21 as ctopto (expenses doc contra-recibo)
-	var_concept_prspto := '';
-
-	if xpath_exists('//varcont/var_concept_prspto/text()', datacontxml) = true /*false*/ then 
-		var_concept_prspto := coalesce((xpath('//varcont/var_concept_prspto/text()',datacontxml))[1]::text,'')::text;
-	end if;
-
-	-- To Test by JMM 20240717 
-	--raise exception 'var var_concept_prspto : %', var_concept_prspto;
 
 
 	--Obtener nombres de tablas y campos del anio-mes contable en curso
@@ -179,7 +112,7 @@ begin
 		execute expSql into intValor;
 --raise exception '2. Sql: %, Valor:%', expSql,intValor;	
 		if intValor > 0 then --
-			raise exception '%', concat('Imposible agregar la cuenta ', cuenta, ', no es de �ltimo nivel.');
+			raise exception '%', concat('Imposible agregar la cuenta ', cuenta, ', no es de último nivel.');
 		end if ;
 
 		expSql=format('insert into %1$s (c1,c2) values(%2$L,%3$L)',tabla_cuentas,cuenta,substring(descrip,1,40));
@@ -205,14 +138,14 @@ begin
 	--Registra partida poliz
 	expSql = format('insert into %1$s (c1,c2,c3,c4,c5,
 		c6,c7,c8,c10,c14,
-		c15,c16,c17,c18,c19,c33,c21) values(
+		c15,c16,c17,c18,c19) values(
 		%2$L, %3$L, %4$L, %5$L, %6$s, 
 		%7$L, %8$L, %9$L, %10$s, %11$L, 
-		%12$L, %13$L, %14$s, %15$s, %16$L , %17$L , %18$L)',
+		%12$L, %13$L, %14$s, %15$s, %16$L)',
 		tabla_polizas,
 		folio_poliza,fecha,cuenta,tipo_asiento,	monto,
 		substring(descrip,1,40),refer,tipo_poliza,numero_partida,sucursal,
-		genero,naturaleza,grupo,tipo_clave,folio_operacion ,var_st_compr ,var_concept_prspto);
+		genero,naturaleza,grupo,tipo_clave,folio_operacion);
 		
 --raise notice 'PASO 3 Partida poliza: %', expSql;
 	execute expSql;

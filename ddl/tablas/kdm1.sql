@@ -97,8 +97,8 @@ CREATE  TABLE keplersc.kdm1 (
   c96 character varying(1) NOT NULL DEFAULT ''::character varying,
   c97 character varying(12) NOT NULL DEFAULT ''::character varying,
   c98 character varying(1) NOT NULL DEFAULT ''::character varying,
-  c99 character varying(90) NOT NULL DEFAULT ''::character varying,
-  c100 character varying(10) NOT NULL DEFAULT ''::character varying,
+  c99 character varying(130) NOT NULL DEFAULT ''::character varying,
+  c100 character varying(15) NOT NULL DEFAULT ''::character varying,
   c101 numeric(15,2) NOT NULL DEFAULT 0,
   c102 numeric NOT NULL DEFAULT 0,
   c103 numeric(15,2) NOT NULL DEFAULT 0,
@@ -222,18 +222,16 @@ CREATE  TABLE keplersc.kdm1 (
   doc_refer_aux character varying(90) NOT NULL DEFAULT ''::character varying,
   tipo_relacion character varying(2) NOT NULL DEFAULT ''::character varying,
   motivo_cancelacion character varying(2) NOT NULL DEFAULT ''::character varying,
-  fol_origen character varying(7) NOT NULL DEFAULT '0'::character varying,
   uuid_trasieps character varying(50) NOT NULL DEFAULT '0'::character varying,
   uuid_totalimptotras character varying(50) NOT NULL DEFAULT '0'::character varying,
   uuid_totalimptoret character varying(50) NOT NULL DEFAULT '0'::character varying,
   uuid_subtotal character varying(50) NOT NULL DEFAULT '0'::character varying,
   uuid_otroimptoa character varying(50) NOT NULL DEFAULT '0'::character varying,
-  uuid_otroimptob character varying(50) NOT NULL DEFAULT '0'::character varying,
-  esquema character varying(30) NULL DEFAULT ''::character varying,
-  concepto_factura character varying(10) NOT NULL DEFAULT ''::character varying
+  uuid_otroimptob character varying(50) NOT NULL DEFAULT '0'::character varying
 ) TABLESPACE pg_default;
-CREATE INDEX IF NOT EXISTS kdm1_c1_idx ON keplersc.kdm1 USING btree (c1, fol_origen, c2) TABLESPACE pg_default;
-CREATE UNIQUE INDEX IF NOT EXISTS pk_kdm1 ON keplersc.kdm1 USING btree (c1, c2, c3, c4, c5, c6) TABLESPACE pg_default;
+ALTER TABLE ONLY keplersc.kdm1 ADD CONSTRAINT pk_kdm1 PRIMARY KEY (c1, c2, c3, c4, c5, c6);
+CREATE INDEX IF NOT EXISTS kdm1_c1_idx ON keplersc.kdm1 USING btree (c1, c2, c36, c37, c38, c39) TABLESPACE pg_default;
+CREATE INDEX IF NOT EXISTS kdm1_c2_idx ON keplersc.kdm1 USING btree (c1, c121, c122) TABLESPACE pg_default;
 CREATE INDEX IF NOT EXISTS sindkdm102 ON keplersc.kdm1 USING btree (c1, c10, c2, c3, c4, c5, c6) TABLESPACE pg_default;
 CREATE INDEX IF NOT EXISTS sindkdm103 ON keplersc.kdm1 USING btree (c1, c10, c7, c9, c2, c3, c4, c5, c6) TABLESPACE pg_default;
 CREATE INDEX IF NOT EXISTS sindkdm104 ON keplersc.kdm1 USING btree (c1, c45, c42, c43, c2, c3, c4, c5, c6) TABLESPACE pg_default;
@@ -251,7 +249,7 @@ COMMENT ON COLUMN keplersc.kdm1.uuid_retiva IS 'Retencion IVA del UUID - Ref c11
 COMMENT ON COLUMN keplersc.kdm1.uuid_retisr IS 'Retencion ISR del UUID - Ref c11';
 COMMENT ON COLUMN keplersc.kdm1.uuid_otroimptob IS 'Otros impuestos B';
 COMMENT ON COLUMN keplersc.kdm1.uuid_otroimptoa IS 'Otros impuestos adicionales A';
-COMMENT ON COLUMN keplersc.kdm1.uuid_impuesto IS 'Impuesto IVA Trasladado del UUID - Ref C11';
+COMMENT ON COLUMN keplersc.kdm1.uuid_impuesto IS 'Impuesto del UUID - Ref C11';
 COMMENT ON COLUMN keplersc.kdm1.uuid_folio IS 'Folio del UUID - Ref c11';
 COMMENT ON COLUMN keplersc.kdm1.uuid_fecha IS 'Fecha Timbrado del UUID - Ref c11';
 COMMENT ON COLUMN keplersc.kdm1.usr_comprobacion IS 'Usuario Comprobacion / Evaluacion Modulo Gastos';
@@ -267,11 +265,9 @@ COMMENT ON COLUMN keplersc.kdm1.gpo_aux IS 'Grupo Auxiliar';
 COMMENT ON COLUMN keplersc.kdm1.gen_aux IS 'Genero Auxiliar';
 COMMENT ON COLUMN keplersc.kdm1.folio_aux IS 'Folio Auxiliar';
 COMMENT ON COLUMN keplersc.kdm1.fecha_comprobacion IS 'Fecha Comprobacion CxP ( Modulo Gastos )';
-COMMENT ON COLUMN keplersc.kdm1.esquema IS 'Esquema del proceso';
 COMMENT ON COLUMN keplersc.kdm1.doc_refer_compl IS 'Documento Referencia Complemento ( Modulo Gastos )';
 COMMENT ON COLUMN keplersc.kdm1.doc_refer_aux IS 'Referencia Auxiliar Complementaria ( Modulo Gastos )';
 COMMENT ON COLUMN keplersc.kdm1.cve_prov_pago IS 'Clave Proveedor de Pago ( Modulo Gastos )';
-COMMENT ON COLUMN keplersc.kdm1.concepto_factura IS 'Id del Concepto general de la factura';
 COMMENT ON COLUMN keplersc.kdm1.c99 IS 'Nombre impresion factura';
 COMMENT ON COLUMN keplersc.kdm1.c98 IS 'IVA desglosado';
 COMMENT ON COLUMN keplersc.kdm1.c97 IS 'Tipo operacion';

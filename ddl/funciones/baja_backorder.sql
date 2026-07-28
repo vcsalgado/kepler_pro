@@ -132,7 +132,7 @@ begin
 		raise exception '%', mensaje;
 	else
 		if totReg <> no_partidas then
-			mensaje := 'Existen Discrepancias entre el Numero Registros de las Tablas Kdbom [BackOrder] VS Kdm2...';
+			mensaje := 'Existen Discrepancias entre el Numero Registros de las Tablas Kdbom [BackOrder] VS Kdm2 ...';
 			raise exception '%', mensaje;
 		end if;
 	end if;	

@@ -3,7 +3,7 @@ CREATE  TABLE keplersc.kdsercotref (
   c2 character varying(10) NULL,
   c3 numeric NULL,
   c4 character varying(20) NULL,
-  c5 character varying(60) NULL,
+  c5 character varying(25) NULL,
   c6 numeric(6,3) NULL,
   c7 numeric(10,2) NULL,
   c8 numeric(10,2) NULL,

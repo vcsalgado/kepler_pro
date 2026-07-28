@@ -139,7 +139,7 @@
 				
 				if(frn.param(0)&= "")
 				{
-					frn.message("Esta accion no esta permitida.","Estimado Usuario","&Aceptar");
+					frn.message("Esta acción no está permitida.","Estimado Usuario","&Aceptar");
 					frn.open("redirect",2);
 					return;
 				}
@@ -161,7 +161,7 @@
 
 		
 			fun Inicializa(){
-				kdb.kde("KDE");//								Configuracion del servidor
+				kdb.kde("KDE");//								Configuraciï¿½n del servidor
 				kdb.exec();
 				anio_contable = kdb.get("KDE","14");
 			//MSS----------------------
@@ -488,7 +488,7 @@
 					return;
 				}	
 
-				continua = frn.message("Desea continuar con la alta?","Atencion",2);
+				continua = frn.message("¿Desea continuar con la alta?","Atención",2);
 				if (continua == 0){
 					frn.set("datcfdi","N");	//Pantalla validacion CFDI
 					return;
@@ -661,7 +661,7 @@
 						" c16 as monto, c43 estatus " &
 						"from keplersc.kdm1 " &
 						"where c1='" &sucursal_id& "' and c2='" &gen_doc& "' and c3='" &nat_doc& "' and c4 =" &gpo_doc& " and c5= " & tip_doc & " order by c6 desc ";
-
+				var x;
 				frn.dialog("genlistafiltrosel","Documentos",cmdQuery,"folio","k_folio","0","","S");
 			
 			}
@@ -877,7 +877,7 @@
 			fun Plazo(){ //Calcula la fecha de pago, y las condiciones de pago en base al plazo
 				valida_plazo();
 				var f = frn.get("k_fecha");
-				frn.set("k_vence",fnDate("addC",frn.get("k_fecha"),frn.get("k_plazo")));//Suma dias comerciales
+				frn.set("k_vence",fnDate("addC",frn.get("k_fecha"),frn.get("k_plazo")));//Suma dï¿½as comerciales
 				var cond=frn.get("k_plazo") & " dias fecha factura";
 				if (frn.get("k_plazo")==0) cond="Pago de contado";
 				frn.set("k_cond",cond);
@@ -914,16 +914,16 @@
 			}
 			
 			fun Dialog(iModo,pag,par0,par1,par2,par3,par4,par5,par6,par7,par8,par9,par10,par11,par12,par13,par14,par15){
-				/*iModo: 0)No hace mayor validacion. Siempre despliega la ventana. NO CONCATENA PREFIJO
-							1)Solo concatena el prefijo de la carpeta del lenguaje, no hace mayor validacion. Siempre despliega la ventana
+				/*iModo: 0)No hace mayor validaciï¿½n. Siempre despliega la ventana. NO CONCATENA PREFIJO
+							1)Solo concatena el prefijo de la carpeta del lenguaje, no hace mayor validaciï¿½n. Siempre despliega la ventana
 							2)Modo especial. Se valida que el campo indicado en par0 se puede modificar(El par0 puede ser una tabla, y par1 la columna)
-							3)Modo especial para paginas de operacion:Solo si se esta en alta o modifica despliega la pagina. Simpre agrega el prefijo del lenguaje
+							3)Modo especial para pï¿½ginas de operacion:Solo si se estï¿½ en alta o modifica despliega la pagina. Simpre agrega el prefijo del lenguaje
 				*/
 				var prefix=frn.lib("libKepler","langPrefix");
 				var page=prefix&pag;
 				var b_valido=1;
 				if(iModo==0)page=pag;
-				else if(iModo==2&&(strlen(par0)>0)){//Se toma el par0 como el objeto (o grid) al que se devolvera el resultado.
+				else if(iModo==2&&(strlen(par0)>0)){//Se toma el par0 como el objeto (o grid) al que se devolverï¿½ el resultado.
 					if( frn.getAtt(par0,"modify",par1) &= "N" ) b_valido=0;
 					if( frn.getAtt(par0,"available",par1) &= "N" ) b_valido=0;
 					if( frn.getAtt(par0,"visible",par1) &= "N" ) b_valido=0;

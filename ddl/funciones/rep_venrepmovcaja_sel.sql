@@ -70,7 +70,7 @@ begin
 	where table_name = tablakdc1;
 
 	if totReg = 0 then
-		raise exception 'No se tiene informacion contable para el a�o %, tabla(%)', substring(fecha_ini, 3, 2), tablakdc1;
+		raise exception 'No se tiene información contable para el año %, tabla(%)', substring(fecha_ini, 3, 2), tablakdc1;
 	--else
 	--	raise notice '% %', 'Tabla KDC1 ', tablakdc1;
 	end if;
@@ -82,7 +82,7 @@ begin
 		select count(*) into totReg from information_schema.tables
 		where table_name  = curTabla;
 		if totReg = 0 then
-			raise exception 'No se tiene informacion contable para la tabla del periodo %', curTabla;
+			raise exception 'No se tiene información contable para la tabla del periodo %', curTabla;
 			/*
 			expSql:=format('insert into tmpkdc2 select * from keplersc.%1$s 
 				where c3 >= %2$L and c3 <= %3$L and c2<%4$L'

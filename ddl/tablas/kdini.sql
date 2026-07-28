@@ -2,9 +2,9 @@ CREATE  TABLE keplersc.kdini (
   c1 character varying(18) NOT NULL DEFAULT ''::character varying,
   c2 character varying(60) NOT NULL DEFAULT ''::character varying,
   c3 character varying(1) NOT NULL DEFAULT ''::character varying,
-  c4 character varying(5) NOT NULL DEFAULT ''::character varying,
-  c5 character varying(5) NOT NULL DEFAULT ''::character varying,
-  c6 character varying(5) NOT NULL DEFAULT ''::character varying,
+  c4 character varying(6) NOT NULL DEFAULT ''::character varying,
+  c5 character varying(6) NOT NULL DEFAULT ''::character varying,
+  c6 character varying(6) NOT NULL DEFAULT ''::character varying,
   c7 character varying(1) NOT NULL DEFAULT ''::character varying,
   c8 character varying(5) NOT NULL DEFAULT ''::character varying,
   c9 character varying(5) NOT NULL DEFAULT ''::character varying,
@@ -33,14 +33,14 @@ CREATE  TABLE keplersc.kdini (
   c32 character varying(5) NOT NULL DEFAULT ''::character varying,
   c33 character varying(10) NOT NULL DEFAULT ''::character varying
 ) TABLESPACE pg_default;
-CREATE UNIQUE INDEX IF NOT EXISTS pk_kdini ON keplersc.kdini USING btree (c1) TABLESPACE pg_default;
+ALTER TABLE ONLY keplersc.kdini ADD CONSTRAINT pk_kdini PRIMARY KEY (c1);
 CREATE INDEX IF NOT EXISTS sindkdini02 ON keplersc.kdini USING btree (c2, c1) TABLESPACE pg_default;
 CREATE INDEX IF NOT EXISTS sindkdini03 ON keplersc.kdini USING btree (c32, c1) TABLESPACE pg_default;
-CREATE INDEX IF NOT EXISTS sindkdini04 ON keplersc.kdini USING btree (c5, c1) TABLESPACE pg_default;
-CREATE INDEX IF NOT EXISTS sindkdini05 ON keplersc.kdini USING btree (c6, c1) TABLESPACE pg_default;
 CREATE INDEX IF NOT EXISTS sindkdini06 ON keplersc.kdini USING btree (c8, c1) TABLESPACE pg_default;
 CREATE INDEX IF NOT EXISTS sindkdini07 ON keplersc.kdini USING btree (c9, c1) TABLESPACE pg_default;
 CREATE INDEX IF NOT EXISTS sindkdini08 ON keplersc.kdini USING btree (c8, c9, c1) TABLESPACE pg_default;
+CREATE INDEX IF NOT EXISTS sindkdini04 ON keplersc.kdini USING btree (c5, c1) TABLESPACE pg_default;
+CREATE INDEX IF NOT EXISTS sindkdini05 ON keplersc.kdini USING btree (c6, c1) TABLESPACE pg_default;
 COMMENT ON TABLE keplersc.kdini IS 'REFACCIONES';
 COMMENT ON COLUMN keplersc.kdini.c9 IS 'Subgrupo';
 COMMENT ON COLUMN keplersc.kdini.c8 IS 'Grupo';

@@ -157,5 +157,4 @@ COMMENT ON COLUMN keplersc.ifz_sofia_notif.folio IS 'Folio del movimiento';
 COMMENT ON COLUMN keplersc.ifz_sofia_notif.fecha IS 'Fecha del movimiento';
 COMMENT ON COLUMN keplersc.ifz_sofia_notif.demo_estatus IS 'PDVIN - Demo In Ventas; PDSIN - Demo in Servicio; PDOUT - Demo Out';
 COMMENT ON COLUMN keplersc.ifz_sofia_notif.demo_consec IS 'Consec por vin y demo_estatus';
-CREATE TRIGGER ifzsofia_notif AFTER INSERT ON keplersc.ifz_sofia_notif FOR EACH ROW EXECUTE FUNCTION keplersc.notif_registrar_movto();
 

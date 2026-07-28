@@ -10,7 +10,9 @@ CREATE  TABLE keplersc.kdbom (
   c9 numeric(10,2) NOT NULL DEFAULT 0,
   c10 timestamp without time zone NOT NULL DEFAULT '1800-01-01 00:00:00'::timestamp without time zone,
   c11 character varying(8) NOT NULL DEFAULT ''::character varying,
-  c12 numeric NOT NULL DEFAULT 0
+  c12 numeric NOT NULL DEFAULT 0,
+  col_foliomig character varying(10) NULL,
+  col_foliofin character varying(10) NULL
 ) TABLESPACE pg_default;
 ALTER TABLE ONLY keplersc.kdbom ADD CONSTRAINT pk_kdbom PRIMARY KEY (c1, c2, c3, c4, c5, c6, c7, c12);
 CREATE INDEX IF NOT EXISTS sindkdbom02 ON keplersc.kdbom USING btree (c1, c10, c11, c8, c1, c2, c3, c4, c5, c6, c7) TABLESPACE pg_default;

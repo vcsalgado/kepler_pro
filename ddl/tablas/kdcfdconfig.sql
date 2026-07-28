@@ -1,5 +1,5 @@
 CREATE  TABLE keplersc.kdcfdconfig (
-  c1 character varying(7) NOT NULL DEFAULT '0'::character varying,
+  c1 character varying(7) NOT NULL DEFAULT 0,
   c2 character varying(13) NOT NULL DEFAULT ''::character varying,
   c3 character varying(80) NOT NULL DEFAULT ''::character varying,
   c4 numeric NOT NULL DEFAULT 0,

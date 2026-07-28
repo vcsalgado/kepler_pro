@@ -1,198 +1,1 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<pag xmlns="www.kepler.com.mx/2003/KSchema" dim="0,0,10,10" tit="Consulta de saldos">
-	<grp brdr="0,0" clr="0,58,112" fnt="Arial,16" dim="-1,-1,10,20" clrBrdr="0,97,181"  bclr="192,205,213" unfont="0"
-		tit="Consulta saldos" 
-		OnPgUp="PgUp" OnPgDn="PgDn" OnCtrPgUp="CtrPgUp" OnCtrPgDn="CtrPgDn" 
-		OnF1="Dialog(1,conconsalayu)" OnCtrIni="CtrIni" OnCtrEnd="CtrEnd" OnEnter="Exit"><br/>
-		<grp bclr="236,240,243" fntClrBrdr="255,206,0" fntBrdr="Arial,18" hSpace="4" clrBrdr="0,58,112" brdr="0,5" dim="53,36,7,12"  tit="Consulta saldos de cuentas" fnt="Arial,16" unfont="0"><tab/><txt hk="N" fnt="Arial,16" clr="0,58,112" bclr="255,255,255">N&#250;mero de cuenta</txt><tab n="2"/>
-		<edt id="numero" clr="64,64,64" clrBrdr="255,255,255"  dim="22,1" bclr="255,255,255" brdr="2,0" type="capital" OnF9="Dialog(1,concatcuebus,numero)" nc="20" OnF10="Dialog(1,concatcuepag,numero,,01111)" page="concatcuebus,numero" OnChange="Bus(0)"/>
-		<txt fnt="Arial,16" clr="64,64,64" bclr="255,255,255">&lt;</txt><txt fnt="Arial,16b" clr="64,64,64" bclr="255,255,255">F9&gt; para consulta.</txt>
-		<br/><tab/><txt fnt="Arial,16" clr="0,58,112" bclr="255,255,255">escripci&#243;n</txt>
-		<tab n="4"/><inp id="desc" clr="64,64,64" clrBrdr="255,255,255"  modify="N" dim="37,1" bclr="255,255,255" brdr="2,0" type="string" available="Y" visible="Y" nc="35"/><br/><br/><tab n="7"/>
-		<txt fnt="Arial,16" clr="0,58,112" bclr="255,255,255">Debe</txt><tab n="5"/>
-		<txt fnt="Arial,16" clr="0,58,112" bclr="255,255,255">Haber</txt><tab n="5"/>
-		<txt fnt="Arial,16" clr="0,58,112" bclr="255,255,255">Saldo</txt><br/><tab/><txt fnt="Arial,16" clr="0,58,112" bclr="255,255,255">Saldo inicial</txt><tab n="13"/>
-		<inp id="saldoIni" clr="64,64,64" clrBrdr="255,255,255"  dim="17,1" bclr="255,255,255" brdr="2,0" nc="15" type="number" nd="2" visible="Y" modify="N"/><br/><tab/><txt fnt="Arial,16" clr="0,58,112" bclr="255,255,255">Enero</txt><tab n="3"/>
-		<inp id="eneC" clr="64,64,64" clrBrdr="255,255,255"  dim="17,1" bclr="255,255,255" brdr="2,0" nc="15" type="number" nd="2" visible="Y" modify="N"/><tab/>
-		<inp id="eneA" clr="64,64,64" clrBrdr="255,255,255"  dim="17,1" bclr="255,255,255" brdr="2,0" nc="15" type="number" nd="2" visible="Y" modify="N"/><tab/>
-		<inp id="eneS" clr="64,64,64" clrBrdr="255,255,255"  dim="17,1" bclr="255,255,255" brdr="2,0" nc="15" type="number" nd="2" visible="Y" modify="N" OnF10="ConsultaMovimientos(1)" OnMouseD="ConsultaMovimientos(1)" available="Y"/><br/>
-		<tab/><txt fnt="Arial,16" clr="0,58,112" bclr="255,255,255">Febrero</txt><tab n="2"/>
-		<inp id="febC" clr="64,64,64" clrBrdr="255,255,255"  dim="17,1" bclr="255,255,255" brdr="2,0" nc="15" type="number" nd="2" visible="Y" modify="N"/><tab/>
-		<inp id="febA" clr="64,64,64" clrBrdr="255,255,255"  dim="17,1" bclr="255,255,255" brdr="2,0" nc="15" type="number" nd="2" visible="Y" modify="N"/><tab/>
-		<inp id="febS" clr="64,64,64" clrBrdr="255,255,255"  dim="17,1" bclr="255,255,255" brdr="2,0" nc="15" type="number" nd="2" visible="Y" modify="N" OnF10="ConsultaMovimientos(2)" OnMouseD="ConsultaMovimientos(2)"/><br/>
-		<tab/><txt fnt="Arial,16" clr="0,58,112" bclr="255,255,255">Marzo</txt><tab n="2"/>
-		<inp id="marC" clr="64,64,64" clrBrdr="255,255,255"  dim="17,1" bclr="255,255,255" brdr="2,0" nc="15" type="number" nd="2" visible="Y" modify="N"/><tab/>
-		<inp id="marA" clr="64,64,64" clrBrdr="255,255,255"  dim="17,1" bclr="255,255,255" brdr="2,0" nc="15" type="number" nd="2" visible="Y" modify="N"/><tab/>
-		<inp id="marS" clr="64,64,64" clrBrdr="255,255,255"  dim="17,1" bclr="255,255,255" brdr="2,0" nc="15" type="number" nd="2" visible="Y" modify="N" OnF10="ConsultaMovimientos(3)" OnMouseD="ConsultaMovimientos(3)"/><br/>
-		<tab/><txt fnt="Arial,16" clr="0,58,112" bclr="255,255,255">Abril</txt><tab n="3"/>
-		<inp id="abrC" clr="64,64,64" clrBrdr="255,255,255"  dim="17,1" bclr="255,255,255" brdr="2,0" nc="15" type="number" nd="2" visible="Y" modify="N"/><tab/>
-		<inp id="abrA" clr="64,64,64" clrBrdr="255,255,255"  dim="17,1" bclr="255,255,255" brdr="2,0" nc="15" type="number" nd="2" visible="Y" modify="N"/><tab/>
-		<inp id="abrS" clr="64,64,64" clrBrdr="255,255,255"  dim="17,1" bclr="255,255,255" brdr="2,0" nc="15" type="number" nd="2" visible="Y" modify="N" OnF10="ConsultaMovimientos(4)" OnMouseD="ConsultaMovimientos(4)"/><br/>
-		<tab/><txt fnt="Arial,16" clr="0,58,112" bclr="255,255,255">Mayo</txt><tab n="3"/>
-		<inp id="mayC" clr="64,64,64" clrBrdr="255,255,255"  dim="17,1" bclr="255,255,255" brdr="2,0" nc="15" type="number" nd="2" visible="Y" modify="N"/><tab/>
-		<inp id="mayA" clr="64,64,64" clrBrdr="255,255,255"  dim="17,1" bclr="255,255,255" brdr="2,0" nc="15" type="number" nd="2" visible="Y" modify="N"/><tab/>
-		<inp id="mayS" clr="64,64,64" clrBrdr="255,255,255"  dim="17,1" bclr="255,255,255" brdr="2,0" nc="15" type="number" nd="2" visible="Y" modify="N" OnF10="ConsultaMovimientos(5)" OnMouseD="ConsultaMovimientos(5)"/><br/>
-		<tab/><txt fnt="Arial,16" clr="0,58,112" bclr="255,255,255">Junio</txt><tab n="3"/>
-		<inp id="junC" clr="64,64,64" clrBrdr="255,255,255"  dim="17,1" bclr="255,255,255" brdr="2,0" nc="15" type="number" nd="2" visible="Y" modify="N"/><tab/>
-		<inp id="junA" clr="64,64,64" clrBrdr="255,255,255"  dim="17,1" bclr="255,255,255" brdr="2,0" nc="15" type="number" nd="2" visible="Y" modify="N"/><tab/>
-		<inp id="junS" clr="64,64,64" clrBrdr="255,255,255"  dim="17,1" bclr="255,255,255" brdr="2,0" nc="15" type="number" nd="2" visible="Y" modify="N" OnF10="ConsultaMovimientos(6)" OnMouseD="ConsultaMovimientos(6)"/><br/>
-		<tab/><txt fnt="Arial,16" clr="0,58,112" bclr="255,255,255">Julio</txt><tab n="3"/>
-		<inp id="julC" clr="64,64,64" clrBrdr="255,255,255"  dim="17,1" bclr="255,255,255" brdr="2,0" nc="15" type="number" nd="2" visible="Y" modify="N"/><tab/>
-		<inp id="julA" clr="64,64,64" clrBrdr="255,255,255"  dim="17,1" bclr="255,255,255" brdr="2,0" nc="15" type="number" nd="2" visible="Y" modify="N"/><tab/>
-		<inp id="julS" clr="64,64,64" clrBrdr="255,255,255"  dim="17,1" bclr="255,255,255" brdr="2,0" nc="15" type="number" nd="2" visible="Y" modify="N" OnF10="ConsultaMovimientos(7)" OnMouseD="ConsultaMovimientos(7)"/><br/>
-		<tab/><txt fnt="Arial,16" clr="0,58,112" bclr="255,255,255">Agosto</txt><tab n="2"/>
-		<inp id="agoC" clr="64,64,64" clrBrdr="255,255,255"  dim="17,1" bclr="255,255,255" brdr="2,0" nc="15" type="number" nd="2" visible="Y" modify="N"/><tab/>
-		<inp id="agoA" clr="64,64,64" clrBrdr="255,255,255"  dim="17,1" bclr="255,255,255" brdr="2,0" nc="15" type="number" nd="2" visible="Y" modify="N"/><tab/>
-		<inp id="agoS" clr="64,64,64" clrBrdr="255,255,255"  dim="17,1" bclr="255,255,255" brdr="2,0" nc="15" type="number" nd="2" visible="Y" modify="N" OnF10="ConsultaMovimientos(8)" OnMouseD="ConsultaMovimientos(8)"/><br/>
-		<tab/><txt fnt="Arial,16" clr="0,58,112" bclr="255,255,255">Septiembre</txt><tab/>
-		<inp id="sepC" clr="64,64,64" clrBrdr="255,255,255"  dim="17,1" bclr="255,255,255" brdr="2,0" nc="15" type="number" nd="2" visible="Y" modify="N"/><tab/>
-		<inp id="sepA" clr="64,64,64" clrBrdr="255,255,255"  dim="17,1" bclr="255,255,255" brdr="2,0" nc="15" type="number" nd="2" visible="Y" modify="N"/><tab/>
-		<inp id="sepS" clr="64,64,64" clrBrdr="255,255,255"  dim="17,1" bclr="255,255,255" brdr="2,0" nc="15" type="number" nd="2" visible="Y" modify="N" OnF10="ConsultaMovimientos(9)" OnMouseD="ConsultaMovimientos(9)"/><br/>
-		<tab/><txt fnt="Arial,16" clr="0,58,112" bclr="255,255,255">Octubre</txt><tab n="2"/>
-		<inp id="octC" clr="64,64,64" clrBrdr="255,255,255"  dim="17,1" bclr="255,255,255" brdr="2,0" nc="15" type="number" nd="2" visible="Y" modify="N"/><tab/>
-		<inp id="octA" clr="64,64,64" clrBrdr="255,255,255"  dim="17,1" bclr="255,255,255" brdr="2,0" nc="15" type="number" nd="2" visible="Y" modify="N"/><tab/>
-		<inp id="octS" clr="64,64,64" clrBrdr="255,255,255"  dim="17,1" bclr="255,255,255" brdr="2,0" nc="15" type="number" nd="2" visible="Y" modify="N" OnF10="ConsultaMovimientos(10)" OnMouseD="ConsultaMovimientos(10)"/><br/>
-		<tab/><txt fnt="Arial,16" clr="0,58,112" bclr="255,255,255">Noviembre</txt><tab/>
-		<inp id="novC" clr="64,64,64" clrBrdr="255,255,255"  dim="17,1" bclr="255,255,255" brdr="2,0" nc="15" type="number" nd="2" visible="Y" modify="N"/><tab/>
-		<inp id="novA" clr="64,64,64" clrBrdr="255,255,255"  dim="17,1" bclr="255,255,255" brdr="2,0" nc="15" type="number" nd="2" visible="Y" modify="N"/><tab/>
-		<inp id="novS" clr="64,64,64" clrBrdr="255,255,255"  dim="17,1" bclr="255,255,255" brdr="2,0" nc="15" type="number" nd="2" visible="Y" modify="N" OnF10="ConsultaMovimientos(11)" OnMouseD="ConsultaMovimientos(11)"/><br/>
-		<tab/><txt fnt="Arial,16" clr="0,58,112" bclr="255,255,255">Diciembre</txt><tab/>
-		<inp id="dicC" clr="64,64,64" clrBrdr="255,255,255"  dim="17,1" bclr="255,255,255" brdr="2,0" nc="15" type="number" nd="2" visible="Y" modify="N"/><tab/>
-		<inp id="dicA" clr="64,64,64" clrBrdr="255,255,255"  dim="17,1" bclr="255,255,255" brdr="2,0" nc="15" type="number" nd="2" visible="Y" modify="N"/><tab/>
-		<inp id="dicS" clr="64,64,64" clrBrdr="255,255,255"  dim="17,1" bclr="255,255,255" brdr="2,0" nc="15" type="number" nd="2" visible="Y" modify="N" OnF10="ConsultaMovimientos(12)" OnMouseD="ConsultaMovimientos(12)"/>
-		<br/>
-		<tab/><br/><br/><tab n="2"/></grp><br/><br/><tab/>
-		<inp id="arch" clr="64,64,64" clrBrdr="255,255,255"  dim="10,1" brdr="2,0" bclr="255,255,255" hk="A" type="string" fnt="Arial,16" modify="N" visible="N" available="N"/><sp/><tab/>
-		<inp id="ind" clr="64,64,64" clrBrdr="255,255,255"  dim="2,1" brdr="2,0" bclr="255,255,255" hk="n" type="string" fnt="Arial,16" modify="N" visible="N" available="N"/><br/><sp/><tab/>
-		<inp id="cmps" clr="64,64,64" clrBrdr="255,255,255"  dim="46,1" brdr="2,0" bclr="255,255,255" hk="C" type="string" fnt="Arial,16" available="N" modify="N" visible="N"/><br/><tab/>
-		<inp id="limites" clr="64,64,64" clrBrdr="255,255,255"  dim="46,1" brdr="2,0" bclr="255,255,255" hk="l" type="string" fnt="Arial,16" available="N" modify="N" visible="N"/><br/><sp/><tab/>
-		<inp id="encabezados" clr="64,64,64" clrBrdr="255,255,255"  dim="46,1" brdr="2,0" bclr="255,255,255" hk="E" type="string" modify="N" fnt="Arial,16" visible="N" available="N"/><br/>
-	</grp>
-	<script>
-		InstallDriver("KDB75");
-		class Main {
-			var frn,frP,kdb;
-			var tabla_base;//Tabla base del catálogo (Se abre con el alias "a")
-			var tabla_c;
-			var camposDeseados;//Campos de la tabla que se requieren(Ej: a1...a4)
-			var year;
-			fun Main() { 
-				frn=new FRNT; 
-				frP=new FRNTP; 
-				kdb=new KDB;
-				kdb.connect();
-				//Revisa si hay año definido por la session
-				if(frn.config("temp","k_workDate")){
-					year=mid(frn.config("temp","k_workYear"),2,2);
-				}else {
-					kdb.kde("yr");kdb.exec();
-					year=kdb.get("yr",14);
-				}
-				tabla_base="kdc1" & year;
-				camposDeseados="a1...a86";
-				kdb.open("a," & tabla_base);
-				frn.set("numero",frn.param(0));//Se llena la clave si es ventana de diálogo. Se utiliza el desplazamiento "1", pues la columa 0 es la descripcion y la columna 1, la clave. 
-				Bus(1);
-			}
-			
-			fun ConsultaMovimientos(mes){
-				if(mes<10){
-					tabla_c="kdc2" & year & "0" & mes;
-				}else{
-					tabla_c="kdc2" & year & mes;
-				}
-				frn.set("arch",tabla_c);
-				frn.set("limites","c3=" & frn.get("numero"));
-				frn.set("cmps","c1...c22");
-				frn.set("encabezados","Polizas por Mes,&,NoPoliza,Fecha,NumCta,C/A,Monto,Descr,Refer,Tipo,Monto,Consec,NoUsar,NoUsar,CveDep,Suc,Gen,Nat,Gpo,Tip,Folio,CveCon,CveProy,RefeBan");
-				frn.set("ind","1");
-				kdb.open("p," & tabla_c);
-				kdb.search("polizas,p,1,1,'" & frn.get("numero") & "',&,p1...p22");
-				kdb.exec();
-				var temporal=kdb.get("polizas","p3");
-				if (strcmp(temporal,frn.get("numero"))==0){
-					Dialog(1,"repContabilidad");
-				}
-			}
-			
-			fun camposLlave() {var llave=frn.get("numero");return llave;}//Campos que forman la llave. Puede ser una llave combinada
-			
-			fun setData() { //Funcion que llena los campos en pantalla con la información de la base de datos
-				set("numero","a1");set("desc","a2"); set("saldoIni","a14");
-				set("eneC","a27"); set("eneA","a63"); frn.set("eneS",frn.get("saldoIni")+frn.get("eneC")-frn.get("eneA"));
-				set("febC","a28"); set("febA","a64"); frn.set("febS",frn.get("eneS")+frn.get("febC")-frn.get("febA"));
-				set("marC","a29"); set("marA","a65"); frn.set("marS",frn.get("febS")+frn.get("marC")-frn.get("marA"));
-				set("abrC","a30"); set("abrA","a66"); frn.set("abrS",frn.get("marS")+frn.get("abrC")-frn.get("abrA"));
-				set("mayC","a31"); set("mayA","a67"); frn.set("mayS",frn.get("abrS")+frn.get("mayC")-frn.get("mayA"));
-				set("junC","a32"); set("junA","a68"); frn.set("junS",frn.get("mayS")+frn.get("junC")-frn.get("junA"));
-				set("julC","a33"); set("julA","a69"); frn.set("julS",frn.get("junS")+frn.get("julC")-frn.get("julA"));
-				set("agoC","a34"); set("agoA","a70"); frn.set("agoS",frn.get("julS")+frn.get("agoC")-frn.get("agoA"));
-				set("sepC","a35"); set("sepA","a71"); frn.set("sepS",frn.get("agoS")+frn.get("sepC")-frn.get("sepA"));
-				set("octC","a36"); set("octA","a72"); frn.set("octS",frn.get("sepS")+frn.get("octC")-frn.get("octA"));
-				set("novC","a37"); set("novA","a73"); frn.set("novS",frn.get("octS")+frn.get("novC")-frn.get("novA"));
-				set("dicC","a38"); set("dicA","a74"); frn.set("dicS",frn.get("novS")+frn.get("dicC")-frn.get("dicA"));
-			}
-			
-			fun Exit() { //Tiene sentido cuando la pagina se ejecuta como dialogo, pues regresa el registro actual.
-				kdb.table("dat1,a,1,&,a2,a1");
-				kdb.exec();
-				frP.set(frn.param(0),kdb.get("dat1"));//Se llena el combo
-				frP.set(frn.param(0),frn.get("nombre"));//Se posiciona en el registro correcto
-				frn.exit();
-			}
-
-			//Funciones Auxiliares Para Catálogos(Genericas). 
-			//Necesitan las variable globales tabla_base y camposDeseados. 
-			//tabla_base especifíca el nombre de la tabla del catálogo que se está editando
-			//camposDeseados indica los campos que se modificaran de la tabla. Ej a1...a70
-			//Ademas de una funcion camposLlave que devuleva los campos que forman la clave
-			//Una funcion setData que establece en pantalla los valores de la base de datos. (Cubo de información: "datos")
-			//Una funcion verifica_borrar() que regresa 1 si se puede borrar el registro, 0 si no se debe borrar.
-			fun set(objeto,campo) { frn.set(objeto,kdb.get("datos",campo));}//Establece el valor de un campo de la BD al objeto indicado
-			fun Busca() { Bus(0);}
-			fun PgUp() { Bus(6);}
-			fun PgDn() { Bus(5);}
-			fun CtrIni() { Bus(7);}
-			fun CtrEnd() { Bus(8);}
-			fun Dialog(iModo,pag,par0,par1,par2,par3,par4,par5,par6,par7,par8,par9,par10,par11,par12,par13,par14,par15){
-				/*iModo: 0)No hace mayor validación. Siempre despliega la ventana. NO CONCATENA PREFIJO
-							1)Solo concatena el prefijo de la carpeta del lenguaje, no hace mayor validación. Siempre despliega la ventana
-							2)Modo especial. Se valida que el campo indicado en par0 se puede modificar(El par0 puede ser una tabla, y par1 la columna)
-							3)Modo especial para páginas de operacion:Solo si se está en alta o modifica despliega la pagina. Simpre agrega el prefijo del lenguaje
-				*/
-				var prefix=frn.lib("libKepler","langPrefix");
-				var page=prefix&pag;
-				var b_valido=1;
-				if(iModo==0)page=pag;
-				else if(iModo==2&&(strlen(par0)>0)){//Se toma el par0 como el objeto (o grid) al que se devolverá el resultado.
-					if( frn.getAtt(par0,"modify",par1) &= "N" ) b_valido=0;
-					if( frn.getAtt(par0,"available",par1) &= "N" ) b_valido=0;
-					if( frn.getAtt(par0,"visible",par1) &= "N" ) b_valido=0;
-				}
-				else if(iModo==3)b_valido=0;
-				if(b_valido==1)frn.dialog(page,par0,par1,par2,par3,par4,par5,par6,par7,par8,par9,par10,par11,par12,par13,par14,par15);
-			}
-			
-			fun Error(string){frn.messageBar(string,1); frn.sound(1);}//Establece un mensaje de error en la barra de estado. Y emite un sonido de alerta.
-			fun Bus(relacional) { //1:>=	2:<=		3:>	 4:<		 5:Siguiente		6:Anterior		7:Primero		8:Ultimo
-				frn.messageBar("");
-				var cmd="datos,a,1," & relacional & "," & camposLlave() & ",&," & camposDeseados;
-				kdb.search(cmd); kdb.exec(); setData();
-			}
-			fun Cambio(numero_campo,objeto,desplazamiento) { //Realiza un cambio de valor en la BD
-					var cmd=tabla_base & ",1," & camposLlave() & ",&," & numero_campo & "," & frn.get(objeto,-1,desplazamiento); 
-					kdb.update(cmd); 
-			}
-			fun imprimeTabla(nom_tabla,titulo1,titulo2) { 
-				frn.dialog("_ks_printDlgElm",nom_tabla,titulo1 & "," & titulo2,"Arial",30);// alto=30 décimas de milímetro (3 mm)
-			}
-
-		}
-		/*
-		Autor			Fecha			Cambio	
-		----------------------------
-		Carlos JAM	18-11-2009	Se activo el evento OnF10 para los saldos finales de los meses.
-        Arlines A   17-05-2019  Se corrigieron rutas en imágenes
-		*/
-	</script>
-</pag>
+<?xml version="1.0" encoding="UTF-8"?><pag xmlns="www.kepler.com.mx/2003/KSchema" dim="0,0,10,10" tit="Consulta de saldos">	<grp brdr="0,0" clr="0,58,112" fnt="Arial,16" dim="-1,-1,10,20" clrBrdr="0,97,181"  bclr="192,205,213" unfont="0"		tit="Consulta saldos" 		OnPgUp="PgUp" OnPgDn="PgDn" OnCtrPgUp="CtrPgUp" OnCtrPgDn="CtrPgDn" 		OnF1="Dialog(1,conconsalayu)" OnCtrIni="CtrIni" OnCtrEnd="CtrEnd" OnEnter="Exit"><br/>		<grp bclr="236,240,243" fntClrBrdr="255,206,0" fntBrdr="Arial,18" hSpace="4" clrBrdr="0,58,112" brdr="0,5" dim="53,36,7,12"  tit="Consulta saldos de cuentas" fnt="Arial,16" unfont="0"><tab/><txt hk="N" fnt="Arial,16" clr="0,58,112" bclr="255,255,255">N&#250;mero de cuenta</txt><tab n="2"/>		<edt id="numero" clr="64,64,64" clrBrdr="255,255,255"  dim="22,1" bclr="255,255,255" brdr="2,0" type="capital" OnF9="Dialog(1,concatcuebus,numero)" nc="20" OnF10="Dialog(1,concatcuepag,numero,,01111)" page="concatcuebus,numero" OnChange="Bus(0)"/>		<txt fnt="Arial,16" clr="64,64,64" bclr="255,255,255">&lt;</txt><txt fnt="Arial,16b" clr="64,64,64" bclr="255,255,255">F9&gt; para consulta.</txt>		<br/><tab/><txt fnt="Arial,16" clr="0,58,112" bclr="255,255,255">escripci&#243;n</txt>		<tab n="4"/><inp id="desc" clr="64,64,64" clrBrdr="255,255,255"  modify="N" dim="37,1" bclr="255,255,255" brdr="2,0" type="string" available="Y" visible="Y" nc="35"/><br/><br/><tab n="7"/>		<txt fnt="Arial,16" clr="0,58,112" bclr="255,255,255">Debe</txt><tab n="5"/>		<txt fnt="Arial,16" clr="0,58,112" bclr="255,255,255">Haber</txt><tab n="5"/>		<txt fnt="Arial,16" clr="0,58,112" bclr="255,255,255">Saldo</txt><br/><tab/><txt fnt="Arial,16" clr="0,58,112" bclr="255,255,255">Saldo inicial</txt><tab n="13"/>		<inp id="saldoIni" clr="64,64,64" clrBrdr="255,255,255"  dim="17,1" bclr="255,255,255" brdr="2,0" nc="15" type="number" nd="2" visible="Y" modify="N"/><br/><tab/><txt fnt="Arial,16" clr="0,58,112" bclr="255,255,255">Enero</txt><tab n="3"/>		<inp id="eneC" clr="64,64,64" clrBrdr="255,255,255"  dim="17,1" bclr="255,255,255" brdr="2,0" nc="15" type="number" nd="2" visible="Y" modify="N"/><tab/>		<inp id="eneA" clr="64,64,64" clrBrdr="255,255,255"  dim="17,1" bclr="255,255,255" brdr="2,0" nc="15" type="number" nd="2" visible="Y" modify="N"/><tab/>		<inp id="eneS" clr="64,64,64" clrBrdr="255,255,255"  dim="17,1" bclr="255,255,255" brdr="2,0" nc="15" type="number" nd="2" visible="Y" modify="N" OnF10="ConsultaMovimientos(1)" OnMouseD="ConsultaMovimientos(1)" available="Y"/><br/>		<tab/><txt fnt="Arial,16" clr="0,58,112" bclr="255,255,255">Febrero</txt><tab n="2"/>		<inp id="febC" clr="64,64,64" clrBrdr="255,255,255"  dim="17,1" bclr="255,255,255" brdr="2,0" nc="15" type="number" nd="2" visible="Y" modify="N"/><tab/>		<inp id="febA" clr="64,64,64" clrBrdr="255,255,255"  dim="17,1" bclr="255,255,255" brdr="2,0" nc="15" type="number" nd="2" visible="Y" modify="N"/><tab/>		<inp id="febS" clr="64,64,64" clrBrdr="255,255,255"  dim="17,1" bclr="255,255,255" brdr="2,0" nc="15" type="number" nd="2" visible="Y" modify="N" OnF10="ConsultaMovimientos(2)" OnMouseD="ConsultaMovimientos(2)"/><br/>		<tab/><txt fnt="Arial,16" clr="0,58,112" bclr="255,255,255">Marzo</txt><tab n="2"/>		<inp id="marC" clr="64,64,64" clrBrdr="255,255,255"  dim="17,1" bclr="255,255,255" brdr="2,0" nc="15" type="number" nd="2" visible="Y" modify="N"/><tab/>		<inp id="marA" clr="64,64,64" clrBrdr="255,255,255"  dim="17,1" bclr="255,255,255" brdr="2,0" nc="15" type="number" nd="2" visible="Y" modify="N"/><tab/>		<inp id="marS" clr="64,64,64" clrBrdr="255,255,255"  dim="17,1" bclr="255,255,255" brdr="2,0" nc="15" type="number" nd="2" visible="Y" modify="N" OnF10="ConsultaMovimientos(3)" OnMouseD="ConsultaMovimientos(3)"/><br/>		<tab/><txt fnt="Arial,16" clr="0,58,112" bclr="255,255,255">Abril</txt><tab n="3"/>		<inp id="abrC" clr="64,64,64" clrBrdr="255,255,255"  dim="17,1" bclr="255,255,255" brdr="2,0" nc="15" type="number" nd="2" visible="Y" modify="N"/><tab/>		<inp id="abrA" clr="64,64,64" clrBrdr="255,255,255"  dim="17,1" bclr="255,255,255" brdr="2,0" nc="15" type="number" nd="2" visible="Y" modify="N"/><tab/>		<inp id="abrS" clr="64,64,64" clrBrdr="255,255,255"  dim="17,1" bclr="255,255,255" brdr="2,0" nc="15" type="number" nd="2" visible="Y" modify="N" OnF10="ConsultaMovimientos(4)" OnMouseD="ConsultaMovimientos(4)"/><br/>		<tab/><txt fnt="Arial,16" clr="0,58,112" bclr="255,255,255">Mayo</txt><tab n="3"/>		<inp id="mayC" clr="64,64,64" clrBrdr="255,255,255"  dim="17,1" bclr="255,255,255" brdr="2,0" nc="15" type="number" nd="2" visible="Y" modify="N"/><tab/>		<inp id="mayA" clr="64,64,64" clrBrdr="255,255,255"  dim="17,1" bclr="255,255,255" brdr="2,0" nc="15" type="number" nd="2" visible="Y" modify="N"/><tab/>		<inp id="mayS" clr="64,64,64" clrBrdr="255,255,255"  dim="17,1" bclr="255,255,255" brdr="2,0" nc="15" type="number" nd="2" visible="Y" modify="N" OnF10="ConsultaMovimientos(5)" OnMouseD="ConsultaMovimientos(5)"/><br/>		<tab/><txt fnt="Arial,16" clr="0,58,112" bclr="255,255,255">Junio</txt><tab n="3"/>		<inp id="junC" clr="64,64,64" clrBrdr="255,255,255"  dim="17,1" bclr="255,255,255" brdr="2,0" nc="15" type="number" nd="2" visible="Y" modify="N"/><tab/>		<inp id="junA" clr="64,64,64" clrBrdr="255,255,255"  dim="17,1" bclr="255,255,255" brdr="2,0" nc="15" type="number" nd="2" visible="Y" modify="N"/><tab/>		<inp id="junS" clr="64,64,64" clrBrdr="255,255,255"  dim="17,1" bclr="255,255,255" brdr="2,0" nc="15" type="number" nd="2" visible="Y" modify="N" OnF10="ConsultaMovimientos(6)" OnMouseD="ConsultaMovimientos(6)"/><br/>		<tab/><txt fnt="Arial,16" clr="0,58,112" bclr="255,255,255">Julio</txt><tab n="3"/>		<inp id="julC" clr="64,64,64" clrBrdr="255,255,255"  dim="17,1" bclr="255,255,255" brdr="2,0" nc="15" type="number" nd="2" visible="Y" modify="N"/><tab/>		<inp id="julA" clr="64,64,64" clrBrdr="255,255,255"  dim="17,1" bclr="255,255,255" brdr="2,0" nc="15" type="number" nd="2" visible="Y" modify="N"/><tab/>		<inp id="julS" clr="64,64,64" clrBrdr="255,255,255"  dim="17,1" bclr="255,255,255" brdr="2,0" nc="15" type="number" nd="2" visible="Y" modify="N" OnF10="ConsultaMovimientos(7)" OnMouseD="ConsultaMovimientos(7)"/><br/>		<tab/><txt fnt="Arial,16" clr="0,58,112" bclr="255,255,255">Agosto</txt><tab n="2"/>		<inp id="agoC" clr="64,64,64" clrBrdr="255,255,255"  dim="17,1" bclr="255,255,255" brdr="2,0" nc="15" type="number" nd="2" visible="Y" modify="N"/><tab/>		<inp id="agoA" clr="64,64,64" clrBrdr="255,255,255"  dim="17,1" bclr="255,255,255" brdr="2,0" nc="15" type="number" nd="2" visible="Y" modify="N"/><tab/>		<inp id="agoS" clr="64,64,64" clrBrdr="255,255,255"  dim="17,1" bclr="255,255,255" brdr="2,0" nc="15" type="number" nd="2" visible="Y" modify="N" OnF10="ConsultaMovimientos(8)" OnMouseD="ConsultaMovimientos(8)"/><br/>		<tab/><txt fnt="Arial,16" clr="0,58,112" bclr="255,255,255">Septiembre</txt><tab/>		<inp id="sepC" clr="64,64,64" clrBrdr="255,255,255"  dim="17,1" bclr="255,255,255" brdr="2,0" nc="15" type="number" nd="2" visible="Y" modify="N"/><tab/>		<inp id="sepA" clr="64,64,64" clrBrdr="255,255,255"  dim="17,1" bclr="255,255,255" brdr="2,0" nc="15" type="number" nd="2" visible="Y" modify="N"/><tab/>		<inp id="sepS" clr="64,64,64" clrBrdr="255,255,255"  dim="17,1" bclr="255,255,255" brdr="2,0" nc="15" type="number" nd="2" visible="Y" modify="N" OnF10="ConsultaMovimientos(9)" OnMouseD="ConsultaMovimientos(9)"/><br/>		<tab/><txt fnt="Arial,16" clr="0,58,112" bclr="255,255,255">Octubre</txt><tab n="2"/>		<inp id="octC" clr="64,64,64" clrBrdr="255,255,255"  dim="17,1" bclr="255,255,255" brdr="2,0" nc="15" type="number" nd="2" visible="Y" modify="N"/><tab/>		<inp id="octA" clr="64,64,64" clrBrdr="255,255,255"  dim="17,1" bclr="255,255,255" brdr="2,0" nc="15" type="number" nd="2" visible="Y" modify="N"/><tab/>		<inp id="octS" clr="64,64,64" clrBrdr="255,255,255"  dim="17,1" bclr="255,255,255" brdr="2,0" nc="15" type="number" nd="2" visible="Y" modify="N" OnF10="ConsultaMovimientos(10)" OnMouseD="ConsultaMovimientos(10)"/><br/>		<tab/><txt fnt="Arial,16" clr="0,58,112" bclr="255,255,255">Noviembre</txt><tab/>		<inp id="novC" clr="64,64,64" clrBrdr="255,255,255"  dim="17,1" bclr="255,255,255" brdr="2,0" nc="15" type="number" nd="2" visible="Y" modify="N"/><tab/>		<inp id="novA" clr="64,64,64" clrBrdr="255,255,255"  dim="17,1" bclr="255,255,255" brdr="2,0" nc="15" type="number" nd="2" visible="Y" modify="N"/><tab/>		<inp id="novS" clr="64,64,64" clrBrdr="255,255,255"  dim="17,1" bclr="255,255,255" brdr="2,0" nc="15" type="number" nd="2" visible="Y" modify="N" OnF10="ConsultaMovimientos(11)" OnMouseD="ConsultaMovimientos(11)"/><br/>		<tab/><txt fnt="Arial,16" clr="0,58,112" bclr="255,255,255">Diciembre</txt><tab/>		<inp id="dicC" clr="64,64,64" clrBrdr="255,255,255"  dim="17,1" bclr="255,255,255" brdr="2,0" nc="15" type="number" nd="2" visible="Y" modify="N"/><tab/>		<inp id="dicA" clr="64,64,64" clrBrdr="255,255,255"  dim="17,1" bclr="255,255,255" brdr="2,0" nc="15" type="number" nd="2" visible="Y" modify="N"/><tab/>		<inp id="dicS" clr="64,64,64" clrBrdr="255,255,255"  dim="17,1" bclr="255,255,255" brdr="2,0" nc="15" type="number" nd="2" visible="Y" modify="N" OnF10="ConsultaMovimientos(12)" OnMouseD="ConsultaMovimientos(12)"/>		<br/>		<tab/><br/><br/><tab n="2"/></grp><br/><br/><tab/>		<inp id="arch" clr="64,64,64" clrBrdr="255,255,255"  dim="10,1" brdr="2,0" bclr="255,255,255" hk="A" type="string" fnt="Arial,16" modify="N" visible="N" available="N"/><sp/><tab/>		<inp id="ind" clr="64,64,64" clrBrdr="255,255,255"  dim="2,1" brdr="2,0" bclr="255,255,255" hk="n" type="string" fnt="Arial,16" modify="N" visible="N" available="N"/><br/><sp/><tab/>		<inp id="cmps" clr="64,64,64" clrBrdr="255,255,255"  dim="46,1" brdr="2,0" bclr="255,255,255" hk="C" type="string" fnt="Arial,16" available="N" modify="N" visible="N"/><br/><tab/>		<inp id="limites" clr="64,64,64" clrBrdr="255,255,255"  dim="46,1" brdr="2,0" bclr="255,255,255" hk="l" type="string" fnt="Arial,16" available="N" modify="N" visible="N"/><br/><sp/><tab/>		<inp id="encabezados" clr="64,64,64" clrBrdr="255,255,255"  dim="46,1" brdr="2,0" bclr="255,255,255" hk="E" type="string" modify="N" fnt="Arial,16" visible="N" available="N"/><br/>	</grp>	<tools>		<tool OnMouseL="imprimeTabla(tabla,Contabilidad)" tooltip="Impresion de tabla(Ctrl+P)" scut="Ctrl+P" img="_TL_Print.png"/>		<tool tooltip="Exportar p&#225;gina (Ctrl+E)" scut="Ctrl+E" dialog="_ks_export" img="_TL_Export.png"/>		<tool OnMouseL="LlenaTabla()" tooltip="Ejecutar(Ctrl+T)" scut="Ctrl+T" img="_TL_Execute.png"/>	</tools>		<script>		InstallDriver("KDB75");		class Main {			var frn,frP,kdb;			var tabla_base;//Tabla base del catálogo (Se abre con el alias "a")			var tabla_c;			var camposDeseados;//Campos de la tabla que se requieren(Ej: a1...a4)			var year;			fun Main() { 				frn=new FRNT; 				frP=new FRNTP; 				kdb=new KDB;				kdb.connect();				//Revisa si hay año definido por la session				if(frn.config("temp","k_workDate")){					year=mid(frn.config("temp","k_workYear"),2,2);				}else {					kdb.kde("yr");kdb.exec();					year=kdb.get("yr",14);				}				tabla_base="kdc1" & year;				camposDeseados="a1...a86";				kdb.open("a," & tabla_base);				frn.set("numero",frn.param(0));//Se llena la clave si es ventana de diálogo. Se utiliza el desplazamiento "1", pues la columa 0 es la descripcion y la columna 1, la clave. 				Bus(1);			}						fun ConsultaMovimientos(mes){				if(mes<10){					tabla_c="kdc2" & year & "0" & mes;				}else{					tabla_c="kdc2" & year & mes;				}				frn.set("arch",tabla_c);				frn.set("limites","c3=" & frn.get("numero"));				frn.set("cmps","c1...c22");				frn.set("encabezados","Polizas por Mes,&,NoPoliza,Fecha,NumCta,C/A,Monto,Descr,Refer,Tipo,Monto,Consec,NoUsar,NoUsar,CveDep,Suc,Gen,Nat,Gpo,Tip,Folio,CveCon,CveProy,RefeBan");				frn.set("ind","1");				kdb.open("p," & tabla_c);				kdb.search("polizas,p,1,1,'" & frn.get("numero") & "',&,p1...p22");				kdb.exec();				var temporal=kdb.get("polizas","p3");				if (strcmp(temporal,frn.get("numero"))==0){					Dialog(1,"repContabilidad");				}			}						fun camposLlave() {var llave=frn.get("numero");return llave;}//Campos que forman la llave. Puede ser una llave combinada						fun setData() { //Funcion que llena los campos en pantalla con la información de la base de datos				set("numero","a1");set("desc","a2"); set("saldoIni","a14");				set("eneC","a27"); set("eneA","a63"); frn.set("eneS",frn.get("saldoIni")+frn.get("eneC")-frn.get("eneA"));				set("febC","a28"); set("febA","a64"); frn.set("febS",frn.get("eneS")+frn.get("febC")-frn.get("febA"));				set("marC","a29"); set("marA","a65"); frn.set("marS",frn.get("febS")+frn.get("marC")-frn.get("marA"));				set("abrC","a30"); set("abrA","a66"); frn.set("abrS",frn.get("marS")+frn.get("abrC")-frn.get("abrA"));				set("mayC","a31"); set("mayA","a67"); frn.set("mayS",frn.get("abrS")+frn.get("mayC")-frn.get("mayA"));				set("junC","a32"); set("junA","a68"); frn.set("junS",frn.get("mayS")+frn.get("junC")-frn.get("junA"));				set("julC","a33"); set("julA","a69"); frn.set("julS",frn.get("junS")+frn.get("julC")-frn.get("julA"));				set("agoC","a34"); set("agoA","a70"); frn.set("agoS",frn.get("julS")+frn.get("agoC")-frn.get("agoA"));				set("sepC","a35"); set("sepA","a71"); frn.set("sepS",frn.get("agoS")+frn.get("sepC")-frn.get("sepA"));				set("octC","a36"); set("octA","a72"); frn.set("octS",frn.get("sepS")+frn.get("octC")-frn.get("octA"));				set("novC","a37"); set("novA","a73"); frn.set("novS",frn.get("octS")+frn.get("novC")-frn.get("novA"));				set("dicC","a38"); set("dicA","a74"); frn.set("dicS",frn.get("novS")+frn.get("dicC")-frn.get("dicA"));			}						fun Exit() { //Tiene sentido cuando la pagina se ejecuta como dialogo, pues regresa el registro actual.				kdb.table("dat1,a,1,&,a2,a1");				kdb.exec();				frP.set(frn.param(0),kdb.get("dat1"));//Se llena el combo				frP.set(frn.param(0),frn.get("nombre"));//Se posiciona en el registro correcto				frn.exit();			}			//Funciones Auxiliares Para Catálogos(Genericas). 			//Necesitan las variable globales tabla_base y camposDeseados. 			//tabla_base especifíca el nombre de la tabla del catálogo que se está editando			//camposDeseados indica los campos que se modificaran de la tabla. Ej a1...a70			//Ademas de una funcion camposLlave que devuleva los campos que forman la clave			//Una funcion setData que establece en pantalla los valores de la base de datos. (Cubo de información: "datos")			//Una funcion verifica_borrar() que regresa 1 si se puede borrar el registro, 0 si no se debe borrar.			fun set(objeto,campo) { frn.set(objeto,kdb.get("datos",campo));}//Establece el valor de un campo de la BD al objeto indicado			fun Busca() { Bus(0);}			fun PgUp() { Bus(6);}			fun PgDn() { Bus(5);}			fun CtrIni() { Bus(7);}			fun CtrEnd() { Bus(8);}			fun Dialog(iModo,pag,par0,par1,par2,par3,par4,par5,par6,par7,par8,par9,par10,par11,par12,par13,par14,par15){				/*iModo: 0)No hace mayor validación. Siempre despliega la ventana. NO CONCATENA PREFIJO							1)Solo concatena el prefijo de la carpeta del lenguaje, no hace mayor validación. Siempre despliega la ventana							2)Modo especial. Se valida que el campo indicado en par0 se puede modificar(El par0 puede ser una tabla, y par1 la columna)							3)Modo especial para páginas de operacion:Solo si se está en alta o modifica despliega la pagina. Simpre agrega el prefijo del lenguaje				*/				var prefix=frn.lib("libKepler","langPrefix");				var page=prefix&pag;				var b_valido=1;				if(iModo==0)page=pag;				else if(iModo==2&&(strlen(par0)>0)){//Se toma el par0 como el objeto (o grid) al que se devolverá el resultado.					if( frn.getAtt(par0,"modify",par1) &= "N" ) b_valido=0;					if( frn.getAtt(par0,"available",par1) &= "N" ) b_valido=0;					if( frn.getAtt(par0,"visible",par1) &= "N" ) b_valido=0;				}				else if(iModo==3)b_valido=0;				if(b_valido==1)frn.dialog(page,par0,par1,par2,par3,par4,par5,par6,par7,par8,par9,par10,par11,par12,par13,par14,par15);			}						fun Error(string){frn.messageBar(string,1); frn.sound(1);}//Establece un mensaje de error en la barra de estado. Y emite un sonido de alerta.			fun Bus(relacional) { //1:>=	2:<=		3:>	 4:<		 5:Siguiente		6:Anterior		7:Primero		8:Ultimo				frn.messageBar("");				var cmd="datos,a,1," & relacional & "," & camposLlave() & ",&," & camposDeseados;				kdb.search(cmd); kdb.exec(); setData();			}			fun Cambio(numero_campo,objeto,desplazamiento) { //Realiza un cambio de valor en la BD					var cmd=tabla_base & ",1," & camposLlave() & ",&," & numero_campo & "," & frn.get(objeto,-1,desplazamiento); 					kdb.update(cmd); 			}			fun imprimeTabla(nom_tabla,titulo1,titulo2) { 				frn.dialog("_ks_printDlgElm",nom_tabla,titulo1 & "," & titulo2,"Arial",30);// alto=30 décimas de milímetro (3 mm)			}		}		/*		Autor			Fecha			Cambio			----------------------------		Carlos JAM	18-11-2009	Se activo el evento OnF10 para los saldos finales de los meses.        Arlines A   17-05-2019  Se corrigieron rutas en imágenes		*/	</script></pag>

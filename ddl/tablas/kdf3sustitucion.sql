@@ -13,9 +13,10 @@ CREATE  TABLE keplersc.kdf3sustitucion (
 ) TABLESPACE pg_default;
 ALTER TABLE ONLY keplersc.kdf3sustitucion ADD CONSTRAINT pk_kdf3sustitucion PRIMARY KEY (c1, c2, c3, c4, c5, c6);
 CREATE INDEX IF NOT EXISTS sindkdf3sustitucion02 ON keplersc.kdf3sustitucion USING btree (c1, c2, c3, c8, c9, c10) TABLESPACE pg_default;
+COMMENT ON TABLE keplersc.kdf3sustitucion IS 'F3 Sustitucion';
 COMMENT ON COLUMN keplersc.kdf3sustitucion.c9 IS 'Tipo';
 COMMENT ON COLUMN keplersc.kdf3sustitucion.c8 IS 'Grupo';
-COMMENT ON COLUMN keplersc.kdf3sustitucion.c7 IS 'Fecha Recubo otiginal';
+COMMENT ON COLUMN keplersc.kdf3sustitucion.c7 IS 'Fecha Recibo original';
 COMMENT ON COLUMN keplersc.kdf3sustitucion.c6 IS 'Folio';
 COMMENT ON COLUMN keplersc.kdf3sustitucion.c5 IS 'Tipo';
 COMMENT ON COLUMN keplersc.kdf3sustitucion.c4 IS 'Grupo';

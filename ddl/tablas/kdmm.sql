@@ -14,7 +14,7 @@ CREATE  TABLE keplersc.kdmm (
   c13 character varying(1) NOT NULL DEFAULT ''::character varying,
   c14 character varying(1) NOT NULL DEFAULT ''::character varying,
   c15 character varying(4) NOT NULL DEFAULT ''::character varying,
-  c16 character varying(4) NOT NULL DEFAULT ''::character varying,
+  c16 character varying(4) NOT NULL DEFAULT '0'::character varying,
   c17 character varying(8) NOT NULL DEFAULT ''::character varying,
   c18 character varying(1) NOT NULL DEFAULT ''::character varying,
   c19 character varying(20) NOT NULL DEFAULT ''::character varying,
@@ -101,12 +101,13 @@ CREATE  TABLE keplersc.kdmm (
   c100 character varying(20) NOT NULL DEFAULT ''::character varying,
   c101 timestamp without time zone NOT NULL DEFAULT '1800-01-01 00:00:00'::timestamp without time zone,
   c102 character varying NOT NULL DEFAULT ''::character varying,
-  col_sucursal character varying(2) NOT NULL DEFAULT '01'::character varying,
+  col_sucursal character varying(2) NOT NULL DEFAULT ''::character varying,
   folio_manual character varying(1) NOT NULL DEFAULT ''::character varying
 ) TABLESPACE pg_default;
-ALTER TABLE ONLY keplersc.kdmm ADD CONSTRAINT kdmm_pk PRIMARY KEY (c2, c1, c3, c4, col_sucursal);
+ALTER TABLE ONLY keplersc.kdmm ADD CONSTRAINT kdmm_pk PRIMARY KEY (c1, c2, c3, c4, col_sucursal);
 COMMENT ON TABLE keplersc.kdmm IS 'Catálogo de documentos';
 COMMENT ON COLUMN keplersc.kdmm.folio_manual IS 'Folio manual';
+COMMENT ON COLUMN keplersc.kdmm.col_sucursal IS 'Sucursal del movimiento';
 COMMENT ON COLUMN keplersc.kdmm.c95 IS 'Uen V=Ventas, S=Servicio, R=Refacciones';
 COMMENT ON COLUMN keplersc.kdmm.c94 IS 'N=Nota de Credito, A=Anulacion, G=General';
 COMMENT ON COLUMN keplersc.kdmm.c93 IS 'Registra proteccion antilavado o Folio automatico';
@@ -183,8 +184,8 @@ COMMENT ON COLUMN keplersc.kdmm.c28 IS 'S=Divide la cta princiapl en cuentas com
 COMMENT ON COLUMN keplersc.kdmm.c27 IS 'S=Restinge a no facturar en rojo';
 COMMENT ON COLUMN keplersc.kdmm.c26 IS 'Número del campo a añadir a la cuenta secundaria';
 COMMENT ON COLUMN keplersc.kdmm.c25 IS 'Número del campo a añadir a la cuenta principal';
-COMMENT ON COLUMN keplersc.kdmm.c24 IS 'Abonos Anticipos/Bonificaciones';
-COMMENT ON COLUMN keplersc.kdmm.c23 IS 'Cargos Anticipos/Bonificaciones';
+COMMENT ON COLUMN keplersc.kdmm.c24 IS 'Cuenta contable extra 2';
+COMMENT ON COLUMN keplersc.kdmm.c23 IS 'Cuenta contable extra 1';
 COMMENT ON COLUMN keplersc.kdmm.c22 IS 'Cuenta contable retencion ISR / IVA complementario / o del  IEPS';
 COMMENT ON COLUMN keplersc.kdmm.c21 IS 'Cuenta contable del IVA';
 COMMENT ON COLUMN keplersc.kdmm.c20 IS 'Cuenta contable del Abono';

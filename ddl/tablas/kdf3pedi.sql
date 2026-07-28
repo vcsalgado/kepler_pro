@@ -8,6 +8,7 @@ CREATE  TABLE keplersc.kdf3pedi (
   c7 character varying(2) NOT NULL DEFAULT ''::character varying
 ) TABLESPACE pg_default;
 ALTER TABLE ONLY keplersc.kdf3pedi ADD CONSTRAINT pk_kdf3pedi PRIMARY KEY (c7, c1, c2, c4);
+COMMENT ON TABLE keplersc.kdf3pedi IS 'F3 Pedimento';
 COMMENT ON COLUMN keplersc.kdf3pedi.c7 IS 'Ultimos 2 digitos anio';
 COMMENT ON COLUMN keplersc.kdf3pedi.c6 IS 'Fin Vigencia';
 COMMENT ON COLUMN keplersc.kdf3pedi.c5 IS 'Inicio Vigencia';

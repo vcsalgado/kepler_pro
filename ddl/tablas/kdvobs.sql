@@ -15,7 +15,9 @@ CREATE  TABLE keplersc.kdvobs (
   c14 character varying(5) NOT NULL DEFAULT ''::character varying,
   c15 numeric(10,2) NOT NULL DEFAULT 0,
   c16 numeric(10,2) NOT NULL DEFAULT 0,
-  c17 numeric(10,2) NOT NULL DEFAULT 0
+  c17 numeric(10,2) NOT NULL DEFAULT 0,
+  col_foliomig character varying(10) NULL,
+  col_foliofin character varying(10) NULL
 ) TABLESPACE pg_default;
 ALTER TABLE ONLY keplersc.kdvobs ADD CONSTRAINT pk_kdvobs PRIMARY KEY (c1, c2, c3, c4, c5, c6, c7);
 CREATE INDEX IF NOT EXISTS sindkdvobs02 ON keplersc.kdvobs USING btree (c1, c8, c2, c3, c4, c5, c6, c7) TABLESPACE pg_default;

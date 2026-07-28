@@ -13,8 +13,7 @@ declare
 begin
 	tipo := (xpath('//document/k_tipon/r4/text()', dataxml))[1];
 	clave_cteprov := (xpath('//document/k_clave/text()', dataxml))[1];
-	correo := coalesce((xpath('//document/k_correo/text()', dataxml))[1]::text,'')::text;
-
+	correo := (xpath('//document/k_correo/text()', dataxml))[1];
 	--CALL ALTA_ORDEN_FACTURA
 	select * into resultado, mensaje, adicionales from keplersc.ser_alta_orden_factura(dataxml,xmlkdmm,folio_operacion); 
 	if resultado = '0' then

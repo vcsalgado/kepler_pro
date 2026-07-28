@@ -7,7 +7,7 @@ DECLARE
 	--Debe ser llamada con los parametros dataXml y xmlKDMM)	
 	--Autor: Saltiel Cruz
 	--Fecha: 03 NOV 2022
-	--Actualizacion, el Folio_operacion estaba reemplazandose con cero. 23/Dic/2022	
+	--Actualización, el Folio_operacion estaba reemplazandose con cero. 23/Dic/2022	
 	--Variables para xml
 	v_sucursal_id text;
 	tipo_desc text;

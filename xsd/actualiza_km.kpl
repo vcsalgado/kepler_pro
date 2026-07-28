@@ -1,249 +1,1 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<pag xmlns="www.kepler.com.mx/2003/KSchema" roles="" tit="">
-	<grp dim="1,-1,7,11" brdr="0,0" clr="0,58,112" bclr="192,205,213" fnt="Arial,16" unfont="0" OnEnter="Exit()"><br/>
-
-<tab/><inp id="k_titulo" dim="65,1" brdr="0,0" bclr="192,205,213" clr="0,0,0" clrBrdr="192,205,213"
-				type="string" modify="N" available="N" fnt="Arial,22"/>
-	<br/>
-	<br/>
-	<tab/><txt fnt=",22" clr="0,0,0">Actualiza kilometraje por serie</txt><br/><tab/><hLine clr="0,0,0"/><br/><tab n="2"/>
-		<br/><br/>
-		<tab/>
-		<grp id="grupo_crud" dim="80,16,7,13" bclr="236,240,243" fntClrBrdr="236,240,243" fntBrdr="Arial,18" hSpace="4" clrBrdr="0,58,112" brdr="0,5" 
-			fntBrdr="Arial,18" available="Y" tit="Cambio de Kilometraje"><tab/>
-
-			<br/><tab n="2"/>
-			<txt>Serie:</txt>
-			<tab n="8"/>
-			<inp id="k_serie" dim="22,1"  OnChange="carga_km_reg()" tooltip="Seleccionar F9,Nuevo F10,Modificar F11" OnF9="obtenerSerie(serie)" 
-			 OnF10="Dialog(3,cat_serie_crud,Nuevo,x,s,serie)" OnF11="edicion_vin()" bclr="255,255,255" clr="64,64,64" clrBrdr="255,255,255" 
-			 type="capital"  brdr="0,2" available="Y" modify="Y"/>
-
-			<br/><tab n="2"/>
-			<txt>Descripcion :  </txt>
-			<tab n="5"/>
-			<inp id="k_descrip" dim="40,1" brdr="2,0" clr="64,64,64" bclr="255,255,255" type="capital" nc="50" 
-			clrBrdr="255,255,255" tooltip="Descripcion" available="N" modify="N"/>
-
-			<br/><tab n="2"/>
-			<txt>Ultimo kilometraje registrado :  </txt>
-			<tab/>
-			<inp id="k_ult_km_reg" dim="40,1" brdr="2,0" clr="64,64,64" bclr="255,255,255" type="number" nc="13" 
-			clrBrdr="255,255,255" tooltip="Ultimo kilometraje registrado" available="N" modify="N"/>
-
-			<br/><tab n="2"/>
-			<txt>Nuevo kilometraje a registrar :  </txt>
-			<tab/>
-			<inp id="k_nuevo_km_reg" dim="40,1" brdr="2,0" clr="64,64,64" bclr="255,255,255" type="number" nc="13" 
-			clrBrdr="255,255,255" tooltip="Nuevo kilometraje a registrar" available="Y" modify="Y" min="0"/><br/><sp/><tab/>
-			<br/>
-            <tab n="11"/><bot id="btn_aceptar" dim="12,0" brdr="5" text="Aceptar" OnEnter="Execute()" default="1" visible="Y" available="Y"/><br/>
-			<tab n="11"/><bot id="btn_limpiar" dim="12,0" brdr="5" text="Limpiar" OnEnter="limpiar()" default="1" visible="N" available="N"/><br/>
-			<inp id="input_crud" dim="10,1" brdr="2,0" clr="64,64,64" bclr="255,255,255" clrBrdr="255,255,255" visible="N"/><br/><tab/>
-
-			<inp id="k_usuario" dim="20,1" brdr="2,0" clr="64,64,64" bclr="255,255,255" type="capital" nc="50" 
-				clrBrdr="255,255,255" available="N" modify="N" visible="N"/><br/><sp/><tab/>
-			<inp id="k_sucursal" dim="20,1" brdr="2,0" clr="64,64,64" bclr="255,255,255" type="capital" nc="50" 
-				clrBrdr="255,255,255" available="N" modify="N" visible="N"/><br/><sp/><tab/>
-			<inp id="k_usuario" dim="20,1" brdr="2,0" clr="64,64,64" bclr="255,255,255" type="capital" nc="50" 
-				clrBrdr="255,255,255" available="N" modify="N" visible="N"/><br/><sp/><tab/>
-		
-		
-			
-		</grp><br/><br/>
-	</grp>
-	<script>
-		InstallDriver("KDB75");
-		class Main {
-			var frn,kdb,frP, accion,externo, clave_sel,sucursal_id,cve_color,resVal,straccion;
-            var cmdQuery,xmlRequest,ok,cuboResultados,cubo,mensajeError;
-			var usuario, suc_usuario, rol_usuario, asterisco;
-			fun Main() {
-				frn=new FRNT;
-				frP=new FRNTP;
-				kdb=new KDB;
-				usuario = frn.config("user","name");
-				suc_usuario = frn.lib("libKepler","UserInfo(1)");
-				rol_usuario = frn.config("user","role");
-				asterisco = "*";
-				kdb.connect();
-			    Inicializa();
-				
-				ctlrs_opcion();
-			}
-			
-			fun limpiar(){
-				frn.rst("k_serie");
-				frn.rst("k_descrip");
-				frn.rst("k_ult_km_reg");
-				frn.rst("k_nuevo_km_reg");
-				Inicializa();
-			}
-
-			fun descr_combo(combo,posicion,valor){
-				var descr, valor_actual;
-				var len_combo = frn.N(combo);
-				for (var cont=0; cont<len_combo ; cont++){
-					valor_actual= frn.get(combo,cont,posicion);
-					if (valor_actual &=  valor){
-						descr = frn.get(combo,cont,0);
-						return descr;
-					}
-				}
-			}
-
-			fun carga_km_reg(){
-				var serie = frn.get("k_serie");
-				cmdQuery = "SELECT
-				  s.c1 as serie,
-				  s.c2 as marca,
-				  s.c3 as modelo,
-				  s.c6 as transmision,
-				  s.c10 as color,
-				  s.c11 as anio,
-				  s.c8 as placas,
-				  s.c9 as cve_cte,
-				  v.c11 as fecha,
-				  COALESCE(v.c17, s.c12) as kilometraje
-				FROM
-				  keplersc.kdserie as s
-				LEFT JOIN
-				  keplersc.kdvntall v ON s.c1 = v.c14
-				WHERE
-				  s.c1 = '"& serie &"' order by v.c11 desc";		//MSS 23092024 Mostrar ultimo km de ultimo folio registrado
-
-				cuboResultados = frn.lib("libGeneral.kpl","EjecutarSqlSel",cmdQuery,"actualiza_km.carga_km_reg()");
-				frn.lib("libGeneral.kpl","FileSave",cuboResultados,"C:\Basura\cuboResultados");
-				
-				ok=getXmlAtt(cuboResultados,"ok");
-				if(ok &! "" && !ok){
-					mensajeError = getXmlAtt(cuboResultados,"native3");
-					frn.message(mensajeError,"Error","Aceptar");
-					return;
-				}	
-
-				var kilometraje = getXmlAtt(cuboResultados,"r"&0,"kilometraje");
-				var modelo = getXmlAtt(cuboResultados,"r"&0,"modelo");
-				var transmision	= getXmlAtt(cuboResultados,"r"&0,"transmision");
-				var color = getXmlAtt(cuboResultados,"r"&0,"color");
-				var anio = getXmlAtt(cuboResultados,"r"&0,"anio"); 
-
-				if(kilometraje&=""){
-					frn.message("No existe la serie","Error");
-					ctlrs_off();
-				}else{
-					frn.set("k_ult_km_reg",getXmlAtt(cuboResultados,"r"&0,"kilometraje"));
-
-					frn.set("k_descrip",modelo & " " & transmision & " " & color & " " & anio);
-					 ctlrs_opcion();
-				}
-
-			}
-
-
-			fun obtenerSerie(tipo){		
-
-				if (tipo&="serie") {
-					cmdQuery = "select s.c1 as serie,s.c2 as marca,s.c3 as modelo,s.c10 as color,s.c8 as placas,s.c9 as cve_cte, s.c12 as kilometraje
-						from keplersc.kdserie as s";
-					frn.dialog("genlistafiltrosel","Catálogo de Series",cmdQuery,"serie","k_serie","0","0","S","N");
-				}	
-			}
-
-			fun Inicializa(){
-
-				frn.setAtt("grupo_crud", "tit", "Cambio de Kilometraje" );
-				accion = "MODIFICAR";
-				ctlrs_opcion();
-			}
-			
-			fun ctlrs_off(){
-				frn.setAtt("btn_aceptar", "available", "N" );
-				frn.setAtt("btn_aceptar", "visible", "N" );
-			}
-				
-			fun ctlrs_opcion(){
-				if (accion &= "MODIFICAR"){
-					frn.setAtt("k_serie","available","Y");
-					frn.setAtt("k_serie", "modify", "Y" );
-
-					frn.setAtt("k_nuevo_km_reg","available","Y");
-					frn.setAtt("k_nuevo_km_reg", "modify", "Y" );
-
-					frn.setAtt("btn_aceptar", "available", "Y" );
-					frn.setAtt("btn_aceptar", "visible", "Y" );
-
-					frn.setAtt("btn_limpiar", "available", "N" );
-					frn.setAtt("btn_limpiar", "visible", "N" );
-				}
-				
-				if (accion &= "CONSULTAR"){
-					frn.setAtt("k_serie","available","N");
-					frn.setAtt("k_serie", "modify", "N" );
-
-					frn.setAtt("k_nuevo_km_reg","available","N");
-					frn.setAtt("k_nuevo_km_reg", "modify", "N" );
-
-					frn.setAtt("btn_limpiar", "available", "Y" );
-					frn.setAtt("btn_limpiar", "visible", "Y" );
-
-					ctlrs_off();
-				}
-
-			}
-				
-			
-			fun ValidarDatos(){
-				if (frn.get("k_serie") &= "") {						
-					frn.setPos("k_serie");
-					resVal=0;
-					frn.message("Debe especificar la serie, verificar","Error","Aceptar");
-				}
-				if (frn.get("k_nuevo_km_reg") &= "0") {						
-					frn.setPos("k_nuevo_km_reg");
-					resVal=0;
-					frn.message("Debe especificar nuevo kilometraje, verificar","Error","Aceptar");
-				}
-			}
-
-			fun Execute() {
-				resVal = 1;
-				ValidarDatos();
-				if(resVal == 0){
-					return;
-				}
-				
-				var resultado_confirmacion = frn.message("¿Desea continuar?","Mensaje de Confirmacion", 2);
-				if (resultado_confirmacion &! 1)  {
-					return;
-				}
-				
-				frn.set("k_usuario",usuario);
-				frn.set("k_sucursal",suc_usuario);
-
-				xmlRequest = getXml(frn.dataPag());	
-				frn.lib("libGeneral.kpl","FileSave",xmlRequest ,"C:\Basura\xmlRequest ");
-		
-				cmdQuery="SELECT * FROM keplersc.actualiza_km('<document>" & getXmlStr(xmlRequest ,"EOF:13_10") & "</document>')";
-				cubo = frn.lib("libGeneral.kpl","EjecutarSql",cmdQuery,"actualiza_km.Execute()");	
-				frn.lib("libGeneral.kpl","FileSave",cubo ,"C:\Basura\cuboResultados");					
-				var resultado=getXml(cubo ,"resultado");
-				
-				if(resultado &= "0"){
-					mensajeError = getXml(cubo ,"mensaje");
-					frn.message(mensajeError,"Error","Aceptar");
-					return;
-				}
-				else {
-					var sms = "Registro modificado";
-					frn.message(sms ,"Mensaje","Aceptar");	
-					accion="CONSULTAR";
-					ctlrs_opcion();
-					carga_km_reg();
-					}
-
-			}		
-			
-		}
-	</script>
-</pag>
+<?xml version="1.0" encoding="UTF-8"?><pag xmlns="www.kepler.com.mx/2003/KSchema" roles="" tit="">	<grp dim="1,-1,7,11" brdr="0,0" clr="0,58,112" bclr="192,205,213" fnt="Arial,16" unfont="0" OnEnter="Exit()"><br/><tab/><inp id="k_titulo" dim="65,1" brdr="0,0" bclr="192,205,213" clr="0,0,0" clrBrdr="192,205,213"				type="string" modify="N" available="N" fnt="Arial,22"/>	<br/>	<br/>	<tab/><txt fnt=",22" clr="0,0,0">Actualiza kilometraje por serie</txt><br/><tab/><hLine clr="0,0,0"/><br/><tab n="2"/>		<br/><br/>		<tab/>		<grp id="grupo_crud" dim="80,16,7,13" bclr="236,240,243" fntClrBrdr="236,240,243" fntBrdr="Arial,18" hSpace="4" clrBrdr="0,58,112" brdr="0,5" 			fntBrdr="Arial,18" available="Y" tit="Cambio de Kilometraje"><tab/>			<br/><tab n="2"/>			<txt>Serie:</txt>			<tab n="8"/>			<inp id="k_serie" dim="22,1"  OnChange="carga_km_reg()" tooltip="Seleccionar F9,Nuevo F10,Modificar F11" OnF9="obtenerSerie(serie)" 			 OnF10="Dialog(3,cat_serie_crud,Nuevo,x,s,serie)" OnF11="edicion_vin()" bclr="255,255,255" clr="64,64,64" clrBrdr="255,255,255" 			 type="capital"  brdr="0,2" available="Y" modify="Y"/>			<br/><tab n="2"/>			<txt>Descripcion :  </txt>			<tab n="5"/>			<inp id="k_descrip" dim="40,1" brdr="2,0" clr="64,64,64" bclr="255,255,255" type="capital" nc="50" 			clrBrdr="255,255,255" tooltip="Descripcion" available="N" modify="N"/>			<br/><tab n="2"/>			<txt>Ultimo kilometraje registrado :  </txt>			<tab/>			<inp id="k_ult_km_reg" dim="40,1" brdr="2,0" clr="64,64,64" bclr="255,255,255" type="number" nc="13" 			clrBrdr="255,255,255" tooltip="Ultimo kilometraje registrado" available="N" modify="N"/>			<br/><tab n="2"/>			<txt>Nuevo kilometraje a registrar :  </txt>			<tab/>			<inp id="k_nuevo_km_reg" dim="40,1" brdr="2,0" clr="64,64,64" bclr="255,255,255" type="number" nc="13" 			clrBrdr="255,255,255" tooltip="Nuevo kilometraje a registrar" available="Y" modify="Y" min="0"/><br/><sp/><tab/>			<br/>            <tab n="11"/><bot id="btn_aceptar" dim="12,0" brdr="5" text="Aceptar" OnEnter="Execute()" default="1" visible="Y" available="Y"/><br/>			<tab n="11"/><bot id="btn_limpiar" dim="12,0" brdr="5" text="Limpiar" OnEnter="limpiar()" default="1" visible="N" available="N"/><br/>			<inp id="input_crud" dim="10,1" brdr="2,0" clr="64,64,64" bclr="255,255,255" clrBrdr="255,255,255" visible="N"/><br/><tab/>			<inp id="k_usuario" dim="20,1" brdr="2,0" clr="64,64,64" bclr="255,255,255" type="capital" nc="50" 				clrBrdr="255,255,255" available="N" modify="N" visible="N"/><br/><sp/><tab/>			<inp id="k_sucursal" dim="20,1" brdr="2,0" clr="64,64,64" bclr="255,255,255" type="capital" nc="50" 				clrBrdr="255,255,255" available="N" modify="N" visible="N"/><br/><sp/><tab/>			<inp id="k_usuario" dim="20,1" brdr="2,0" clr="64,64,64" bclr="255,255,255" type="capital" nc="50" 				clrBrdr="255,255,255" available="N" modify="N" visible="N"/><br/><sp/><tab/>									</grp><br/><br/>	</grp>	<script>		InstallDriver("KDB75");		class Main {			var frn,kdb,frP, accion,externo, clave_sel,sucursal_id,cve_color,resVal,straccion;            var cmdQuery,xmlRequest,ok,cuboResultados,cubo,mensajeError;			var usuario, suc_usuario, rol_usuario, asterisco;			fun Main() {				frn=new FRNT;				frP=new FRNTP;				kdb=new KDB;				usuario = frn.config("user","name");				suc_usuario = frn.lib("libKepler","UserInfo(1)");				rol_usuario = frn.config("user","role");				asterisco = "*";				kdb.connect();			    Inicializa();								ctlrs_opcion();			}						fun limpiar(){				frn.rst("k_serie");				frn.rst("k_descrip");				frn.rst("k_ult_km_reg");				frn.rst("k_nuevo_km_reg");				Inicializa();			}			fun descr_combo(combo,posicion,valor){				var descr, valor_actual;				var len_combo = frn.N(combo);				for (var cont=0; cont<len_combo ; cont++){					valor_actual= frn.get(combo,cont,posicion);					if (valor_actual &=  valor){						descr = frn.get(combo,cont,0);						return descr;					}				}			}			fun carga_km_reg(){				var serie = frn.get("k_serie");				cmdQuery = "SELECT				  s.c1 as serie,				  s.c2 as marca,				  s.c3 as modelo,				  s.c6 as transmision,				  s.c10 as color,				  s.c11 as anio,				  s.c8 as placas,				  s.c9 as cve_cte,				  COALESCE(v.c17, s.c12) as kilometraje				FROM				  keplersc.kdserie as s				LEFT JOIN				  keplersc.kdvntall v ON s.c1 = v.c14				WHERE				  s.c1 = '"& serie &"'";				cuboResultados = frn.lib("libGeneral.kpl","EjecutarSqlSel",cmdQuery,"actualiza_km.carga_km_reg()");				frn.lib("libGeneral.kpl","FileSave",cuboResultados,"C:\Basura\cuboResultados");								ok=getXmlAtt(cuboResultados,"ok");				if(ok &! "" && !ok){					mensajeError = getXmlAtt(cuboResultados,"native3");					frn.message(mensajeError,"Error","Aceptar");					return;				}					var kilometraje = getXmlAtt(cuboResultados,"r"&0,"kilometraje");				var modelo = getXmlAtt(cuboResultados,"r"&0,"modelo");				var transmision	= getXmlAtt(cuboResultados,"r"&0,"transmision");				var color = getXmlAtt(cuboResultados,"r"&0,"color");				var anio = getXmlAtt(cuboResultados,"r"&0,"anio"); 				if(kilometraje&=""){					frn.message("No existe la serie","Error");					ctlrs_off();				}else{					frn.set("k_ult_km_reg",getXmlAtt(cuboResultados,"r"&0,"kilometraje"));					frn.set("k_descrip",modelo & " " & transmision & " " & color & " " & anio);					 ctlrs_opcion();				}			}			fun obtenerSerie(tipo){						if (tipo&="serie") {					cmdQuery = "select s.c1 as serie,s.c2 as marca,s.c3 as modelo,s.c10 as color,s.c8 as placas,s.c9 as cve_cte, s.c12 as kilometraje						from keplersc.kdserie as s";					frn.dialog("genlistafiltrosel","Catálogo de Series",cmdQuery,"serie","k_serie","0","0","S","N");				}				}			fun Inicializa(){				frn.setAtt("grupo_crud", "tit", "Cambio de Kilometraje" );				accion = "MODIFICAR";				ctlrs_opcion();			}						fun ctlrs_off(){				frn.setAtt("btn_aceptar", "available", "N" );				frn.setAtt("btn_aceptar", "visible", "N" );			}							fun ctlrs_opcion(){				if (accion &= "MODIFICAR"){					frn.setAtt("k_serie","available","Y");					frn.setAtt("k_serie", "modify", "Y" );					frn.setAtt("k_nuevo_km_reg","available","Y");					frn.setAtt("k_nuevo_km_reg", "modify", "Y" );					frn.setAtt("btn_aceptar", "available", "Y" );					frn.setAtt("btn_aceptar", "visible", "Y" );					frn.setAtt("btn_limpiar", "available", "N" );					frn.setAtt("btn_limpiar", "visible", "N" );				}								if (accion &= "CONSULTAR"){					frn.setAtt("k_serie","available","N");					frn.setAtt("k_serie", "modify", "N" );					frn.setAtt("k_nuevo_km_reg","available","N");					frn.setAtt("k_nuevo_km_reg", "modify", "N" );					frn.setAtt("btn_limpiar", "available", "Y" );					frn.setAtt("btn_limpiar", "visible", "Y" );					ctlrs_off();				}			}										fun ValidarDatos(){				if (frn.get("k_serie") &= "") {											frn.setPos("k_serie");					resVal=0;					frn.message("Debe especificar la serie, verificar","Error","Aceptar");				}				if (frn.get("k_nuevo_km_reg") &= "0") {											frn.setPos("k_nuevo_km_reg");					resVal=0;					frn.message("Debe especificar nuevo kilometraje, verificar","Error","Aceptar");				}			}			fun Execute() {				resVal = 1;				ValidarDatos();				if(resVal == 0){					return;				}								var resultado_confirmacion = frn.message("¿Desea continuar?","Mensaje de Confirmacion", 2);				if (resultado_confirmacion &! 1)  {					return;				}								frn.set("k_usuario",usuario);				frn.set("k_sucursal",suc_usuario);				xmlRequest = getXml(frn.dataPag());					frn.lib("libGeneral.kpl","FileSave",xmlRequest ,"C:\Basura\xmlRequest ");						cmdQuery="SELECT * FROM keplersc.actualiza_km('<document>" & getXmlStr(xmlRequest ,"EOF:13_10") & "</document>')";				cubo = frn.lib("libGeneral.kpl","EjecutarSql",cmdQuery,"actualiza_km.Execute()");					frn.lib("libGeneral.kpl","FileSave",cubo ,"C:\Basura\cuboResultados");									var resultado=getXml(cubo ,"resultado");								if(resultado &= "0"){					mensajeError = getXml(cubo ,"mensaje");					frn.message(mensajeError,"Error","Aceptar");					return;				}				else {					var sms = "Registro modificado";					frn.message(sms ,"Mensaje","Aceptar");						accion="CONSULTAR";					ctlrs_opcion();					carga_km_reg();					}			}							}	</script></pag>
