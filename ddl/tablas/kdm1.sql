@@ -45,7 +45,7 @@ CREATE  TABLE keplersc.kdm1 (
   c44 character varying(10) NOT NULL DEFAULT ''::character varying,
   c45 character varying(7) NOT NULL DEFAULT ''::character varying,
   c46 character varying(7) NOT NULL DEFAULT ''::character varying,
-  c47 character varying(150) NOT NULL DEFAULT ''::character varying,
+  c47 character varying(200) NOT NULL DEFAULT ''::character varying,
   c48 character varying(50) NOT NULL DEFAULT ''::character varying,
   c49 numeric(15,2) NOT NULL DEFAULT 0,
   c50 double precision NOT NULL DEFAULT 0,
@@ -222,7 +222,6 @@ CREATE  TABLE keplersc.kdm1 (
   doc_refer_aux character varying(90) NOT NULL DEFAULT ''::character varying,
   tipo_relacion character varying(2) NOT NULL DEFAULT ''::character varying,
   motivo_cancelacion character varying(2) NOT NULL DEFAULT ''::character varying,
-  fol_origen character varying(7) NOT NULL DEFAULT '0'::character varying,
   uuid_trasieps character varying(50) NOT NULL DEFAULT '0'::character varying,
   uuid_totalimptotras character varying(50) NOT NULL DEFAULT '0'::character varying,
   uuid_totalimptoret character varying(50) NOT NULL DEFAULT '0'::character varying,
@@ -232,7 +231,6 @@ CREATE  TABLE keplersc.kdm1 (
   esquema character varying(30) NULL DEFAULT ''::character varying,
   concepto_factura character varying(10) NOT NULL DEFAULT ''::character varying
 ) TABLESPACE pg_default;
-CREATE INDEX IF NOT EXISTS kdm1_c1_idx ON keplersc.kdm1 USING btree (c1, fol_origen, c2) TABLESPACE pg_default;
 CREATE UNIQUE INDEX IF NOT EXISTS pk_kdm1 ON keplersc.kdm1 USING btree (c1, c2, c3, c4, c5, c6) TABLESPACE pg_default;
 CREATE INDEX IF NOT EXISTS sindkdm102 ON keplersc.kdm1 USING btree (c1, c10, c2, c3, c4, c5, c6) TABLESPACE pg_default;
 CREATE INDEX IF NOT EXISTS sindkdm103 ON keplersc.kdm1 USING btree (c1, c10, c7, c9, c2, c3, c4, c5, c6) TABLESPACE pg_default;

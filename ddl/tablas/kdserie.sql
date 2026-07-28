@@ -17,9 +17,9 @@ CREATE  TABLE keplersc.kdserie (
   c16 character varying(130) NOT NULL DEFAULT ''::character varying,
   c17 character varying(15) NULL DEFAULT ''::character varying,
   c18 character varying(20) NULL DEFAULT '0'::character varying,
-  c19 timestamp without time zone NULL DEFAULT '1800-01-01 00:00:00'::timestamp without time zone,
   c20 character varying(90) NULL DEFAULT ''::character varying,
   c21 character varying(20) NULL DEFAULT ''::character varying,
+  c19 timestamp without time zone NULL DEFAULT '1800-01-01 00:00:00'::timestamp without time zone,
   c22 character varying(90) NOT NULL DEFAULT ''::character varying,
   c23 character varying(20) NOT NULL DEFAULT ''::character varying,
   c24 character varying(50) NOT NULL DEFAULT ''::character varying,
@@ -48,20 +48,18 @@ CREATE  TABLE keplersc.kdserie (
   c42 character varying(45) NOT NULL DEFAULT ''::character varying,
   c43 character varying(15) NOT NULL DEFAULT ''::character varying,
   c44 character varying(45) NOT NULL DEFAULT ''::character varying,
-  c45 character varying(15) NOT NULL DEFAULT ''::character varying,
-  origen character varying(3) NOT NULL DEFAULT 'K80'::character varying
+  c45 character varying(15) NOT NULL DEFAULT ''::character varying
 ) TABLESPACE pg_default;
 ALTER TABLE ONLY keplersc.kdserie ADD CONSTRAINT pk_kdserie PRIMARY KEY (c1);
+CREATE INDEX IF NOT EXISTS sindkdserie05 ON keplersc.kdserie USING btree (c16, c1) TABLESPACE pg_default;
 CREATE INDEX IF NOT EXISTS sindkdserie02 ON keplersc.kdserie USING btree (c2, c3, c4) TABLESPACE pg_default;
 CREATE INDEX IF NOT EXISTS sindkdserie03 ON keplersc.kdserie USING btree (c4) TABLESPACE pg_default;
 CREATE INDEX IF NOT EXISTS sindkdserie04 ON keplersc.kdserie USING btree (c15, c1) TABLESPACE pg_default;
 CREATE INDEX IF NOT EXISTS sindkdserie06 ON keplersc.kdserie USING btree (c8, c1) TABLESPACE pg_default;
 CREATE INDEX IF NOT EXISTS sindkdserie07 ON keplersc.kdserie USING btree (c9, c1) TABLESPACE pg_default;
-CREATE INDEX IF NOT EXISTS sindkdserie05 ON keplersc.kdserie USING btree (c16, c1) TABLESPACE pg_default;
 COMMENT ON COLUMN keplersc.kdserie.ult_resultado_tmkt IS 'Ultimo Resultado TMKT';
 COMMENT ON COLUMN keplersc.kdserie.ult_motivo_tmkt IS 'Ultimo Motivo TMKT';
 COMMENT ON COLUMN keplersc.kdserie.ult_accion_tmkt IS 'Ultima Accion TMKT';
-COMMENT ON COLUMN keplersc.kdserie.origen IS 'Sistema origen de registro';
 COMMENT ON COLUMN keplersc.kdserie.fecha_ult_contacto_tmkt IS 'Fecha Ultimo Contacto TMKT';
 COMMENT ON COLUMN keplersc.kdserie.c9 IS 'Clave contacto';
 COMMENT ON COLUMN keplersc.kdserie.c8 IS 'Placas';

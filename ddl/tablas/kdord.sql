@@ -81,11 +81,11 @@ CREATE  TABLE keplersc.kdord (
   kms_salida numeric(15,2) NULL DEFAULT 0
 ) TABLESPACE pg_default;
 ALTER TABLE ONLY keplersc.kdord ADD CONSTRAINT pk_kdord PRIMARY KEY (c1, c2, c3);
+CREATE INDEX IF NOT EXISTS sindkdord02 ON keplersc.kdord USING btree (c1, c11, c2, c3) TABLESPACE pg_default;
 CREATE INDEX IF NOT EXISTS sindkdord05 ON keplersc.kdord USING btree (c1, c6, c2, c3) TABLESPACE pg_default;
 CREATE INDEX IF NOT EXISTS sindkdord06 ON keplersc.kdord USING btree (c1, c7, c2, c3) TABLESPACE pg_default;
 CREATE INDEX IF NOT EXISTS sindkdord07 ON keplersc.kdord USING btree (c1, c8, c2, c3) TABLESPACE pg_default;
 CREATE INDEX IF NOT EXISTS sindkdord08 ON keplersc.kdord USING btree (c1, c6, c7, c4, c2, c3) TABLESPACE pg_default;
-CREATE INDEX IF NOT EXISTS sindkdord02 ON keplersc.kdord USING btree (c1, c11, c2, c3) TABLESPACE pg_default;
 CREATE INDEX IF NOT EXISTS sindkdord03 ON keplersc.kdord USING btree (c1, c7, c11, c2, c3) TABLESPACE pg_default;
 CREATE INDEX IF NOT EXISTS sindkdord04 ON keplersc.kdord USING btree (c1, c8, c11, c2, c3) TABLESPACE pg_default;
 COMMENT ON TABLE keplersc.kdord IS 'Ordenes de Servicio';
@@ -164,5 +164,4 @@ COMMENT ON COLUMN keplersc.kdord.c12 IS 'Direccion';
 COMMENT ON COLUMN keplersc.kdord.c11 IS 'Nombre';
 COMMENT ON COLUMN keplersc.kdord.c10 IS 'Clave del Cliente';
 COMMENT ON COLUMN keplersc.kdord.c1 IS 'Sucursal';
-CREATE TRIGGER kdord_notif AFTER INSERT OR DELETE OR UPDATE ON keplersc.kdord FOR EACH ROW EXECUTE FUNCTION keplersc.notif_registrar_movto();
 

@@ -281,7 +281,7 @@ exception
 	when others then
 		--Habilitar trigger
 		if tabla_kdc1 <> '' then
-			expSql:=concat('ALTER TABLE keplersc.', tabla_kdc1, ' ENABLE TRIGGER kdc1_upd_nivel_after_crud');
+			expSql := concat('create trigger kdc1_upd_nivel_after_crud after insert or delete or update on keplersc.', tabla_kdc1 ,' for each row execute function keplersc.cont_upd_nivel()');
 			execute expSql;
 		end if;
 		resultado := 0;

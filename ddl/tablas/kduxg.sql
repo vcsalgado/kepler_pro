@@ -32,7 +32,6 @@ CREATE  TABLE keplersc.kduxg (
   abonos_totalimptotras numeric(10,2) NOT NULL DEFAULT 0,
   abonos_subtotal numeric(10,2) NOT NULL DEFAULT 0
 ) TABLESPACE pg_default;
-CREATE INDEX IF NOT EXISTS kduxg_c4_idx ON keplersc.kduxg USING btree (c2, "substring"((c4)::text, 1, 2)) TABLESPACE pg_default;
 CREATE UNIQUE INDEX IF NOT EXISTS pk_kduxg ON keplersc.kduxg USING btree (c1, c2, c3, c4, c5) TABLESPACE pg_default;
 CREATE INDEX IF NOT EXISTS sindkduxg02 ON keplersc.kduxg USING btree (c1, c10, c2, c3, c4, c5) TABLESPACE pg_default;
 CREATE INDEX IF NOT EXISTS sindkduxg03 ON keplersc.kduxg USING btree (c1, c10, c2, c3, c11, c4, c5) TABLESPACE pg_default;

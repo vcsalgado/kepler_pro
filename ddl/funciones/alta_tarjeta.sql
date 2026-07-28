@@ -14,7 +14,7 @@ declare
 	fol_lealtad text;
 	ult_fol_lealtad text;
 	nuevo_fol_lealtad text;
-	totReg numeric;
+	totReg numeric(1);
 	
    --Variables de retorno
 	resultado text = '';

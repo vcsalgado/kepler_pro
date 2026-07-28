@@ -16,10 +16,7 @@ declare
 	precio decimal = 0.00;
 
 begin
-	--VCSS 28 jun 2026, si no se tiene costo promedio por no haber existencias, manejar último costo.
-	if costo_prom = 0 then
-		costo_prom = ult_costo; 
-	end if; 
+	
 	--SUB CALCULA_PRECIO_PAQ_GM
 	if catalogo = 1 then
 		if metodo_calculo = 1 or metodo_calculo = 2 then

@@ -63,7 +63,7 @@ begin
 	entradaSalida := (xpath('//document/entradasalida/text()', dataxml))[1];  --[E]Entrada, [S]Salida	
 	monto := (xpath('//document/monto/text()', dataxml))[1];  
 	cantidad := (xpath('//document/cantidad/text()', dataxml))[1];
-	
+--raise exception 'dataxml %',dataxml;	
 	-- Added by JMM 20220711 
 	grupo := (xpath('//document/grupo/text()', dataxml))[1];
 	tipo_clave := (xpath('//document/tipo_clave/text()', dataxml))[1];
@@ -140,10 +140,12 @@ _cant_ent_total, _cant_sal_total, _monto_ent_total, _monto_sal_total, _ultimo_co
 			else
 				_ultimo_costo = decMonto;
 			end if;
+--raise exception '1 _cant_sal_total: %; , _monto_sal_total: %;, decMonto: %;, _ultimo_costo: %; monto:%',_cant_sal_total, _monto_sal_total, decMonto, _ultimo_costo, monto;
 		else
 			_monto_sal_total = _monto_sal_total + (_costo_prom_total * decCantidad);
 			_penultimo_costo = _ultimo_costo;
 			_ultimo_costo = _costo_prom_total;
+--raise exception '2 _cant_sal_total: %; , _monto_sal_total: %;, decMonto: %;, _ultimo_costo: %; monto:%',_cant_sal_total, _monto_sal_total, decMonto, _ultimo_costo, monto;
 		end if;		
 	end if;
 	--Buscar Sucursal, producto y Anio

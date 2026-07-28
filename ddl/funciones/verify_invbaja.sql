@@ -96,12 +96,10 @@ BEGIN
 	  							raise exception '%',get_mensaje;
 							else 
 								select c7 + '7 days' into v_fecha from keplersc.KDCOMISMOV where c1 = v_sucursal_id and c8 = v_inventario;
-								--VCSS 01 sep 2025, el usuario que tenga habilitado el acceso a la opcion de baja de vale puede realizar
-								--		la operación sin restricción alguna. 
-								--if usuario <> 'ADMIN80' then 
-								--	get_mensaje := 'No est� autorizado para dar de baja el vale de salida';
-	  							--	raise exception '%',get_mensaje;
-								--end if;
+								if usuario <> 'ADMIN80' then 
+									get_mensaje := 'No est� autorizado para dar de baja el vale de salida';
+	  							raise exception '%',get_mensaje;
+								end if;
 	  						end if;
 	  					end if;
 

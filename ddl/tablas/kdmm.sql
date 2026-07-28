@@ -76,8 +76,6 @@ CREATE  TABLE keplersc.kdmm (
   c75 character varying(4) NOT NULL DEFAULT ''::character varying,
   c76 character varying(1) NOT NULL DEFAULT ''::character varying,
   c77 character varying(1) NOT NULL DEFAULT ''::character varying,
-  c78 character varying(1) NOT NULL DEFAULT ''::character varying,
-  c79 character varying(1) NOT NULL DEFAULT ''::character varying,
   c80 character varying(1) NOT NULL DEFAULT ''::character varying,
   c81 character varying(1) NOT NULL DEFAULT ''::character varying,
   c82 character varying(1) NOT NULL DEFAULT ''::character varying,
@@ -92,19 +90,21 @@ CREATE  TABLE keplersc.kdmm (
   c91 character varying(1) NOT NULL DEFAULT ''::character varying,
   c92 character varying(1) NOT NULL DEFAULT ''::character varying,
   c93 character varying(1) NOT NULL DEFAULT ''::character varying,
+  c100 character varying(20) NOT NULL DEFAULT ''::character varying,
+  c101 timestamp without time zone NOT NULL DEFAULT '1800-01-01 00:00:00'::timestamp without time zone,
+  c102 character varying(1) NOT NULL DEFAULT '1800-01-01 00:00:00'::timestamp without time zone,
   c94 character varying(1) NOT NULL DEFAULT 'G'::character varying,
+  col_sucursal character varying(2) NOT NULL DEFAULT '01'::character varying,
   c95 character varying(1) NOT NULL DEFAULT ''::character varying,
+  c78 character varying(1) NOT NULL DEFAULT ''::character varying,
+  c79 character varying(1) NOT NULL DEFAULT ''::character varying,
   c96 character varying(1) NOT NULL DEFAULT ''::character varying,
   c97 character varying(1) NOT NULL DEFAULT ''::character varying,
   c98 character varying(1) NOT NULL DEFAULT ''::character varying,
   c99 character varying(1) NOT NULL DEFAULT ''::character varying,
-  c100 character varying(20) NOT NULL DEFAULT ''::character varying,
-  c101 timestamp without time zone NOT NULL DEFAULT '1800-01-01 00:00:00'::timestamp without time zone,
-  c102 character varying NOT NULL DEFAULT ''::character varying,
-  col_sucursal character varying(2) NOT NULL DEFAULT '01'::character varying,
   folio_manual character varying(1) NOT NULL DEFAULT ''::character varying
 ) TABLESPACE pg_default;
-ALTER TABLE ONLY keplersc.kdmm ADD CONSTRAINT kdmm_pk PRIMARY KEY (c2, c1, c3, c4, col_sucursal);
+ALTER TABLE ONLY keplersc.kdmm ADD CONSTRAINT kdmm_pk PRIMARY KEY (c1, c2, c3, c4, col_sucursal);
 COMMENT ON TABLE keplersc.kdmm IS 'Catálogo de documentos';
 COMMENT ON COLUMN keplersc.kdmm.folio_manual IS 'Folio manual';
 COMMENT ON COLUMN keplersc.kdmm.c95 IS 'Uen V=Ventas, S=Servicio, R=Refacciones';

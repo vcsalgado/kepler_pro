@@ -3,9 +3,6 @@ CREATE OR REPLACE FUNCTION keplersc.cont_poliza_modificacion(dataxml xml)
  LANGUAGE plpgsql
 AS $function$
 declare
-	--Bitacora de cambios
-	--VCSS 06 May 25, se agregega el detalle de las cuentas antes y despues de modificar en la variable strDetalleMod para guardar en la bitacora
-
 	--Variables para xml 
 	sucursal_id text;
 	sucursal_desc text;
@@ -49,7 +46,6 @@ declare
 	--variables de uso general
 	intValor int;
 	strValor text;
-	strDetalleMod text;
 	mensajeError text;
 	varcont xml;
 	expSql text='';
@@ -124,16 +120,49 @@ begin
 
 	_poliza:=folio_poliza_kdc;
 
-	--Obtener detalle de cuentas e importes originales
-	strDetalleMod := '';
-	expSql=concat('select c1,c3,case when c4=''C'' then c5 else c5 * -1 end as importe from keplersc.',tabla_kdc2,' where c1=',folio_poliza_kdc, ' and c8=''', tipo_poliza,'''');
-	for _poliza, _cuenta, _monto in execute expSql 	loop
-		if strDetalleMod <> ''  then
-			strDetalleMod := strDetalleMod || '; ';
-		end if;
-		strDetalleMod := strDetalleMod || _cuenta || ':' || _monto::text;
-	end loop;
 
+/* VCSS Los saldos de las cuentas en kdc1 se actualizan por medio de triggers desde cada tabla kdc2
+ * por lo que las siguientes lineas se eliminan
+	--Crear tabla temporal del cuentas para poliza
+	drop table if exists auxPoliza;
+	create temp table auxPoliza(
+		poliza int,
+		cuenta varchar(20),
+		cargo_abono varchar(1),
+		monto numeric(15,2) default 0
+	);
+
+
+	expSql=concat('insert into auxPoliza select c1 as poliza, c3 as cuenta, 
+		c4 as cargo_abono, c5 as monto 
+		from keplersc.',tabla_kdc2,' where c1=',folio_poliza_kdc, ' and c8=''', tipo_poliza,'''');
+	execute expSql;
+
+	for _poliza, _cuenta, _cargo_abono, _monto in 
+		select poliza, cuenta, cargo_abono, monto from auxPoliza  
+	loop
+		intValor := mes::int;
+		--Actualizar saldos disminuyendo el importe de cada partida
+		if _cargo_abono = 'C' then --Cargo
+			intValor := campo_base_pesos_cargos_kdc1 + intValor - 1;
+			campo_cuentas := intValor::text;
+		else
+			intValor := campo_base_pesos_abonos_kdc1 + intValor - 1;
+			campo_cuentas := intValor::text;
+		end if;
+
+		expSql=format('update %1$s set c%2$s = c%2$s - %3$s where position(c1 in %4$L) = 1
+			returning 1::text ',tabla_cuentas, campo_cuentas, _monto, _cuenta);
+	
+		execute expSql into strValor;
+
+		if strValor is null then
+			raise exception 'No se acumularon saldos en las cuentas %.',cuenta ;
+		end if;
+	
+		raise notice '%', _cuenta;
+	end loop;
+*/
 
 	--Eliminar las partidas de la poliza
 	expSql=format('delete from keplersc.%1$s where c1 = %2$s and c8=%3$L',tabla_kdc2, _poliza,tipo_poliza);
@@ -171,18 +200,14 @@ begin
 		if resultado='0' then --Cuenta tiene gastos
 			raise exception '%', mensaje;
 		end if;		
-*/
-		strDetalleMod := strDetalleMod || '|';
+*/	
 		if monto_cargo > 0 then
 			tipo_asiento_kdc = 'C';
 			monto_partida = monto_cargo;
-			strDetalleMod := strDetalleMod || cuenta_kdc || ':' || monto_partida::text;
 		else
 			tipo_asiento_kdc = 'A';
 			monto_partida = monto_abono;
-			strDetalleMod := strDetalleMod || cuenta_kdc || ':' || (monto_partida * -1) ::text;
-		end if;	
-
+		end if;		
 		numero_partida_poliza_kdc = numero_partida_poliza_kdc + 1;
 		select xmlforest(fecha_operacion as fecha, cuenta_kdc as cuenta, tipo_asiento_kdc as tipo_asiento, 
 		   monto_partida as monto,descripcion_partida as descrip, referencia as refer, 
@@ -201,8 +226,8 @@ begin
 
  
 	--Registro de INICIO de transaccion en bitacora
---	call keplersc.log_transac_insert(transaccion_id, usuario_movto, referencia, paso, true, dataxml::text,'INFO',
---		xmlResultado);	
+	call keplersc.log_transac_insert(transaccion_id, usuario_movto, referencia, paso, true, dataxml::text,'INFO',
+		xmlResultado);	
 
 	--Eliminar partidas de poliza actual, disminuir cargos o abonos en kdc1 y eliminar el registros en kdc2
 
@@ -214,7 +239,7 @@ begin
 	if resultado='1' then
 		select xmlforest(usuario_movto as usuario, fecha_movto as fecha, hora_movto as hora, 
 		   sucursal_id as sucursal, genero, naturaleza, grupo, tipo, folio_operacion as folio,
-		   'MODPOLIZA' as tipo_movto,strDetalleMod as detalle_movto) :: text into strValor;
+		   'MODPOLIZA' as tipo_movto) :: text into strValor;
 	
 		select '<document>'||strValor||'</document>' into strValor;
 		xmlUsr := strValor::xml;

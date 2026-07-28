@@ -10,7 +10,7 @@ DECLARE
 	--Autor: Victor Salgado
 	--Fecha: 27 Junio 2022
 	--13/03/2025 Victor Salgado: Se elimina validacions para obetncion de folio
-
+	
 	--Variables para xml
 	sucursal_id text;
 	tipo_desc text;
@@ -38,8 +38,6 @@ DECLARE
 	folio_id text;
 	uen text= '';
 	cmmnt text;
-
-	interfaz_planta text;
 
 	--Variables de retorno desde funciones externas
 	get_resultado text; --retorno
@@ -76,8 +74,8 @@ begin
 			select * into get_resultado, get_mensaje, get_adicionales from keplersc.obtener_folio_documento(folio_id,0,0, dataxml);			
 			if get_resultado = '0' then	
 				raise exception '%',get_mensaje;
-				end if;
-				folio_operacion := get_mensaje;
+			end if;
+			folio_operacion := get_mensaje;
 --		else
 			--TO DO: Verificar, hasta el momento para esta condición no hay ningún documento
 			--       ¿Como se procesan documentos donde no se les calcula el folio?
@@ -236,19 +234,7 @@ begin
 			end if;
 		end if;
 
-		---------------------------------------------------------------
-		--Envio de Reporte a Planta.
-		---------------------------------------------------------------
-		interfaz_planta := coalesce((xpath('//document/ambiente/interfaz_planta/text()',dataxml))[1],'');
-		if interfaz_planta <> '' then
-			if interfaz_planta = 'DDOA_RDR' then
-				select * into get_resultado, get_mensaje, get_adicionales from keplersc.ifz_ddoa_rdr(dataxml, folio_operacion);
-				if get_resultado = '0' then
-					raise exception '%',get_mensaje;
-				end if;
-			end if;
-		end if;	
-
+	
 	end if;
 --raise exception 'ERROR INYECTADO 1';
 	get_resultado:=1;

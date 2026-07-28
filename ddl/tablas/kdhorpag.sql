@@ -16,10 +16,10 @@ CREATE  TABLE keplersc.kdhorpag (
   c15 numeric(15,2) NOT NULL DEFAULT 0
 ) TABLESPACE pg_default;
 ALTER TABLE ONLY keplersc.kdhorpag ADD CONSTRAINT pk_kdhorpag PRIMARY KEY (c1, c2, c3, c4);
-CREATE INDEX IF NOT EXISTS sindkdhorpag02 ON keplersc.kdhorpag USING btree (c1, c6, c7, c8, c9, c10, c2, c3, c4) TABLESPACE pg_default;
 CREATE INDEX IF NOT EXISTS sindkdhorpag03 ON keplersc.kdhorpag USING btree (c1, c5, c11, c2, c3, c4) TABLESPACE pg_default;
-CREATE INDEX IF NOT EXISTS sindkdhorpag04 ON keplersc.kdhorpag USING btree (c1, c5, c12, c5, c6, c7, c8, c9, c10, c2, c3, c4) TABLESPACE pg_default;
 CREATE INDEX IF NOT EXISTS sindkdhorpag05 ON keplersc.kdhorpag USING btree (c1, c5, c13, c11, c2, c3, c4) TABLESPACE pg_default;
+CREATE INDEX IF NOT EXISTS sindkdhorpag02 ON keplersc.kdhorpag USING btree (c1, c6, c7, c8, c9, c10, c2, c3, c4) TABLESPACE pg_default;
+CREATE INDEX IF NOT EXISTS sindkdhorpag04 ON keplersc.kdhorpag USING btree (c1, c5, c12, c5, c6, c7, c8, c9, c10, c2, c3, c4) TABLESPACE pg_default;
 COMMENT ON TABLE keplersc.kdhorpag IS 'pago de horas por punto';
 COMMENT ON COLUMN keplersc.kdhorpag.c9 IS 'Tpo';
 COMMENT ON COLUMN keplersc.kdhorpag.c8 IS 'Gpo';

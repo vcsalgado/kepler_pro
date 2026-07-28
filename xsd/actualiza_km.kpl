@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<pag xmlns="www.kepler.com.mx/2003/KSchema" roles="" tit="">
+<?xml version="1.0" encoding="UTF-8"?><pag xmlns="www.kepler.com.mx/2003/KSchema" roles="" tit="">
 	<grp dim="1,-1,7,11" brdr="0,0" clr="0,58,112" bclr="192,205,213" fnt="Arial,16" unfont="0" OnEnter="Exit()"><br/>
 
 <tab/><inp id="k_titulo" dim="65,1" brdr="0,0" bclr="192,205,213" clr="0,0,0" clrBrdr="192,205,213"
@@ -245,5 +244,4 @@
 			}		
 			
 		}
-	</script>
-</pag>
+	</script></pag>

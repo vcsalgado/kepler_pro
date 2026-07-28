@@ -9,7 +9,7 @@ declare
 --Bitacora de cambios
 -- Fecha : 20240517 , JMM
 -- Actualizada para los Contrarecibos del Nuevo SCH de Gastos
-
+-- 25/11/2025 Victor Salgado. Se atualiza el campo c17 para indicar que el registro está Cancelado
 
 	--Variables de definicion de documento
 	sucursal_id text;
@@ -56,7 +56,7 @@ begin
 			set fecha_rollback = current_date,
 				monto_rollback = c13, 
 				iva_rollback = c14,
-				c13 = 0, c14 = 0
+				c13 = 0, c14 = 0, c17='C' 
 			where c1 = sucursal_id and c5 = genero and c6 = naturaleza and c7 = grupo::int and c8 = tipo_clave::int
 				and c9 = folio_operacion;
 	

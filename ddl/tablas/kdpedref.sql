@@ -13,5 +13,4 @@ COMMENT ON COLUMN keplersc.kdpedref.c4 IS 'Estatus';
 COMMENT ON COLUMN keplersc.kdpedref.c3 IS 'Fecha referencia';
 COMMENT ON COLUMN keplersc.kdpedref.c2 IS 'Referencia';
 COMMENT ON COLUMN keplersc.kdpedref.c1 IS 'Sucursal';
-CREATE TRIGGER kdpedref_notif AFTER INSERT OR DELETE OR UPDATE ON keplersc.kdpedref FOR EACH ROW EXECUTE FUNCTION keplersc.notif_registrar_movto();
 
