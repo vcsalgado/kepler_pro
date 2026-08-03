@@ -1,5 +1,0 @@
-CREATE OR REPLACE FUNCTION keplersc.word_similarity_dist_op(text, text)
- RETURNS real
- LANGUAGE c
- IMMUTABLE PARALLEL SAFE STRICT
-AS '$libdir/pg_trgm', $function$word_similarity_dist_op$function$
