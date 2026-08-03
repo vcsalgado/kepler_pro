@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pag xmlns="www.kepler.com.mx/2003/KSchema" tit="Recibo Anticipo" scale="48">
+	<grp dim="1,-1,10,20" brdr="0,1" bclr="255,255,255" clr="0,0,0" fnt="Arial,16" unfont="0">		
+		<br exe="encabezado"/>
+		<hLine dim="95,0" g="2" type="1"/>
+		<br exe="encabezado"/>
+		<grp dim="15,5,7,12">
+			<br/><img id="img" dim="12,50" brdr="0,1" img="logocliente.jpg"/>	
+		</grp>
+		<grp dim="60,6,7,12">
+			<br/>
+			<inp id="nombreempresa" dim="60,1"  fnt="20b,20b"  type="string" modify="N" brdr="1,0" bclr="255,255,255" just="C"/>
+			<br/>
+			<tab n="8"/>
+			<txt fnt=",20b" clr="0,58,112">Recibo </txt>
+			<br/>
+			<br exe="encabezado"/>			
+		</grp>
+		<tab n="1"/>
+		<grp dim="15,5,7,12">
+			<tab n="2"/><txt>P&#225;g: </txt>
+			<inp id="k_pag" dim="5,1" type="number" mcr="k_pag"/><br/><br/><sp/>
+			<inp id="fecha" dim="10,1" type="date" fmt="DD-MM-CCYY" nc="-1" just="R"/>
+			<inp id="hora" dim="5,1" type="time" nc="-1" just="R"/>
+		</grp>
+		<br exe="encabezado"/>
+		<hLine dim="95,0" g="2" type="1"/>
+		<br exe="encabezado"/>
+		<grp dim="60,14,7,12">
+			<br exe="encabezado"/>
+			<tab/><txt fnt=",b">Fecha: </txt>
+			<tab/>
+			<inp id="fecha_anticipo" dim="10,1" type="date" fmt="DD-MM-CCYY" nc="-1" just="R"/>
+			<br exe="detalle"/>	
+			<tab/><txt fnt=",0b">Recibimos de: </txt>
+			<inp id="nombre" dim="60,1" type="string"/>
+			<br exe="detalle"/>
+			<tab/><txt fnt=",b">Domicilio:</txt><tab/><sp n="2"/>
+			<inp id="calle" dim="50,1" type="string"/>
+			<br exe="detalle"/><tab n="5"/><sp n="2"/>
+			<inp id="colonia" dim="40,1" type="string"/>
+			<br exe="detalle"/><tab n="5"/><sp n="2"/>
+			<inp id="poblacion" dim="60,1" type="string"/>
+			<br exe="detalle"/>
+			<br exe="detalle"/><tab/>
+			<txt fnt=",-1b">Referencia:</txt><tab/><sp n="2"/>
+			<inp id="referencia" dim="15,1" type="string"/>
+			<br exe="detalle"/>
+			<br exe="detalle"/><tab/>
+			<txt fnt=",-1b">Concepto: </txt>
+			<tab/><sp n="2"/>
+			<inp id="concepto" dim="60,1" type="string"/>
+			<br exe="detalle"/>
+		</grp>
+		<grp dim="30,12,7,12">
+			<br exe="detalle"/>
+			<txt fnt=",-1b">Folio:</txt><tab/><sp n="2"/>
+			<inp id="folio" dim="15,1" type="string" just="L"/>
+			<br exe="detalle"/>
+			<txt fnt=",-1b">No.Cliente:</txt><sp n="1"/>
+			<inp id="cliente" dim="12,1" type="string" just="L"/>
+			<br exe="detalle"/>
+			<txt fnt=",-1b">RFC:</txt><tab n="2"/><sp n="2"/>
+			<inp id="rfc" dim="20,1" type="string" just="L"/>
+		</grp>
+		<br exe="detalle"/><br exe="detalle"/><sp n="2"/>
+		<inp id="observaciones" dim="91,2" type="string"/><br exe="detalle"/><br exe="detalle"/>
+		<br exe="detalle"/>
+		<grp dim="60,7,7,12"><tab/>
+			<inp id="cantidad_letra" dim="70,1" type="string"/><tab n="3"/>
+			<br exe="detalle"/>
+			<tab n="23"/>
+			<inp id="porciva" dim="10,1" type="number" just="R"/>
+			<txt fnt=",-1b">%</txt>
+		</grp>
+		<grp dim="20,7,7,12">
+			<inp id="subtotal" dim="10,1" type="number" just="R" nd="2"/>
+			<br exe="detalle"/>
+			<inp id="iva" dim="10,1" type="number" just="R" nd="2"/>
+			<br exe="detalle"/>
+			<inp id="total" dim="10,1" type="number" just="R" nd="2"/>
+
+		</grp>				
+			<br exe="detalle"/>
+			<hLine dim="95,0" g="2" type="1"/>	
+			<br exe="detalle"/>
+	
+	
+	</grp>
+</pag>

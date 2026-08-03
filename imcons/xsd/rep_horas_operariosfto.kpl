@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pag xmlns='www.kepler.com.mx/2003/KSchema' tit='Orden' scale="48">
+<grp dim='1,-1,10,20' brdr='0,1' clr='0,0,0' bclr='255,255,255' fnt="Arial,15b" unfont="0">
+<br/>
+	<grp dim="15,8,7,12"><sp/>
+		<img id="img"  dim="14,80" brdr="0,1" img="logocliente.jpg"/>
+	</grp>
+	<grp dim="40,8,7,1">
+		<inp id="titulo"  dim="50,1" brdr="0,1" type="string" fnt="Arial,30b"/><br/><tab n="4"/><sp/>
+		<br/>
+		<txt fnt="Arial,18">Sucursal:</txt>
+		<inp id="suc_desc"  just="L" dim="60,1" brdr="0,1" type="string" fnt="Arial,17" nc="20"/><br/>
+	</grp>
+	
+	<tab n="14"/>
+	<grp id="tipo" dim="20,5,7,2"><br/>
+		<sp/><txt>Fecha:</txt>
+			<tab n="2"/><inp id="rep_fecha" dim="20,1" brdr="0,1" type="date" fnt="Arial,15" fmt="DD/MM/CCYY" nc="-1"/><br/>
+			<br/><br/>
+		<sp/><txt>Hora:</txt>
+			<tab n="2"/><inp id="rep_hora" dim="20,1" brdr="0,1" type="string" fnt="Arial,15"  nc="-1"/><br/><br/><br/>
+		<sp/><txt>Pagina:</txt><tab n="2"/><inp id="k_pag" dim="4,1" type="number" just="L" mcr="k_pag"/>
+		
+	</grp>
+	<br exe="encabezado"/>
+
+<grp dim='100,5,10,10' brdr='0,1' clr='0,0,0' bclr='255,255,255' fnt="Arial,15b" unfont="0">
+	<br/>
+	<tab n="8"/><txt fnt="Arial,18b">REPORTE DE HORAS POR OPERARIO</txt>
+	<br/>	
+	<tab n="8"/><txt fnt="Arial,18b">ENTRE LAS FECHAS </txt>
+	<inp id="fecha_1"  dim="8,1" brdr="0,1" bclr="255,255,255" fnt="Arial,15b"/>
+	<tab n="1"/><txt fnt="Arial,18b">Y </txt>
+	<inp id="fecha_2"  dim="8,1" brdr="0,1" bclr="255,255,255" fnt="Arial,15b"/>
+</grp>
+<br exe="encabezado"/>
+
+
+<tab n="1"/><sp n="1"/><txt>Orden</txt><sp n="7"/><txt>Punto</txt><sp/>
+<tab n="6"/><txt>Cliente</txt><sp/><tab n="12"/><txt>Vehiculo</txt><sp/><tab n="2"/>
+<sp n="9"/><txt>Placas</txt><sp/><tab n="2"/><sp n="1"/><txt>Horas</txt>
+
+<br exe="encabezado"/><hLine dim="120,0" g="2"/><br exe="encabezado"/>
+
+<br/>
+<br/>
+
+
+<grp dim='140,5,10,10' brdr='0,1' clr='0,0,0' bclr='255,255,255' fnt="Arial,15b" unfont="0">
+	<br/>
+	<sp/><txt fnt="Arial,16b">OPERARIO:</txt>
+	<sp/><inp id="nombre_operario"  dim="25,1" brdr="0,1" bclr="255,255,255" fnt="Arial,15b"/><br/>
+</grp>
+<br exe="operario"/>
+
+<grp dim='180,2,10,10' brdr='0,1' clr='0,0,0' bclr='255,255,255' fnt="Arial,15b" unfont="0">
+
+<sp/><inp id="orden"  dim="14,1" brdr="0,1" bclr="255,255,255" fnt="Arial,16b"/>
+
+<sp/>
+
+
+<sp/><inp id="punto"  dim="14,1" brdr="0,1" bclr="255,255,255" fnt="Arial,16b"/>
+
+<sp/>
+
+<inp id="cliente"  dim="40,1" brdr="0,1"  bclr="255,255,255" fnt="Arial,16b"/>
+<sp/><sp/><sp/>
+<inp id="vehiculo"  dim="20,1" brdr="0,1"  bclr="255,255,255" fnt="Arial,16b"/>
+<sp/>
+
+<inp id="placas"  dim="9,1" brdr="0,1"  bclr="255,255,255" fnt="Arial,16b"/>
+<sp n="1"/>
+
+<inp id="horas"  dim="9,1" brdr="0,1"  bclr="255,255,255" fnt="Arial,16b"/>
+<sp/>
+
+</grp>
+
+<br exe="datos"/>
+
+
+
+
+
+
+
+<grp dim='150,7,10,10' brdr='0,1' clr='0,0,0' bclr='255,255,255' fnt="Arial,15b" unfont="0">
+<br/>
+<tab n="17"/><sp/><txt>TOTAL HORAS --------------------------------------------------------------------- </txt>
+
+<sp/>
+<inp id="horas_total"  dim="9,1" brdr="0,1" bclr="255,255,255" fnt="Arial,15b"/>
+
+</grp>
+
+<br exe="horas_totales"/>
+
+<br/>
+	
+</grp>
+</pag>

@@ -1,0 +1,316 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pag xmlns="www.kepler.com.mx/2003/KSchema" roles="" tit="Catalogo Porcentajes">
+<grp  brdr="0,0" clr="0,58,112" fnt="Arial,14"  dim="0,0,20,20" bclr="192,205,213" unfont="0">
+	<txt fnt=",22" clr="0,0,0">  Catalogo Porcentajes</txt><tab/>
+	<br/>
+	<hLine clr="0,0,0"	dim="25,0,0,0"/>
+	<br/>
+
+	<br/>
+	<grp id="grupo_crud" bclr="236,240,243" fntClrBrdr="255,255,255" unfont="0" fntBrdr="Arial,18" hSpace="4" clrBrdr="0,58,112" 
+		dim="25,9,10,30" brdr="0,5" tit="Nuevo" fnt="Arial,16">
+		<inp id="input_crud" dim="10,1" brdr="2,0" clr="64,64,64" bclr="255,255,255" clrBrdr="255,255,255" visible="N"/>
+		<br/>
+
+		<tab/>
+		<txt>Tipo Operacion : </txt>
+			<cmb id="k_tipo_operacion_crud" dim="30,1" brdr="2,0" bclr="255,255,255" clr="64,64,64" clrBrdr="255,255,255" available="Y" modify="Y"/>
+		<br/>
+		<tab/>
+			<txt>Porcentaje de Comision de Seguro: </txt>
+			<tab/><sp/>
+			<inp id="k_com_seguro_crud" dim="15,1" brdr="2,0" clr="64,64,64" bclr="255,255,255" clrBrdr="255,255,255" type="number" nc="15" available="Y" modify="Y" nd="2"/>
+		<sp/>
+		<br/>
+
+		<tab/>
+			<txt>Porcentaje de Comision G. Extendida: </txt>
+			<tab/><sp/>
+			<inp id="k_com_g_ext_crud" dim="15,1" brdr="2,0" clr="64,64,64" bclr="255,255,255" clrBrdr="255,255,255" type="number" nc="15" available="Y" modify="Y" nd="2"/>
+		<sp/>
+	
+		<br/>
+
+		<tab/>
+			<txt>Porcentaje Utilidad Accesorios: </txt>
+			<tab n="2"/><sp/>
+			<inp id="k_com_uti_accs_crud" dim="15,1" brdr="2,0" clr="64,64,64" bclr="255,255,255" clrBrdr="255,255,255" type="number" nc="15" available="Y" modify="Y" nd="2"/>
+		<sp/>
+		<br/>
+
+		<tab/>
+			<txt>Porcentaje Utilidad Otros: </txt>
+			<tab n="3"/><sp/>
+			<inp id="k_com_uti_otros_crud" dim="15	,1" brdr="2,0" clr="64,64,64" bclr="255,255,255" clrBrdr="255,255,255" type="number" nc="15" available="Y" modify="Y" nd="2"/>
+		<sp/>
+		
+		<br/>		<tab/>
+		<bot id="k_btn_cons" dim="10,10" brdr="5" text="Guardar" hk="K" default="0" step="0"  OnEnter="Execute()" fnt="Arial,16" visible="Y" available="Y"/>
+		<tab/>
+		<bot id="btn_aceptar" dim="10,10" brdr="5" text="Aceptar" hk="K" default="0" step="0"  OnEnter="salir()" fnt="Arial,16" available="N" visible="N"/>
+	</grp>
+</grp>
+<script>
+	InstallDriver("KDB75");
+	class Main {
+		var frn,frP,kdb,sys,suc_usuario,perfil_usuario,rol_usuario, asterisco  ;
+		var cmdQuery, cuboQuery, ok, mensajeError, xml_cubo_cata, accion, externo, straccion, clave_sel, sucursal_id, resVal;
+		var k_tipo_operacion_crud, k_com_seguro_crud, k_com_g_ext_crud, k_com_uti_accs_crud, k_com_uti_otros_crud, k_tipo_operacion;
+		fun Main(){
+			frn=new FRNT;
+			kdb=new KDB;
+			frP=new FRNTP;
+			sys=new SYS;
+			kdb.connect();
+			
+			suc_usuario = frn.lib("libKepler","UserInfo(1)");
+			perfil_usuario = frn.lib("libKepler","UserInfo(2)");
+			rol_usuario = frn.config("user","role");
+			asterisco = "*";
+			accion = frn.param(0);
+			k_tipo_operacion = frn.param(1);
+			
+			ConfiguraUI();
+			Inicializa();
+			
+		}
+
+		fun vacia_campos(){
+			frn.rst("k_tipo_operacion_crud");
+			frn.rst("k_com_seguro_crud");
+			frn.rst("k_com_g_ext_crud");
+			frn.rst("k_com_uti_accs_crud");
+			frn.rst("k_com_uti_otros_crud");
+
+		}
+            
+		fun salir(){
+			accion="NUEVO";
+			vacia_campos();
+			Inicializa();
+			frn.exit();			
+		}
+
+		fun llena_combos(){
+
+			cmdQuery = "select '['||c1||'] '||c2 as c1, c1 as c2 from keplersc.kdtop";
+			rstXml(cuboQuery);
+			cuboQuery = frn.lib("libGeneral.kpl","EjecutarSqlSel",cmdQuery,"cat_porcentajes_crud.IniCombos()");
+			frn.set("k_tipo_operacion_crud",cuboQuery);	
+			
+		}
+
+		fun carga_datos(){
+
+
+			cmdQuery = "select c1 as k_tipo_operacion_crud, c2 as k_com_seguro_crud,
+				c3 as k_com_g_ext_crud, c4 as k_com_uti_accs_crud,
+				c5 as k_com_uti_otros_crud from keplersc.kdvpor
+				 where c1 = '"& k_tipo_operacion &"'";
+			rstXml(cuboQuery);
+			cuboQuery = frn.lib("libGeneral.kpl","EjecutarSqlSel",cmdQuery,"cat_porcentajes_crud.IniCombos()");
+			xml_cubo_cata=frn.lib("libGeneral.kpl","CreaXmlDesdeAtt",cuboQuery,"r0");
+			frn.lib("libGeneral.kpl","FileSave",cuboQuery,"C:\Basura\cubo");		
+			frn.setX(xml_cubo_cata);
+
+			var tipo_operacion = getXmlAtt(cuboQuery,"r"&0,"k_tipo_operacion_crud");
+			frn.setPos("k_tipo_operacion_crud",-1,"2","internal:Y","val:"&tipo_operacion);
+
+		}
+
+
+		fun ValidarDatos(){
+			if (frn.get("k_tipo_operacion_crud") &= "") {						
+				frn.setPos("k_tipo_operacion_crud");
+				resVal=0;
+				frn.message("Debe especificar el tipo de operacion, verificar","Error","Aceptar");
+				return;
+			}
+
+			if (frn.get("k_com_seguro_crud") &= "") {						
+				frn.setPos("k_com_seguro_crud");
+				resVal=0;
+				frn.message("Debe especificar Comision de seguro, verificar","Error","Aceptar");
+				return;
+			}
+			if (frn.get("k_com_g_ext_crud") &= "") {						
+				frn.setPos("k_com_g_ext_crud");
+				resVal=0;
+				frn.message("Debe especificar Comision G. Extendida, verificar","Error","Aceptar");
+				return;
+			}
+			if (frn.get("k_com_uti_accs_crud") &= "") {						
+				frn.setPos("k_com_uti_accs_crud");
+				resVal=0;
+				frn.message("Debe especificar Utilidad Accesorios, verificar","Error","Aceptar");
+				return;
+			}
+			if (frn.get("k_com_uti_otros_crud") &= "") {						
+				frn.setPos("k_com_uti_otros_crud");
+				resVal=0;
+				frn.message("Debe especificar Utilidad Otros, verificar","Error","Aceptar");
+				return;
+			}
+		}
+
+		fun Execute() {
+			resVal = 1;
+			ValidarDatos();
+			if(resVal == 0){
+				return;
+			}
+			
+			var resultado_confirmacion = frn.message("¿Desea continuar?","Mensaje de Confirmacion", 2);
+			if (resultado_confirmacion &! 1)  {
+				return;
+			}
+			
+			var xmlRequest = getXml(frn.dataPag());	
+			frn.lib("libGeneral.kpl","FileSave",xmlRequest ,"C:\Basura\xmlRequest ");
+					cmdQuery="SELECT * FROM keplersc.cat_crud_porcentajes('<document>" & getXmlStr(xmlRequest ,"EOF:13_10") & "</document>')";
+			var cubo = frn.lib("libGeneral.kpl","EjecutarSql",cmdQuery,"cat_porcentajes_crud.Execute()");	
+			frn.lib("libGeneral.kpl","FileSave",cubo ,"C:\Basura\cuboResultados");					
+			var resultado=getXml(cubo ,"resultado");
+			
+			if(resultado &= "0"){
+				mensajeError = getXml(cubo ,"mensaje");
+				frn.message(mensajeError,"Error","Aceptar");
+				return;
+			}
+			frP.script("Inicia_Forma()");
+			if (accion &= "NUEVO" || accion &= "MODIFICAR") {	
+				var sms =  "";
+				if (accion &= "NUEVO"){
+					sms = "Registro guardado";
+				}else {
+					sms = "Registro modificado";
+				}
+				accion="CONSULTAR";
+
+				ctlrs_opcion();
+				frn.message(sms ,"Mensaje","Aceptar");	
+
+
+			}
+			if (accion &= "ELIMINAR"){
+				frn.message("Registro eliminado","Mensaje","Aceptar");
+				frn.exit();			
+			}
+		}	
+		
+		fun ctlrs_opcion(){
+			frn.set("input_crud", accion);
+			frn.rst("grupo_crud");
+			if (accion &= "NUEVO"){
+
+				frn.setAtt("k_tipo_operacion_crud", "available", "Y" );
+				frn.setAtt("k_tipo_operacion_crud", "modify", "Y" );
+
+				frn.setAtt("k_com_seguro_crud", "available", "Y" );
+				frn.setAtt("k_com_seguro_crud", "modify", "Y" );
+
+				frn.setAtt("k_com_g_ext_crud", "available", "Y" );
+				frn.setAtt("k_com_g_ext_crud", "modify", "Y" );
+
+				frn.setAtt("k_com_uti_accs_crud", "available", "Y" );
+				frn.setAtt("k_com_uti_accs_crud", "modify", "Y" );
+
+				frn.setAtt("k_com_uti_otros_crud", "available", "Y" );
+				frn.setAtt("k_com_uti_otros_crud", "modify", "Y" );
+
+			    frn.set("k_titulo","Nuevo Porcentaje");
+				frn.setAtt("grupo_crud", "tit", "Nuevo" );
+				frn.setAtt("k_btn_cons", "visible", "Y" );
+				frn.setAtt("btn_aceptar", "available", "N" );
+				frn.setAtt("btn_aceptar", "visible", "N" );
+			
+			}else { 
+
+					if (accion &= "MODIFICAR") {
+					carga_datos();
+
+					frn.setAtt("k_tipo_operacion_crud", "available", "N" );
+					frn.setAtt("k_tipo_operacion_crud", "modify", "N" );
+
+					frn.setAtt("k_com_seguro_crud", "available", "Y" );
+					frn.setAtt("k_com_seguro_crud", "modify", "Y" );
+
+					frn.setAtt("k_com_g_ext_crud", "available", "Y" );
+					frn.setAtt("k_com_g_ext_crud", "modify", "Y" );
+
+					frn.setAtt("k_com_uti_accs_crud", "available", "Y" );
+					frn.setAtt("k_com_uti_accs_crud", "modify", "Y" );
+
+					frn.setAtt("k_com_uti_otros_crud", "available", "Y" );
+					frn.setAtt("k_com_uti_otros_crud", "modify", "Y" );
+
+					frn.set("k_titulo","Modifica Porcentajes");
+
+					frn.setAtt("grupo_crud", "tit", "Modifica" );
+                    frn.setAtt("grupo_crud", "available","Y");
+					frn.setAtt("k_btn_cons", "visible", "Y" );
+					frn.setAtt("btn_aceptar", "available", "N" );
+					frn.setAtt("btn_aceptar", "visible", "N" );
+					
+                   }else{
+
+						carga_datos();
+
+
+						frn.setAtt("k_tipo_operacion_crud", "available", "N" );
+						frn.setAtt("k_tipo_operacion_crud", "modify", "N" );
+
+						frn.setAtt("k_com_seguro_crud", "available", "N" );
+						frn.setAtt("k_com_seguro_crud", "modify", "N" );
+
+						frn.setAtt("k_com_g_ext_crud", "available", "N" );
+						frn.setAtt("k_com_g_ext_crud", "modify", "N" );
+
+						frn.setAtt("k_com_uti_accs_crud", "available", "N" );
+						frn.setAtt("k_com_uti_accs_crud", "modify", "N" );
+
+						frn.setAtt("k_com_uti_otros_crud", "available", "N" );
+						frn.setAtt("k_com_uti_otros_crud", "modify", "N" );
+
+						frn.set("k_titulo","Colsulta Porcentajes");
+
+						frn.setAtt("grupo_crud", "tit", "Colsulta" );
+						frn.setAtt("btn_aceptar", "available", "Y" );
+						frn.setAtt("btn_aceptar", "visible", "Y" );
+						frn.setAtt("k_btn_cons", "available", "N" );
+						frn.setAtt("k_btn_cons", "visible", "N" );
+
+
+				   }
+				
+			}
+			if (accion &! "CONSULTAR"){
+
+				frn.setAtt("btn_aceptar", "available", "N" );
+				frn.setAtt("btn_aceptar", "visible", "N" );
+				frn.setAtt("k_btn_cons", "available", "Y" );
+				frn.setAtt("k_btn_cons", "visible", "Y" );
+			}
+		}		
+
+		
+		fun ConfiguraUI(){
+			if (frn.nParam() == 0){
+				frn.message("Acción no permitida.","Error","&Aceptar");
+//				frn.open("redirect",2);
+				return;
+			}
+		}		
+
+		fun Inicializa(){
+			llena_combos();
+			ctlrs_opcion();
+
+		}						
+           
+				
+	}
+	
+		
+	</script>
+</pag>

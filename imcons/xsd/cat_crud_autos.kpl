@@ -1,0 +1,1065 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pag xmlns="www.kepler.com.mx/2003/KSchema" roles="" tit="Cat&#225;logo de Veiculos">
+<grp  brdr="0,0" clr="0,58,112" fnt="Arial,16"  dim="0,0,10,10" bclr="192,205,213" unfont="0">
+	<tab/><inp id="k_titulo" fnt=",22" dim="30,1" brdr="0,0" bclr="192,205,213" clr="0,0,0" clrBrdr="192,205,213"
+				type="string" modify="N" available="N" fnt="Arial,25"/>
+	<br/>
+	<br/>
+		<tab/><hLine clr="0,0,0"/>
+		<br/><br/>
+		<tab/>
+		<grp id="gpo_2" bclr="236,240,243" fntClrBrdr="255,255,255" unfont="0" fntBrdr="Arial,18" hSpace="4" clrBrdr="0,58,112" dim="94,54,10,9" brdr="0,5" tit="Cat&#225;logo de Autos Alta Nuevo" fnt="Arial,16">
+			<tab/>
+			<sp/>
+				<inp id="clave" dim="17,1" brdr="0,0" bclr="236,240,243" clrBrdr="192,205,213" 
+					type="string" modify="N" available="N" fnt="Arial,0"/>
+			<sp/>
+				<inp id="k_clave" dim="23,1" brdr="0,0" bclr="255,255,255" clr="0,0,0" clrBrdr="192,205,213" 
+					type="capital" modify="Y" available="Y" fnt="Arial,0"  nc="18" tooltip="Clave del Veh&#237;culo" OnChange="clave_tabla()"/>
+			<tab/>
+			
+				<inp id="desc" dim="18,1" brdr="0,0" bclr="236,240,243"  clrBrdr="192,205,213" 
+					type="string" modify="N" available="N" fnt="Arial,0"/>
+			<sp/>
+				<inp id="k_desc" dim="23,1" brdr="0,0" bclr="255,255,255" clr="0,0,0" clrBrdr="192,205,213" 
+					type="capital" modify="Y" available="Y" fnt="Arial,0" nc="50" tooltip="Descripci&#243;n del Veh&#237;culo"/>
+			<br/>
+			<tab/>
+			<sp/>
+				<inp id="clase" dim="17,1" brdr="0,0" bclr="236,240,243"  clrBrdr="192,205,213" 
+					type="string" modify="N" available="N" fnt="Arial,0"/>
+			<sp/>
+				<inp id="k_clase" dim="8,1" brdr="0,0" bclr="255,255,255" clr="0,0,0" clrBrdr="192,205,213" 
+					type="capital" modify="Y" available="Y" fnt="Arial,0" nc="5" tooltip="Clase del Veh&#237;culo" OnF9="consultaClase()" OnF10="crudClase(N)" OnF11="crudClase(M)" OnChange="BuscarClase()"/>
+			<sp/>
+				<inp id="k_desc_clase" dim="14,1" brdr="0,0" bclr="255,255,255" clr="0,0,0" clrBrdr="192,205,213" 
+					type="string" modify="N" available="N" fnt="Arial,0"/>
+			<tab/>
+				<inp id="marca" dim="18,1" brdr="0,0" bclr="236,240,243"  clrBrdr="192,205,213" 
+					type="string" modify="N" available="N" fnt="Arial,0"/>
+			<sp/>
+				<inp id="k_marca" dim="8,1" brdr="0,0" bclr="255,255,255" clr="0,0,0" clrBrdr="192,205,213" 
+					type="capital" modify="Y" available="Y" fnt="Arial,0" nc="5" tooltip="Descripci&#243;n de la Marca" OnF9="consultaMarca()" OnF10="crudMarca(N)" OnF11="crudMarca(M)" OnChange="BuscarMarca()"/>
+
+			<sp/>
+				<inp id="k_desc_marca" dim="14,1" brdr="0,0" bclr="255,255,255" clr="0,0,0" clrBrdr="192,205,213" 
+					type="string" modify="N" available="N" fnt="Arial,0"/>
+					
+				<tab/>
+			<br/>
+			<tab/>
+			<sp/>
+				<inp id="tipo_cal_isa" dim="17,1" brdr="0,0" bclr="236,240,243"  clrBrdr="192,205,213" 
+					type="string" modify="N" available="N" fnt="Arial,0"/>
+			<sp/>
+				<inp id="k_tipo_cal_isa" dim="8,1" brdr="0,0" bclr="255,255,255" clr="0,0,0" clrBrdr="192,205,213" 
+					type="capital" modify="Y" available="Y" fnt="Arial,0" tooltip="Tipo de C&#225;lculo" nc="5" OnF9="consultaIsa()" OnF10="crudIsa(N)" OnF11="crudIsa(M)" OnChange="BuscarCIsan()"/>
+			<sp/>
+				<inp id="k_desc_cisan" dim="14,1" brdr="0,0" bclr="255,255,255" clr="0,0,0" clrBrdr="192,205,213" 
+					type="string" modify="N" available="N" fnt="Arial,0"/>	
+
+			<tab/>
+				<inp id="linea" dim="18,1" brdr="0,0" bclr="236,240,243"  clrBrdr="192,205,213" 
+					type="string" modify="N" available="N" fnt="Arial,0"/>
+			<sp/>
+				<inp id="k_linea" dim="8,1" brdr="0,0" bclr="255,255,255" clr="0,0,0" clrBrdr="192,205,213" 
+					type="capital" modify="Y" available="Y" fnt="Arial,0" tooltip="L&#237;nea de Veh&#237;culos" nc="10" OnF9="consultaLinea()" OnF10="crudLinea(N)" OnF11="crudLinea(M)" OnChange="BuscarLinea()"/>
+				
+			<sp/>
+				<inp id="k_desc_linea" dim="14,1" brdr="0,0" bclr="255,255,255" clr="0,0,0" clrBrdr="192,205,213" 
+					type="string" modify="N" available="N" fnt="Arial,0"/>		
+					
+			<br/>
+			<tab/>
+			<sp/>
+				<inp id="nuevo_usado" dim="17,1" brdr="0,0" bclr="236,240,243"  clrBrdr="192,205,213" 
+					type="string" modify="N" available="N" fnt="Arial,0"/>
+					<sp/>
+				<cmb id="k_nuevo_usado" clr="64,64,64" clrBrdr="192,205,213"  
+					dim="5,1" bclr="255,255,255" brdr="2,0" fnt="Arial,16" available="Y" tooltip="N-Nuevo U-Usado" OnChange="descrip_nou()"/>
+				<sp/>
+
+				<inp id="k_nuevo_usado_desc" dim="8,1" brdr="0,0" bclr="236,240,243" clr="0,0,0" clrBrdr="192,205,213" 
+					type="string" modify="N" available="N" fnt="Arial,0"/>
+
+			<tab n="4"/>
+				<inp id="meses_entrega" dim="18,1" brdr="0,0" bclr="236,240,243"  clrBrdr="192,205,213" 
+					type="string" modify="N" available="N" fnt="Arial,0"/>
+			<sp/>
+				<inp id="k_meses_entrega" dim="5,1" brdr="0,0" bclr="255,255,255" clr="0,0,0" clrBrdr="192,205,213" 
+					type="number" modify="Y" available="Y" fnt="Arial,0" nc="7" tooltip="Meses Promedio para Entrega" nd="0"/>
+			<sp/>
+            <br/>
+			<tab/>
+			<sp/>
+				<inp id="v_se_prod" dim="17,1" brdr="0,0" bclr="236,240,243"  clrBrdr="192,205,213" 
+					type="string" modify="N" available="N" fnt="Arial,0"/>
+			<sp/>
+				<cmb id="k_v_se_prod" dim="5,1" brdr="0,0" bclr="255,255,255" clr="0,0,0" clrBrdr="192,205,213" 
+					type="capital" modify="Y" available="Y" fnt="Arial,0" tooltip="Unidades todav&#237;a en producci&#243;n, S &#243; N"/>
+			<tab n="5"/>
+			<sp/><tab n="2"/>
+				<inp id="precio_lista" dim="18,1" brdr="0,0" bclr="236,240,243"  clrBrdr="192,205,213" 
+					type="string" modify="N" available="N" fnt="Arial,0"/>
+			<sp/>
+				<inp id="k_precio_lista" dim="10,1" brdr="0,0" bclr="255,255,255" clr="0,0,0" clrBrdr="192,205,213" 
+					type="number" modify="Y" available="Y" fnt="Arial,0"  nc="18" nd="2" tooltip="Precio de Lista del Veh&#237;culo"/>
+			<sp/>
+            <br/>
+			<tab/>
+			<sp/>
+				<inp id="cilindros" dim="17,1" brdr="0,0" bclr="236,240,243"  clrBrdr="192,205,213" 
+					type="string" modify="N" available="N" fnt="Arial,0"/>
+			<sp/>
+				<inp id="k_cilindros" dim="5,1" brdr="0,0" bclr="255,255,255" clr="0,0,0" clrBrdr="192,205,213" 
+					type="number" modify="Y" available="Y" fnt="Arial,0"  nc="5" nd="0" tooltip="N&#250;mero de Cilindros" fmt="5" max="12"/>
+			<tab n="7"/>
+				<inp id="ocupantes" dim="18,1" brdr="0,0" bclr="236,240,243"  clrBrdr="192,205,213" 
+					type="string" modify="N" available="N" fnt="Arial,0"/>
+			<sp/>
+				<inp id="k_ocupantes" dim="5,1" brdr="0,0" bclr="255,255,255" clr="0,0,0" clrBrdr="192,205,213" 
+					type="number" modify="Y" available="Y" fnt="Arial,0"  nc="5" nd="0" tooltip="Capacidad de Ocupantes"/>
+			<sp/>
+            <br/>
+			<tab/>
+			<sp/>
+				<inp id="procedencia" dim="17,1" brdr="0,0" bclr="236,240,243"  clrBrdr="192,205,213" 
+					type="string" modify="N" available="N" fnt="Arial,0"/>
+			<sp/>
+				<inp id="k_procedencia" dim="23,1" brdr="0,0" bclr="255,255,255" clr="0,0,0" clrBrdr="192,205,213" 
+					type="capital" modify="Y" available="Y" fnt="Arial,0"  nc="10" tooltip="Procedencia"/>
+			<tab/>
+				<inp id="combustible" dim="18,1" brdr="0,0" bclr="236,240,243"  clrBrdr="192,205,213" 
+					type="string" modify="N" available="N" fnt="Arial,0"/>
+			<sp/>
+				<inp id="k_combustible" dim="23,1" brdr="0,0" bclr="255,255,255" clr="0,0,0" clrBrdr="192,205,213" 
+					type="capital" modify="Y" available="Y" fnt="Arial,0" nc="10" tooltip="Combustible"/>
+			<sp/>
+            <br/>
+			<tab/>
+			<sp/>
+				<inp id="n_puertas" dim="17,1" brdr="0,0" bclr="236,240,243"  clrBrdr="192,205,213" 
+					type="string" modify="N" available="N" fnt="Arial,0"/>
+			<sp/>
+				<inp id="k_n_puertas" dim="5,1" brdr="0,0" bclr="255,255,255" clr="0,0,0" clrBrdr="192,205,213" 
+					type="number" modify="Y" available="Y" fnt="Arial,0"  nc="5" nd="0" tooltip="N&#250;mero de Puertas"/>
+			<tab n="7"/>
+			<inp id="fecha_ini_ven" dim="18,1" brdr="0,0" bclr="236,240,243"  clrBrdr="192,205,213" 
+					type="string" modify="N" available="N" fnt="Arial,0"/>
+			<sp/>
+				<edt id="k_fecha_ini_ven" dim="15,1" brdr="0,0" bclr="255,255,255" clr="0,0,0" clrBrdr="192,205,213" 
+					type="date" modify="Y" available="Y" fnt="Arial,0" nc="8" tooltip="Fecha de Inicio de Venta" page="_ks_fecha,k_fecha_ini_ven" OnF9="Dialog(3,_ks_fecha,k_fecha_ini_ven)" fmt="DD/MM/YY"/>
+				<tab/>
+			<br/>
+			<tab/>
+			<sp/>
+				<inp id="vehiculo_reemplaza" dim="17,1" brdr="0,0" bclr="236,240,243"  clrBrdr="192,205,213" 
+					type="string" modify="N" available="N" fnt="Arial,0"/>
+			<sp/>
+				<inp id="k_vehiculo_reemplaza" dim="23,1" brdr="0,0" bclr="255,255,255" clr="0,0,0" clrBrdr="192,205,213" 
+					type="capital" modify="Y" available="Y" fnt="Arial,0"  nc="18" tooltip="Veh&#237;culo que Reemplaza"/>
+			<tab/>
+				<inp id="no_usar_regla_3_mes" dim="18,1" brdr="0,0" bclr="236,240,243"  clrBrdr="192,205,213" 
+					type="string" modify="N" available="N" fnt="Arial,0"/>
+			<sp/>
+				<cmb id="k_no_usar_regla_3_mes" dim="5,1" brdr="0,0" bclr="255,255,255" clr="0,0,0" clrBrdr="192,205,213" 
+					type="capital" modify="Y" available="Y" fnt="Arial,0" tooltip="No usar regla de los 3 meses para este auto, S &#243; N"/>
+			<tab/>
+			<br/>
+			<tab/>
+			<sp/>
+				<inp id="codigo_sat" dim="17,1" brdr="0,0" bclr="236,240,243"  clrBrdr="192,205,213" 
+					type="string" modify="N" available="N" fnt="Arial,0"/>
+			<sp/>
+				<inp id="k_codigo_sat" dim="8,1" brdr="0,0" bclr="255,255,255" clr="0,0,0" clrBrdr="192,205,213" 
+					type="capital" modify="Y" available="Y" fnt="Arial,0"  nc="12" tooltip="Clave del SAT" OnF9="consultaCodigoSat()" OnChange="descrip_sat()"/>		
+			<sp/>
+				<inp id="codigo_sat_descrip" dim="14,1" brdr="0,0" bclr="255,255,255" clr="0,0,0" clrBrdr="192,205,213" 
+					type="string" modify="N" available="N" fnt="Arial,0"/>								
+			<br/>
+			<tab/>
+			<sp/>
+				<inp id="unidad_medida" dim="17,1" brdr="0,0" bclr="236,240,243"  clrBrdr="192,205,213" 
+					type="string" modify="N" available="N" fnt="Arial,0"/>
+			<sp/>
+				<inp id="k_unidad_medida" dim="8,1" brdr="0,0" bclr="255,255,255" clr="0,0,0" clrBrdr="192,205,213" 
+					type="capital" modify="Y" available="N" fnt="Arial,0" nc="3" tooltip="Unidad de Medida del SAT" OnF9="" OnChange="BuscarUniMedida()"/>
+			<sp/>
+				<inp id="k_desc_uni_medida" dim="14,1" brdr="0,0" bclr="255,255,255" clr="0,0,0" clrBrdr="192,205,213" 
+					type="string" modify="N" available="N" fnt="Arial,0"/>						
+            <br/>
+			<br/>
+			<tab/>
+			<sp/>
+			<tbl id="tabla" clr="64,64,64" clrBrdr="64,64,64" bclr="236,240,243" brdr="1,0" dim="86,8" 
+					modify="Y" Reorder="Y" nren="fijo" available="Y">
+				<col name="Clave" id="c1" modify="N" type="capital" nc="18" visible="Y"/>
+				<col name="Descripcion 1" id="c2" type="capital" nc="60" visible="Y"/>
+				<col name="Descripcion 2" id="c3" type="capital" nc="60" visible="Y"/>
+				<col name="Descripcion 3" id="c4" type="capital" nc="60" visible="Y"/>
+				<col name="Descripcion 4" id="c5" type="capital" nc="60" visible="Y"/>
+				<col name="Descripcion 5" id="c6" type="capital" nc="60" visible="Y"/>
+				<col name="Descripcion 6" id="c7" type="capital" nc="60" visible="Y"/>
+				<col name="Descripcion 7" id="c8" type="capital" nc="60" visible="Y"/>
+				<col name="Descripcion 8" id="c9" type="capital" nc="60" visible="Y"/>
+				<col name="Descripcion 9" id="c10" type="capital" nc="60" visible="Y"/>
+				<col name="Descripcion 10" id="c11" type="capital" nc="60" visible="Y"/>
+				<col name="Descripcion 11" id="c12" type="capital" nc="60" visible="Y"/>
+				<col name="Descripcion 12" id="c13" type="capital" nc="60" visible="Y"/>
+				<col name="Descripcion 13" id="c14" type="capital" nc="60" visible="Y"/>
+				<col name="Descripcion 14" id="c15" type="capital" nc="60" visible="Y"/>
+				<col name="Descripcion 15" id="c16" type="capital" nc="60" visible="Y"/>
+				<col name="Descripcion 16" id="c17" type="capital" nc="60" visible="Y"/>
+				<col name="Descripcion 17" id="c18" type="capital" nc="60" visible="Y"/>
+				<col name="Descripcion 18" id="c19" type="capital" nc="60" visible="Y"/>
+				<col name="Descripcion 19" id="c20" type="capital" nc="60" visible="Y"/>
+			</tbl>
+            <tab n="4"/>
+		<br/>
+		<br/>
+		<tab/>
+		<sp/>
+		<bot id="k_btn_cons" dim="10,10" brdr="5" text="Guardar" hk="K" default="1" step="0"  OnEnter="aplica_crud(N)" fnt="Arial,16"/> <br/>
+		<tab/>
+		<sp/>
+		<bot id="k_btn_cons_acep" dim="10,10" brdr="5" text="Aceptar" hk="K" default="1" step="0"  OnEnter="aplica_crud(C)" fnt="Arial,16" available="N" visible="N"/> <br/>
+		</grp>
+</grp>
+	<script>
+		InstallDriver("KDB75");
+		class Main {
+			var frn,frP,kdb,sys,suc_usuario,perfil_usuario,rol_usuario,asterisco, externo, cuboXml;
+			var tipoOper,consPlantilla, accion, clave; //Variables relacionadas con parametros (colsulta , eliminar, baja)
+			var strTitulo, strQuery, strColValor, strCtrlSet, strMostrarLlave, strRenglon, strColumna, cmdQuery, cubo, ok, mensajeError; 
+			fun Main(){
+				frn=new FRNT;
+				kdb=new KDB;
+				frP=new FRNTP;
+				sys=new SYS;
+				kdb.connect();
+				
+				suc_usuario = frn.lib("libKepler","UserInfo(1)");
+				perfil_usuario = frn.lib("libKepler","UserInfo(2)");
+				rol_usuario = frn.config("user","role");
+				asterisco = "*";
+				
+				accion = frn.param(0);
+				clave =frn.param(1);
+				Inicializa(clave);
+				ConfiguraUI(accion);
+			}
+
+		fun aplica_crud(accion){
+			var query_auto, cuboQuery, resultado, mensaje, mensajeError, query, xmlPantalla;
+			var k_clave=frn.get("k_clave");
+			var k_desc=frn.get("k_desc");
+			var k_clase=frn.get("k_clase");
+			var k_marca=frn.get("k_marca");
+			var k_tipo_cal_isa=frn.get("k_tipo_cal_isa");
+			var k_linea=frn.get("k_linea");
+			var k_nuevo_usado=frn.get("k_nuevo_usado");
+			var k_meses_entrega=frn.get("k_meses_entrega");
+			var k_v_se_prod=frn.get("k_v_se_prod");
+			var k_precio_lista=frn.get("k_precio_lista");
+			var k_cilindros=frn.get("k_cilindros");
+			var k_ocupantes=frn.get("k_ocupantes");
+			var k_procedencia=frn.get("k_procedencia");
+			var k_combustible=frn.get("k_combustible");
+			var k_n_puertas=frn.get("k_n_puertas");
+			var k_fecha_ini_ven=frn.get("k_fecha_ini_ven");
+			var k_vehiculo_reemplaza=frn.get("k_vehiculo_reemplaza");
+			var k_no_usar_regla_3_mes=frn.get("k_no_usar_regla_3_mes");
+			var k_codigo_sat=frn.get("k_codigo_sat");
+			var codigo_sat_descrip=frn.get("codigo_sat_descrip");
+			var k_unidad_medida=frn.get("k_unidad_medida");
+			var k_desc_tabla_1 =frn.get("tabla", 0, "c2");
+			var k_desc_tabla_2 =frn.get("tabla", 0, "c3");
+			var k_desc_tabla_3 =frn.get("tabla", 0, "c4");
+			var k_desc_tabla_4 =frn.get("tabla", 0, "c5");
+			var k_desc_tabla_5 =frn.get("tabla", 0, "c6");
+			var k_desc_tabla_6 =frn.get("tabla", 0, "c7");
+			var k_desc_tabla_7 =frn.get("tabla", 0, "c8");
+			var k_desc_tabla_8 =frn.get("tabla", 0, "c9");
+			var k_desc_tabla_9 =frn.get("tabla", 0, "c10");
+			var k_desc_tabla_10 =frn.get("tabla", 0, "c11");
+			var k_desc_tabla_11 =frn.get("tabla", 0, "c12");
+			var k_desc_tabla_12 =frn.get("tabla", 0, "c13");
+			var k_desc_tabla_13 =frn.get("tabla", 0, "c14");
+			var k_desc_tabla_14 =frn.get("tabla", 0, "c15");
+			var k_desc_tabla_15 =frn.get("tabla", 0, "c16");
+			var k_desc_tabla_16 =frn.get("tabla", 0, "c17");
+			var k_desc_tabla_17 =frn.get("tabla", 0, "c18");
+			var k_desc_tabla_18 =frn.get("tabla", 0, "c19");
+			var k_desc_tabla_19 =frn.get("tabla", 0, "c20");
+			
+			//MSS:02-08-2023 Armar xml para llamar funcion de PostgreSQL cat_vehiculo_crud
+			xmlPantalla = getXml(frn.dataPag()); //Obtener el xml de la pantalla;
+			setXml(xmlPantalla,"k_descripcion",k_desc);
+			setXml(xmlPantalla,"k_calc_isan",k_tipo_cal_isa);
+			setXml(xmlPantalla,"k_nou",k_nuevo_usado);
+			setXml(xmlPantalla,"k_mesesprom",k_meses_entrega);				
+			setXml(xmlPantalla,"k_produce",k_v_se_prod);
+			setXml(xmlPantalla,"k_precio",k_precio_lista);
+			setXml(xmlPantalla,"k_puertas",k_n_puertas);
+			setXml(xmlPantalla,"k_inivta",k_fecha_ini_ven);
+			setXml(xmlPantalla,"k_reemplaza",k_vehiculo_reemplaza);
+			setXml(xmlPantalla,"k_regla3",k_no_usar_regla_3_mes);	
+			setXml(xmlPantalla,"k_codsat",k_codigo_sat);	
+
+			if(accion &= "N"){
+				setXml(xmlPantalla,"input_crud","NUEVO");
+				//frn.lib("libGeneral.kpl","FileSave",xmlPantalla,"c:\basura\XmlPantallaCrud_autosAlta");
+				if(k_clave &= ""){
+					frn.message("La clave no puede estar vacia","Mensaje","&Aceptar");
+					frn.setPos("k_clave");
+				}else if(k_desc &= ""){
+					frn.setPos("k_desc");
+					frn.message("La descripcion no puede estar vacia","Mensaje","&Aceptar");
+				}else if(k_clase &= ""){
+					frn.setPos("k_clase");
+					frn.message("La clase no puede estar vacia","Mensaje","&Aceptar");
+				}else if(k_marca &= ""){
+					frn.setPos("k_marca");
+					frn.message("La marca no puede estar vacia","Mensaje","&Aceptar");
+				}else if(k_tipo_cal_isa &= ""){
+					frn.setPos("k_tipo_cal_isa");
+					frn.message("Tipo Calc ISAN no puede estar vacio","Mensaje","&Aceptar");
+				}else if(k_linea &= ""){
+					frn.setPos("k_linea");
+					frn.message("Linea no puede estar vacia","Mensaje","&Aceptar");
+				}else if(k_nuevo_usado &= ""){
+					frn.setPos("k_nuevo_usado");
+					frn.message("Nuevo o Usado no puede estar vacia","Mensaje","&Aceptar");
+				}else if(k_meses_entrega &= ""){
+					frn.setPos("k_meses_entrega");
+					frn.message("Meses promedio de entrega no puede estar vacia","Mensaje","&Aceptar");
+				}else if(k_v_se_prod &= ""){
+					frn.setPos("k_v_se_prod");
+					frn.message("Vehiculo aun se produce no puede estar vacia","Mensaje","&Aceptar");
+				}else if(k_precio_lista &= ""){
+					frn.setPos("k_precio_lista");
+					frn.message("Precio de lista no puede estar vacia","Mensaje","&Aceptar");
+				}else if(k_precio_lista == 0.00){
+					frn.setPos("k_precio_lista");
+					frn.message("Precio de lista no puede ser 0","Mensaje","&Aceptar");
+				}else if(k_cilindros &= ""){
+					frn.setPos("k_cilindros");
+					frn.message("Cilindros no puede estar vacia","Mensaje","&Aceptar");
+				}else if(k_ocupantes &= ""){
+					frn.setPos("k_ocupantes");
+					frn.message("Ocupantes no puede estar vacia","Mensaje","&Aceptar");
+				}else if(k_ocupantes &= 0){
+					frn.setPos("k_ocupantes");
+					frn.message("Ocupantes no puede ser 0","Mensaje","&Aceptar");
+				}else if(k_procedencia &= ""){
+					frn.setPos("k_procedencia");
+					frn.message("Procedencia no puede estar vacia","Mensaje","&Aceptar");
+				}else if(k_combustible &= ""){
+					frn.setPos("k_combustible");
+					frn.message("Combustible no puede estar vacia","Mensaje","&Aceptar");
+				}else if(k_n_puertas &= 0){
+					frn.setPos("k_n_puertas");
+					frn.message("Numero de puertas no puede ser 0","Mensaje","&Aceptar");
+				}else if(k_n_puertas &= ""){
+					frn.setPos("k_n_puertas");
+					frn.message("Numero de puertas no puede estar vacia","Mensaje","&Aceptar");
+				}else if(k_fecha_ini_ven &= ""){
+					frn.setPos("k_fecha_ini_ven");
+					frn.message("Fecha de inicio de venta no puede estar vacia","Mensaje","&Aceptar");
+				}else if(k_no_usar_regla_3_mes &= ""){
+					frn.setPos("k_no_usar_regla_3_mes");
+					frn.message("No usar regla de 3 meses no puede estar vacia","Mensaje","&Aceptar");
+				}else if(k_no_usar_regla_3_mes &= ""){
+					frn.setPos("k_no_usar_regla_3_mes");
+					frn.message("No usar regla de 3 meses no puede estar vacia","Mensaje","&Aceptar");
+				}else if(k_codigo_sat &= ""){
+					frn.setPos("k_codigo_sat");
+					frn.message("Codigo SAT no puede estar vacia","Mensaje","&Aceptar");
+				}else if(codigo_sat_descrip &= ""){
+					frn.message("El Codigo SAT no existe","Mensaje","&Aceptar");
+				}else if(k_unidad_medida &= ""){
+					frn.setPos("k_unidad_medida");
+					frn.message("La unidad de medida no puede estar vacia","Mensaje","&Aceptar");
+				}else if(k_unidad_medida &! "XVN"){
+					frn.setPos("k_unidad_medida");
+					frn.message("La unidad de medida debe ser XVN","Mensaje","&Aceptar");	
+				}else{
+						
+					query_auto="SELECT * FROM keplersc.cat_vehiculo_crud('<document>" & getXmlStr(xmlPantalla ,"EOF:13_10") & "</document>')";
+
+					cuboQuery = frn.lib("libGeneral.kpl","EjecutarSql",query_auto,"cat_crud_aplica_crud.aplica_crud()");
+					frn.lib("libGeneral.kpl","FileSave",cuboQuery,"c:\basura\XmlResultadoAlta");
+						resultado = getXml(cuboQuery,"resultado");
+					if(resultado &= "0"){
+						mensajeError = getXml(cuboQuery ,"mensaje");
+				        frn.message(mensajeError,"Error","Aceptar");
+				        return;
+				    }else{
+						frP.script("Inicia_Forma()");
+						mensaje = "Registro de Auto "& k_clave &" Generado con Exito";
+							frn.message(mensaje,"Mensaje","Aceptar");
+							
+							clave = frn.get("k_clave");
+							Inicializa(clave);
+							accion = "C";
+							ConfiguraUI(accion);
+							frn.setPos("k_btn_cons_acep");
+
+					}
+				}
+			}else if(accion &= "M"){
+				setXml(xmlPantalla,"input_crud","MODIFICAR");
+				//frn.lib("libGeneral.kpl","FileSave",xmlPantalla,"c:\basura\XmlPantallaCrud_autosModifica");		
+				if(k_clave &= ""){
+					frn.message("La clave no puede estar vacia","Mensaje","&Aceptar");
+					frn.setPos("k_clave");
+				}else if(k_desc &= ""){
+					frn.setPos("k_desc");
+					frn.message("La descripcion no puede estar vacia","Mensaje","&Aceptar");
+				}else if(k_clase &= ""){
+					frn.setPos("k_clase");
+					frn.message("La clase no puede estar vacia","Mensaje","&Aceptar");
+				}else if(k_marca &= ""){
+					frn.setPos("k_marca");
+					frn.message("La marca no puede estar vacia","Mensaje","&Aceptar");
+				}else if(k_tipo_cal_isa &= ""){
+					frn.setPos("k_tipo_cal_isa");
+					frn.message("Tipo Calc ISAN no puede estar vacio","Mensaje","&Aceptar");
+				}else if(k_linea &= ""){
+					frn.setPos("k_linea");
+					frn.message("Linea no puede estar vacia","Mensaje","&Aceptar");
+				}else if(k_nuevo_usado &= ""){
+					frn.setPos("k_nuevo_usado");
+					frn.message("Nuevo o Usado no puede estar vacia","Mensaje","&Aceptar");
+				}else if(k_meses_entrega &= ""){
+					frn.setPos("k_meses_entrega");
+					frn.message("Meses promedio de entrega no puede estar vacia","Mensaje","&Aceptar");
+				}else if(k_v_se_prod &= ""){
+					frn.setPos("k_v_se_prod");
+					frn.message("Vehiculo aun se produce no puede estar vacia","Mensaje","&Aceptar");
+				}else if(k_precio_lista &= ""){
+					frn.setPos("k_precio_lista");
+					frn.message("Precio de lista no puede estar vacia","Mensaje","&Aceptar");
+				}else if(k_precio_lista == 0.00){
+					frn.setPos("k_precio_lista");
+					frn.message("Precio de lista no puede ser 0","Mensaje","&Aceptar");
+				}else if(k_cilindros &= ""){
+					frn.setPos("k_cilindros");
+					frn.message("Cilindros no puede estar vacia","Mensaje","&Aceptar");
+				}else if(k_cilindros == 0){
+					frn.setPos("k_cilindros");
+					frn.message("Cilindros no puede ser 0","Mensaje","&Aceptar");
+				}else if(k_ocupantes &= ""){
+					frn.setPos("k_ocupantes");
+					frn.message("Ocupantes no puede estar vacia","Mensaje","&Aceptar");
+				}else if(k_ocupantes &= 0){
+					frn.setPos("k_ocupantes");
+					frn.message("Ocupantes no puede ser 0","Mensaje","&Aceptar");
+				}else if(k_procedencia &= ""){
+					frn.setPos("k_procedencia");
+					frn.message("Procedencia no puede estar vacia","Mensaje","&Aceptar");
+				}else if(k_combustible &= ""){
+					frn.setPos("k_combustible");
+					frn.message("Combustible no puede estar vacia","Mensaje","&Aceptar");
+				}else if(k_n_puertas &= 0){
+					frn.setPos("k_n_puertas");
+					frn.message("Numero de puertas no puede ser 0","Mensaje","&Aceptar");
+				}else if(k_n_puertas &= ""){
+					frn.setPos("k_n_puertas");
+					frn.message("Numero de puertas no puede estar vacia","Mensaje","&Aceptar");
+				}else if(k_fecha_ini_ven &= ""){
+					frn.setPos("k_fecha_ini_ven");
+					frn.message("Fecha de inicio de venta no puede estar vacia","Mensaje","&Aceptar");
+				}else if(k_no_usar_regla_3_mes &= ""){
+					frn.setPos("k_no_usar_regla_3_mes");
+					frn.message("No usar regla de 3 meses no puede estar vacia","Mensaje","&Aceptar");
+				}else if(k_no_usar_regla_3_mes &= ""){
+					frn.setPos("k_no_usar_regla_3_mes");
+					frn.message("No usar regla de 3 meses no puede estar vacia","Mensaje","&Aceptar");
+				}else if(k_codigo_sat &= ""){
+					frn.setPos("k_codigo_sat");
+					frn.message("Codigo SAT no puede estar vacia","Mensaje","&Aceptar");
+				}else if(codigo_sat_descrip &= ""){
+					frn.message("El Codigo SAT no existe","Mensaje","&Aceptar");
+				}else if(k_unidad_medida &= ""){
+					frn.setPos("k_unidad_medida");
+					frn.message("La unidad de medida no puede estar vacia","Mensaje","&Aceptar");
+				}else{
+
+						query_auto="SELECT * FROM keplersc.cat_vehiculo_crud('<document>" & getXmlStr(xmlPantalla ,"EOF:13_10") & "</document>')";
+
+					   cuboQuery = frn.lib("libGeneral.kpl","EjecutarSql",query_auto,"cat_crud_clases.aplica_crud()");
+					   frn.lib("libGeneral.kpl","FileSave",cuboQuery,"c:\basura\XmlResultadoModificar");
+		            resultado = getXml(cuboQuery,"resultado");
+				      mensaje = "Registro "& k_clave &" Actualizado con Exito ";
+						if(resultado &= "0"){
+							mensajeError = getXml(cuboQuery ,"mensaje");
+							frn.message(mensajeError,"Error","Aceptar");
+							return;
+					}else{
+						frP.script("Inicia_Forma()");
+							frn.message(mensaje,"Mensaje","Aceptar");
+							clave = frn.get("k_clave");
+							Inicializa(clave);
+							accion = "C";
+							ConfiguraUI(accion);
+							frn.setPos("k_btn_cons_acep");
+				//		}
+					}
+                }
+			}else if (accion &= "C"){
+				frn.exit();
+			}else if (accion &= "Eliminar"){
+				frn.message("Opcion deshabiliada","Error","Aceptar");
+				frn.exit();
+			}
+		}
+
+		fun clave_tabla(){
+			var k_clave = frn.get("k_clave");
+			frn.setX(k_clave,"tabla",0,"c1");
+		}
+
+        fun carga_dat_tabla(){
+			var k_clave = frn.get("k_clave");
+			cmdQuery = "select *
+							from keplersc.kdpaq 
+							where  c1  = '"& k_clave &"'";
+			cubo = frn.lib("libGeneral.kpl","EjecutarSqlSel",cmdQuery,"conpolizasView.cargarPolizas()");
+//			cubo = frn.lib("libGeneral.kpl","CreaXmlDesdeAtt",cubo,"r0");
+			frn.lib("libGeneral.kpl","FileSave",cubo,"C:\Basura\cubo");
+			frn.setX(cubo,"tabla");
+			clave_tabla();
+		}
+
+		fun descrip_sat(){
+			var k_codigo_sat = frn.get("k_codigo_sat");
+			var cmd = "select c2 as descrip
+				from keplersc.kdf3ps
+				where c1 = '"& k_codigo_sat &"'";
+			var cubo_desc = frn.lib("libGeneral.kpl","EjecutarSqlSel",cmd,"cat_crud_autos.descrip_sat()");
+			var cubo_descrip=getXmlAtt(cubo_desc,"r0","descrip");
+//			frn.message(cubo_descrip, "Mensaje","&Aceptar");
+			frn.set("codigo_sat_descrip", cubo_descrip);
+//			frn.lib("libGeneral.kpl","FileSave",cubo_desc,"C:\Basura\cubo");
+		}
+
+		fun descrip_nou(){
+			var nuevo_usado = frn.get("k_nuevo_usado");
+			var cmd = "select c8 as nuevousado,
+				case when c8 = 'N' then 'NUEVO'
+				when c8 = 'U' then 'USADO'
+				when c8 = '' then 'ERROR'
+				end as descrip
+				from keplersc.kdiv
+				where c8 = '"& nuevo_usado & "'
+				group by c8			
+				order by c8 desc";
+			var cubo_desc = frn.lib("libGeneral.kpl","EjecutarSqlSel",cmd,"cat_crud_autos.descrip_nou()");
+			var cubo_descrip=getXmlAtt(cubo_desc,"r0","descrip");
+//			frn.message(cubo_descrip, "Mensaje","&Aceptar");
+			frn.set("k_nuevo_usado_desc", cubo_descrip);
+//			frn.lib("libGeneral.kpl","FileSave",cubo_desc,"C:\Basura\cubo");
+		}
+
+		fun cargaCata(clave){
+			var queryCata, cubo_cata, ok, mensajeError, xml_cubo_cata, clave_auto, cubo, cmd;
+			clave_auto = clave;
+			queryCata = "select veh.c1 as k_clave,
+							veh.c2 as k_desc,
+							veh.c4 as k_clase,
+							clas.c2 as k_desc_clase,
+							veh.c5 as k_marca,
+							mar.c2 as k_desc_marca,
+							veh.c6 as k_tipo_cal_isa,
+							isan.c2 as k_desc_cisan,
+							veh.c7 as k_linea,
+							lin.c2 as k_desc_linea,
+							veh.c8 as k_nuevo_usado,
+							case when veh.c8 = 'N' then 'NUEVO'
+								when veh.c8 = 'U' then 'USADO'
+								when veh.c8 = '' then 'ERROR'
+							end as k_nuevo_usado_desc,
+							veh.c10 as k_meses_entrega,
+							veh.c11 as k_v_se_prod,
+							veh.c14 as k_precio_lista,
+							veh.c50 as k_cilindros,
+							veh.c51 as k_ocupantes,
+							veh.c52 as k_procedencia,
+							veh.c53 as k_combustible,
+							veh.c54 as k_n_puertas,
+							veh.c26 as k_fecha_ini_ven,
+							veh.c27 as k_vehiculo_reemplaza,
+							veh.c28 as k_no_usar_regla_3_mes,
+							veh.c30 as k_codigo_sat,
+							veh.c31 as k_unidad_medida
+							from keplersc.kdiv veh
+							left join keplersc.kdic clas on clas.c1=veh.c4 
+							left join keplersc.kdmarca mar on mar.c1=veh.c5
+							left join keplersc.kdtisan isan on isan.c1=veh.c6
+							left join keplersc.kdivl lin on lin.c1=veh.c7 
+							left join keplersc.kdf3uni uni on uni.c1=veh.c31
+							where veh.c1 = '"& clave_auto &"'";
+				cubo_cata= frn.lib("libGeneral.kpl","EjecutarSqlSel",queryCata,"conpolizasView.cargarpolizas()");
+				ok=getXmlAtt(cubo_cata,"ok");
+				if(ok &! "" && !ok){
+						mensajeError = getXmlAtt(cubo_cata,"native3");
+						//mensajeError = frn.lib("libGeneral.kpl","ErrorBD",mensajeError);
+						frn.message(mensajeError,"Error","Aceptar");
+						return;
+				}	
+//			frn.lib("libGeneral.kpl","FileSave",cubo_cata,"C:\Basura\cubo_cata");
+			xml_cubo_cata=frn.lib("libGeneral.kpl","CreaXmlDesdeAtt",cubo_cata,"r0");
+//			frn.lib("libGeneral.kpl","FileSave",xml_cubo_cata,"C:\Basura\xml_cubo_cata");
+			frn.setX(xml_cubo_cata);
+			descrip_sat();
+			carga_dat_tabla();
+
+		}
+
+			fun ConfiguraUI(accion){
+				consPlantilla="PLANTILLA"; //AQUI DEFINE LA CONSTANTE PARA COMPARAR EN PARAMETROS
+				if (frn.nParam() == 0){
+					frn.message("Accion no permitida.","Error","&Aceptar");
+					frn.open("redirect",2);
+					return;
+				}
+
+				tipoOper = accion;
+				//Establecer titulo de la ventana
+				if (tipoOper &= "PLANTILLA"){
+					frn.setAtt("gpo_2","tit","Catalogo PLANTILLA...");
+					frn.set("k_titulo","Catalogo Vehiculos Plantilla");
+				}
+				else if (tipoOper &= "N"){
+					frn.setAtt("gpo_2","tit","Catalogo de Autos Alta Nuevo");
+					frn.set("k_titulo","Catalogo Vehiculos Alta");
+					activaCampos();
+				}
+				else if (tipoOper &= "M"){
+					frn.setAtt("gpo_2","tit","Catalogo de Autos Modificar");
+					frn.set("k_titulo","Catalogo Vehiculos Modificar");
+					activaCampos();
+			 
+				}
+				else if (tipoOper &= "Eliminar"){
+					frn.setAtt("gpo_2","tit","Catalogo de Autos Elimina Auto");
+					frn.set("k_titulo","Catalogo Vehiculos Eliminar");
+				}
+				else if (tipoOper &= "C"){
+					frn.setAtt("gpo_2","tit","Catalogo de Autos Consulta");
+					frn.set("k_titulo","Catalogo Vehiculos Consulta");
+					activaCampos();
+				}
+				else{
+					frn.message("Accion no permitida.","Error","&Aceptar");
+					frn.open("redirect",2);
+					return;
+				}
+			}
+					
+			fun Inicializa(clave){
+				frn.rst("gpo_2");
+				Inicia_Forma(clave);
+				frn.set("k_unidad_medida","XVN");
+				BuscarUniMedida();
+				}
+	
+			fun consultaClase(){
+				cmdQuery = "select c1 as clave, c2 as descripcion from keplersc.kdic";
+				frn.dialog("genlistasel","Catalogo de Clases",cmdQuery,"clave","k_clase","0","","N");
+			}
+			fun crudClase(modo){
+				var claveClase = frn.get("k_clase");
+				frn.dialog("cat_crud_clases",modo,claveClase);
+			}
+
+			fun consultaMarca(){
+				cmdQuery = "select c1 as clave, c2 as descripcion from keplersc.kdmarca";
+				frn.dialog("genlistasel","Catalogo de Marca",cmdQuery,"clave","k_marca","0","","N");
+			}
+			fun crudMarca(modo){
+				var claveMarca = frn.get("k_marca");
+				frn.dialog("cat_crud_marca",modo,claveMarca);
+			}
+
+			fun consultaIsa(){
+				cmdQuery = "select c1 as clave, c2 as descripcion from keplersc.kdtisan";
+				frn.dialog("genlistasel","Catalogo de ISAN",cmdQuery,"clave","k_tipo_cal_isa","0","","N");
+			}
+			fun crudIsa(modo){
+				var claveIsa = frn.get("k_tipo_cal_isa");
+				frn.dialog("cat_crud_isan",modo,claveIsa);
+			}
+
+			fun consultaLinea(){
+				cmdQuery = "select c1 as clave, c2 as descripcion from keplersc.kdivl";
+				frn.dialog("genlistasel","Catalogo de Linea",cmdQuery,"clave","k_linea","0","","N");
+			}
+			fun crudLinea(modo){
+				var claveLinea = frn.get("k_linea");
+				frn.dialog("cat_crud_linea",modo,claveLinea);
+			}
+
+			fun consultaCodigoSat(){
+				cmdQuery = "select c1 as clave, c2 as descripcion from keplersc.kdf3ps";
+				frn.dialog("genlistasel","Catalogo de Codigos del SAT",cmdQuery,"clave","k_codigo_sat","0","","N");
+			}
+			fun crudCodigoSat(modo){
+				var claveCodigo_sat = frn.get("k_codigo_sat");
+				frn.dialog("cat_crud_codigo_sat",modo,claveCodigo_sat);
+			}
+
+//MSS: Obtiene descripciones 
+			fun BuscarLinea(){
+				var linea_id;
+				linea_id=frn.get("k_linea");
+				cmdQuery = "select c2 as descripcion from keplersc.kdivl " &
+						"where c1='" & linea_id & "'";
+							
+				rstXml(cubo);
+				cubo = frn.lib("libGeneral.kpl","EjecutarSqlSel",cmdQuery,"cat_crud_autos.BuscarLinea()");
+				ok=getXmlAtt(cubo,"ok");
+				if(ok &! "" && !ok){
+					mensajeError = getXmlAtt(cubo,"native3");
+					mensajeError = frn.lib("libGeneral.kpl","ErrorBD",mensajeError);
+					frn.message(mensajeError,"Error","Aceptar");
+					return;	
+				}
+				if((nXml(cubo) == 0) && (linea_id &! "")) {
+					frn.setPos("k_linea");
+					frn.message("La linea del vehiculo no existe","Error","Aceptar");
+		
+					return;
+                 } else{
+				    frn.set("k_desc_linea",getXmlAtt(cubo,"r0","descripcion"));	    
+				}		
+            }
+
+			fun BuscarClase(){
+				var clase_id;
+				clase_id=frn.get("k_clase");
+				cmdQuery = "select c2 as descripcion from keplersc.kdic " &
+						"where c1='" & clase_id & "'";
+							
+				rstXml(cubo);
+				cubo = frn.lib("libGeneral.kpl","EjecutarSqlSel",cmdQuery,"cat_crud_autos.BuscarClase()");
+				ok=getXmlAtt(cubo,"ok");
+				if(ok &! "" && !ok){
+					mensajeError = getXmlAtt(cubo,"native3");
+					mensajeError = frn.lib("libGeneral.kpl","ErrorBD",mensajeError);
+					frn.message(mensajeError,"Error","Aceptar");
+					return;	
+				}
+				if((nXml(cubo) == 0) && (clase_id &! "")) {
+					frn.setPos("k_clase");
+					frn.message("La clase no existe","Error","Aceptar");
+					return;
+                } else{
+				    frn.set("k_desc_clase",getXmlAtt(cubo,"r0","descripcion"));	    
+				}
+            }    
+
+			fun BuscarCIsan(){
+				var cisan_id;
+				cisan_id=frn.get("k_tipo_cal_isa");
+				cmdQuery = "select c2 as descripcion from keplersc.kdtisan " &
+						"where c1='" & cisan_id & "'";
+							
+				rstXml(cubo);
+				cubo = frn.lib("libGeneral.kpl","EjecutarSqlSel",cmdQuery,"cat_crud_autos.BuscarCIsan()");
+				ok=getXmlAtt(cubo,"ok");
+				if(ok &! "" && !ok){
+					mensajeError = getXmlAtt(cubo,"native3");
+					mensajeError = frn.lib("libGeneral.kpl","ErrorBD",mensajeError);
+					frn.message(mensajeError,"Error","Aceptar");
+					return;	
+				}
+				if((nXml(cubo) == 0) && (cisan_id &! "")) {
+					frn.setPos("k_calc_isan");
+					frn.message("El tipo de calculo ISAN no existe","Error","Aceptar");
+					return;
+                 } else{
+				    frn.set("k_desc_cisan",getXmlAtt(cubo,"r0","descripcion"));	    
+				}		
+            }
+
+			fun BuscarMarca(){
+				var marca_id;
+				marca_id=frn.get("k_marca");
+				cmdQuery = "select c2 as descripcion from keplersc.kdmarca " &
+						"where c1='" & marca_id & "'";
+							
+				rstXml(cubo);
+				cubo = frn.lib("libGeneral.kpl","EjecutarSqlSel",cmdQuery,"cat_crud_autos.BuscarMarca()");
+				ok=getXmlAtt(cubo,"ok");
+				if(ok &! "" && !ok){
+					mensajeError = getXmlAtt(cubo,"native3");
+					mensajeError = frn.lib("libGeneral.kpl","ErrorBD",mensajeError);
+					frn.message(mensajeError,"Error","Aceptar");
+					return;	
+				}
+				if((nXml(cubo) == 0) && (marca_id &! "")) {
+					frn.setPos("k_marca");
+					frn.message("La marca no existe","Error","Aceptar");
+					return;
+                 } else{
+				    frn.set("k_desc_marca",getXmlAtt(cubo,"r0","descripcion"));	    
+				}		
+            }
+			
+			fun BuscarUniMedida(){
+				var unimedida_id;
+				unimedida_id=frn.get("k_unidad_medida");
+				cmdQuery = "select c2 as descripcion from keplersc.kdf3uni " &
+						"where c1='" & unimedida_id & "'";
+							
+				rstXml(cubo);
+				cubo = frn.lib("libGeneral.kpl","EjecutarSqlSel",cmdQuery,"cat_crud_autos.BuscarUniMedida()");
+				ok=getXmlAtt(cubo,"ok");
+				if(ok &! "" && !ok){
+					mensajeError = getXmlAtt(cubo,"native3");
+					mensajeError = frn.lib("libGeneral.kpl","ErrorBD",mensajeError);
+					frn.message(mensajeError,"Error","Aceptar");
+					return;	
+				}
+				if((nXml(cubo) == 0) && (unimedida_id &! "")) {
+					frn.setPos("k_desc_uni_medida");
+					frn.message("La unidad de medida no existe","Error","Aceptar");
+					return;
+                 } else{
+				    frn.set("k_desc_uni_medida",getXmlAtt(cubo,"r0","descripcion"));	    
+				}		
+            }
+
+			fun activaCampos(){
+				if(tipoOper&="N" || tipoOper &="M"){
+					frn.setAtt("k_clave", "available", "Y");
+					frn.setAtt("k_clave", "bclr", "255,255,255");
+					frn.setAtt("k_desc", "available", "Y");
+					frn.setAtt("k_desc", "bclr", "255,255,255");
+					frn.setAtt("k_clase", "available", "Y");
+					frn.setAtt("k_clase", "bclr", "255,255,255");
+					frn.setAtt("k_marca", "available", "Y");
+					frn.setAtt("k_marca", "bclr", "255,255,255");
+					frn.setAtt("k_tipo_cal_isa", "available", "Y");
+					frn.setAtt("k_tipo_cal_isa", "bclr", "255,255,255");
+					frn.setAtt("k_linea", "available", "Y");
+					frn.setAtt("k_linea", "bclr", "255,255,255");
+					frn.setAtt("k_nuevo_usado", "available", "Y");
+					frn.setAtt("k_nuevo_usado", "bclr", "255,255,255");
+					frn.setAtt("k_meses_entrega", "available", "Y");
+					frn.setAtt("k_meses_entrega", "bclr", "255,255,255");
+					frn.setAtt("k_v_se_prod", "available", "Y");
+					frn.setAtt("k_v_se_prod", "bclr", "255,255,255");
+					frn.setAtt("k_precio_lista", "available", "Y");
+					frn.setAtt("k_precio_lista", "bclr", "255,255,255");
+					frn.setAtt("k_cilindros", "available", "Y");
+					frn.setAtt("k_cilindros", "bclr", "255,255,255");
+					frn.setAtt("k_ocupantes", "available", "Y");
+					frn.setAtt("k_ocupantes", "bclr", "255,255,255");
+					frn.setAtt("k_procedencia", "available", "Y");
+					frn.setAtt("k_procedencia", "bclr", "255,255,255");
+					frn.setAtt("k_clave", "bclr", "255,255,255");
+					frn.setAtt("k_combustible", "available", "Y");
+					frn.setAtt("k_combustible", "bclr", "255,255,255");
+					frn.setAtt("k_n_puertas", "available", "Y");
+					frn.setAtt("k_n_puertas", "bclr", "255,255,255");
+					frn.setAtt("k_fecha_ini_ven", "available", "Y");
+					frn.setAtt("k_fecha_ini_ven", "bclr", "255,255,255");
+					frn.setAtt("k_vehiculo_reemplaza", "available", "Y");
+					frn.setAtt("k_vehiculo_reemplaza", "bclr", "255,255,255");
+					frn.setAtt("k_no_usar_regla_3_mes", "available", "Y");
+					frn.setAtt("k_no_usar_regla_3_mes", "bclr", "255,255,255");
+					frn.setAtt("k_codigo_sat", "available", "Y");
+					frn.setAtt("k_codigo_sat", "bclr", "255,255,255");
+					frn.setAtt("k_unidad_medida", "available", "N");
+					frn.setAtt("k_unidad_medida", "bclr", "255,255,255");
+					frn.setAtt("tabla", "available", "Y");
+					frn.setAtt("tabla", "bclr", "236,240,243");
+					frn.setAtt("k_btn_cons", "text", "Guardar");
+					frn.setAtt("k_btn_cons_acep", "text", "Aceptar");
+				}
+
+				if(tipoOper&="M"){
+					frn.setAtt("k_clave", "available", "N");
+					frn.setAtt("k_clave", "bclr", "236,240,243");
+					frn.setAtt("k_nuevo_usado", "available", "N");
+					frn.setAtt("k_nuevo_usado", "bclr", "255,255,255");
+				
+				}
+				if(tipoOper&="C"){
+					frn.setAtt("k_btn_cons_acep", "available", "Y");	
+					frn.setAtt("k_btn_cons_acep", "visible", "Y");
+					frn.setAtt("k_btn_cons","visible","N");
+					frn.setAtt("k_btn_cons","available","N");
+				}
+				
+			}
+
+			fun Inicia_Forma(clave){
+				var cmd,ok,mensajeError, cubo, cmdQueryanio, cmdQuerymes;
+				//Etiquetas 
+				frn.set("clave","Clave");
+				frn.set("desc","Descripcion ");
+				frn.set("clase","Clase");
+				frn.set("marca","Marca");
+				frn.set("tipo_cal_isa","Tipo Calc ISAN");
+				frn.set("linea","Linea");
+				frn.set("nuevo_usado","Nuevo o Usado");
+				frn.set("meses_entrega","Meses promedio para entrega"); //usar numeros negativos para toyotas que lleguen en barco
+				frn.set("v_se_prod","Vehiculo todavia se produce");
+				frn.set("precio_lista","Precio de lista");
+				frn.set("cilindros","Cilindros");
+				frn.set("ocupantes","Ocupantes");
+				frn.set("procedencia","Procedencia");
+				frn.set("combustible","Combustible");
+				frn.set("n_puertas","Numero de puertas");
+				frn.set("fecha_ini_ven","Fecha de inicio de Venta");
+				frn.set("no_usar_regla_3_mes","No usar regla de 3 meses");
+				frn.set("vehiculo_reemplaza","Vehiculo que Reemplaza");
+				frn.set("codigo_sat", "Codigo del SAT");
+				frn.set("unidad_medida", "Clave unidad medida SAT");
+				frn.setAtt("k_clave", "available", "N");
+				frn.setAtt("k_clave", "bclr", "236,240,243");
+				frn.setAtt("k_desc", "available", "N");
+				frn.setAtt("k_desc", "bclr", "236,240,243");
+				frn.setAtt("k_clase", "available", "N");
+				frn.setAtt("k_clase", "bclr", "236,240,243");
+				frn.setAtt("k_marca", "available", "N");
+				frn.setAtt("k_marca", "bclr", "236,240,243");
+				frn.setAtt("k_tipo_cal_isa", "available", "N");
+				frn.setAtt("k_tipo_cal_isa", "bclr", "236,240,243");
+				frn.setAtt("k_linea", "available", "N");
+				frn.setAtt("k_linea", "bclr", "236,240,243");
+				frn.setAtt("k_nuevo_usado", "available", "N");
+				frn.setAtt("k_nuevo_usado", "bclr", "236,240,243");
+				frn.setAtt("k_fecha_ini_ven", "available", "N");
+				frn.setAtt("k_fecha_ini_ven", "bclr", "236,240,243");
+				frn.setAtt("k_vehiculo_reemplaza", "available", "N");
+				frn.setAtt("k_vehiculo_reemplaza", "bclr", "236,240,243");
+				frn.setAtt("k_no_usar_regla_3_mes", "available", "N");
+				frn.setAtt("k_no_usar_regla_3_mes", "bclr", "236,240,243");
+				frn.setAtt("k_codigo_sat", "available", "N");
+				frn.setAtt("k_codigo_sat", "bclr", "236,240,243");	
+				frn.setAtt("k_unidad_medida", "available", "N");
+				frn.setAtt("k_unidad_medida", "bclr", "236,240,243");
+				frn.setAtt("k_desc_cisan", "available", "N");
+				//frn.setAtt("k_desc_cisan", "bclr", "236,240,243");		
+				frn.setAtt("k_desc_marca", "available", "N");
+				//frn.setAtt("k_desc_marca", "bclr", "236,240,243");		
+				frn.setAtt("k_desc_clase", "available", "N");
+				//frn.setAtt("k_desc_clase", "bclr", "236,240,243");		
+				frn.setAtt("k_desc_linea", "available", "N");
+				//frn.setAtt("k_desc_linea", "bclr", "236,240,243");		
+				frn.setAtt("k_desc_uni_medida", "available", "N");
+				//frn.setAtt("k_desc_uni_medida", "bclr", "236,240,243");	
+				frn.setAtt("codigo_sat_descrip", "available", "N");
+				//frn.setAtt("codigo_sat_descrip", "bclr", "236,240,243");			
+
+/*
+				cmd = "select c8 as nuevousado,
+					case when c8 = 'N' then 'NUEVO'
+					when c8 = 'U' then 'USADO'
+					when c8 = '' then 'ERROR'
+					end as descrip
+					from keplersc.kdiv
+					group by c8			
+					order by c8 desc";
+				if(accion&="N"){
+					cmd = "select c8 as nuevousado,
+					case when c8 = 'N' then 'NUEVO'
+					when c8 = 'U' then 'USADO'
+					end as descrip
+					from keplersc.kdiv
+					where c8 != ''
+					group by c8			
+					order by c8 desc";
+					}
+*/
+				cmd = "select 'N','NUEVO' as nuevousado union select 'U','USADO' as nuevousado";
+
+/*	
+				var cmd_v_se_produce = "select
+					case when c11 = 'S' then 'S'
+					when c11 != 'S' then 'N'
+					end as SN
+					from keplersc.kdiv
+					where c11 <> ''
+					group by c11";
+*/				
+				var cmd_v_se_produce = "select 'S','SI' as nuevousado union select 'N','NO' as nuevousado";
+
+/*
+				var cmd_k_no_usar_regla_3_mes= "select
+					case when c28 = 'S' then 'S'
+					when c28 != 'S' then 'N'
+					end as SN
+					from keplersc.kdiv
+					where c28 in ('S','N')
+					group by c28";
+*/
+				var cmd_k_no_usar_regla_3_mes = "select 'S','SI' as nuevousado union select 'N','NO' as nuevousado";
+
+				cubo = frn.lib("libGeneral.kpl","EjecutarSqlSel",cmd,"Inicia_Forma.cat_crud_autos()");
+				frn.set("k_nuevo_usado", cubo);
+
+				var cubo_v_se_produce = frn.lib("libGeneral.kpl","EjecutarSqlSel",cmd_v_se_produce,"Inicia_Forma.cat_crud_autos()");
+				frn.set("k_v_se_prod", cubo_v_se_produce);
+				
+				var cubo_cmd_k_no_usar_regla_3_mes = frn.lib("libGeneral.kpl","EjecutarSqlSel",cmd_k_no_usar_regla_3_mes,"Inicia_Forma.cat_crud_autos()");
+				frn.set("k_no_usar_regla_3_mes", cubo_cmd_k_no_usar_regla_3_mes);
+
+				frn.setAtt("k_nuevo_usado", "bclr", "236,240,243");
+				frn.setAtt("k_meses_entrega", "available", "N");
+				frn.setAtt("k_meses_entrega", "bclr", "236,240,243");
+				frn.setAtt("k_v_se_prod", "available", "N");
+				frn.setAtt("k_v_se_prod", "bclr", "236,240,243");
+				frn.setAtt("k_precio_lista", "available", "N");
+				frn.setAtt("k_precio_lista", "bclr", "236,240,243");
+				frn.setAtt("k_cilindros", "available", "N");
+				frn.setAtt("k_cilindros", "bclr", "236,240,243");
+				frn.setAtt("k_ocupantes", "available", "N");
+				frn.setAtt("k_ocupantes", "bclr", "236,240,243");
+				frn.setAtt("k_procedencia", "available", "N");
+				frn.setAtt("k_procedencia", "bclr", "236,240,243");
+				frn.setAtt("k_clave", "available", "N");
+				frn.setAtt("k_clave", "bclr", "236,240,243");
+				frn.setAtt("k_combustible", "available", "N");
+				frn.setAtt("k_combustible", "bclr", "236,240,243");
+				frn.setAtt("k_n_puertas", "available", "N");
+				frn.setAtt("k_n_puertas", "bclr", "236,240,243");
+				frn.setAtt("tabla", "available", "N");
+				frn.setAtt("tabla", "bclr", "236,240,243");
+//				frn.setAtt("k_btn_cons", "text", "Aceptar");		
+				frn.setAtt("k_btn_cons", "OnEnter", "aplica_crud("&accion&")");	
+				frn.setAtt("k_btn_cons_acep", "available", "N");	
+				frn.setAtt("k_btn_cons_acep", "visible", "N");
+				cargaCata(clave);
+				frn.setPos("k_clave");
+				//Obtencion de registros
+			}
+		
+//---------------------------------------------------------------EXTRAS-------------------------------------------------------------------GAD fl4r30n
+						
+			fun Dialog(iModo,pag,par0,par1,par2,par3,par4,par5,par6,par7,par8,par9,par10,par11,par12,par13,par14,par15){
+				/*iModo: 0)No hace mayor validaci?n. Siempre despliega la ventana. NO CONCATENA PREFIJO
+							1)Solo concatena el prefijo de la carpeta del lenguaje, no hace mayor validaci?n. Siempre despliega la ventana
+							2)Modo especial. Se valida que el campo indicado en par0 se puede modificar(El par0 puede ser una tabla, y par1 la columna)
+							3)Modo especial para p?ginas de operacion:Solo si se est? en alta o modifica despliega la pagina. Simpre agrega el prefijo del lenguaje
+				*/
+				var prefix=frn.lib("libKepler","langPrefix");
+				var page=prefix&pag;
+				var b_valido=1;
+				if(iModo==0)page=pag;
+				else if(iModo==2&&(strlen(par0)>0)){//Se toma el par0 como el objeto (o grid) al que se devolver? el resultado.
+					if( frn.getAtt(par0,"modify",par1) &= "N" ) b_valido=0;
+					if( frn.getAtt(par0,"available",par1) &= "N" ) b_valido=0;
+					if( frn.getAtt(par0,"visible",par1) &= "N" ) b_valido=0;
+				}
+				if(iModo==3)frn.dialog(page,par0,par1,par2,par3,par4,par5,par6,par7,par8,par9,par10,par11,par12,par13,par14,par15);
+			}
+
+		}
+	</script>
+</pag>

@@ -1,0 +1,386 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pag xmlns="www.kepler.com.mx/2003/KSchema" roles="" tit="Horarios Disponibles">
+<grp  brdr="0,0" clr="0,58,112" fnt="Arial,16"  dim="0,0,10,12" bclr="192,205,213" unfont="0"><br/><br/><tab/>
+		<grp bclr="236,240,243" fntClrBrdr="236,240,243" unfont="0" fntBrdr="Arial,18" hSpace="4" clrBrdr="0,58,112" dim="61,45,10,10" brdr="0,5" tit="Horarios Disponibles Recepcionistas" fnt="Arial,16">
+		
+		<tab n="1"/><txt>Fecha:</txt>
+		<edt id="fecha_busqueda" dim="9,1"  fmt="DD/MM/CCYY"  page="_ks_fecha,fecha_busqueda" OnF9="Dialog(3,_ks_fecha,fecha_busqueda)"  bclr="192,205,213" clr="64,64,64" type="date" clrBrdr="255,255,255" type="string" brdr="0,2"/>
+		<sp/><txt>Recepcionista:</txt>
+		<cmb id="recepcionista" clr="64,64,64" clrBrdr="255,255,255" OnChange="" dim="20,40" bclr="255,255,255" brdr="2,0" fnt="Arial,16"  Null="N" visible="Y" available="Y" modify="Y"/>
+		<tab/>
+		<img id="buscar_datos" dim="20,20" bPx="Y" brdr="0,1"  img="_20_Find.png" OnEnter="buscar_datos()" available="Y" clrBrdr="0,0,0"/>	
+		<br/>
+
+		<tab n="1"/><txt>Primer Horario:</txt><tab n="2"/>	<sp/><txt>Segundo Horario:</txt><br/>
+		<tab n="1"/><inp id="inicio_horario_1" dim="6,1" bclr="192,205,213" clr="64,64,64" clrBrdr="255,255,255" type="string" brdr="0,2"/><sp/>
+		<inp id="final_horario_1" dim="6,1" bclr="192,205,213" clr="64,64,64" clrBrdr="255,255,255" type="string" brdr="0,2"/><tab n="1"/><sp/>
+		<inp id="inicio_horario_2" dim="6,1" bclr="192,205,213" clr="64,64,64" clrBrdr="255,255,255" type="string" brdr="0,2"/><sp/>
+		<inp id="final_horario_2" dim="6,1" bclr="192,205,213" clr="64,64,64" clrBrdr="255,255,255" type="string" brdr="0,2"/>
+			
+		<br/>	<br/>	
+		
+		<tab n="3"/><sp n="2"/><txt>00</txt><tab n="3"/><sp n="3"/><txt>15</txt><tab n="4"/><sp/><txt>30</txt><tab n="4"/><txt>45</txt><br/>
+		<tab n="1"/><txt>07</txt><sp/>
+		<inp id="07:00" dim="12,1" bclr="192,205,213" clr="64,64,64" clrBrdr="255,255,255" type="string" brdr="0,2"/><sp/>
+		<inp id="07:15" dim="12,1" bclr="192,205,213" clr="64,64,64" clrBrdr="255,255,255" type="string" brdr="0,2"/><sp/>
+		<inp id="07:30" dim="12,1" bclr="192,205,213" clr="64,64,64" clrBrdr="255,255,255" type="string" brdr="0,2"/><sp/>
+		<inp id="07:45" dim="12,1" bclr="192,205,213" clr="64,64,64" clrBrdr="255,255,255" type="string" brdr="0,2"/><sp/><br/>
+		
+		<tab n="1"/><txt>08</txt><sp/>
+		<inp id="08:00" dim="12,1" bclr="192,205,213" clr="64,64,64" clrBrdr="255,255,255" type="string" brdr="0,2"/><sp/>
+		<inp id="08:15" dim="12,1" bclr="192,205,213" clr="64,64,64" clrBrdr="255,255,255" type="string" brdr="0,2"/><sp/>
+		<inp id="08:30" dim="12,1" bclr="192,205,213" clr="64,64,64" clrBrdr="255,255,255" type="string" brdr="0,2"/><sp/>
+		<inp id="08:45" dim="12,1" bclr="192,205,213" clr="64,64,64" clrBrdr="255,255,255" type="string" brdr="0,2"/><sp/><br/>
+		
+		<tab n="1"/><txt>09</txt><sp/>
+		<inp id="09:00" dim="12,1" bclr="192,205,213" clr="64,64,64" clrBrdr="255,255,255" type="string" brdr="0,2"/><sp/>
+		<inp id="09:15" dim="12,1" bclr="192,205,213" clr="64,64,64" clrBrdr="255,255,255" type="string" brdr="0,2"/><sp/>
+		<inp id="09:30" dim="12,1" bclr="192,205,213" clr="64,64,64" clrBrdr="255,255,255" type="string" brdr="0,2"/><sp/>
+		<inp id="09:45" dim="12,1" bclr="192,205,213" clr="64,64,64" clrBrdr="255,255,255" type="string" brdr="0,2"/><sp/><br/>
+			
+		<tab n="1"/><txt>10</txt><sp/>
+		<inp id="10:00" dim="12,1" bclr="192,205,213" clr="64,64,64" clrBrdr="255,255,255" type="string" brdr="0,2"/><sp/>
+		<inp id="10:15" dim="12,1" bclr="192,205,213" clr="64,64,64" clrBrdr="255,255,255" type="string" brdr="0,2"/><sp/>
+		<inp id="10:30" dim="12,1" bclr="192,205,213" clr="64,64,64" clrBrdr="255,255,255" type="string" brdr="0,2"/><sp/>
+		<inp id="10:45" dim="12,1" bclr="192,205,213" clr="64,64,64" clrBrdr="255,255,255" type="string" brdr="0,2"/><sp/><br/>
+	
+		<tab n="1"/><txt>11</txt><sp/>
+		<inp id="11:00" dim="12,1" bclr="192,205,213" clr="64,64,64" clrBrdr="255,255,255" type="string" brdr="0,2"/><sp/>
+		<inp id="11:15" dim="12,1" bclr="192,205,213" clr="64,64,64" clrBrdr="255,255,255" type="string" brdr="0,2"/><sp/>
+		<inp id="11:30" dim="12,1" bclr="192,205,213" clr="64,64,64" clrBrdr="255,255,255" type="string" brdr="0,2"/><sp/>
+		<inp id="11:45" dim="12,1" bclr="192,205,213" clr="64,64,64" clrBrdr="255,255,255" type="string" brdr="0,2"/><sp/><br/>
+	
+		<tab n="1"/><txt>12</txt><sp/>
+		<inp id="12:00" dim="12,1" bclr="192,205,213" clr="64,64,64" clrBrdr="255,255,255" type="string" brdr="0,2"/><sp/>
+		<inp id="12:15" dim="12,1" bclr="192,205,213" clr="64,64,64" clrBrdr="255,255,255" type="string" brdr="0,2"/><sp/>
+		<inp id="12:30" dim="12,1" bclr="192,205,213" clr="64,64,64" clrBrdr="255,255,255" type="string" brdr="0,2"/><sp/>
+		<inp id="12:45" dim="12,1" bclr="192,205,213" clr="64,64,64" clrBrdr="255,255,255" type="string" brdr="0,2"/><sp/><br/>
+	
+		<tab n="1"/><txt>13</txt><sp/>
+		<inp id="13:00" dim="12,1" bclr="192,205,213" clr="64,64,64" clrBrdr="255,255,255" type="string" brdr="0,2"/><sp/>
+		<inp id="13:15" dim="12,1" bclr="192,205,213" clr="64,64,64" clrBrdr="255,255,255" type="string" brdr="0,2"/><sp/>
+		<inp id="13:30" dim="12,1" bclr="192,205,213" clr="64,64,64" clrBrdr="255,255,255" type="string" brdr="0,2"/><sp/>
+		<inp id="13:45" dim="12,1" bclr="192,205,213" clr="64,64,64" clrBrdr="255,255,255" type="string" brdr="0,2"/><sp/><br/>
+		
+		<tab n="1"/><txt>14</txt><sp/>
+		<inp id="14:00" dim="12,1" bclr="192,205,213" clr="64,64,64" clrBrdr="255,255,255" modify="N" type="string" brdr="0,2"/><sp/>
+		<inp id="14:15" dim="12,1" bclr="192,205,213" clr="64,64,64" clrBrdr="255,255,255" modify="N" type="string" brdr="0,2"/><sp/>
+		<inp id="14:30" dim="12,1" bclr="192,205,213" clr="64,64,64" clrBrdr="255,255,255" type="string" brdr="0,2"/><sp/>
+		<inp id="14:45" dim="12,1" bclr="192,205,213" clr="64,64,64" clrBrdr="255,255,255" type="string" brdr="0,2"/><sp/><br/>
+		
+		<tab n="1"/><txt>15</txt><sp/>
+		<inp id="15:00" dim="12,1" bclr="192,205,213" clr="64,64,64" clrBrdr="255,255,255" type="string" brdr="0,2"/><sp/>
+		<inp id="15:15" dim="12,1" bclr="192,205,213" clr="64,64,64" clrBrdr="255,255,255" type="string" brdr="0,2"/><sp/>
+		<inp id="15:30" dim="12,1" bclr="192,205,213" clr="64,64,64" clrBrdr="255,255,255" type="string" brdr="0,2"/><sp/>
+		<inp id="15:45" dim="12,1" bclr="192,205,213" clr="64,64,64" clrBrdr="255,255,255" type="string" brdr="0,2"/><sp/><br/>
+		
+		<tab n="1"/><txt>16</txt><sp/>
+		<inp id="16:00" dim="12,1" bclr="192,205,213" clr="64,64,64" clrBrdr="255,255,255" type="string" brdr="0,2"/><sp/>
+		<inp id="16:15" dim="12,1" bclr="192,205,213" clr="64,64,64" clrBrdr="255,255,255" type="string" brdr="0,2"/><sp/>
+		<inp id="16:30" dim="12,1" bclr="192,205,213" clr="64,64,64" clrBrdr="255,255,255" type="string" brdr="0,2"/><sp/>
+		<inp id="16:45" dim="12,1" bclr="192,205,213" clr="64,64,64" clrBrdr="255,255,255" type="string" brdr="0,2"/><sp/><br/>
+		
+		<tab n="1"/><txt>17</txt><sp/>
+		<inp id="17:00" dim="12,1" bclr="192,205,213" clr="64,64,64" clrBrdr="255,255,255" type="string" brdr="0,2"/><sp/>
+		<inp id="17:15" dim="12,1" bclr="192,205,213" clr="64,64,64" clrBrdr="255,255,255" type="string" brdr="0,2"/><sp/>
+		<inp id="17:30" dim="12,1" bclr="192,205,213" clr="64,64,64" clrBrdr="255,255,255" type="string" brdr="0,2"/><sp/>
+		<inp id="17:45" dim="12,1" bclr="192,205,213" clr="64,64,64" clrBrdr="255,255,255" type="string" brdr="0,2"/><sp/><br/>
+		
+		<tab n="1"/><txt>18</txt><sp/>
+		<inp id="18:00" dim="12,1" bclr="192,205,213" clr="64,64,64" clrBrdr="255,255,255" type="string" brdr="0,2"/><sp/>
+		<inp id="18:15" dim="12,1" bclr="192,205,213" clr="64,64,64" clrBrdr="255,255,255" type="string" brdr="0,2"/><sp/>
+		<inp id="18:30" dim="12,1" bclr="192,205,213" clr="64,64,64" clrBrdr="255,255,255" type="string" brdr="0,2"/><sp/>
+		<inp id="18:45" dim="12,1" bclr="192,205,213" clr="64,64,64" clrBrdr="255,255,255" type="string" brdr="0,2"/><sp/><br/>
+				
+		<tab n="1"/><txt>19</txt><sp/>
+		<inp id="19:00" dim="12,1" bclr="192,205,213" clr="64,64,64" clrBrdr="255,255,255" type="string" brdr="0,2"/><sp/>
+		<inp id="19:15" dim="12,1" bclr="192,205,213" clr="64,64,64" clrBrdr="255,255,255" type="string" brdr="0,2"/><sp/>
+		<inp id="19:30" dim="12,1" bclr="192,205,213" clr="64,64,64" clrBrdr="255,255,255" type="string" brdr="0,2"/><sp/>
+		<inp id="19:45" dim="12,1" bclr="192,205,213" clr="64,64,64" clrBrdr="255,255,255" type="string" brdr="0,2"/><sp/><br/>
+	
+		<tab n="1"/><txt>20</txt><sp/>
+		<inp id="20:00" dim="12,1" bclr="192,205,213" clr="64,64,64" clrBrdr="255,255,255" type="string" brdr="0,2"/><sp/>
+		<inp id="20:15" dim="12,1" bclr="192,205,213" clr="64,64,64" clrBrdr="255,255,255" type="string" brdr="0,2"/><sp/>
+		<inp id="20:30" dim="12,1" bclr="192,205,213" clr="64,64,64" clrBrdr="255,255,255" type="string" brdr="0,2"/><sp/>
+		<inp id="20:45" dim="12,1" bclr="192,205,213" clr="64,64,64" clrBrdr="255,255,255" type="string" brdr="0,2"/><sp/><br/>
+			
+		<br/>
+		<tab n="1"/><txt>(CR)=Cita Recepcion  (CE)=Cita Entrega  (OE)=Orden Entrega</txt>
+		<br/>
+		
+	
+		</grp>
+	
+		
+
+		
+</grp>
+	<script>
+		InstallDriver("KDB75");
+		class Main {
+			var frn,frP,kdb,sys,fecha,recepcionista,sucursal,suc_usuario,folio_cita,folio_orden,tip_ope ;
+
+			fun Main(){
+				frn=new FRNT;
+				kdb=new KDB;
+				frP=new FRNTP;
+				sys=new SYS;
+				kdb.connect();
+				suc_usuario = frn.lib("libKepler","UserInfo(1)");
+				
+				fecha= frP.get("fecha_cita");
+				recepcionista= frP.get("recepcionista", -1, 1);
+				sucursal = frP.get("k_sucN", -1, 1);
+				folio_cita = frP.get("folio_cita");
+				folio_orden = frP.get("k_orden");
+				tip_ope=trim(frn.param(0));
+				
+				if (sucursal &= ""){
+					sucursal = suc_usuario;
+				}
+			
+				Inicializa();
+			}
+			
+		
+			
+			fun Inicializa() {
+			
+				var xmlRequest,cmd,ok,cubo, mensajeError ;
+			
+				//Llenar combo recepcionista
+				cmd = "select '['||c1||'] '||c2 as descripcion, c1 as clave from keplersc.kdrecep where c11='S'";
+				
+				cubo = frn.lib("libGeneral.kpl","EjecutarSqlSel",cmd,"srvcitacrud.Inicializa()");
+				
+				ok=getXmlAtt(cubo,"ok");
+				if(ok &! "" && !ok){
+					mensajeError = getXmlAtt(cubo,"native3");
+					mensajeError = frn.lib("libGeneral.kpl","ErrorBD",mensajeError);
+					frn.message(mensajeError,"Error","Aceptar");
+					return;
+				}
+			
+			   var cmd_recepcionista = "recepcionista";
+				llenar_cmb(cubo ,cmd_recepcionista );
+				
+				
+				if (fecha &= ""){
+					fecha= sys.date();
+				}
+		
+				frn.set("fecha_busqueda", fecha);
+				frn.set("recepcionista",descr_combo("recepcionista",1,recepcionista));	
+				
+				buscar_datos();
+				
+				frn.set("fecha_bus_ope", fecha);
+			
+			}
+			
+			
+			fun buscar_datos(){
+			
+				var cmd,cubo,ok, mensajeError,strTmp,xmlRes, cubo_horarios,xmlRequest,cubo_recep_citas,cubo_ent_citas,totresultados ,contresultados ;
+				
+				var recep = frn.get("recepcionista", -1, 1);
+				var fcha = frn.get("fecha_busqueda");
+				
+				borrar_datos();
+				
+				//	busca horarios recepcionista
+				cmd = "select c14,c15,c16,c17 from keplersc.kdrecep where c1='" & recep & "'";
+				cubo = frn.lib("libGeneral.kpl","EjecutarSqlSel",cmd,"recep_horarios.buscar_datos()");
+						
+				frn.lib("libGeneral.kpl","FileSave",cubo ,"C:\Basura\cubo_horarios");
+			
+				ok=getXmlAtt(cubo,"ok");
+				if(ok &! "" && !ok){
+					mensajeError = getXmlAtt(cubo,"native3");
+					mensajeError = frn.lib("libGeneral.kpl","ErrorBD",mensajeError);
+					frn.message(mensajeError,"Error","Aceptar");
+					return;
+				}
+			
+				frn.set("inicio_horario_1", getXmlAtt(cubo ,"r0","c14"));
+				frn.set("final_horario_1", getXmlAtt(cubo ,"r0","c15"));
+				frn.set("inicio_horario_2", getXmlAtt(cubo ,"r0","c16"));
+				frn.set("final_horario_2", getXmlAtt(cubo ,"r0","c17"));
+				
+				
+				//	busca recepciones de citas de servicio
+				cmd = "select c2,c13 from keplersc.kdctasser where c1='" & sucursal & "' and c2 <> '" & folio_cita & "' and c17='" & recep & "' and c12='" & fcha & "' and c20<=" & 10;
+				
+			
+				cubo = frn.lib("libGeneral.kpl","EjecutarSqlSel",cmd,"recep_horarios.buscar_datos()");
+						
+				frn.lib("libGeneral.kpl","FileSave",cubo ,"C:\Basura\cubo_recep_citas");
+			
+				ok=getXmlAtt(cubo,"ok");
+				if(ok &! "" && !ok){
+					mensajeError = getXmlAtt(cubo,"native3");
+					mensajeError = frn.lib("libGeneral.kpl","ErrorBD",mensajeError);
+					frn.message(mensajeError,"Error","Aceptar");
+					return;
+				}
+				
+				totresultados = nXml(cubo );
+	
+				for (contresultados=0; contresultados<totresultados ; contresultados++){
+					var fol = getXmlAtt(cubo ,"r"&contresultados ,"c2");
+					var horario =getXmlAtt(cubo ,"r"&contresultados ,"c13");
+					frn.set(horario ,fol & " (CR)");
+				}	
+				
+		
+				//	busca entregas de citas de servicio
+				cmd = "select ent.c2,ent.c4 from keplersc.kdctasfent as ent inner join keplersc.kdctasser as cit on cit.c1=ent.c1 and cit.c2=ent.c2";
+				cmd = cmd & " where ent.c1='" & sucursal & "' and ent.c2 <> '" & folio_cita  & "' and ent.c3='" & fcha & "' and cit.c17='" & recep & "' and cit.c20<=" & 10;
+				cubo = frn.lib("libGeneral.kpl","EjecutarSqlSel",cmd,"recep_horarios.buscar_datos()");
+						
+				frn.lib("libGeneral.kpl","FileSave",cubo ,"C:\Basura\cubo_ent_citas");
+			
+				ok=getXmlAtt(cubo,"ok");
+				if(ok &! "" && !ok){
+					mensajeError = getXmlAtt(cubo,"native3");
+					mensajeError = frn.lib("libGeneral.kpl","ErrorBD",mensajeError);
+					frn.message(mensajeError,"Error","Aceptar");
+					return;
+				}
+				
+				totresultados = nXml(cubo );
+			
+				for (contresultados=0; contresultados<totresultados ; contresultados++){
+					var fol = getXmlAtt(cubo ,"r"&contresultados ,"c2");
+					var horario =getXmlAtt(cubo ,"r"&contresultados ,"c4");
+					frn.set(horario ,fol & " (CE)");
+				}
+				
+				
+				
+				//	busca entregas de ordenes de servicio
+				cmd = "select ent.c3,ent.c5 from keplersc.kdordfent as ent inner join keplersc.kdord as ord on ord.c1=ent.c1 and ord.c2=ent.c2 and ord.c3=ent.c3"; 
+				cmd = cmd & " where ent.c1='" & sucursal & "' and ent.c3 <> '" & folio_orden  & "' and ent.c4='" & fcha & "' and ord.c22='" & recep & "'";
+				
+				cubo = frn.lib("libGeneral.kpl","EjecutarSqlSel",cmd,"recep_horarios.buscar_datos()");
+						
+				frn.lib("libGeneral.kpl","FileSave",cubo ,"C:\Basura\cubo_ent_ords");
+			
+				ok=getXmlAtt(cubo,"ok");
+				if(ok &! "" && !ok){
+					mensajeError = getXmlAtt(cubo,"native3");
+					mensajeError = frn.lib("libGeneral.kpl","ErrorBD",mensajeError);
+					frn.message(mensajeError,"Error","Aceptar");
+					return;
+				}
+				
+				totresultados = nXml(cubo );
+			
+				for (contresultados=0; contresultados<totresultados ; contresultados++){
+					var fol = getXmlAtt(cubo ,"r"&contresultados ,"c3");
+					var horario =getXmlAtt(cubo ,"r"&contresultados ,"c5");
+					frn.set(horario ,fol & " (OE)");
+				}		
+			
+			}
+			
+
+			fun borrar_datos(){
+			
+				frn.rst("07:00");
+				frn.rst("07:15");
+				frn.rst("07:30");
+				frn.rst("07:45");
+				frn.rst("08:00");
+				frn.rst("08:15");
+				frn.rst("08:30");
+				frn.rst("08:45");
+				frn.rst("09:00");
+				frn.rst("09:15");
+				frn.rst("09:30");
+				frn.rst("09:45");	
+				frn.rst("10:00");
+				frn.rst("10:15");
+				frn.rst("10:30");
+				frn.rst("10:45");		
+				frn.rst("11:00");
+				frn.rst("11:15");
+				frn.rst("11:30");
+				frn.rst("11:45");	
+				frn.rst("12:00");
+				frn.rst("12:15");
+				frn.rst("12:30");
+				frn.rst("12:45");		
+				frn.rst("13:00");
+				frn.rst("13:15");
+				frn.rst("13:30");
+				frn.rst("13:45");		
+				frn.rst("14:00");
+				frn.rst("14:15");
+				frn.rst("14:30");
+				frn.rst("14:45");
+				frn.rst("15:00");
+				frn.rst("15:15");
+				frn.rst("15:30");
+				frn.rst("15:45");					
+				frn.rst("16:00");
+				frn.rst("16:15");
+				frn.rst("16:30");
+				frn.rst("16:45");					
+				frn.rst("17:00");
+				frn.rst("17:15");
+				frn.rst("17:30");
+				frn.rst("17:45");
+				frn.rst("18:00");
+				frn.rst("18:15");
+				frn.rst("18:30");
+				frn.rst("18:45");				
+				frn.rst("19:00");
+				frn.rst("19:15");
+				frn.rst("19:30");
+				frn.rst("19:45");
+				frn.rst("20:00");
+				frn.rst("20:15");
+				frn.rst("20:30");
+				frn.rst("20:45");
+				
+			}
+			
+			
+			
+			fun llenar_cmb(cuboResultados, cmb){
+					
+				var len_cubo = nXml(cuboResultados);
+				
+				var pos_ini = frn.N(cmb);
+					
+				for (var cont=0; cont<len_cubo ; cont++){
+			
+					var desc= getXmlAtt(cuboResultados,"r"&cont,"descripcion");
+					var clave= getXmlAtt(cuboResultados,"r"&cont,"clave");
+					
+					frn.setX(desc, cmb, cont+pos_ini ,0);
+					frn.setX(clave, cmb, cont+pos_ini ,1);
+				
+				}	
+			}
+			
+			
+			fun descr_combo(combo,posicion,valor){
+
+				var descr, valor_actual;
+				var len_combo = frn.N(combo);
+
+				for (var cont=0; cont<len_combo ; cont++){
+					valor_actual= frn.get(combo,cont,posicion);
+					if (valor_actual &=  valor){
+						descr = frn.get(combo,cont,0);
+						return descr;
+					}
+				}
+			}
+			
+				
+		}
+	</script>
+</pag>

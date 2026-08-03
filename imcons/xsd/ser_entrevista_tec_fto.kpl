@@ -1,0 +1,265 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pag xmlns="www.kepler.com.mx/2003/KSchema" tit="Reporte de " scale="48">
+	<grp dim="1,-1,10,20" brdr="0,1" bclr="255,255,255" clr="0,0,0" fnt=",14" unfont="0">
+	
+		<br exe="encabezado"/>
+		<!-- <hLine dim="90,0" g="2" type="1"/> -->
+		<hLine dim="89,0" g="2" type="1"/>
+		<br exe="encabezado"/>
+		
+		<grp dim="14,5,7,10">
+			<br/>
+			<img id="img" dim="12,50" brdr="0,1" img="logocliente.jpg"/>
+		</grp>
+		
+		<!-- <grp dim="60,7,7,12"> -->
+		<grp dim="60,12,7,9"> 
+			<br/>
+			<!-- dim="60,1" -->
+			<inp id="nombreempresa" dim="80,1" fnt="20b,20b" type="string" modify="N" bclr="249,249,249"/>
+			<br/>
+			<!-- dim="60,1" -->
+			<inp id="tituloreporte" dim="80,1" fnt="20b,18b" type="string" modify="N" bclr="249,249,249" just="C" clr="4,9,123"/>
+			<br/>
+			<!-- dim="60,1" 
+			<inp id="leyendatx" dim="80,1" type="string" fnt=",16b" modify="N" just="L" nc="-1"/>
+			<br/>
+			-->
+			<br/>
+			<txt fnt=",16b">Numero de Encuesta : </txt> <sp n="1"/>
+			<inp id="k_folio" dim="5,1" fnt="16b,16b" type="string" modify="N"/>
+			<br/>
+			<txt fnt=",16b">Sucursal : </txt> <sp n="1"/>
+			<inp id="suctx" dim="50,1" type="string" modify="N" fnt=",16b"/>
+			<br/>
+			<txt fnt=",16b">Orden : </txt> <sp n="3"/>
+			<inp id="k_tipon" dim="2,1" fnt="16b,16b" type="string" modify="N"/>
+			<sp n="2"/>
+			<inp id="k_orden" dim="15,1" fnt="16b,16b" type="string" modify="N"/>
+			<sp n="2"/>
+			<inp id="c_vin" dim="10,1" fnt="16b,16b" type="string" modify="N"/>
+			<br exe="encabezado"/>
+		</grp>
+		
+		<tab n="1"/>
+		
+		<grp dim="15,5,7,9">
+			<tab n="2"/><txt fnt="16b,16b">P&#225;g:</txt>
+			<sp/> <inp id="k_pag" dim="5,1" type="number" mcr="k_pag" fnt="15b,15b"/><br/><br/>
+			<inp id="fecha" dim="10,1" type="date" fmt="DD-MM-CCYY" nc="-1" fnt="15b,15b"/>
+			<!--<sp/>--> <sp n="2"/> <inp id="hora" dim="5,1" type="time" fnt="15b,15b"/>
+			<br/><br/>
+		</grp>
+		<br exe="encabezado"/>
+		<!-- <br exe="encabezado"/> --> 
+		
+		<!-- <hLine dim="90,0" g="2" type="1"/> -->
+		<hLine dim="89,0" g="2" type="1"/> 
+			<br exe="encabezado"/>
+		<!-- <hLine dim="90,0" g="2" type="1"/> -->
+		<br exe="encabezado"/>
+
+
+		<sp n="1"/> <txt fnt=",16b">Asesor : </txt> 
+		<sp n="1"/> <inp id="k_asesor" dim="7,1" type="string" modify="N" fnt=",16"/>
+		<sp n="1"/> <inp id="c_asesor" dim="50,1" type="string" modify="N" fnt=",16"/>
+		<br exe="section-detalle"/>
+		
+		<sp n="1"/> <txt fnt=",16b">Fecha : </txt> <sp n="2"/>
+		<inp id="k_fecha" dim="12,1" fnt=",16" type="date" modify="N"  fmt="DD/MM/CCYY" nc="-1"/>
+		<sp n="4"/> <txt fnt=",16b">Hora Inicio : </txt> 
+		<sp n="1"/> <inp id="k_hora_i" dim="10,1" fnt=",16" type="string" modify="N"/>
+		<sp n="4"/> <txt fnt=",16b">Hora Final : </txt> 
+		<sp n="1"/> <inp id="k_hora_f" dim="10,1" fnt=",16" type="string" modify="N"/>
+		<br exe="section-detalle"/>
+
+		<br exe="section-detalle"/>
+		
+		<sp n="1"/> <txt fnt=",16b">Descripcion del problema con las palabras del Cliente : </txt>
+		<br exe="section-detalle"/>
+
+		<br exe="section-detalle"/>
+		
+		<sp n="1"/> <inp id="c_dscr1" dim="87,1" type="string" modify="N" fnt=",15" nc="80"/> 
+		<br exe="section-detalle"/>
+		<sp n="1"/> <inp id="c_dscr2" dim="87,1" type="string" modify="N" fnt=",15" nc="80"/> 
+		<br exe="section-detalle"/>
+		<sp n="1"/> <inp id="c_dscr3" dim="87,1" type="string" modify="N" fnt=",15" nc="80"/> 
+		<br exe="section-detalle"/>
+		<sp n="1"/>	<inp id="c_dscr4" dim="87,1" type="string" modify="N" fnt=",15" nc="80"/> 
+		<br exe="section-detalle"/>
+		<sp n="1"/>	<inp id="c_dscr5" dim="87,1" type="string" modify="N" fnt=",15" nc="80"/>
+		<br exe="section-detalle"/>
+		
+		<br exe="section-detalle"/>
+
+		
+		<sp n="1"/> <txt fnt=",16b">Cuando percibio el cliente el sintoma por 1ra vez ?  ...  [ desde ] : </txt>
+		<br exe="section-detalle"/>
+
+		<br exe="section-detalle"/>
+		
+		<sp n="1"/> <txt fnt=",16b">Nuevo</txt> 
+		<sp n="1"/> <inp id="c_nuevo" fnt=",16" dim="2,1" type="capital" modify="Y" nc="1"/>	
+		<sp n="2"/> <txt fnt=",16b">KM</txt> 
+		<sp n="1"/> <inp id="c_km" fnt=",16" dim="7,1" type="number" modify="Y" nc="6" fmt="5"/>	
+		<sp n="2"/> <txt fnt=",16b">Fecha</txt> 
+		<sp n="1"/> <inp id="c_fecha" fnt=",16" dim="13,1" type="date" fmt="DD/MM/CCYY"/> 
+		<sp n="2"/> <txt fnt=",16b">Que Frecuencia ?</txt> 
+		<sp n="1"/> <inp id="c_frecuencia" fnt=",16" dim="9,1" type="string" modify="Y" nc="7"/>	
+		<br exe="section-detalle"/>
+		<br exe="section-detalle"/> 
+		
+		<sp n="1"/> <txt fnt=",16b">Otros, describe brevemente : </txt> 
+		<br exe="section-detalle"/>
+		<br exe="section-detalle"/> 
+		<sp n="1"/> <inp id="c_otros1" fnt=",16" dim="87,1" type="string" modify="Y" nc="80"/>	
+		<br exe="section-detalle"/>
+		<sp n="1"/> <inp id="c_otros2" fnt=",16" dim="87,1" type="string" modify="Y" nc="80"/>			
+		<br exe="section-detalle"/>
+		<br exe="section-detalle"/> 
+	
+		<sp n="1"/> <txt fnt=",16b">Condicion(es) de manejo cuando se presenta el sintoma ? [ marque las aplicables ]</txt>
+		<br exe="section-detalle"/> 
+		<br exe="section-detalle"/> 
+		<sp n="1"/> <txt fnt=",16b">Velocidad (rango)</txt> 
+		<sp n="3"/> <inp id="c_vel_rango" fnt=",16" dim="45,1" type="string" modify="Y" nc="30"/>	
+		<sp n="2"/> <txt fnt=",16b">Condicion Clima</txt> 
+		<sp n="1"/> <inp id="c_cond_clima" fnt=",16" dim="10,1" type="string" modify="Y" nc="7"/>	
+		<br exe="section-detalle"/> 
+		<sp n="1"/> <txt fnt=",16b">Velocidad Motor (rpm)</txt> 
+		<sp n="1"/> <inp id="c_vel_motor" fnt=",16" dim="45,1" type="string" modify="Y" nc="30"/>	
+		<sp n="2"/> <txt fnt=",16b">Temp. Exterior</txt> 
+		<sp n="2"/> <inp id="c_temp_ext" fnt=",16" dim="4,1" type="number" modify="Y" nc="3"/>	
+		<br exe="section-detalle"/> 
+		<sp n="1"/> <txt fnt=",16b">Posicion Transmision (PNDR12345)</txt> 
+		<sp n="1"/> <inp id="c_pos_trans" fnt=",16" dim="2,1" type="capital" modify="Y" nc="1"/>	
+		<sp n="3"/> <txt fnt=",16b">Peso Carga</txt> 
+		<sp n="1"/> <inp id="c_peso_carga" fnt=",16" dim="4,1" type="number" modify="Y" nc="3" fmt="5"/>	
+		<sp n="4"/> <txt fnt=",16b">Peso Arrastre</txt> 
+		<sp n="1"/> <inp id="c_peso_arrastre" fnt=",16" dim="4,1" type="number" modify="Y" nc="3" fmt="5"/>	
+		<br exe="section-detalle"/> 
+		<sp n="1"/> <txt fnt=",16b">Num Pasajeros</txt> 
+		<sp n="1"/> <inp id="c_num_pasajeros" fnt=",16" dim="3,1" type="number" modify="Y" nc="2" fmt="5"/>	
+		<sp n="4"/> <txt fnt=",16b">Recto</txt> 
+		<sp n="1"/> <inp id="c_recto" fnt=",16" dim="2,1" type="capital" modify="Y" nc="1"/>	
+		<sp n="3"/> <txt fnt=",16b">Giro Izq.</txt> 
+		<sp n="1"/> <inp id="c_giroi" fnt=",16" dim="2,1" type="capital" modify="Y" nc="1"/>	
+		<sp n="4"/> <txt fnt=",16b">Giro Der.</txt> 
+		<sp n="1"/> <inp id="c_girod" fnt=",16" dim="2,1" type="capital" modify="Y" nc="1"/>	
+		<sp n="3"/> <txt fnt=",16b">Piloto Aut.</txt> 
+		<sp n="1"/> <inp id="c_pilotoa" fnt=",16" dim="2,1" type="capital" modify="Y" nc="1"/>	
+		<br exe="section-detalle"/> 
+		<sp n="1"/> <txt fnt=",16b">Acelerando</txt> 
+		<sp n="1"/> <inp id="c_acelera" fnt=",16" dim="2,1" type="capital" modify="Y" nc="1"/>	
+		<sp n="7"/> <txt fnt=",16b">Frenando</txt> 
+		<sp n="1"/> <inp id="c_frena" fnt=",16" dim="2,1" type="capital" modify="Y" nc="1"/>	
+		<sp n="13"/> <txt fnt=",16b">Subida</txt> 
+		<sp n="1"/> <inp id="c_subir" fnt=",16" dim="2,1" type="capital" modify="Y" nc="1"/>	
+		<sp n="5"/> <txt fnt=",16b">Bajada</txt> 
+		<sp n="1"/> <inp id="c_bajar" fnt=",16" dim="2,1" type="capital" modify="Y" nc="1"/>	
+		<br exe="section-detalle"/> 
+		<br exe="section-detalle"/> 
+
+		<br exe="section-detalle"/>
+		<sp n="1"/> <txt fnt=",16b">Detalles Adicionales  -  [ Sintomas relacionados con ] : </txt>
+		<br exe="section-detalle"/>
+		<br exe="section-detalle"/>
+		
+		<sp n="1"/> <txt fnt=",16b">[ A/C ] </txt>
+		<sp n="5"/> <txt fnt=",16b">Recirculacion</txt> 
+		<sp n="2"/> <inp id="c_ac_recirculacion" fnt=",16" dim="2,1" type="capital" modify="Y" nc="1"/>	
+		<sp n="12"/> <txt fnt=",16b">Velocidad Ventilador</txt> 
+		<sp n="2"/> <inp id="c_ac_ventilador" fnt=",16" dim="2,1" type="capital" modify="Y" nc="1"/>		
+		<br exe="section-detalle"/>
+		<sp n="11"/> <txt fnt=",16b">Temperatura</txt> 
+		<sp n="2"/> <inp id="c_ac_temp" fnt=",16" dim="45,1" type="string" modify="Y" nc="30"/>	
+		<br exe="section-detalle"/>
+		<br exe="section-detalle"/>
+		
+		<sp n="1"/> <txt fnt=",16b">[ Audio ] </txt>
+		<sp n="4"/> <txt fnt=",16b">Estacion Radio</txt> 
+		<sp n="1"/> <inp id="c_audio_estacion" fnt=",16" dim="45,1" type="string" modify="Y" nc="30"/>	
+		<br exe="section-detalle"/>
+		<sp n="11"/> <txt fnt=",16b">Ajuste Sonido</txt> 
+		<sp n="1"/> <inp id="c_audio_sonido" fnt=",16" dim="45,1" type="string" modify="Y" nc="30"/>	
+		<br exe="section-detalle"/>
+		<br exe="section-detalle"/>
+	
+		<sp n="1"/> <txt fnt=",16b">[ Ruidos ] </txt>
+		<sp n="3"/> <txt fnt=",16b">Tipo de Ruido</txt> 
+		<sp n="2"/> <inp id="c_ruido_tipo" fnt=",16" dim="9,1" type="string" modify="Y" nc="7"/>	
+		<sp n="5"/> <txt fnt=",16b">Ubicacion</txt> 
+		<sp n="3"/> <inp id="c_ruido_ubica" fnt=",16" dim="9,1" type="string" modify="Y" nc="7"/>		
+		<br exe="section-detalle"/>
+		<br exe="section-detalle"/>
+	
+		<sp n="1"/> <txt fnt=",16b">Comentarios Asesor Tecnico  -  [ despues de despedir al cliente ] : </txt> 
+		<br exe="section-detalle"/>
+		<br exe="section-detalle"/>
+
+		<sp n="1"/> <inp id="c_cmnt_1" fnt=",16" dim="87,1" type="string" modify="Y" nc="80"/>	
+		<br exe="section-detalle"/>
+		<sp n="1"/> <inp id="c_cmnt_2" fnt=",16" dim="87,1" type="string" modify="Y" nc="80"/>			
+		<br exe="section-detalle"/>
+		<sp n="1"/> <inp id="c_cmnt_3" fnt=",16" dim="87,1" type="string" modify="Y" nc="80"/>			
+		<br exe="section-detalle"/>
+		<br exe="section-detalle"/>
+		
+		<sp n="1"/> <txt fnt=",16b">S E C C I O N   [ B ]   -  Confirmar Reparacion en la Entrega : </txt>
+		<!-- 
+		<br exe="section-detalle"/>	
+		<br exe="section-detalle"/>
+		-->
+
+		<sp n="1"/> <txt fnt=",16b">Hora Inicio :</txt>
+		<sp n="2"/> <inp id="k_hora_i_conf" fnt=",16" dim="6,1" type="time" modify="Y" nc="-1"/> 
+		<sp n="3"/> <txt fnt=",16b">Hora Fin :</txt>
+		<sp n="2"/> <inp id="k_hora_f_conf" fnt=",16" dim="6,1" type="time" modify="Y" nc="-1"/> 
+		
+		<br exe="section-detalle"/>	
+		<br exe="section-detalle"/>
+		
+		<!-- <sp n="2"/> -->
+		<sp n="1"/> <txt fnt=",16b">Se confirmo el sintoma</txt> 
+		<sp n="1"/> <inp id="c_sint_conf" fnt=",16" dim="2,1" type="capital" modify="Y" nc="1"/>
+		<br exe="section-detalle"/>
+		<sp n="1"/> <txt fnt=",16b">Que se detecto</txt> 
+		<!-- <sp n="1"/> --> 
+		<sp n="6"/> <inp id="c_sint_dscr" fnt=",16" dim="60,1" type="string" modify="Y" nc="50"/>	
+		<br exe="section-detalle"/>
+		<br exe="section-detalle"/>
+
+		<sp n="1"/> <txt fnt=",16b">Informacion Adicional del Cliente sobre la ocurrencia de la condicion : </txt> 
+		<br exe="section-detalle"/>
+		<br exe="section-detalle"/>
+
+		<sp n="1"/> <inp id="c_info_1" fnt=",16" dim="87,1" type="string" modify="Y" nc="80"/>	
+		<br exe="section-detalle"/>
+		<sp n="1"/> <inp id="c_info_2" fnt=",16" dim="87,1" type="string" modify="Y" nc="80"/>			
+		<br exe="section-detalle"/>
+		<sp n="1"/> <inp id="c_info_3" fnt=",16" dim="87,1" type="string" modify="Y" nc="80"/>			
+		<br exe="section-detalle"/>		
+		
+		<br exe="section-detalle"/>	
+		<sp n="1"/> <txt fnt=",16b">S E C C I O N   [ C ]   -  Explicacion al Cliente : </txt> 
+		<!-- <sp n="1"/> -->
+		<sp n="10"/> <txt fnt=",16b">Hora Inicio :</txt>
+		<sp n="2"/> <inp id="k_hora_i_expl" fnt=",16" dim="6,1" type="time" modify="Y" nc="-1"/> 
+		<sp n="3"/> <txt fnt=",16b">Hora Fin :</txt>
+		<sp n="2"/> <inp id="k_hora_f_expl" fnt=",16" dim="6,1" type="time" modify="Y" nc="-1"/> 
+		<br exe="section-detalle"/>	
+
+		<!--
+		<hLine dim="101,0" g="1" type="1"/>
+		<br exe="section-hist_line"/>
+		
+		<br exe="section-hist_line"/>
+		-->
+
+		<br exe="endrep"/>
+		<sp n="1"/> <txt fnt=",18b">Final Report ...</txt>	
+		<br exe="endrep"/> 
+		
+	</grp>
+</pag>

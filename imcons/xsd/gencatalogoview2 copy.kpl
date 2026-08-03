@@ -1,0 +1,479 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pag xmlns="www.kepler.com.mx/2003/KSchema" roles="" tit="Genera Catalogo">
+<grp  brdr="0,0" clr="0,58,112" fnt="Arial,16"  dim="0,0,15,12" bclr="192,205,213" unfont="0">
+	<tab/>
+	<inp id="inp_titulo" dim="50,1" clr="0,0,0"  type="string" modify="N" available="N" fnt="Arial,22"/>
+	<br/>
+	<tab n="1"/>
+	<hLine clr="0,0,0"/>
+	<br/><br/>
+	<tab/>
+	<grp id="gpo_2" bclr="236,240,243" fntClrBrdr="255,255,255" unfont="0" fntBrdr="Arial,18" hSpace="4" clrBrdr="0,58,112" dim="80,40,10,10" brdr="0,5" tit="Cat&#225;logo de Vendedores" fnt="Arial,16">
+		<tab n="1"/>
+		<inp id="inp_filtros" dim="8,1" brdr="0,0" bclr="192,205,213" clr="0,0,0" clrBrdr="192,205,213" 
+				type="string" modify="N" available="N" fnt="Arial,18"/>
+		<tab/>
+		<cmb id="k_filtros" clr="64,64,64" clrBrdr="192,205,213"  
+				dim="20,15" bclr="255,255,255" brdr="2,0" fnt="Arial,16"  
+				Null="N" available="Y" tooltip="Selecciona columna base de b&#250;squeda"/>
+		<tab/>
+		<inp id="k_busqueda" dim="30,1" brdr="2,0" clr="64,64,64" bclr="255,255,255" clrBrdr="192,205,213"
+				type="capital" OnChange="posicionabusqueda()" OnEnter="posicionabusqueda()" just="C" tooltip="texto a buscar"/>
+		<sp n="3"/>
+		<br/>
+		<tab n="1"/>
+		<tbl clr="64,64,64" clrBrdr="64,64,64" bclr="255,255,255" brdr="1,0" id="results" dim="70,18" 
+			modify="N" nren="fijo" Reorder="Y" OnEnter="posicionabusqueda()" OnMouseD="Execute()">
+			<col name="C1" id="c1"/>
+		</tbl>
+		<tab n="1"/>
+		<br/>
+		<grp id="gpo_3" bclr="236,240,243" fntClrBrdr="255,255,255" unfont="0" fntBrdr="Arial,18" hSpace="4" clrBrdr="0,58,112" dim="50,3,10,10" brdr="0,5" fnt="Arial,16" visible="S">
+			<tab n="1"/>
+			<bot id="k_btn_selec" dim="10,10" brdr="5" text="Seleccionar" default="1" step="0"  OnEnter="abrir_crud(Opcion)" fnt="Arial,16"/> 
+		</grp>
+		<grp id="gpo_4" bclr="236,240,243" fntClrBrdr="255,255,255" unfont="0" fntBrdr="Arial,18" hSpace="4" clrBrdr="0,58,112" dim="50,3,10,10" brdr="0,5" fnt="Arial,16" visible="S">
+			<tab n="1"/>
+			<bot id="k_btn_guardar" dim="10,10" brdr="5" text="Guardar" step="0"  OnEnter="guardar_tabla_csv(results)" fnt="Arial,16"/> 
+		</grp>
+		<br/>
+	</grp>
+</grp>
+	<script>
+		InstallDriver("KDB75");
+		class Main {
+			var frn,frP,kdb,sys,suc_usuario,perfil_usuario,rol_usuario,asterisco, externo, cuboXml;
+			var accion,tipoOper; //Variables relacionadas con parametros
+//--------------------------------------------------------------------Agregar Variables de Codigo Duro --------------------------------------------------------------------
+			var consAdmin, consVarios, consPlantilla, consControl, consAutos, consAutosAlta, consAutosConsultar, consAutosEliminar, consAutosModificar; //variables de codigo duro
+			var consClases, consMarca, consIsan, consLinea, consProveedores, consCexterior, consCinterior, consVendedores;
+			var consCoachesobjmens, consCoachesobjlinea, consBonosporLiena;
+			var regTotales,ultimoValorEncontrado, contGlobalResults; //variables del llenado de la tabla
+			var strTitulo, strQuery, strColValor, strCtrlSet, strMostrarLlave, strRenglon, strColumna;
+			var NUEVO,MODIFICAR,CONSULTAR,ELIMINAR;
+			fun Main(){
+				frn=new FRNT;
+				kdb=new KDB;
+				frP=new FRNTP;
+				sys=new SYS;
+				kdb.connect();
+				//Constantes
+				NUEVO="N";
+				MODIFICAR="M";
+				CONSULTAR="C";
+				ELIMINAR="E";
+				
+				//Parametros
+				if (frn.nParam() < 2){
+					frn.message("Acción no permitida.","Error","&Aceptar");
+					frn.open("principal",4);
+					return;
+				}
+				tipoOper = frn.param(0);
+				accion=frn.param(1);
+				suc_usuario = frn.lib("libKepler","UserInfo(1)");
+				perfil_usuario = frn.lib("libKepler","UserInfo(2)");
+				rol_usuario = frn.config("user","role");
+				asterisco = "*";
+				
+				ConfiguraUI();
+				
+				Inicializa();
+			
+			}
+//--------------------------------------------------------------------Agregar el KPL CRUD a abrir --------------------------------------------------------------------
+
+			//====================
+			//Descripcion: Dado el nombre de un elemento grafico tabla
+			//genera una archivo csv separado por pipes | de la informacion
+			//se guarda donde y con el nombre que el usuario le indique, despues
+			//de ejecutar la fucion 
+			//Parametros: tabla = nombre del elemento grafico tabla
+			//Salida: archivo csv separada la informacion con pipes |	
+			//Autor: Gad Miranda
+			//Fecha: 09/Enero/2023
+			//====================
+
+			fun guardar_tabla_csv(tabla){
+				var pagina_xml,raw_tags_xml,raw_tag_xml,str_tag_xml,str_tag,nombres_columnas,text_csv,str_tag_raw1,str_tag_raw2, num_colum,nRen, num_colum, nom_tabla;
+				nom_tabla = tabla;
+				nRen = frn.N(nom_tabla);
+				pagina_xml = getXml(frn.dataPag());
+				num_colum = getXmlX(pagina_xml,nom_tabla,3,2);
+				num_colum = getXmlX(num_colum,"r0",2);
+				raw_tags_xml = getXmlX(pagina_xml,nom_tabla,3,0);
+
+				//crea un string con los nombres de las columnas de la tabla
+				for (var cont=0; cont<num_colum ; cont++){
+					raw_tag_xml = getXmlX(raw_tags_xml,"r0",3,cont);
+					str_tag_xml = getXmlStr(raw_tag_xml);
+					str_tag_raw1 = strSplit(str_tag_xml,">",0);
+					str_tag_raw2 = strSplit(str_tag_raw1,"<",1);
+					str_tag = strSplit(str_tag_raw2,"/",0);
+					if (nombres_columnas &! ""){
+						nombres_columnas = nombres_columnas &"|"&str_tag ;
+					}else{
+						nombres_columnas = str_tag;
+					}
+				}
+				//recorre la tabla y sacar valor por valor para agregarlo a un str
+				for(var ren=0;ren<nRen;ren++){
+					for( var col=0;col<num_colum;col++){
+						var num_col = strSplit(nombres_columnas,"|",col);
+						var val = frn.get(nom_tabla,ren,num_col);
+						if (text_csv&=""){
+				//se debe respetar esta identacion
+							text_csv = nombres_columnas& "
+" &val & "|";
+						}else if(col+1==num_colum){
+							text_csv = text_csv & val & "|" & "
+";		
+						}else{
+							text_csv = text_csv & val & "|";
+						}
+					}
+				}
+				var save = frn.saveFile("tabla","Todos los archivos,*.*","_C:","Para guardar archivo");
+				kdb.save("_"&save&".csv", text_csv);
+			}
+
+
+
+			fun abrir_crud(){
+				var param = frn.get("results", -1, "k_clave");
+				var param2 = frn.get("results", -1, "k_clave_2");
+				var gen = "G"; //
+				if (tipoOper &="VARIOS"){ //AGREGAR ELSE IF  QUE DIRECCIONE AL KPL CORRECTO
+					frn.dialog("cat_crud_varios",accion, param); 
+				}
+				else if (tipoOper &="AUTOS"){ 
+					frn.dialog("cat_crud_autos",accion, param); 
+				}
+				else if (tipoOper &="CLASES"){ 
+					frn.dialog("cat_crud_clases",accion, param, gen); 
+				}
+				else if (tipoOper &="MARCA"){ 
+					frn.dialog("cat_crud_marca",accion, param, gen); 
+				}else if (tipoOper &="ISAN"){ 
+					frn.dialog("cat_crud_isan",accion, param, gen); 
+				}else if (tipoOper &="LINEA"){ 
+					frn.dialog("cat_crud_linea",accion, param, gen); 
+				}else if (tipoOper &="PROVEEDORES"){ 
+					frn.dialog("cat_crud_proveedores",accion, param, gen); 
+				}else if (tipoOper &="C_EXTERIOR"){ 
+					frn.dialog("cat_crud_color_exterior",accion, param, gen, param2); 
+				}else if (tipoOper &="C_INTERIOR"){ 
+					frn.dialog("cat_crud_color_interior",accion, param, gen, param2); 
+				}else if (tipoOper &="C_VENDEDORES"){ 
+					frn.dialog("cat_crud_vendedores",accion, param, gen); 
+				}else if (tipoOper &="C_COACHESOBJMENS"){ 
+					frn.dialog("cat_crud_coachesobjmens",accion, param, gen, param2); 
+				}else if (tipoOper &="C_COACHESOBJLINEA"){ 
+					frn.dialog("cat_crud_coachesobjlinea",accion, param, gen, param2); 
+				}else if (tipoOper &="C_BONOSPORLINEA"){ 
+					frn.dialog("cat_crud_bonosporlinea",accion, param, gen, param2); 
+				}
+			}
+
+			fun Encabezados(){
+				var colIds, totReg;
+				frn.rst("results");				
+				totReg=nXml(cuboXml);
+				colIds=getXmlAtt(cuboXml,"k_ColName");
+				if(colIds &! ""){
+					frn.setX(colIds,"results","k_ColName");
+					frn.setX(getXmlAtt(cuboXml,"k_ColType"),"results","k_ColType");
+					frn.setX(getXmlAtt(cuboXml,"k_ColNd"),"results","k_ColNd");
+					frn.setAtt("llave","visible","N");
+				}				
+			}
+
+//----------------------------------------Agregar  Titulos y Variable  para configugar interfas grafica --------------------------------------------------------------------
+			fun ConfiguraUI(){
+				consVarios="VARIOS";
+				consAutos="AUTOS";	
+				consClases="CLASES";	
+				consMarca="MARCA";
+				consIsan="ISAN";
+				consLinea="LINEA";
+				consProveedores="PROVEEDORES";
+				consCexterior="C_EXTERIOR";
+				consCinterior="C_INTERIOR";
+				consVendedores="C_VENDEDORES";
+				consCoachesobjmens="C_COACHESOBJMENS";
+				consCoachesobjlinea="C_COACHESOBJLINEA";
+				consBonosporLiena="C_BONOSPORLINEA";
+				//Establecer titulo del catalogo
+				if (tipoOper &= consVarios){
+					frn.set("inp_titulo","Cargos Varios"); //EL TITULO DEL REPORTE EN PANTALLA
+					frn.setAtt("gpo_2","tit","Catálogo de Cargos Varios"); //TITULO DE GRUPO EN PANTALLA
+				}else if(tipoOper &= consAutos){ 
+					frn.set("inp_titulo","Catálogo de Autos");
+					frn.setAtt("gpo_2","tit","Catálogo autos"); 
+				}else if(tipoOper &= consClases){ 
+					frn.set("inp_titulo","Catálogo de Clases");
+					frn.setAtt("gpo_2","tit","Catálogo Clases"); 
+				}else if(tipoOper &= consMarca){ 
+					frn.set("inp_titulo","Catálogo de Marca");
+					frn.setAtt("gpo_2","tit","Catálogo Marca"); 
+				}else if(tipoOper &= consIsan){ 
+					frn.set("inp_titulo","Catálogo de ISAN");
+					frn.setAtt("gpo_2","tit","Catálogo ISAN"); 
+				}else if(tipoOper &= consLinea){ 
+					frn.set("inp_titulo","Catálogo de Linea");
+					frn.setAtt("gpo_2","tit","Catálogo Linea"); 
+				}else if(tipoOper &= consProveedores){ 
+					frn.set("inp_titulo","Catálogo de Proveedores");
+					frn.setAtt("gpo_2","tit","Catálogo Proveedores"); 
+				}else if(tipoOper &= consCexterior){ 
+					frn.set("inp_titulo","Catálogo de Color Exterior");
+					frn.setAtt("gpo_2","tit","Catálogo de Color Exterior"); 
+				}else if(tipoOper &= consCinterior){ 
+					frn.set("inp_titulo","Catálogo de Color Interior");
+					frn.setAtt("gpo_2","tit","Catálogo de Color Interior"); 
+				}else if(tipoOper &= consVendedores){ 
+					frn.set("inp_titulo","Catálogo de Vendedores");
+					frn.setAtt("gpo_2","tit","Catálogo de Vendedores"); 
+				}else if(tipoOper &= consCoachesobjmens){ 
+					frn.set("inp_titulo","Catálogo de Obejtivos de choaches mensuales");
+					frn.setAtt("gpo_2","tit","Catálogo de Obejtivos de choaches mensuales"); 
+				}else if(tipoOper &= consCoachesobjlinea){ 
+					frn.set("inp_titulo","Catálogo de Obejtivos de choaches por linea");
+					frn.setAtt("gpo_2","tit","Catálogo de Obejtivos de choaches por linea"); 
+				}else if(tipoOper &= consBonosporLiena){ 
+					frn.set("inp_titulo","Catálogo de Bonos por linea");
+					frn.setAtt("gpo_2","tit","Catálogo de Bonos por linea"); 
+				}else{
+					frn.message("Acción no permitida.","Error","&Aceptar");
+					frn.open("redirect",2);
+					return;
+				}
+				
+				//Establecer titulo de ventana de acion
+				if (accion &= NUEVO){
+					frn.setAtt("gpo_2","tit","Nuevo registro");				
+				}								
+				if (accion &= MODIFICAR){
+					frn.setAtt("gpo_2","tit","Modificar registro");				
+				}
+				if (accion &= ELIMINAR){
+					frn.setAtt("gpo_2","tit","Eliminar registro");				
+				}
+				if (accion &= CONSULTAR){
+					frn.setAtt("gpo_2","tit","Consultar registro");				
+				}								
+				
+			}
+					
+			fun Inicializa(){
+				frn.rst("gpo_2");
+				Encabezados();
+				Inicia_Forma();
+				}
+	
+			fun Inicia_Forma(){
+				//Etiquetas 
+				frn.set("inp_mensaje","No se encontraron registros...");
+				//frn.set("inp_titulo",strTitulo);
+				frn.set("inp_filtros","Búsqueda");
+				//Obtencion de registros
+				Buscar_Registros();
+			}
+//-----------------------------------------------------agregar el cms sql a ejecutar por catalogo --------------------------------------------------------------------
+			fun Buscar_Registros(){
+				var cmd, mensajeError,ok,nReg;
+				kdb.rst();
+				frn.rst("results");
+
+				if (tipoOper &= consVarios){ //AGREGAR UN ELSE IF DONDE SE GUARDARA EL CMD SLQL A EJECUTAR
+					strQuery = "select c1 as k_clave,
+							c2 as k_descrip,
+							c3 as k_precio
+							from keplersc.KDCARTALL order by c1";
+				}
+				else if (tipoOper &= consAutos){
+					strQuery = "select c1 as k_clave,c2 as k_desc,
+							c4 as k_clase,c5 as k_marca,c6 as k_isa,c7 as k_linea,c8 as k_nou,c10 as k_meses_entrega,c11 as k_prduce,c14 as k_precio_list,
+							c50 as k_cilindros,c51 as k_ocupantes,c52 as k_procedencia,c53 as k_combustible,c54 as k_n_puertas from keplersc.kdiv";
+				}
+				else if (tipoOper &= consClases){
+					strQuery = "select c1 as k_clave,
+							c2 as k_descrip
+							from keplersc.KDIC order by c1";
+				}
+				else if (tipoOper &= consMarca){
+					strQuery = "select c1 as k_clave,
+							c2 as k_descrip
+							from keplersc.KDMARCA order by c1";
+				}
+				else if (tipoOper &= consIsan){
+					strQuery = "select c1 as k_clave,
+							c2 as k_descrip
+							from keplersc.KDTISAN order by c1";
+				}
+				else if (tipoOper &= consLinea){
+					strQuery = "select c1 as k_clave,
+							c2 as k_descrip
+							from keplersc.KDIVL order by c1";
+				}else if (tipoOper &= consProveedores){
+					strQuery = "select c2 as k_clave, c3 as k_nombre
+							from keplersc.KDXD order by c2";
+				}else if (tipoOper &= consCexterior){
+					strQuery = "select c1 as k_clave, c3 as k_clave_2,
+								c4 as k_desc_color
+							from keplersc.KDICE2 order by c1, c3";
+				}else if (tipoOper &= consCinterior){
+					strQuery = "select c1 as k_clave, c3 as k_clave_2,
+								c4 as k_desc_color
+							from keplersc.KDICE3 order by c1, c3";
+				}else if (tipoOper &= consVendedores){
+					strQuery = "select c1 as k_suc, c2 as k_clave,
+								c3 as k_nombre
+							from keplersc.kduv order by c1, c3";
+				}else if (tipoOper &= consCoachesobjmens){
+					strQuery = "select c1 as k_clave, c2 as k_nombre,
+								c3 as k_usuario, c4 as k_status, c5 as k_clave_2, c6 as k_esquema
+							from keplersc.kdcatcoach order by c1, c3";
+				}else if (tipoOper &= consCoachesobjlinea){
+					strQuery = "select c.c1 as k_clave, c.c2 as k_esquema, c.c3 as k_linea, d.c2 as k_desc_linea
+								from keplersc.kdbonolineacoaches c
+								left join keplersc.kdivl d on d.c1 = c.c3
+								group by c.c3, c.c1, c.c2, d.c2
+								order by c.c3";
+				}else if (tipoOper &= consBonosporLiena){
+					strQuery = "select c.c1 as k_clave, c.c3 as k_linea, d.c2 as k_desc_linea
+								from keplersc.kdbonolineacoaches c
+								left join keplersc.kdivl d on d.c1 = c.c3
+								group by c.c3, c.c1, c.c2, d.c2
+								order by c.c3";
+				}else{
+					frn.message("Definir Catalogo.","Error","&Aceptar");
+					frn.open("redirect",2);
+					return;
+				}
+
+				cmd = strQuery;	
+				cuboXml= frn.lib("libGeneral.kpl","EjecutarSqlSel",cmd,"gencatalogoview.buscar_registros()");
+				ok=getXmlAtt(cuboXml,"ok");
+				if(ok &! "" && !ok){
+						mensajeError = getXmlAtt(cuboXml,"native3");
+						//mensajeError = frn.lib("libGeneral.kpl","ErrorBD",mensajeError);
+						frn.message(mensajeError,"Error","Aceptar");
+						return;
+				}	
+				//frn.lib("libGeneral.kpl","FileSave",cuboXml,"C:\Basura\cuboPrueba");
+
+				Encabezados();
+				frn.set("results",cuboXml);
+				nReg=nXml(cuboXml);
+				regTotales = nReg;
+				if(nReg>0){
+				  frn.set("inp_mensaje","");					
+				}
+				frn.rst("k_filtros");
+				llenar_filtro_busqueda(cuboXml,"k_filtros");				
+			}
+
+			fun llenar_filtro_busqueda(cuboResultados, cmb)
+			{	
+				var valor;
+				var encabezados = getXmlAtt(cuboXml,"k_ColName");
+				var len_cubo = 1000;
+				var pos_ini = frn.N(cmb)+1;
+				frn.setX("", cmb, 0,0);
+				for (var cont=0; cont<len_cubo ; cont++)
+				{					
+					valor = strSplit(encabezados,",",cont);					
+					if(valor &! ""){
+						frn.setX(valor, cmb, cont+pos_ini,0);
+					}
+					else{
+						cont = len_cubo;
+					}
+				}
+			}
+
+			fun posicionabusqueda()
+			{
+				if(frn.get("k_filtros") &! "")
+				{
+					if(frn.get("k_busqueda") &! ""){
+						var colseleccionada = "col:" & frn.get("k_filtros");
+						var dato;
+						var valorBuscado;								
+						for(var contResults = contGlobalResults; contResults < regTotales; contResults++){	
+							frn.setPos("results","internal:N","ren:" & contResults,colseleccionada);
+							dato = frn.get("results",contResults,frn.get("k_filtros"));
+							valorBuscado = strSplit(dato,frn.get("k_busqueda"),-1);
+							if(valorBuscado > 1){
+								frn.setPos("results","internal:N","ren:" & contResults,colseleccionada);						
+								ultimoValorEncontrado = contResults;			//valor 3			
+								contResults = regTotales;			//inicializo variable para terminar el ciclo						
+							}else{						
+								frn.setPos("results","internal:N","ren:" & ultimoValorEncontrado,colseleccionada);						
+							}
+							contGlobalResults = contGlobalResults + 1 ;
+							if(contGlobalResults == regTotales){
+								contGlobalResults = 0;						
+								if(ultimoValorEncontrado>0){
+									posicionabusqueda();
+								}
+							}
+						}
+					}
+				}
+			}
+		
+//---------------------------------------------------------------EXTRAS-------------------------------------------------------------------
+			
+			fun llenar_cmb(cuboResultados, cmb){
+					
+				var len_cubo = nXml(cuboResultados);
+				
+				var pos_ini = frn.N(cmb);
+					
+				for (var cont=0; cont<len_cubo ; cont++){
+			
+					var desc= getXmlAtt(cuboResultados,"r"&cont,"descripcion");
+					var clave= getXmlAtt(cuboResultados,"r"&cont,"clave");
+					
+					frn.setX(desc, cmb, cont+pos_ini ,0);
+					frn.setX(clave, cmb, cont+pos_ini ,1);
+				
+				}	
+			}
+			
+			fun descr_combo(combo,posicion,valor){
+
+				var descr, valor_actual;
+				var len_combo = frn.N(combo);
+
+				for (var cont=0; cont<len_combo ; cont++){
+					valor_actual= frn.get(combo,cont,posicion);
+					if (valor_actual &=  valor){
+						descr = frn.get(combo,cont,0);
+						return descr;
+					}
+				}
+			}
+			
+			fun Dialog(iModo,pag,par0,par1,par2,par3,par4,par5,par6,par7,par8,par9,par10,par11,par12,par13,par14,par15){
+				/*iModo: 0)No hace mayor validaci?n. Siempre despliega la ventana. NO CONCATENA PREFIJO
+							1)Solo concatena el prefijo de la carpeta del lenguaje, no hace mayor validaci?n. Siempre despliega la ventana
+							2)Modo especial. Se valida que el campo indicado en par0 se puede modificar(El par0 puede ser una tabla, y par1 la columna)
+							3)Modo especial para p?ginas de operacion:Solo si se est? en alta o modifica despliega la pagina. Simpre agrega el prefijo del lenguaje
+				*/
+				var prefix=frn.lib("libKepler","langPrefix");
+				var page=prefix&pag;
+				var b_valido=1;
+				if(iModo==0)page=pag;
+				else if(iModo==2&&(strlen(par0)>0)){//Se toma el par0 como el objeto (o grid) al que se devolver? el resultado.
+					if( frn.getAtt(par0,"modify",par1) &= "N" ) b_valido=0;
+					if( frn.getAtt(par0,"available",par1) &= "N" ) b_valido=0;
+					if( frn.getAtt(par0,"visible",par1) &= "N" ) b_valido=0;
+				}
+				if(iModo==3)frn.dialog(page,par0,par1,par2,par3,par4,par5,par6,par7,par8,par9,par10,par11,par12,par13,par14,par15);
+			}
+		}
+	</script>
+</pag>
