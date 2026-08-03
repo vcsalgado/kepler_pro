@@ -1,17 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?><pag xmlns="www.kepler.com.mx/2003/KSchema" tit="Error">
-	<grp dim="1,-1,10,20" brdr="2,1" clr="0,0,0" bclr="192,205,213"><br/><sp/>
-		<grp dim="32,6,10,20" tit="Error" clr="0,0,0" clrBrdr="75,75,75" bclr="236,240,243" brdr="0,5" fnt=",18b"><br/><sp/><txt>Servidor o p&#225;gina no encontrada</txt><br/><br/><tab n="3"/>
-			<bot id="but" dim="15,0" text="Regresar" default="1" brdr="5,0" OnEnter="goToIni()"/><br/>
-		</grp>
-	</grp>
-	<script>
-		class Main {
-			var frn,kdb;
-			fun Main() {
-				frn=new FRNT;
-			}
-			fun goToIni() {
-				frn.exit("logout");
-			}
-		}
-	</script></pag>
