@@ -174,7 +174,7 @@
 			
 			k_clave_vehiculo = frn.get("k_clave_vehiculo",-1,"c2");
 			k_anio = frn.get("k_anio",-1,"c2");
-			k_suc = frn.get("k_suc",-1,"c2");
+			k_suc = frn.get("k_suc",-1,"c1");
 			vacia_campos();
 			cmdQuery = "select c1 as k_clave_crud, c2 as k_anio_crud, c3 as k_sucursal_crud
 						,c15 as k_notas_descuento_crud, c16 as k_ventas_fni_crud
