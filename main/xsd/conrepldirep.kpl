@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pag xmlns='www.kepler.com.mx/2003/KSchema' tit="Reporte de libro diario">
+	<grp brdr="0,0" clr="0,58,112" fnt="Arial,16" dim='1,-1,10,20' bclr="192,205,213" unfont="0" OnF1="Dialog(1,conrepldirepayu)" tit="Reportes contables" clrBrdr="0,97,181"><br/>
+		<tab/><txt clr="0,0,0" fnt="Arial,25">Libro de Diario</txt><br/>
+		<tab/><hLine clr="0,0,0" dim="-1,0"/>
+		<br/><br/>
+		<tab/>		
+		<grp bclr="236,240,243" fntClrBrdr="236,240,243" fntBrdr="Arial,18" hSpace="4" clrBrdr="0,58,112" brdr="0,5" fnt="Arial,16" dim="45,14,7,12" tit="Criterio de impresi&#243;n"><tab/><cmb id="cmb_sucursal" dim="50,36" brdr="2,1" bclr="255,255,255" clr="64,64,64" clrBrdr="255,255,255"  brdr="2,0" fnt="Arial,16" 
+			  Null="N" modify="Y" available="Y" visible="N"/>
+			<br/>
+			<tab n="1"/><txt>Tipo de p&#243;liza</txt><tab n="2"/>
+			<inp id="tp" clr="64,64,64" clrBrdr="255,255,255"  dim="3,1" bclr="255,255,255" brdr="2,0" fnt="Arial,16" type="capital" nc="1"/>
+			<br/><br/>
+			<tab n="1"/><txt>Fecha inicial</txt>
+			<tab n="1"/><edt id="fecha_ini" dim="14,1" fmt="DD/MM/CCYY" clr="64,64,64" clrBrdr="255,255,255"  bclr="255,255,255" brdr="2,0" fnt="Arial,16" type="date" OnButton="Dialog(0,_ks_fecha,fecha_ini)" OnChange="CambiaFecha()"/>
+			<br/>
+			<tab n="1"/><txt>Fecha final</txt>
+			<tab n="1"/><edt id="fecha_fin" dim="14,1" fmt="DD/MM/CCYY" clr="64,64,64" clrBrdr="255,255,255"  bclr="255,255,255" brdr="2,0" fnt="Arial,16" type="date" OnButton="Dialog(0,_ks_fecha,fecha_fin)"/>
+		</grp>
+		<br/>
+		<tab n="1"/>
+		<img id="btnEjecutar" dim="40,40" brdr="0,1" bPx="1" tooltip="Ejecutar reporte" OnEnter="Reporte()" img="_60_ExecuteReport.png" available="Y"/>
+		<br/>
+	</grp>
+	<script>
+		InstallDriver("KDB75");
+		class Main {
+			var frn,kdb,rep,sys,suc_usuario ,perfil_usuario,asterisco  ;
+			var cmd, cuboQuery, xmlResQuery, ok, mensajeError, strTmp,year;
+	
+			fun Main() {
+				frn=new FRNT;
+				kdb=new KDB;
+				rep=new REP;
+				sys=new SYS;
+				//Importante, para que funcione el reporte se debe hacer un connect a la BD
+				kdb.connect();
+				Inicializa();
+			}	
+		
+			fun Dialog(iModo,pag,par0,par1,par2,par3,par4,par5,par6,par7,par8,par9,par10,par11,par12,par13,par14,par15){
+				/*iModo: 0)No hace mayor validación. Siempre despliega la ventana. NO CONCATENA PREFIJO
+							1)Solo concatena el prefijo de la carpeta del lenguaje, no hace mayor validación. Siempre despliega la ventana
+							2)Modo especial. Se valida que el campo indicado en par0 se puede modificar(El par0 puede ser una tabla, y par1 la columna)
+							3)Modo especial para páginas de operacion:Solo si se está en alta o modifica despliega la pagina. Simpre agrega el prefijo del lenguaje
+				*/
+				var prefix=frn.lib("libKepler","langPrefix");
+				var page=prefix&pag;
+				var b_valido=1;
+				if(iModo==0)page=pag;
+				else if(iModo==2&&(strlen(par0)>0)){//Se toma el par0 como el objeto (o grid) al que se devolverá el resultado.
+					if( frn.getAtt(par0,"modify",par1) &= "N" ) b_valido=0;
+					if( frn.getAtt(par0,"available",par1) &= "N" ) b_valido=0;
+					if( frn.getAtt(par0,"visible",par1) &= "N" ) b_valido=0;
+				}
+				else if(iModo==3)b_valido=0;
+				if(b_valido==1)frn.dialog(page,par0,par1,par2,par3,par4,par5,par6,par7,par8,par9,par10,par11,par12,par13,par14,par15);
+				}
+			
+			fun Inicializa(){//Inicializa los valores en Pantalla				
+				//Revisa si hay año definido por la session
+				if(frn.config("temp","k_workDate")){
+					year=mid(frn.config("temp","k_workYear"),2,2);
+				}else {
+					kdb.kde("yr");kdb.exec();
+					year=kdb.get("yr",14);
+				}
+				//Llenar combo sucursales
+				
+				cmd = "select '['||c1||'] '||c2 as c2, c1 from keplersc.kdms";
+				if (perfil_usuario &! "ADMINISTRADOR"  && perfil_usuario &! "ADMINISTRATOR" && "Administrador Kepler 8.0"){		
+					cmd = cmd & " where c1='" & suc_usuario & "'";
+				}else {
+					if (suc_usuario &! asterisco && suc_usuario &! "" ){
+						cmd = cmd & " where c1='" & suc_usuario & "'";
+					}
+				}
+			
+				cuboQuery = frn.lib("libGeneral.kpl","EjecutarSqlSel",cmd,"contreppoliza.IniCombos()");
+				
+				ok=getXmlAtt(cuboQuery,"ok");
+				if(ok &! "" && !ok){
+					mensajeError = getXmlAtt(cuboQuery,"native3");
+					frn.message(mensajeError,"Error","Aceptar");
+					return;
+				}
+				
+				frn.set("cmb_sucursal",getXml(cuboQuery));
+				frn.set("tp","D");
+				frn.set("fecha_ini",sys.date(sys.date(year),sys.date("month"),1));
+				frn.set("fecha_fin",sys.date(sys.date(year),sys.date("month"),31));
+				frn.setAtt("rf","default","1");
+				frn.setAtt("rt","default","0");				
+			}
+
+			fun CambiaFecha(){
+				var mes=fnDate("month",frn.get("fecha_ini"));
+				var yr=fnDate("year",frn.get("fecha_ini"));
+				frn.set("fecha_fin",yr & "/"& mes &"/31");
+			}
+			
+			fun Reporte(){//Ejecuta el Reporte
+				var compania,usuario,strValor,strCriterio, fechaImpresion, horaImpresion, strTmp;
+				var sqlXmlReporte,cuboReporte,cuboPolizas,cuboPartidas,tmpCubo;
+				var nPolizas, nPartidas, polizaCargos, polizaAbonos, totalCargos, totalAbonos;
+				var contPolizas, contPartidas;
+				var validacion;
+				kdb.kde("KDE");//Configuracion del servidor
+				kdb.exec();
+				compania = kdb.get("KDE","1");
+				usuario = kdb.get("KDE","14");
+				strValor = sys.date();	
+				fechaImpresion = sys.date();
+				horaImpresion = sys.time();
+				
+				validacion=ValidarCriterio();
+				if(validacion == 0){
+					return;
+				}				
+
+				//Obtener reporte
+				setXml(sqlXmlReporte,"document","fecha_ini",frn.get("fecha_ini"));
+				setXml(sqlXmlReporte,"document","fecha_fin",frn.get("fecha_fin"));
+				setXml(sqlXmlReporte,"document","tipo_poliza",frn.get("tp"));
+				setXml(sqlXmlReporte,"document","sucursal_id",frn.get("cmb_sucursal",-1,1));
+				
+				cmd="select * from keplersc.cont_rep_librodiario_sel('" & getXmlStr(sqlXmlReporte,"EOF:13_10") & "')";
+				cuboReporte= frn.lib("libGeneral.kpl","EjecutarSqlSel",cmd,"conrepldirrep.Reporte()");
+
+				ok=getXmlAtt(cuboReporte,"ok");
+				if(ok &! "" && !ok){
+					mensajeError = getXmlAtt(cuboReporte,"native3");
+					frn.message(mensajeError,"Error","Aceptar");
+					return;
+				}
+				
+				rstXml(tmpCubo);
+				strTmp=getXmlAtt(cuboReporte,"r0","cont_rep_librodiario_sel");
+				strTmp= delScpScn(strTmp);
+				setXmlStr(tmpCubo,strTmp);
+				frn.setX(tmpCubo);
+				rstXml(cuboPolizas);				
+				cuboPolizas=frn.lib("libGeneral.kpl","FormateaXmlNoRowId",tmpCubo,"r","datos");				
+//frn.lib("libGeneral.kpl","FileSave",cuboPolizas,"C:\Basura\cuboRepPolizasFmto");
+
+				kdb.readPage("datos","conreplibrodiariofto");//se define el formato a usar
+				kdb.exec();
+				rep.source(kdb.get("datos")); 
+				rep.rst(); 
+
+				rep.page("paper=custom","size=50.59,27.94cm","border=1.2,1.2,1.2,1.2cm","F=1,1","landscape=N","color=N","prompt=N","@emp=C");	
+				rep.set("k_empresa",compania);
+				rep.set("sucursal",frn.get("cmb_sucursal",-1,0));
+				rep.set("k_fecha_ini",frn.get("fecha_ini"));
+				rep.set("k_fecha_fin",frn.get("fecha_fin"));
+				rep.set("k_fecha_imp",fechaImpresion);
+				rep.set("K_hora_imp",horaImpresion);
+				rep.exe("encabezado");//Genera el reporte para las cuentas solicitadas
+
+				totalCargos=0;
+				totalAbonos=0;
+				nPolizas= nXml(cuboPolizas,"datos");
+				for(contPolizas=0; contPolizas<nPolizas; contPolizas++){
+					polizaCargos=0;
+					polizaAbonos=0;
+					rstXml(tmpCubo);
+					tmpCubo=getXml(cuboPolizas,"datos","r"&contPolizas,"partidas");
+					rstXml(cuboPartidas);
+					cuboPartidas=frn.lib("libGeneral.kpl","FormateaXmlNoRowId",tmpCubo,"r","datos");
+					nPartidas=nXml(cuboPartidas,"datos");
+					for(contPartidas=0; contPartidas<nPartidas; contPartidas++){
+						rep.set("k_tipo_poliza",getXml(cuboPolizas,"datos","r"&contPolizas,"tipo"));
+						rep.set("k_no_poliza",getXml(cuboPolizas,"datos","r"&contPolizas,"no_poliza"));
+						rep.set("k_fecha",getXml(cuboPolizas,"datos","r"&contPolizas,"fecha"));
+						rep.set("k_descripcion",getXml(cuboPartidas,"datos","r"&contPartidas,"descripcion"));
+						rep.set("k_referencia",getXml(cuboPolizas,"datos","r"&contPolizas,"referencia"));
+						rep.set("k_sucursal",getXml(cuboPolizas,"datos","r"&contPolizas,"sucursal"));
+						rep.set("k_documento",getXml(cuboPolizas,"datos","r"&contPolizas,"documento"));
+						rep.set("k_cuenta_afectada",getXml(cuboPartidas,"datos","r"&contPartidas,"cuenta"));
+						rep.set("k_cuenta_descripcion",getXml(cuboPartidas,"datos","r"&contPartidas,"cuenta_descripcion"));
+						rep.set("k_movto_cargo",getXml(cuboPartidas,"datos","r"&contPartidas,"movto_cargo"));
+						rep.set("k_movto_abono",getXml(cuboPartidas,"datos","r"&contPartidas,"movto_abono"));
+						rep.exe("seccion_partidas_poliza");
+						polizaCargos+=getXml(cuboPartidas,"datos","r"&contPartidas,"movto_cargo");
+						polizaAbonos+=getXml(cuboPartidas,"datos","r"&contPartidas,"movto_abono");
+						totalCargos+=getXml(cuboPartidas,"datos","r"&contPartidas,"movto_cargo");
+						totalAbonos+=getXml(cuboPartidas,"datos","r"&contPartidas,"movto_abono");
+					}
+					rep.set("k_poliza_cargos",polizaCargos);
+					rep.set("k_poliza_abonos",polizaAbonos);
+					rep.exe("seccion_total_poliza");
+				}
+				
+				rep.set("k_total_cargos",totalCargos);
+				rep.set("k_total_abonos",totalAbonos);
+				rep.exe("seccion_total_reporte");		
+				rep.win(); 
+			}
+			
+			fun ValidarCriterio(){
+				var fec_ini, fec_fin,validacion,resultado;
+				resultado = 1;
+				fec_ini = frn.get("fecha_ini");
+				fec_fin = frn.get("fecha_fin");
+				validacion = fnDate("cmp",fec_ini,fec_fin); //compara dos fechas validas
+				if(validacion == 1){
+					frn.message("La fecha final no puede ser mayor que la inicial","Mensaje","Aceptar");
+					resultado=0;
+				}
+				if(fnDate("year",frn.get("fecha_ini")) &! fnDate("year",frn.get("fecha_fin"))){
+					frn.message("El rango de fechas debe estar dentro del mismo año","Mensaje","Aceptar");
+					resultado=0;
+				}
+				return resultado;
+			}			
+			
+		}
+		/*
+		AUTOR					FECHA					CAMBIO
+		-----------------------------------------
+		Victor	Salgao	29 Sep	2022 Creacion del reporte
+		*/
+	</script>
+</pag>

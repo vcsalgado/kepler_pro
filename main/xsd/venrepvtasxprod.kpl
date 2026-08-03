@@ -1,0 +1,332 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pag xmlns="www.kepler.com.mx/2003/KSchema" tit="Ventas entre 2 fechas x producto">
+	<grp dim="1,-1,10,20" brdr="2,1" bclr="192,205,213" clr="0,58,112" fnt="Arial,16" unfont="0"
+		OnF1="Ventana(rep_Hlp)"><br/>
+		<tab/><txt fnt=",22" clr="0,0,0">Reporte de Ventas entre 2 fechas por Producto</txt> 
+		<br/>
+		<tab/><hLine clr="0,0,0"/>
+		<br/><br/>
+		<!-- <grp dim="50,20,7,12" bclr="236,240,243" tit="Par&#225;metros" brdr="0,5" clrBrdr="0,58,112" fntClrBrdr="255,206,0" fntBrdr="Arial,18" hSpace="4"><br/><tab/><txt>Sucursal</txt><tab n="2"/> -->
+		<tab/>
+		<grp dim="50,17,7,12" bclr="236,240,243" tit="Par&#225;metros" brdr="0,5" clrBrdr="0,58,112" fntClrBrdr="236,240,243" fntBrdr="Arial,18" hSpace="4"><br/><tab/><txt>Sucursal</txt><tab n="2"/>
+			<!-- <cmb id="cmb_sucursal" dim="43,1" brdr="2,0" bclr="255,255,255" clr="64,64,64" clrBrdr="255,255,255" OnChange="Fill_Data_Suc()"/> -->
+			<cmb id="cmb_sucursal" dim="43,1" brdr="2,0" bclr="255,255,255" clr="64,64,64" clrBrdr="255,255,255"/>
+			<!-- <br/><tab n="5"/><br/><tab n="5"/> -->
+			<!-- <inp id="sucursal" dim="10,1" brdr="2,0" bclr="255,255,255" clr="64,64,64" clrBrdr="255,255,255" type="string" modify="N"/><tab/> -->
+			<!-- <inp id="descsucursal" dim="25,1" brdr="2,0" bclr="255,255,255" clr="64,64,64" clrBrdr="255,255,255" type="string" modify="N"/> -->
+			<br/><br/>
+			<tab/><txt>Fecha Inicial</txt><tab/>
+			<edt id="fecini" dim="14,1" type="date" fmt="DD-MM-CCYY" brdr="2,0" bclr="255,255,255" clr="64,64,64" page="_ks_fecha,fecini" OnF9="Ventana(_ks_fecha,fecIni)" clrBrdr="255,255,255"/>
+			<br/><tab/><txt>Fecha Final</txt><tab/>
+			<edt id="fecfin" dim="14,1" type="date" fmt="DD-MM-CCYY" brdr="2,0" bclr="255,255,255" clr="64,64,64" page="_ks_fecha,fecfin" OnF9="Ventana(_ks_fecha,fecFin)" clrBrdr="255,255,255"/>
+			<br/><br/><tab/><txt>Nivel Detalle  </txt>
+			<cmb id="cmb_nivel" dim="30,1" brdr="2,0" bclr="255,255,255" clr="64,64,64" clrBrdr="255,255,255"/>
+		</grp>
+		
+		<br/><br/><tab n="5"/>
+		<bot id="Ejecutar" dim="10,0" brdr="5" default="0" text="Ejecutar" tooltip="Generar Reporte" OnEnter="Ejecuta()"/><tab/>
+		<bot id="Salir" dim="10,0" brdr="5" default="0" text="Finalizar" tooltip="Generar Reporte" OnEnter="Exit()"/>
+		<br/><tab n="9"/>
+		
+		<!--	<img id="k_ejecuta" dim="60,60" brdr="0,1" bPx="1" available="Y" tooltip="Generar reporte" img="_60_Execute.png" default="1" OnEnter="Ejecuta()"/> --> 
+		<!--	<br/> --> 
+		
+	</grp>
+	<script>
+	
+		InstallDriver("KDB75");
+		class Main {
+			var frn,kdb,rep,sys;
+		
+			// Our Vars
+			var cmd, cuboQuery, xmlResQuery, ok, mensajeError, strTmp;
+			var sucursal, fech_ini, fech_fin, nivel, xmlPar;
+			var suc_usuario,perfil_usuario,usuario ,rol_usuario  ,asterisco;
+			
+			fun Main() {
+				frn=new FRNT;
+				kdb=new KDB;
+				rep=new REP;
+				sys=new SYS;
+				kdb.connect();
+				//kdb.open("m,kdm1");
+				suc_usuario = frn.lib("libKepler","UserInfo(1)");
+				perfil_usuario = frn.lib("libKepler","UserInfo(2)");
+				usuario = frn.config("user","name");
+				rol_usuario = frn.config("user","role");
+				asterisco = "*";
+				Inicializa();
+			}	
+	
+	
+			fun Fill_Data_Suc() {
+			
+			frn.set("sucursal",frn.get("cmb_sucursal",-1,1));
+			
+			}
+			
+			fun Exit() {
+				// frn.open("anuncios",4);
+				frn.open("index",4);		
+			}
+			
+			fun Inicializa(){ //Inicializa los valores en Pantalla
+
+			
+				
+				
+				//Llenar combo sucursales
+				cmd = "select '['||c1||'] '||c2 as c2, c1 from keplersc.kdms";
+				if (rol_usuario &! "ADMINISTRADOR"  && rol_usuario &! "ADMINISTRATOR"){
+					cmd = cmd & " where c1='" & suc_usuario & "'";
+				}else {
+					if (suc_usuario &! asterisco && suc_usuario &! "" ){
+						cmd = cmd & " where c1='" & suc_usuario & "'";
+					}
+				}
+				
+				var cubo = frn.lib("libGeneral.kpl","EjecutarSqlSel",cmd,"srvcitacrud.Inicializa()");		
+				ok=getXmlAtt(cubo,"ok");
+				if(ok &! "" && !ok){
+					mensajeError = getXmlAtt(cubo,"native3");
+					mensajeError = frn.lib("libGeneral.kpl","ErrorBD",mensajeError);
+					frn.message(mensajeError,"Error","Aceptar");
+					return;
+				}
+					
+				frn.set("cmb_sucursal",getXml(cubo));
+			
+			
+				
+				// Fill Combo Nivel (Manual)
+				frn.setX("[1] Solo muestra productos","cmb_nivel",0,0);
+				frn.setX("1","cmb_nivel",0,1);
+				frn.setX("[2] Muestra productos y facturas","cmb_nivel",1,0);
+				frn.setX("2","cmb_nivel",1,1);		
+				// End Our Code
+			
+				frn.set("fecIni",fnDate(sys.date("year"),sys.date("month"),1));
+				frn.set("fecFin",fnDate(sys.date("year"),sys.date("month"),31));
+				//... (Llena Combos, e inputs en pantalla)
+				
+				IniParams();//Inicializa parámtros de impresión entre otros
+			}
+			
+			fun IniParams(){//Inicializa parámetros de impresión. Pueden ser cambiados por el usuario final mediante menú: Archivo -> Configurar Página
+				frn.set("param_paper","letter");	//Tamaño de papel predefinido:	"paper=letter|legal|size"
+				frn.set("param_sizeX","21.59","param_sizeY","27.94");	//Tamaño de papel personalizado	"size=21.59,27.94cm"
+				frn.set("param_borderL","1.5","param_borderT","1.5","param_borderR","1.5","param_borderB","1.5");	//Márgenes Izq,Arr,Der,Aba:	"border=1.5,1.5,1.5,1.5cm"
+				frn.set("param_Fx","1.0");	//Escala de impresión (1=100 por ciento)	"F=1,1"
+				frn.set("param_landscape","N");	//Orientación	de la hoja (Vertical="N", Horizontal="Y")	"landscape=N|Y"
+				frn.set("param_emp","L");	//Posición de "Razón social"(izq,der,cen)	@emp=L|R|C"
+			}
+			
+			fun Ejecuta(){//Prepara datos del reporte 
+				//...(cubos de datos e información necesaria)
+				sucursal = frn.get("cmb_sucursal",-1,1);
+				fech_ini=frn.get("fecini");
+				fech_fin=frn.get("fecfin");
+				nivel = frn.get("cmb_nivel",-1,1);
+				
+				setXml(xmlPar,"document","sucursal_id",sucursal);
+				setXml(xmlPar,"document","fech_ini",fech_ini);
+				setXml(xmlPar,"document","fech_fin",fech_fin);
+				setXml(xmlPar,"document","nivel_detalle",nivel); 
+				frn.lib("libGeneral.kpl","FileSave",xmlPar,"C:\KE\JMM\TEST_DEVELOPS\K80\xmlPar");				
+				
+				//cmd="select * from keplersc.jmm_test5_venrepvtasxprod_sel('"& getXmlStr(xmlPar,"EOF:13_10") &"') as res where res.clave_prod in ('121730')";
+				//cmd="select * from keplersc.jmm_test5_venrepvtasxprod_sel('"& getXmlStr(xmlPar,"EOF:13_10") &"') as res where res.clave_prod in ('121730','0400022147','0400986175','04152YZZA6','426030D200')";
+				cmd="select * from keplersc.jmm_test5_venrepvtasxprod_sel('"& getXmlStr(xmlPar,"EOF:13_10") &"')";
+				rstXml(xmlResQuery);
+				xmlResQuery = frn.lib("libGeneral.kpl","EjecutarSqlSel",cmd,"venrepvtasxprod.Ejecuta()");
+				ok=getXmlAtt(xmlResQuery ,"ok");
+				if(ok &! "" && !ok){
+					mensajeError = getXmlAtt(xmlResQuery ,"native3");
+					mensajeError = frn.lib("libGeneral.kpl","ErrorBD",mensajeError);
+					frn.message(mensajeError,"Error","Aceptar");
+					return;
+				}		
+				frn.lib("libGeneral.kpl","FileSave",xmlResQuery,"C:\KE\JMM\TEST_DEVELOPS\K80\xmlResQuery");				
+				
+				Reporte();
+			}
+			
+			fun Reporte(){//Ejecuta el Reporte
+				// Our Vars
+				var compania,contProd, contDet, tmpStr ,xmlDet, xmlCurDocto;
+				//var folio;
+				var p_fecha, var_fecha;
+				var p_subtotal, p_utilidad, p_perce, p_costo, p_total, p_iva;
+				var gt_subtotal, gt_utilidad, gt_perce, gt_costo, gt_total, gt_iva;
+				
+				//Obtener datos generales
+				kdb.kde("KDE");//Configuraci??el servidor
+				kdb.exec();
+				compania = kdb.get("KDE","1");		
+			
+				// Se define el formato a usar y se liga a la variable del reporte "rep"
+				kdb.readPage("datFto","venrepvtasxprodfto.kpl");
+				kdb.exec();
+				rep.source(kdb.get("datFto")); 
+				rep.rst();
+				setRepPage();//Establece los parámetros finales de impresión(rep.page(...);), pues pueden haber cambiado por el usuario 
+				//Da valor a los inputs del reporte(rep.set();), e indica la ejecución de "grupos de renglones de impresión" (rep.exe();)
+				
+				rep.set("fecha",sys.date());
+				rep.set("hora",sys.time());
+				rep.set("nombreempresa",compania);
+				rep.set("fechaini",fech_ini);
+				rep.set("fechafin",fech_fin);
+
+				contProd=nXml(xmlResQuery);
+
+				rep.exe("encabezado");
+				
+				gt_subtotal = 0; 
+				gt_costo = 0; 
+				gt_iva = 0;
+				gt_total = 0; 
+				gt_utilidad = 0; 
+				gt_perce = 0; 
+				
+				for(var x=0; x< contProd; x++){
+					rep.set("producto",getXmlAtt(xmlResQuery,"r"&x,"clave_prod"));
+					rep.set("descprod",getXmlAtt(xmlResQuery,"r"&x,"desc_prod"));
+
+					rep.exe("producto");
+					
+					if(nivel&="2"){
+						tmpStr=getXmlAtt(xmlResQuery,"r"&x,"folios");
+						rstXml(xmlDet);
+						tmpStr=delScpScn(tmpStr);
+						setXmlStr(xmlDet,tmpStr);
+						contDet=nXml(xmlDet);
+
+						if (contDet > 0) {
+							rep.exe("detalle_lines");
+						}						
+						
+						for(var y=0; y< contDet; y++){
+							rstXml(xmlCurDocto);
+							xmlCurDocto = getXmlX(xmlDet,3,y);
+							
+							//folio= getXml(xmlCurDocto,"folio");
+							//rep.set("folio",folio);	
+							rep.set("folio",getXml(xmlCurDocto,"folio"));
+							
+							rep.set("fecha_folio",getXml(xmlCurDocto,"fecha"));
+							//p_fecha = getXml(xmlCurDocto,"fecha");
+							//rep.set("fecha_folio", p_fecha);
+							////var_fecha = strFormat("date",p_fecha,0,"DD/MM/CCYY");
+							////var_fecha = strFormat("date",p_fecha,"DD/MM/CCYY");
+							////frn.set("fecha_folio",var_fecha);
+							//////frn.set("fecha_folio",strFormat("date",p_fecha,0,"DD/MM/CCYY"));
+													
+							rep.set("remplazo",getXml(xmlCurDocto,"reemplazo"));
+							rep.set("subtotal",getXml(xmlCurDocto,"subtotal"));
+							rep.set("iva",getXml(xmlCurDocto,"iva"));
+							rep.set("total",getXml(xmlCurDocto,"importe"));
+							rep.set("costo",getXml(xmlCurDocto,"costo"));
+							rep.set("utilidad",getXml(xmlCurDocto,"utilidad"));
+							rep.set("perce",getXml(xmlCurDocto,"perce_utilidad"));
+							
+							rep.exe("detalle");
+						}						
+					}
+										
+					//rep.set("tpsubtotal","0,00");
+					//rep.set("tpiva",getXmlAtt(xmlResQuery,"r"&x,"sum_iva"));
+					//rep.set("tptotal",getXmlAtt(xmlResQuery,"r"&x,"sum_importe"));
+					//rep.set("tpcosto",getXmlAtt(xmlResQuery,"r"&x,"sum_costo"));
+					//rep.set("tputilidad","0.00");
+					//rep.set("tpperce","0.00");
+					
+					p_subtotal = 0; 
+					p_costo = 0; 
+					p_iva = 0;
+					p_total = 0; 
+					p_utilidad = 0; 
+					p_perce = 0;
+						
+					p_total = getXmlAtt(xmlResQuery,"r"&x,"sum_importe");
+					p_iva = getXmlAtt(xmlResQuery,"r"&x,"sum_iva");
+					p_costo = getXmlAtt(xmlResQuery,"r"&x,"sum_costo");
+					p_subtotal = p_total - p_iva;
+					p_utilidad = p_subtotal - p_costo;
+					if (p_subtotal > 0) {
+						p_perce = (p_utilidad / p_subtotal) * 100;
+					} else {
+						p_perce = 0;
+					}
+					rep.set("tpsubtotal",p_subtotal);
+					rep.set("tpiva",p_iva);
+					rep.set("tptotal", p_total);
+					rep.set("tpcosto",p_costo);
+					rep.set("tputilidad",p_utilidad );
+					rep.set("tpperce",p_perce);
+
+					gt_subtotal = gt_subtotal + p_subtotal; 
+					gt_costo = gt_costo + p_costo; 
+					gt_iva = gt_iva + p_iva;
+					gt_total = gt_total + p_total; 
+					gt_utilidad = gt_utilidad + p_utilidad; 
+					//gt_perce = gt_perce + p_perce;
+							
+					rep.exe("totalproducto");
+					
+				}
+				
+				// Print Grand Total ...
+
+				if (gt_subtotal > 0) {
+					gt_perce = (gt_utilidad / gt_subtotal) * 100;
+				} else {
+					gt_perce = 0;
+				}
+
+				rep.set("gtsubtotal",gt_subtotal);
+				rep.set("gtiva",gt_iva);
+				rep.set("gttotal",gt_total);
+				rep.set("gtcosto",gt_costo);
+				rep.set("gtutilidad",gt_utilidad );
+				rep.set("gtperce",gt_perce);
+
+				rep.exe("total");
+				
+				//Modos de impresión 
+				rep.win(); //Muestra la vista previa de la impresión. A partir de la vista previa (Preprint) se decide si se imprime o no.
+				//rep.print("\\192.168.1.100\HPLaserJet"); //Envía el reporte directamente a una impresora, sin mostrar la vista previa.
+				//frn.dialog("_ks_printdlg"); //Permite seleccionar impresora destino y manda el reporte a impresión. No muestra la vista previa.
+				//rep.export("file:Reportes\\reporteHTML.html","format:html","inputs:N");//Guardará el reporte en la carpeta local k80\Reportes, con el nombre reporteHTML.html
+			}
+			
+			fun setRepPage() {//Establece los parámetros finales de impresión.
+				var paper="paper=" & frn.get("param_paper");var size="size=" & frn.get("param_sizeX") & "," & frn.get("param_sizeY") & "cm";
+				var brdr="border=" & frn.get("param_borderL") & "," & frn.get("param_borderT") & "," & frn.get("param_borderR") & "," & frn.get("param_borderB") & "cm";
+				var fact="F=" & frn.get("param_Fx") & "," & frn.get("param_Fx");
+				var lndsp="landscape=" & frn.get("param_landscape");
+				var emp="@emp=" & frn.get("param_emp");
+				rep.page(paper,size,brdr,fact,lndsp,"color=Y","collate=Y","copies=1","pages=1,999","prompt=N",emp);
+			}
+			fun CombinaCombo(combo,colClave,colDesc,posFinal){//Combina el contenido de 2 columnas de un combo y lo pone en la columna visble. Ej: para mostrar "Clave - Descripción". 
+				//NOTA: Por default posiciona el combo con el primer elemento. Se puede pasar como parametro "posicionaFinal" un 1 para que se posicione en el ultimo registro
+				var clavecombinada="";
+				for(var i=0,n=frn.N(combo);i<n;i++){
+					clavecombinada=frn.get(combo,i,colClave) & " - " & frn.get(combo,i,colDesc);
+					frn.setX(clavecombinada,combo, i, 0);
+				}
+				if(posFinal==1&&frn.N(combo)>0) frn.setPos(combo,frn.N(combo)-1,0,"internal:Y");//Lo posiciona en el último renglon
+				else frn.setPos(combo,0,0,"internal:Y"); 
+			}			
+			fun Ventana(arch,cmp0,cmp1,cmp2,cmp3,cmp4,cmp5,cmp6,cmp7,cmp8,cmp9){ //Abre pagina indicada como dialogo SOLO si el campo cmp0 se puede modificar(El cmp0 puede ser una tabla, y cmp1 la columna)
+				var b_valido=1;
+				if(strlen(cmp0)>0){//Se toma el cmp0 como el objeto (o grid) al que se devolverá el resultado.
+					if( frn.getAtt(cmp0,"modify",cmp1) &= "N" ) b_valido=0;
+					if( frn.getAtt(cmp0,"available",cmp1) &= "N" ) b_valido=0;
+					if( frn.getAtt(cmp0,"visible",cmp1) &= "N" ) b_valido=0;
+				}
+				if(b_valido==1)frn.dialog(arch,cmp0,cmp1,cmp2,cmp3,cmp4,cmp5,cmp6,cmp7,cmp8,cmp9);
+			}
+		}
+	</script>
+</pag>

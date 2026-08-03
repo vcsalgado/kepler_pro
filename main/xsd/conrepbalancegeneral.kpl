@@ -1,0 +1,538 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pag xmlns='www.kepler.com.mx/2003/KSchema' tit="Balance general">
+	<grp brdr="0,0" clr="0,58,112" fnt="Arial,16" dim='1,-1,10,20' bclr="192,205,213" unfont="0" OnF1="Dialog(1,conrepbagayu)" tit="Estados financieros" clrBrdr="0,97,181"><br/>
+		<br/>
+		<tab/><txt clr="0,0,0" fnt="Arial,25">Balance general</txt><br/>
+		<tab/><hLine clr="0,0,0" dim="-1,0"/>
+		<br/><br/>
+		<tab/>
+		<grp bclr="236,240,243" fntClrBrdr="236,240,243" fntBrdr="Arial,18" hSpace="4" clrBrdr="0,58,112" brdr="0,5" fnt="Arial,16" 
+			dim="32,10,7,12" tit="Criterio de impresi&#243;n"  fnt="Arial,16">
+			<grp bclr="236,240,243" fntClrBrdr="236,240,243" fntBrdr="Arial,18" hSpace="4" clrBrdr="0,58,112" brdr="0,5" fnt="Arial,16" dim="28,9,7,12"  fnt="Arial,16"><tab/>
+				<txt>A&#241;o:</txt><tab/>
+				<cmb id="k_anio" clr="64,64,64" clrBrdr="255,255,255"  dim="10,1" bclr="255,255,255" brdr="2,0" fnt="Arial,16" 
+					available="Y" Null="N" modify="Y"/>
+				<br/><tab/>
+				<txt fnt="Arial,16" clr="0,58,112">Mes:</txt><tab/>
+				<cmb id="k_mes" clr="64,64,64" clrBrdr="192,205,213"  
+					dim="5,1" bclr="255,255,255" brdr="2,0" fnt="Arial,16" available="Y"/>				
+				<br/>
+				<tab/>
+				<txt fnt="Arial,15"  bclr="255,255,255">Omitir cuentas en cero</txt>
+				<chck id="ch" dim="3,16" clr="64,64,64" bclr="255,255,255" brdr="2,0" YN="10" clrBrdr="255,255,255"/>				
+				<br/>
+			</grp>
+			<tab/>			
+			<grp bclr="236,240,243" fntClrBrdr="236,240,243" fntBrdr="Arial,18" hSpace="0" clrBrdr="0,58,112" brdr="0,5" fnt="Arial,16" dim="10,9,7,12" fnt="Arial,16">	
+				<br/><br/><br/>
+				<tab/>
+				<img id="k_ejecuta" dim="40,40" brdr="0,1" bPx="1" img="_60_ExecuteReport.png" OnEnter="Reporte()" tooltip="Ejecutar(Ctrl+T)" available="Y" default="1"/>				
+			</grp>				
+		</grp>
+	</grp>
+<script>
+		InstallDriver("KDB75");
+		class Main {
+			var frn,kdb,rep,sys;
+			var year,salIni,salFin,descMes,anno;
+			var nivel,long,totmes,totAcum,totMesVta,totAcumVta;
+			var nocta,nomcta,sIni;
+			var fIni,fFin,cIni,cFin,comparar;
+			var cEne,cFeb,cMar,cAbr,cMay,cJun,cJul,cAgo,cSep,cOct,cNov,cDic;
+			var aEne,aFeb,aMar,aAbr,aMay,aJun,aJul,aAgo,aSep,aOct,aNov,aDic;
+			var rIni,rFin,montoMes,mesA,w,rvIni,rvFin;
+			var utilBrutaMes,utilBrutaAcum,utilOperMes,utilOperAcum,utilNetaMes,utilNetaAcum,totUtilMes;
+			var totAC,totAF,totAD,totAT,totPC,totPLP,totCC,totPCC;
+			var activoTotal,pasivoTotal;
+			fun Main() {
+				frn=new FRNT;
+				kdb=new KDB;
+				rep=new REP;
+				sys=new SYS;
+				kdb.connect();
+				//Revisa si hay año definido por la session
+				if(frn.config("temp","k_workDate")){
+					year=mid(frn.config("temp","k_workYear"),2,2);
+				}else {
+					kdb.kde("yr");kdb.exec();
+					year=kdb.get("yr",14);
+				}
+				anno=year;
+				kdb.open("c,kdc1" & year);
+				Inicializa();
+			}	
+			
+			fun Inicializa(){//Inicializa los valores en Pantalla
+				var nMes,cont,anioFin;
+				//Combo de anio, el anio viene en year desde main
+				anioFin="20"&year;
+				for(cont=2020; cont<=anioFin; cont++){
+					frn.setX(cont,"k_anio",cont-2020,0);
+				}
+				frn.set("k_anio",anioFin);
+				
+				for(cont=1; cont<=12; cont++){
+					nMes=cont;
+					if (strlen(nMes)==1){
+						nMes="0" & nMes;
+					}
+					frn.setX(nMes,"k_mes",cont-1,0);
+				}
+				nMes=fnDate("month",sys.date());				
+				if (strlen(nMes)==1){
+					nMes="0" & nMes;
+				}
+				frn.set("k_mes",nMes);
+			
+				IniParams();//Inicializa parámtros de impresión entre otros
+			}
+			
+			fun IniParams(){//Inicializa parámetros de impresión, que pueden ser cambiados por el usuario final mediante: Archivo / Configurar Página
+				frn.set("param_paper","letter");//	"paper=letter|legal|size"
+				frn.set("param_sizeX","21.59","param_sizeY","27.94");//	"size=18,14cm"
+				frn.set("param_borderL","1.5","param_borderT","1.5","param_borderR","1.5","param_borderB","1.5");//	"border=1.5,1.5,1.5,1.5cm"
+				frn.set("param_Fx","1.0","param_Fy","1.0");//			"F=1,1"
+				frn.set("param_landscape","N");//	"landscape=N|Y"
+				frn.set("param_emp","L");//			"@emp=L|R|C"
+			}
+			
+			fun Dialog(iModo,pag,par0,par1,par2,par3,par4,par5,par6,par7,par8,par9,par10,par11,par12,par13,par14,par15){
+				/*iModo: 0)No hace mayor validación. Siempre despliega la ventana. NO CONCATENA PREFIJO
+							1)Solo concatena el prefijo de la carpeta del lenguaje, no hace mayor validación. Siempre despliega la ventana
+							2)Modo especial. Se valida que el campo indicado en par0 se puede modificar(El par0 puede ser una tabla, y par1 la columna)
+							3)Modo especial para páginas de operacion:Solo si se está en alta o modifica despliega la pagina. Simpre agrega el prefijo del lenguaje
+				*/
+				var prefix=frn.lib("libKepler","langPrefix");
+				var page=prefix&pag;
+				var b_valido=1;
+				if(iModo==0)page=pag;
+				else if(iModo==2&&(strlen(par0)>0)){//Se toma el par0 como el objeto (o grid) al que se devolverá el resultado.
+					if( frn.getAtt(par0,"modify",par1) &= "N" ) b_valido=0;
+					if( frn.getAtt(par0,"available",par1) &= "N" ) b_valido=0;
+					if( frn.getAtt(par0,"visible",par1) &= "N" ) b_valido=0;
+				}
+				else if(iModo==3)b_valido=0;
+				if(b_valido==1)frn.dialog(page,par0,par1,par2,par3,par4,par5,par6,par7,par8,par9,par10,par11,par12,par13,par14,par15);
+			}
+			
+			
+			fun Reporte()//Ejecuta el Reporte
+			{
+				// Se define el formato a usar y se imprime el encabezado
+				var prefix=frn.lib("libKepler","langPrefix");
+				var pageFto=prefix&"conrepbalancegeneralfto";
+				kdb.readPage("datos", pageFto);//se define el formato a usar
+				//kdb.readPage("datos","conrepbagfto");//se define el formato a usar
+				kdb.kde("KDE");//										Configuración del servidor
+				kdb.exec();
+				rep.source(kdb.get("datos")); 
+				rep.rst(); 
+				setRepPage();//Establece los parámetros finales de impresión.(rep.page(...);)
+				rep.set("fecha",sys.date());rep.set("hora",sys.time());
+				ObtenMes();
+				rep.set("numMes","Balance General del mes de "&descMes&" del 20"&anno);
+				rep.set("empresa",kdb.get("KDE",1));
+				rep.exe("encabezadoP");
+				rep.exe("vacio");
+				//Genera el reporte para las cuentas solicitadas
+				Imprime();				
+				rep.win(); 
+			}
+
+			fun ObtenMes(){
+				if (frn.get("k_mes",-1,0)=="01") { descMes="Enero"; }
+				if (frn.get("k_mes",-1,0)=="02") { descMes="Febrero"; }
+				if (frn.get("k_mes",-1,0)=="03") { descMes="Marzo"; }
+				if (frn.get("k_mes",-1,0)=="04") { descMes="Abril"; }
+				if (frn.get("k_mes",-1,0)=="05") { descMes="Mayo"; }
+				if (frn.get("k_mes",-1,0)=="06") { descMes="Junio"; }
+				if (frn.get("k_mes",-1,0)=="07") { descMes="Julio"; }
+				if (frn.get("k_mes",-1,0)=="08") { descMes="Agosto"; }
+				if (frn.get("k_mes",-1,0)=="09") { descMes="Septiembre"; }
+				if (frn.get("k_mes",-1,0)=="10") { descMes="Octubre"; }
+				if (frn.get("k_mes",-1,0)=="11") { descMes="Noviembre"; }
+				if (frn.get("k_mes",-1,0)=="12") { descMes="Diciembre"; }
+			}
+			
+			fun Imprime(){
+			 var anioRep;
+			 anioRep=frn.get("k_anio",-1,0);			
+			 totAC=0;totAF=0;totAD=0;totAT=0;totPC=0;totPLP=0;totCC=0;totPCC=0;
+			 mesA=frn.get("k_mes",-1,0);
+			 year="20"&year;
+			 kdb.sp("k_cnt","modo:niveles","dat:cuentas","cve:'001'-'999'","niv:1","stat:1","ao:"&anioRep);
+			 kdb.iov("GET,CUENTAS,a1...a24,$,datos"); kdb.exec();
+			 ObtenUtilidad();
+			 ObtenActivoTotal();
+			 ObtenPasivoTotal();
+			 var nCtas=kdb.N("cuentas");
+			 for (w=1;w<=6;w++){
+				ObtenClasificacionCuentas();
+				totmes=0;totAcum=0;
+				for (var i=0;i<nCtas;i++){
+					nocta=kdb.get("cuentas","r" & i,"cta");
+					nomcta=kdb.get("cuentas","r" & i,"dsc");
+					long=strlen(rIni); comparar=mid(nocta,0,long);
+					if ( (strcmp(nocta,rIni)>=0) && (strcmp(nocta,rFin)<=0)){
+						//Obtiene el saldo Inicial 
+						sIni=kdb.get("cuentas","r" & i,"c14");
+						//Obtienen el total de cargos y abonos
+						cEne=kdb.get("cuentas","r" & i,"c27"); 
+						cFeb=kdb.get("cuentas","r" & i,"c28"); 
+						cMar=kdb.get("cuentas","r" & i,"c29"); 
+						cAbr=kdb.get("cuentas","r" & i,"c30"); 
+						cMay=kdb.get("cuentas","r" & i,"c31"); 
+						cJun=kdb.get("cuentas","r" & i,"c32"); 
+						cJul=kdb.get("cuentas","r" & i,"c33"); 
+						cAgo=kdb.get("cuentas","r" & i,"c34"); 
+						cSep=kdb.get("cuentas","r" & i,"c35"); 
+						cOct=kdb.get("cuentas","r" & i,"c36"); 
+						cNov=kdb.get("cuentas","r" & i,"c37"); 
+						cDic=kdb.get("cuentas","r" & i,"c38"); 
+						aEne=kdb.get("cuentas","r" & i,"c63");
+						aFeb=kdb.get("cuentas","r" & i,"c64");
+						aMar=kdb.get("cuentas","r" & i,"c65");
+						aAbr=kdb.get("cuentas","r" & i,"c66");
+						aMay=kdb.get("cuentas","r" & i,"c67");
+						aJun=kdb.get("cuentas","r" & i,"c68");
+						aJul=kdb.get("cuentas","r" & i,"c69");
+						aAgo=kdb.get("cuentas","r" & i,"c70");
+						aSep=kdb.get("cuentas","r" & i,"c71");
+						aOct=kdb.get("cuentas","r" & i,"c72");
+						aNov=kdb.get("cuentas","r" & i,"c73");
+						aDic=kdb.get("cuentas","r" & i,"c74");
+						ObtenAcumulado();
+						if (w>=4) {salFin=salFin*(-1);}
+						 //Define los colores en negro
+						rep.setAtt("montoMesP","clr","0,0,0");
+						 if (salFin<0) { 
+								rep.setAtt("montoMesP","clr","255,0,0"); 
+						 } 
+						 if (salFin!=0  || frn.get("ch")!=1){				
+								rep.set("descripcionP",nomcta);
+								rep.set("montoMesP",salFin);
+						 }
+						
+						 if (w<=3){
+							if(salFin !=0 || frn.get("ch")!=1){
+								rep.set("porMesP",(salFin/activoTotal)*100);
+								rep.exe("detalle");
+								totmes=totmes+salFin;
+							}
+						}
+						if (w>3){
+							if(salFin !=0 || frn.get("ch")!=1){
+								rep.set("porMesP",(salFin/pasivoTotal)*100);
+								rep.exe("detalle");
+								totmes=totmes+salFin;
+							}
+						}
+						
+						 if (w==1) {totAC=totAC+salFin;}
+						 if (w==2) {totAF=totAF+salFin;}
+						 if (w==3) {totAD=totAD+salFin;}
+						 if (w==4) {totPC=totPC+salFin;}
+						 if (w==5) {totPLP=totPLP+salFin;}
+						 if (w==6) {totCC=totCC+salFin;}
+					}	
+				}
+				ImprimeTotales();
+				rep.exe("vacio");
+			 }
+			  if(frn.config("temp","k_workDate")){
+					year=mid(frn.config("temp","k_workYear"),2,2);
+				}else {
+					kdb.kde("yr");kdb.exec();
+					year=kdb.get("yr",14);
+				}
+			}
+			
+			fun ObtenActivoTotal(){
+				var nCtas=kdb.N("cuentas");
+				//kdb.iov("GET,cuentas,a1...a24,$,datos");kdb.exec();
+				rIni=kdb.get("datos","a1");
+				rFin=kdb.get("datos","a6"); 
+				activoTotal=0;
+				for (var i=0;i<nCtas;i++){
+					nocta=kdb.get("cuentas","r" & i,"cta");
+					nomcta=kdb.get("cuentas","r" & i,"dsc");
+					long=strlen(rIni); comparar=mid(nocta,0,long);
+					if (strcmp(comparar,rIni)>=0 && strcmp(comparar,rFin)<=0 ) 
+					//if ((nocta>=rIni) && (nocta<=rFin) && nivel==1)
+					{
+						//Obtiene el saldo Inicial 
+						sIni=kdb.get("cuentas","r" & i,"c14");
+					
+						//Obtienen el total de cargos y abonos
+						cEne=kdb.get("cuentas","r" & i,"c27"); 
+						cFeb=kdb.get("cuentas","r" & i,"c28"); 
+						cMar=kdb.get("cuentas","r" & i,"c29"); 
+						cAbr=kdb.get("cuentas","r" & i,"c30"); 
+						cMay=kdb.get("cuentas","r" & i,"c31"); 
+						cJun=kdb.get("cuentas","r" & i,"c32"); 
+						cJul=kdb.get("cuentas","r" & i,"c33"); 
+						cAgo=kdb.get("cuentas","r" & i,"c34"); 
+						cSep=kdb.get("cuentas","r" & i,"c35"); 
+						cOct=kdb.get("cuentas","r" & i,"c36"); 
+						cNov=kdb.get("cuentas","r" & i,"c37"); 
+						cDic=kdb.get("cuentas","r" & i,"c38"); 
+				
+						aEne=kdb.get("cuentas","r" & i,"c63");
+						aFeb=kdb.get("cuentas","r" & i,"c64");
+						aMar=kdb.get("cuentas","r" & i,"c65");
+						aAbr=kdb.get("cuentas","r" & i,"c66");
+						aMay=kdb.get("cuentas","r" & i,"c67");
+						aJun=kdb.get("cuentas","r" & i,"c68");
+						aJul=kdb.get("cuentas","r" & i,"c69");
+						aAgo=kdb.get("cuentas","r" & i,"c70");
+						aSep=kdb.get("cuentas","r" & i,"c71");
+						aOct=kdb.get("cuentas","r" & i,"c72");
+						aNov=kdb.get("cuentas","r" & i,"c73");
+						aDic=kdb.get("cuentas","r" & i,"c74");
+				
+						 ObtenAcumulado();
+						 activoTotal=activoTotal+salFin;
+					}	
+				}
+			}
+			
+			fun ObtenPasivoTotal(){
+				var nCtas=kdb.N("cuentas");
+				//kdb.iov("GET,cuentas,a1...a24,$,datos");kdb.exec();
+				rIni=kdb.get("datos","a7");
+				rFin=kdb.get("datos","a12"); 
+				pasivoTotal=0;
+				for (var i=0;i<nCtas;i++){
+					nocta=kdb.get("cuentas","r" & i,"cta");
+					nomcta=kdb.get("cuentas","r" & i,"dsc");
+				
+					long=strlen(rIni); comparar=mid(nocta,0,long);
+				
+
+					if (strcmp(comparar,rIni)>=0 && strcmp(comparar,rFin)<=0 )
+					//if ((nocta>=rIni) && (nocta<=rFin) && nivel==1)
+					{
+						//Obtiene el saldo Inicial 
+						sIni=kdb.get("cuentas","r" & i,"c14");
+					
+						//Obtienen el total de cargos y abonos
+						cEne=kdb.get("cuentas","r" & i,"c27"); 
+						cFeb=kdb.get("cuentas","r" & i,"c28"); 
+						cMar=kdb.get("cuentas","r" & i,"c29"); 
+						cAbr=kdb.get("cuentas","r" & i,"c30"); 
+						cMay=kdb.get("cuentas","r" & i,"c31"); 
+						cJun=kdb.get("cuentas","r" & i,"c32"); 
+						cJul=kdb.get("cuentas","r" & i,"c33"); 
+						cAgo=kdb.get("cuentas","r" & i,"c34"); 
+						cSep=kdb.get("cuentas","r" & i,"c35"); 
+						cOct=kdb.get("cuentas","r" & i,"c36"); 
+						cNov=kdb.get("cuentas","r" & i,"c37"); 
+						cDic=kdb.get("cuentas","r" & i,"c38"); 
+				
+						aEne=kdb.get("cuentas","r" & i,"c63");
+						aFeb=kdb.get("cuentas","r" & i,"c64");
+						aMar=kdb.get("cuentas","r" & i,"c65");
+						aAbr=kdb.get("cuentas","r" & i,"c66");
+						aMay=kdb.get("cuentas","r" & i,"c67");
+						aJun=kdb.get("cuentas","r" & i,"c68");
+						aJul=kdb.get("cuentas","r" & i,"c69");
+						aAgo=kdb.get("cuentas","r" & i,"c70");
+						aSep=kdb.get("cuentas","r" & i,"c71");
+						aOct=kdb.get("cuentas","r" & i,"c72");
+						aNov=kdb.get("cuentas","r" & i,"c73");
+						aDic=kdb.get("cuentas","r" & i,"c74");
+				
+						 ObtenAcumulado();
+						 salFin=salFin*(-1);
+						 pasivoTotal=pasivoTotal+salFin;
+					}	
+				}
+				pasivoTotal=pasivoTotal+totUtilMes;
+			}
+			
+			fun ImprimeTotales(){
+				rep.setAtt("montoACP","clr","0,51,204");
+				rep.setAtt("montoAFP","clr","0,51,204");
+				rep.setAtt("montoADP","clr","0,51,204");
+				rep.setAtt("montoATP","clr","0,51,204");
+				rep.setAtt("montoPCP","clr","0,51,204");
+				rep.setAtt("montoPLP","clr","0,51,204");
+				rep.setAtt("montoCCP","clr","0,51,204");
+				rep.setAtt("montoPCaP","clr","0,51,204");
+				
+				if (w==1) {
+					if (totAC<0) { rep.setAtt("montoACP","clr","255,0,0"); } 
+					rep.set("porACP",(totAC/activoTotal)*100);
+					rep.set("montoACP",totAC); 
+					rep.exe("actcirc"); 
+					
+				}
+				if (w==2) {
+					if (totAF<0) { rep.setAtt("montoAFP","clr","255,0,0"); } 
+					rep.set("porAFP",(totAF/activoTotal)*100);
+					rep.set("montoAFP",totAF); 
+					rep.exe("actfijo"); 
+				}
+				if (w==3) {
+					if (totAD<0) { rep.setAtt("montoADP","clr","255,0,0"); } 
+					rep.set("porADP",(totAD/activoTotal)*100);
+					rep.set("montoADP",totAD); 
+					rep.exe("actdif"); 
+					rep.set("porATP",((totAC+totAF+totAD)/activoTotal)*100);
+					rep.set("montoATP",totAC+totAF+totAD); 
+					rep.exe("acttotal");
+				}
+				if (w==4) {
+					if (totPC<0) { rep.setAtt("montoPCP","clr","255,0,0"); } 
+					rep.set("porPCP",(totPC/pasivoTotal)*100);
+					rep.set("montoPCP",totPC); 
+					rep.exe("pascirc"); 
+				}
+				if (w==5) {
+					if (totPLP<0) { rep.setAtt("montoPLP","clr","255,0,0"); } 
+					rep.set("porPLP",(totPLP/pasivoTotal)*100);
+					rep.set("montoPLP",totPLP); 
+					rep.exe("paslpz"); 
+				}
+				if (w==6) {
+					//Imprime la utilidad del ejercicio
+					rep.set("descripcionP","UTILIDAD DEL EJERCICIO");
+					rep.set("porMesP",(totUtilMes/pasivoTotal)*100);
+					rep.set("montoMesP",totUtilMes);totCC=totCC+totUtilMes;
+					rep.exe("detalle");
+					rep.setAtt("montoCCP","clr","0,0,0");
+					 if (totCC<0) { rep.setAtt("montoCCP","clr","255,0,0"); } 
+					rep.set("porCCP",(totCC/pasivoTotal)*100);
+					rep.set("montoCCP",totCC); 
+					rep.exe("capital"); 
+					//suma de Capital y Pasivo
+					rep.set("porPCaP",((totPC+totPLP+totCC)/pasivoTotal)*100);
+					rep.set("montoPCaP",totPC+totPLP+totCC);
+					rep.exe("pasycap");
+				}
+			}
+			
+			fun ObtenClasificacionCuentas(){
+			   //kdb.iov("GET,cuentas,a1...a24,$,datos");kdb.exec();
+				if (w==1) {rIni=kdb.get("datos","a1");rFin=kdb.get("datos","a2"); rep.exe("impact"); rep.exe("vacio");}
+				if (w==2) {rIni=kdb.get("datos","a3");rFin=kdb.get("datos","a4"); }
+				if (w==3) {rIni=kdb.get("datos","a5");rFin=kdb.get("datos","a6"); }
+				if (w==4) {rIni=kdb.get("datos","a7");rFin=kdb.get("datos","a8"); rep.exe("pasivos"); rep.exe("vacio");}
+				if (w==5) {rIni=kdb.get("datos","a9");rFin=kdb.get("datos","a10"); }
+				if (w==6) {rIni=kdb.get("datos","a11");rFin=kdb.get("datos","a12");}
+			}
+			
+			fun ObtenUtilidad(){
+				totMesVta=0;totAcumVta=0;
+				totUtilMes=0;
+				//kdb.table("cuentas,c,1,&,c1...c86"); kdb.exec();
+				var nCtas=kdb.N("cuentas");
+				//kdb.iov("GET,cuentas,a1...a24,$,datos"); kdb.exec();
+				rIni=kdb.get("datos","a13");rFin=kdb.get("datos","a14"); //4000-4999
+				//Obtiene la ultima cuenta deresultados. 
+				var ctaFin="";
+				for (var ii=14;ii<=24;ii++){
+					ctaFin=kdb.get("datos","a"&ii); 
+					if (ctaFin>rFin) { rFin=ctaFin; }
+				}
+				for (var i=0;i<nCtas;i++){
+					nocta=kdb.get("cuentas","r" & i,"cta");
+					nomcta=kdb.get("cuentas","r" & i,"desc");
+					long=strlen(rIni); comparar=mid(nocta,0,long);
+					if (strcmp(comparar,rIni)>=0 && strcmp(comparar,rFin)<=0) 
+					//if ((nocta>=rIni) && (nocta<=rFin))
+					{
+						//Obtiene el saldo Inicial 
+						sIni=kdb.get("cuentas","r" & i,"c14");
+					
+						//Obtienen el total de cargos y abonos
+						cEne=kdb.get("cuentas","r" & i,"c27"); 
+						cFeb=kdb.get("cuentas","r" & i,"c28"); 
+						cMar=kdb.get("cuentas","r" & i,"c29"); 
+						cAbr=kdb.get("cuentas","r" & i,"c30"); 
+						cMay=kdb.get("cuentas","r" & i,"c31"); 
+						cJun=kdb.get("cuentas","r" & i,"c32"); 
+						cJul=kdb.get("cuentas","r" & i,"c33"); 
+						cAgo=kdb.get("cuentas","r" & i,"c34"); 
+						cSep=kdb.get("cuentas","r" & i,"c35"); 
+						cOct=kdb.get("cuentas","r" & i,"c36"); 
+						cNov=kdb.get("cuentas","r" & i,"c37"); 
+						cDic=kdb.get("cuentas","r" & i,"c38"); 
+				
+						aEne=kdb.get("cuentas","r" & i,"c63");
+						aFeb=kdb.get("cuentas","r" & i,"c64");
+						aMar=kdb.get("cuentas","r" & i,"c65");
+						aAbr=kdb.get("cuentas","r" & i,"c66");
+						aMay=kdb.get("cuentas","r" & i,"c67");
+						aJun=kdb.get("cuentas","r" & i,"c68");
+						aJul=kdb.get("cuentas","r" & i,"c69");
+						aAgo=kdb.get("cuentas","r" & i,"c70");
+						aSep=kdb.get("cuentas","r" & i,"c71");
+						aOct=kdb.get("cuentas","r" & i,"c72");
+						aNov=kdb.get("cuentas","r" & i,"c73");
+						aDic=kdb.get("cuentas","r" & i,"c74");
+						ObtenAcumulado();
+						ObtenMontoMes();
+			
+						//Si la cuenta es de ventas, invierte el signo
+						if (i==1) {
+							montoMes=montoMes*(-1);
+							salFin=salFin*(-1);
+						}
+						 totUtilMes=totUtilMes-salFin;
+					}	
+				}
+			}
+			
+			fun ObtenMontoMes(){
+				if (mesA&="01") { montoMes=cEne-aEne; }
+				if (mesA&="02") { montoMes=cFeb-aFeb; }
+				if (mesA&="03") { montoMes=cMar-aMar; }
+				if (mesA&="04") { montoMes=cAbr-aAbr; }
+				if (mesA&="05") { montoMes=cMay-aMay; }
+				if (mesA&="06") { montoMes=cJun-aJun; }
+				if (mesA&="07") { montoMes=cJul-aJul; }
+				if (mesA&="08") { montoMes=cAgo-aAgo; }
+				if (mesA&="09") { montoMes=cSep-aSep; }
+				if (mesA&="10") { montoMes=cOct-aOct; }
+				if (mesA&="11") { montoMes=cNov-aNov; }
+				if (mesA&="12") { montoMes=cDic-aDic; }
+			}
+			
+			fun ObtenAcumulado(){
+				if (mesA&="01") { salFin=sIni+(cEne-aEne); }
+				if (mesA&="02") { salFin=sIni+((cEne+cFeb)-(aEne+aFeb)); }
+				if (mesA&="03") { salFin=sIni+((cEne+cFeb+cMar)-(aEne+aFeb+aMar)); }
+				if (mesA&="04") { salFin=sIni+((cEne+cFeb+cMar+cAbr)-(aEne+aFeb+aMar+aAbr)); }
+				if (mesA&="05") { salFin=sIni+((cEne+cFeb+cMar+cAbr+cMay)-(aEne+aFeb+aMar+aAbr+aMay)); }
+				if (mesA&="06") { salFin=sIni+((cEne+cFeb+cMar+cAbr+cMay+cJun)-(aEne+aFeb+aMar+aAbr+aMay+aJun)); }
+				if (mesA&="07") { salFin=sIni+((cEne+cFeb+cMar+cAbr+cMay+cJun+cJul)-(aEne+aFeb+aMar+aAbr+aMay+aJun+aJul)); }
+				if (mesA&="08") { salFin=sIni+((cEne+cFeb+cMar+cAbr+cMay+cJun+cJul+cAgo)-(aEne+aFeb+aMar+aAbr+aMay+aJun+aJul+aAgo)); }
+				if (mesA&="09") { salFin=sIni+((cEne+cFeb+cMar+cAbr+cMay+cJun+cJul+cAgo+cSep)-(aEne+aFeb+aMar+aAbr+aMay+aJun+aJul+aAgo+aSep)); }
+				if (mesA&="10") { salFin=sIni+((cEne+cFeb+cMar+cAbr+cMay+cJun+cJul+cAgo+cSep+cOct)-(aEne+aFeb+aMar+aAbr+aMay+aJun+aJul+aAgo+aSep+aOct)); }
+				if (mesA&="11") { salFin=sIni+((cEne+cFeb+cMar+cAbr+cMay+cJun+cJul+cAgo+cSep+cOct+cNov)-(aEne+aFeb+aMar+aAbr+aMay+aJun+aJul+aAgo+aSep+aOct+aNov)); }
+				if (mesA&="12") { salFin=sIni+((cEne+cFeb+cMar+cAbr+cMay+cJun+cJul+cAgo+cSep+cOct+cNov+cDic)-(aEne+aFeb+aMar+aAbr+aMay+aJun+aJul+aAgo+aSep+aOct+aNov+aDic)); }
+			}
+			
+			fun setRepPage() {//Establece los parámetros finales de impresión.
+				//Tipo de hoja, ancho, alto,margen iz, margen derecho, margen arriba, margen abajo, factor de escala en x, factor de escala en y,orientacion, color, ventana de ajuste, etc
+				//rep.page("paper=letter|legal|size","size=18,14cm","border=1.5,1.5,1.5,1.5cm","F=1,1","landscape=N|Y","color=Y|N","prompt=N|Y","@emp=L|R|C");
+				var paper="paper=" & frn.get("param_paper");var size="size=" & frn.get("param_sizeX") & "," & frn.get("param_sizeY") & "cm";
+				var brdr="border=" & frn.get("param_borderL") & "," & frn.get("param_borderT") & "," & frn.get("param_borderR") & "," & frn.get("param_borderB") & "cm";
+				var fact="F=" & frn.get("param_Fx") & "," & frn.get("param_Fy");
+				var lndsp="landscape=" & frn.get("param_landscape");
+				var emp="@emp=" & frn.get("param_emp");
+				rep.page(paper,size,brdr,fact,lndsp,"color=Y","collate=Y","copies=1","pages=1,999","prompt=N",emp);
+			}
+		}
+/*
+	---------------------------------------
+	AUTOR						FECHA			CAMBIO
+	---------------------------------------
+	Juan	Cristobal		2013-02-20	-Se corrige la funcion Imprime(), se agrego codigo para reinicializar la variable 'year',
+												de esta forma ya no se contcatenará provocando errores 
+	Enrique Dunhe			17-04-2013	-Se corrige la clasificación de las cuentas para la impresion en el balance
+	Veronica Catalán		2018-04-26	-Se agrega opción de omitir cuentas en cero.
+*/
+	</script>
+</pag>

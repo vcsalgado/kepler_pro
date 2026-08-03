@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pag xmlns="www.kepler.com.mx/2003/KSchema" roles="" tit="Libreria global">
+	<grp brdr="0,0" clr="0,58,112" fnt="Arial,16" dim="1,-1,10,20" bclr="192,205,213"><br/>
+		<grp bclr="236,240,243" fntClrBrdr="255,206,0" fntBrdr="Arial,18" hSpace="4" clrBrdr="0,58,112" dim="70,50,7,12" brdr="0,5" tit="Datos generales" fnt="Arial,16"><br/>
+		</grp><br/>
+	</grp>
+	<script>
+		InstallDriver("KDB75");
+		class Main {
+			var frn,kdb,sys;
+			var bConect;//Bandera que indica si ya está conectado o no.
+			var libToFrn;//Se utiliza para especificar elementos gráficos de la pantalla principal, que la librería ha cambiado
+			/*
+			Librería Global. Se recomienda incluir la llamada a la funcion "Init" de esta librería en TODAS las páginas.
+			NOTA IMPORTANTE: Incluir en ESTA librería SOLO aquellas funciones que serán requeridas en el 85% de las páginas del sistema,
+									de otra forma utilizar una nueva librería. Debido a que se estará cargando en cada página, 
+									se puede volver ineficiente al tener funciones raramente utilizadas. 
+			Funcionalidad: Permite contar con un código que se ejecutará "SIEMPRE", y por lo tanto hacer cambios globales fácilmente.
+			Limitante: Las librería no pueden modificar objetos gráficos de la ventana padre.
+			Nota: A diferencia de las patallas de diálogo, al mandar llamar a una librería desde el script de la página padre, 
+					se detiene la ejcución de la página padre hasta que la librería le regrese el control
+			Las funciones de las librerías reciben, como cualquier otra función, variables XML, por lo que pueden recibir estructuras complejas.
+			Así mismo cada rutina devuelve una estructura(variable) XML.
+			*/
+			fun Main() {
+				//Esta rutina se ejecuta solo la primera vez que se manda llamar alguna función de la librería. 
+				frn=new FRNT;//Solo para frn.message, no se puede modificar objetos gráficos de la ventana principal
+				kdb=new KDB;
+				sys=new SYS;
+				bConect=0;
+				Load();
+			}
+			fun Conexion(){//Cuando se quiera accesar a base de datos, ejecutar esta función, antes de cualquier llamada a kdb.exec().
+				if(bConect==0){kdb.connect();bConect=1;}
+			}
+			fun Load(){//Función que se correrá al cargar la librería. Carga las variables de sesión comúnmente usadas en el sistema.
+				//Se procura hacer solo 1 round trip(si es necesario conectarse al servidor).
+				//Solicitudes de Información del servidor
+				//Aliases de tablas utilizados: l,\\\\kdkl
+				if((frn.config("temp","k_workDate")==0)||(frn.config("temp","k_localDate")&="")||(frn.config("temp","k_localDate")&!sys.date())){
+					//se valida que no se tenga fecha a trabajar, que la fecha este vacia o que la fecha haya cambiado.
+					Conexion();
+					kdb.kde("KDE");
+				}
+				if((frn.config("temp","k_srvDate")&="")||(frn.config("temp","k_localDate")&="")||(frn.config("temp","k_localDate")&!sys.date())){//Fecha de la computadora de usuario
+					Conexion();
+					kdb.date("SrvDate");	//								Fecha del servidor
+				}
+				if(frn.config("temp","k_workBranch")&=""){//Sucursal a Trabajar (Definido en el catálogo de usuarios)
+					if(trim(frn.config("user","name"))&!""){
+						Conexion();
+						kdb.sp("security","datUser");
+					}else{
+						frn.configSet("temp","k_workBranch","*");
+					}
+				}
+				if(frn.config("temp","k_langSet")==0){//Lenguaje con el que se trabajará
+					Conexion();
+					kdb.open("l,\\\\kdkl");
+					kdb.search("datLang,l,1,0,'"& strFormat("ucase",frn.config("user","language")) &"',&,l3");
+				}
+				//Pone la información en variables de sesión, para no requerir ir al servidor nuevamente.
+				if(bConect){
+					kdb.exec();//Trae la info del servidor(1 solo round trip)
+					if((frn.config("temp","k_workDate")==0)||(frn.config("temp","k_localDate")&="")||(frn.config("temp","k_localDate")&!sys.date())){
+						//se valida que no se tenga fecha a trabajar, que la fecha este vacia o que la fecha haya cambiado.
+						var anio,mes;				
+						anio=trim(kdb.get("KDE",14));
+						mes=trim(kdb.get("KDE",6));						
+						if (anio<70)anio+=2000;
+						else if(anio<100)anio+=1900;
+						frn.configSet("temp","k_workDate",1);//Indica que se ha especificado un año/mes a trabajar para la sesion actual
+						frn.configSet("temp","k_workYear",anio);
+						frn.configSet("temp","k_workMonth",mes);
+					}
+					if((frn.config("temp","k_srvDate")&="")||(frn.config("temp","k_localDate")&="")||(frn.config("temp","k_localDate")&!sys.date())){
+						frn.configSet("temp","k_srvDate",kdb.get("SrvDate"));
+						frn.configSet("temp","k_localDate",sys.date());
+					}
+					if(frn.config("temp","k_workBranch")&=""){//Sucursal a Trabajar (Definido en el catálogo de usuarios)
+						var branch=kdb.get("datUser","sucursal");
+						frn.configSet("temp","k_workBranch",branch&!""?branch:"*");
+						frn.configSet("temp","k_userName",kdb.get("datUser","name"));
+					}
+					if(frn.config("temp","k_langSet")==0){//Lenguaje con el que se trabajará
+						frn.configSet("temp","k_langSet",1);
+						frn.configSet("temp","k_langPrefix",kdb.get("datLang","l3"));
+					}					
+				}
+//frn.message(frn.config("temp","k_workYear"),"Mensaje","Aceptar");	
+			}
+			fun Init(input){//Función que normalmente se correrá DESPUÉS de la carga inicial de una página normal(después de los round trips), y carga las variables de sesión comúnmente usadas en el sistema.
+				//Se puede utilizar "input", en forma de Xml para especificar un modo de funcionamiento especial.
+				//El elemento libToFrn dentro del XML de regreso se utilizará por la función "libToFrn" en la página principal, para modificar la pantalla.
+				var returnData;
+				rstXml(libToFrn);
+				//libToFrnSet("input","valor");//Ejemplos:
+				//libToFrnSet("combo",kdb.get("dat"));
+				//libToFrnSetX("grid","valor",i,"col3");
+				var workBranch=UserInfo(1);
+				if(workBranch&="*") {libToFrnAtt("k_sucN","available","Y"); libToFrnAtt("sucursal","available","Y");}
+				else{
+					libToFrnPos("k_sucN",3,,"1",workBranch);
+					libToFrnAtt("k_sucN","available","N");
+					libToFrnPos("sucursal",3,,"1",workBranch);
+					libToFrnAtt("sucursal","available","N");
+				}
+				setXml(returnData,"libToFrn",libToFrn);
+				return returnData;
+			}
+			fun libToFrnSet(elemId,value){
+				var iElem=nXml(libToFrn,"set")+0;
+				setXml(libToFrn,"set","r"& iElem,value);
+				setXmlAtt(libToFrn,"set","r"& iElem,"elemId",elemId);
+			}
+			fun libToFrnSetX(elemId,value,row,col){
+				var iElem=nXml(libToFrn,"setX")+0;
+				setXml(libToFrn,"setX","r"& iElem,value);
+				setXmlAtt(libToFrn,"setX","r"& iElem,"elemId",elemId);
+				setXmlAtt(libToFrn,"setX","r"& iElem,"row",row);
+				setXmlAtt(libToFrn,"setX","r"& iElem,"col",col);
+			}
+			fun libToFrnAtt(elemId,atrib,value,col){
+				var iElem=nXml(libToFrn,"setA")+0;
+				setXml(libToFrn,"setA","r"& iElem,value);
+				setXmlAtt(libToFrn,"setA","r"& iElem,"elemId",elemId);
+				setXmlAtt(libToFrn,"setA","r"& iElem,"atrib",atrib);
+				if(col&!"")setXmlAtt(libToFrn,"setA","r"& iElem,"col",col);
+			}
+			fun libToFrnPos(elemId,type,row,col,value){//type. 0)setPos elem 1)setPos elem,ren 2)setPos elem,row,col 3)setPos elem,col,searchValue
+				var iElem=nXml(libToFrn,"pos")+0;
+				if(value&!"")setXml(libToFrn,"pos","r"& iElem,value);
+				if(row&!"")setXmlAtt(libToFrn,"pos","r"& iElem,"row",row);
+				if(col&!"")setXmlAtt(libToFrn,"pos","r"& iElem,"col",col);
+				setXmlAtt(libToFrn,"pos","r"& iElem,"elemId",elemId);
+				setXmlAtt(libToFrn,"pos","r"& iElem,"type",math("int",type));
+			}
+			fun ValidOpDate(RefDate){//Valid Operational Date. Reciba una fecha como parámetro y verifique si se puede operar en esa fecha y devuelve una fecha válida.
+				if((frn.config("temp","k_workDate")==0)||(frn.config("temp","k_localDate")&="")||(frn.config("temp","k_localDate")&!sys.date())){
+					//se valida que no se tenga fecha a trabajar, que la fecha este vacia o que la fecha haya cambiado.
+					Load();
+				}
+				var dia,mes,anio,anio_fijo,mes_fijo,bFechaIncorrecta=0;
+				var returnData;
+				anio_fijo=frn.config("temp","k_workYear");
+				mes_fijo=frn.config("temp","k_workMonth");
+				dia=fnDate("day",frn.config("temp","k_srvDate"));
+				mes=(mes_fijo==0)?fnDate("month",frn.config("temp","k_srvDate")):mes_fijo;
+				anio=(anio_fijo==0)?fnDate("year",frn.config("temp","k_srvDate")):anio_fijo;
+				if (strlen(trim(RefDate))>0){
+					if( (anio_fijo>0)&&(fnDate("year",RefDate)!=anio_fijo) )bFechaIncorrecta=1;
+					else anio=fnDate("year",RefDate);
+					if( (mes_fijo>0)&&(fnDate("month",RefDate)!=mes_fijo) )bFechaIncorrecta=1;
+					else mes=fnDate("month",RefDate);
+					dia=fnDate("day",RefDate);
+				}
+				setXml(returnData,fnDate(anio,mes,dia));
+				setXmlAtt(returnData,"invalid",bFechaIncorrecta);
+				return returnData;
+			}
+			fun AnioTrabajo(){ //Devuelve el año a trabajar de la sesión actual
+				return frn.config("temp","k_workYear");
+			}
+			fun UserInfo(iModo){ //Devuelve cierta información del usuario actual. Si no tiene iModo, devuelve el usuario.
+				var info;
+				switch(iModo){
+					case 1:info=frn.config("temp","k_workBranch");break;//Sucursal a trabajar
+					case 2:info=frn.config("temp","k_userName");break;//Nombre completo del usuario
+					default:info=frn.config("user","name");break;//Usuario
+				}
+				return info;
+			}
+			fun langPrefix(){
+				var langPrefix=frn.config("temp","k_langPrefix");
+				if(langPrefix&!"")langPrefix=langPrefix&"/";
+				return langPrefix;
+			}
+		}
+		/*
+		---------------------------------------
+		AUTOR						FECHA			CAMBIO
+		---------------------------------------
+		Juan Cristobal			11/08/15		-Se agrega validación para que en caso de usar año/mes a trabajar, este se valide cuando el día del sistema cambie 
+													 y evitar errores por secciones que de dejen activas durante el cambio de estos valores.
+		*/
+	</script>
+</pag>

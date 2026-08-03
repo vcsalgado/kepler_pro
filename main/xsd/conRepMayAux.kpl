@@ -1,0 +1,331 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pag xmlns='www.kepler.com.mx/2003/KSchema' tit="Reporte Mayor Auxiliar">
+	<grp dim="1,-1,10,10" brdr="0,0" clr="0,58,112" bclr="192,205,213" fnt="Arial,16" unfont="0" OnEnter="Exit()">
+		<tab/><txt clr="0,0,0" fnt="Arial,25">Mayor Auxiliar</txt><br/>
+		<tab/><hLine clr="0,0,0" dim="-1,0"/>
+		<br/><br/>
+		<tab/>
+		<grp bclr="236,240,243" fntClrBrdr="236,240,243" fntBrdr="Arial,18" hSpace="4" clrBrdr="0,58,112" brdr="0,5" fnt="Arial,16" 
+			dim="33,26,7,12" tit="Criterio de impresi&#243;n">
+			<br/><tab/><txt>Nivel</txt><tab n="4"/>
+			<inp id="niv" clr="64,64,64" clrBrdr="255,255,255"  dim="3,1" bclr="255,255,255" fnt="Arial,16" type="number" min="1" max="9" nc="1" default="1" available="Y" modify="Y" brdr="1,0" fmt="5"/>
+			<br/>
+			<tab/><txt>Cuenta incial</txt><tab n="2"/>			
+			<edt id="cta_ini" clr="64,64,64" clrBrdr="255,255,255"  dim="22,1" bclr="255,255,255" brdr="2,0" fnt="Arial,16" OnF9="Ventana(concatcuebus,cta_ini)" page="concatcuebus,cta_ini" OnF10="Ventana(concatcuepag,cta_ini,,10010)" type="capital"/>
+			<br/><tab/><txt>Cuenta final</txt><tab n="2"/>
+			<edt id="cta_fin" clr="64,64,64" clrBrdr="255,255,255"  dim="22,1" bclr="255,255,255" brdr="2,0" fnt="Arial,16" OnF9="Ventana(concatcuebus,cta_fin)" page="concatcuebus,cta_fin" OnF10="Ventana(concatcuepag,cta_fin,,10010)" type="capital"/>			
+			<br/>
+			<tab/><txt>Fecha inicial</txt><tab n="2"/>
+			<edt id="fecha_ini" dim="14,1" fmt="DD/MM/CCYY" clr="64,64,64" clrBrdr="255,255,255"  bclr="255,255,255" brdr="2,0" fnt="Arial,16" type="date" OnButton="Dialog(0,_ks_fecha,fecha_ini)" nc="11" OnChange="CambiaFecha()"/>
+			<br/><tab/><txt>Fecha final</txt><tab n="2"/>
+			<edt id="fecha_fin" dim="14,1" fmt="DD/MM/CCYY" clr="64,64,64" clrBrdr="255,255,255"  bclr="255,255,255" brdr="2,0" fnt="Arial,16" type="date" OnButton="Dialog(0,_ks_fecha,fecha_fin)" nc="11"/>
+			<br/><tab/><txt>Forma</txt><tab n="3"/>
+			<cmb id="cmb_forma" dim="14,1" brdr="2,0" bclr="255,255,255" clr="64,64,64" clrBrdr="255,255,255" Null="N"/>
+			<br/>
+			<tab/><txt>Saldos iniciales</txt><tab/>
+			<cmb id="cmb_inciales" dim="8,1" brdr="2,0" bclr="255,255,255" clr="64,64,64" clrBrdr="255,255,255" Null="N"/>
+			<br/>
+			<tab/><txt>Ctas. S/Saldo</txt><tab/>
+			<cmb id="cmb_sinsaldo" dim="8,1" brdr="2,0" bclr="255,255,255" clr="64,64,64" clrBrdr="255,255,255" Null="N"/>
+			<br/><tab/><txt>Por grupos</txt><tab n="2"/>
+			<cmb id="cmb_grupos" dim="8,1" brdr="2,0" bclr="255,255,255" clr="64,64,64" clrBrdr="255,255,255" Null="N"/>
+			<br/><tab/><txt>Ceros o blancos</txt><tab/>
+			<cmb id="cmb_ceros" dim="14,1" brdr="2,0" bclr="255,255,255" clr="64,64,64" clrBrdr="255,255,255" Null="N"/><br/><br/><tab/><txt>*El reporte por grupos considera todas las cuentas</txt><br/><br/><tab n="7"/>
+		</grp>
+		<br/><br/><tab n="1"/>
+		<img id="btnEjecutar" dim="40,40" brdr="0,1" bPx="1" tooltip="Ejecutar reporte" OnEnter="Reporte()" img="_60_ExecuteReport.png" available="Y" default="1"/><br/><tab n="3"/>			
+	</grp>
+	<script>
+		InstallDriver("KDB75");
+		class Main {
+			var frn,kdb,rep,sys,year;
+			var DescGrupos;
+			fun Main() {
+				frn=new FRNT;
+				kdb=new KDB;
+				rep=new REP;
+				sys=new SYS;
+				kdb.connect();
+				Inicializa();
+			}	
+		
+			fun Inicializa(){	//Inicializa los valores en Pantalla
+				//Revisa si hay año definido por la session
+				if(frn.config("temp","k_workDate")){
+					year=mid(frn.config("temp","k_workYear"),2,2);
+				}else {
+					kdb.kde("yr");kdb.exec();
+					year=kdb.get("yr",14);
+				}				
+				
+				frn.set("niv",frn.param(0));
+				
+				frn.set("fecha_ini",sys.date(year,sys.date("month"),1));
+				frn.set("fecha_fin",sys.date(year,sys.date("month"),31));
+				
+				kdb.open("c,kdc1" & year);				
+				kdb.search("ctaini,c,1,7,&,c1");
+				kdb.search("ctafin,c,1,8,&,c1");
+				kdb.exec();
+				frn.set("cta_ini",kdb.get("ctaini","c1"));
+				frn.set("cta_fin",kdb.get("ctafin","c1"));
+							
+				frn.setX("Corta","cmb_forma",0,0);
+				frn.setX("C","cmb_forma",0,1);
+				frn.setX("Larga","cmb_forma",1,0);
+				frn.setX("L","cmb_forma",1,1);				
+
+				frn.setX("Si","cmb_inciales",0,0);
+				frn.setX("S","cmb_inciales",0,1);
+				frn.setX("No","cmb_inciales",1,0);
+				frn.setX("N","cmb_inciales",1,1);
+
+				frn.setX("Si","cmb_sinsaldo",0,0);
+				frn.setX("S","cmb_sinsaldo",0,1);
+				frn.setX("No","cmb_sinsaldo",1,0);
+				frn.setX("N","cmb_sinsaldo",1,1);
+
+				frn.setX("Si","cmb_grupos",0,0);
+				frn.setX("S","cmb_grupos",0,1);
+				frn.setX("No","cmb_grupos",1,0);
+				frn.setX("N","cmb_grupos",1,1);
+				frn.setPos("cmb_grupos",1);
+
+				frn.setX("Ceros","cmb_ceros",0,0);
+				frn.setX("C","cmb_ceros",0,1);
+				frn.setX("Blancos","cmb_ceros",1,0);
+				frn.setX("B","cmb_ceros",1,1);
+				
+				frn.setPos("niv");
+			}
+			
+			fun CambiaFecha(){
+				var mes=fnDate("month",frn.get("fecha_ini"));
+				var yr=fnDate("year",frn.get("fecha_ini"));
+				frn.set("fecha_fin",yr & "/"& mes &"/31");
+			}
+			
+			fun ValidarCriterio(){
+				var fec_ini, fec_fin,validacion,resultado;
+				resultado = 1;
+				fec_ini = frn.get("fecha_ini");
+				fec_fin = frn.get("fecha_fin");
+				//fec_ini = frn.lib("libGeneral.kpl","StrReplace",fec_ini,"-","/");
+				//fec_fin = frn.lib("libGeneral.kpl","StrReplace",fec_fin,"-","/");
+				validacion = fnDate("cmp",fec_ini,fec_fin); //compara dos fechas validas
+				if(validacion == 1){
+					frn.message("La fecha final no puede ser mayor que la inicial","Mensaje","Aceptar");
+					resultado=0;
+				}
+				if(fnDate("year",frn.get("fecha_ini")) &! fnDate("year",frn.get("fecha_fin"))){
+					frn.message("El rango de fechas debe estar dentro del mismo año","Mensaje","Aceptar");
+					resultado=0;
+				}
+				return resultado;
+			}
+			
+			fun Reporte_Corto(){
+				var compania,usuario,strValor,strCriterio, fechaImpresion, horaImpresion, strTmp;
+				var sqlXmlReporte,cmd,ok,mensaje;
+				var cuboReporte,cuboCuentas,cuboMovtos,tmpCubo;
+				var nCuentas, nMovtos, contCtas, contMovtos;
+				var nivel, total_inicial, total_cargos, total_abonos, total_final;
+				var validacion, cuenta_ini, cuenta_fin, rep_grupos;
+				var grupos, ult_grupo,cur_grupo,grupo_inicial, grupo_cargos, grupo_abonos, grupo_final;
+				var activo_saldo_ini, activo_cargos, activo_abonos, activo_saldo_fin;
+				var pasivo_saldo_ini, pasivo_cargos, pasivo_abonos, pasivo_saldo_fin;
+				var utilidad_saldo_ini, utilidad_cargos, utilidad_abonos, utilidad_saldo_fin;
+				kdb.kde("KDE");//Configuracion del servidor
+				kdb.exec();
+				compania = kdb.get("KDE","1");
+				usuario = kdb.get("KDE","14");
+				strValor = sys.date();	
+				fechaImpresion = sys.date();
+				horaImpresion = sys.time();
+				
+				validacion=ValidarCriterio();
+				if(validacion == 0){
+					return;
+				}
+				
+				grupos=frn.get("cmb_grupos",-1,1);
+				if(grupos &= "N"){
+					cuenta_ini= frn.get("cta_ini");
+					cuenta_fin= frn.get("cta_fin");
+				}else{
+					cuenta_ini="0"; 
+					cuenta_fin="Z";
+				}
+				
+				rep_grupos=frn.get("cmb_grupos",-1,1);
+				//Obtener reporte
+				setXml(sqlXmlReporte,"document","fecha_ini",frn.get("fecha_ini"));
+				setXml(sqlXmlReporte,"document","fecha_fin",frn.get("fecha_fin"));
+				setXml(sqlXmlReporte,"document","cta_ini",cuenta_ini);
+				setXml(sqlXmlReporte,"document","cta_fin",cuenta_fin);
+				setXml(sqlXmlReporte,"document","grupos",frn.get("cmb_grupos",-1,1));
+				setXml(sqlXmlReporte,"document","niv",frn.get("niv"));
+				setXml(sqlXmlReporte,"document","sinsaldo",frn.get("cmb_sinsaldo",-1,1));
+				
+frn.lib("libGeneral.kpl","FileSave",sqlXmlReporte,"C:\Basura\sqlXmlReporteMayor");
+				
+				cmd="select * from keplersc.cont_rep_mayorauxiliar_sel('" & getXmlStr(sqlXmlReporte,"EOF:13_10") & "')";
+				cuboReporte= frn.lib("libGeneral.kpl","EjecutarSqlSel",cmd,"conrepmayaux.GenerarReporte()");
+
+				ok=getXmlAtt(cuboReporte,"ok");
+				if(ok &! "" && !ok){
+					var mensajeError = getXmlAtt(cuboReporte,"native3");
+					frn.message(mensajeError,"Error","Aceptar");
+					return;
+				}
+				
+				rstXml(tmpCubo);
+				strTmp=getXmlAtt(cuboReporte,"r0","cont_rep_mayorauxiliar_sel");
+				strTmp= delScpScn(strTmp);
+				setXmlStr(tmpCubo,strTmp);
+				frn.setX(tmpCubo);
+				rstXml(cuboCuentas);				
+				cuboCuentas=frn.lib("libGeneral.kpl","FormateaXmlNoRowId",tmpCubo,"r","datos");				
+frn.lib("libGeneral.kpl","FileSave",cuboCuentas,"C:\Basura\cuboReporteFmt");
+								
+				kdb.readPage("datos","contrepmayauxfto");//se define el formato a usar
+				kdb.exec();
+				rep.source(kdb.get("datos"));
+				rep.rst(); 
+				rep.page("paper=letter","size=21.59,27.94cm","border=1.2,1.2,1.2,1.2cm","F=1,1","landscape=N","color=N","prompt=N","@emp=C");	
+				rep.set("k_empresa",compania);
+				rep.set("k_fecha_ini",frn.get("fecha_ini"));
+				rep.set("k_fecha_fin",frn.get("fecha_fin"));
+				rep.set("k_nivel",frn.get("niv"));
+				rep.set("k_fecha_imp",fechaImpresion);
+				rep.set("K_hora_imp",horaImpresion);
+				rep.exe("encabezado");
+				nCuentas = nXml(cuboCuentas,"datos");
+				total_inicial=0;
+				total_cargos=0;
+				total_abonos=0;
+				total_final=0;
+				cur_grupo="";
+				ult_grupo = "";
+				grupo_inicial=0.00; 
+				grupo_cargos=0.00; 
+				grupo_abonos=0.00; 
+				grupo_final=0.00;
+				for(contCtas=0; contCtas<nCuentas; contCtas++){
+					cur_grupo = getXml(cuboCuentas,"datos","r"&contCtas,"nombre_grupo");
+					if(rep_grupos &="S"){
+						if(ult_grupo &! cur_grupo){
+							if(ult_grupo &! ""){
+								//Mostrar los totales del grupo
+								rep.set("k_total_grupo","TOTAL " & ult_grupo );
+								rep.set("k_saldo_ini_grupo",grupo_inicial);
+								rep.set("k_cargos_grupo",grupo_cargos);
+								rep.set("k_abonos_grupo",grupo_abonos);
+								rep.set("k_saldo_fin_grupo",grupo_final);;
+								rep.exe("seccion_total_grupo");
+							}	
+							ult_grupo=cur_grupo;
+							grupo_inicial=0.00; 
+							grupo_cargos=0.00; 
+							grupo_abonos=0.00; 
+							grupo_final=0.00;
+							rep.set("k_enc_grupo",cur_grupo);
+							rep.exe("encabezado_grupo");
+						}else{
+							grupo_inicial=grupo_inicial + getXml(cuboCuentas,"datos","r"&contCtas,"saldo_inicial");
+							grupo_cargos=grupo_cargos + getXml(cuboCuentas,"datos","r"&contCtas,"cargos");
+							grupo_abonos=grupo_abonos + getXml(cuboCuentas,"datos","r"&contCtas,"abonos");
+							grupo_final=grupo_final + getXml(cuboCuentas,"datos","r"&contCtas,"saldo_final");							
+						}
+					}
+					rep.set("k_cuenta",getXml(cuboCuentas,"datos","r"&contCtas,"cuenta"));
+					rep.set("k_nombre",getXml(cuboCuentas,"datos","r"&contCtas,"descripcion"));
+					rep.set("k_saldo_ini",getXml(cuboCuentas,"datos","r"&contCtas,"saldo_inicial"));
+					rep.set("k_cargos",getXml(cuboCuentas,"datos","r"&contCtas,"cargos"));
+					rep.set("k_abonos",getXml(cuboCuentas,"datos","r"&contCtas,"abonos"));
+					rep.set("k_saldo_final",getXml(cuboCuentas,"datos","r"&contCtas,"saldo_final"));
+					nivel = getXml(cuboCuentas,"datos","r"&contCtas,"nivel");
+					if(nivel &= "1"){
+						total_inicial=total_inicial + getXml(cuboCuentas,"datos","r"&contCtas,"saldo_inicial");
+						total_cargos=total_cargos + getXml(cuboCuentas,"datos","r"&contCtas,"cargos");
+						total_abonos=total_abonos + getXml(cuboCuentas,"datos","r"&contCtas,"abonos");
+						total_final=total_final + getXml(cuboCuentas,"datos","r"&contCtas,"saldo_final");						
+					}
+
+					rep.exe("seccion_cuenta");
+					cuboMovtos = getXml(cuboCuentas,"datos","r"&contCtas,"polizas");
+					nMovtos = nXml(cuboMovtos);
+					if (nMovtos > 0){
+						for(contMovtos=1; contMovtos<=nMovtos; contMovtos++){
+							rep.set("k_fecha",getXml(cuboMovtos,"r"&contMovtos,"fecha"));
+							rep.set("k_tipo_poliza",getXml(cuboMovtos,"r"&contMovtos,"tipo_poliza"));
+							rep.set("k_referencia",getXml(cuboMovtos,"r"&contMovtos,"referencia"));
+							rep.set("k_documento",getXml(cuboMovtos,"r"&contMovtos,"movimiento"));
+							rep.set("k_descripcion",getXml(cuboMovtos,"r"&contMovtos,"desc_poliza"));
+							rep.set("k_movto_cargo",getXml(cuboMovtos,"r"&contMovtos,"cargo_poliza"));
+							rep.set("k_movto_abono",getXml(cuboMovtos,"r"&contMovtos,"abono_poliza"));
+							rep.exe("seccion_poliza");
+						}
+						
+					}
+				}
+				//Si	el reporte	es por grupos, imprime el ultimo procesado
+				if(rep_grupos &="S"){
+					rep.set("k_total_grupo","TOTAL "&ult_grupo );
+					rep.set("k_saldo_ini_grupo",grupo_inicial);
+					rep.set("k_cargos_grupo",grupo_cargos);
+					rep.set("k_abonos_grupo",grupo_abonos);
+					rep.set("k_saldo_fin_grupo",grupo_final);;
+					rep.exe("seccion_total_grupo");					
+				}				
+				rep.set("k_total_inicial",total_inicial);
+				rep.set("k_total_cargos",total_cargos);
+				rep.set("k_total_abonos",total_abonos);
+				rep.set("k_total_final",total_final);
+				rep.exe("seccion_total_reporte");
+				
+				//Si el saldo inicial o final son negativos, los pone en rojo.
+//				if (SI<-.009) rep.setAtt("sldIniAcum","clr","255,0,0"); else rep.setAtt("sldIniAcum","clr","0,52,100");
+//				if (SF<-.009) rep.setAtt("sldFinAcum","clr","255,0,0"); else rep.setAtt("sldFinAcum","clr","0,52,100");
+				
+				//Detalle de reporte
+				rep.win();			
+			}
+			
+			
+			fun Reporte(){//Ejecuta el Reporte
+				var forma;
+				forma = frn.get("cmb_forma",-1,1); 
+				if (forma &= "C"){
+					Reporte_Corto();
+				}
+			}
+			
+			fun Dialog(iModo,pag,par0,par1,par2,par3,par4,par5,par6,par7,par8,par9,par10,par11,par12,par13,par14,par15){
+				/*iModo: 0)No hace mayor validación. Siempre despliega la ventana. NO CONCATENA PREFIJO
+							1)Solo concatena el prefijo de la carpeta del lenguaje, no hace mayor validación. Siempre despliega la ventana
+							2)Modo especial. Se valida que el campo indicado en par0 se puede modificar(El par0 puede ser una tabla, y par1 la columna)
+							3)Modo especial para páginas de operacion:Solo si se está en alta o modifica despliega la pagina. Simpre agrega el prefijo del lenguaje
+				*/
+				var prefix=frn.lib("libKepler","langPrefix");
+				var page=prefix&pag;
+				var b_valido=1;
+				if(iModo==0)page=pag;
+				else if(iModo==2&&(strlen(par0)>0)){//Se toma el par0 como el objeto (o grid) al que se devolverá el resultado.
+					if( frn.getAtt(par0,"modify",par1) &= "N" ) b_valido=0;
+					if( frn.getAtt(par0,"available",par1) &= "N" ) b_valido=0;
+					if( frn.getAtt(par0,"visible",par1) &= "N" ) b_valido=0;
+				}
+				else if(iModo==3)b_valido=0;
+				if(b_valido==1)frn.dialog(page,par0,par1,par2,par3,par4,par5,par6,par7,par8,par9,par10,par11,par12,par13,par14,par15);
+			}	
+					
+		}
+		
+		/*
+		AUTOR				FECHA				CAMBIO
+		-------------------------------------------------
+		Victor Salgado	09-sep-2022		Version inicial
+		*/
+	</script>
+</pag>

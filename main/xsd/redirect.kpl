@@ -1,0 +1,3 @@
+<?xml version="1.0" encoding="UTF-8"?><pag xmlns="www.kepler.com.mx/2003/KSchema" roles="" tit="Redirect...">	<grp brdr="0,0" clr="0,58,112" fnt="Arial,16" dim="1,-1,10,20" bclr="192,205,213"><br/>
+		<grp bclr="236,240,243" fntClrBrdr="255,206,0" fntBrdr="Arial,18" hSpace="4" clrBrdr="0,58,112" dim="70,50,7,12" brdr="0,5" tit="Datos generales" fnt="Arial,16">		<br/><sp/><txt>Redirecting, please wait ...</txt><br/>		</grp><br/>
+	</grp>	<script>		InstallDriver("KDB75");			class Main {			var frn;			fun Main() {				frn=new FRNT;				var prefix=frn.lib("libKepler","langPrefix");				var index=prefix&"index";				frn.open(index);			}		}	</script></pag>

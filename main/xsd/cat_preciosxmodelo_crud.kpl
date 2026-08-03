@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pag xmlns="www.kepler.com.mx/2003/KSchema" roles="" tit="Modificaci&#243;n Precios por Modelo">
+<grp  brdr="0,0" clr="0,58,112" fnt="Arial,14"  dim="0,0,20,20" bclr="192,205,213" unfont="0">
+	<tab/><txt fnt=",22" clr="0,0,0"> Precios por Modelo</txt><tab/>
+	<br/>
+	<tab/>
+	<hLine clr="0,0,0"/>
+	<br/><br/>
+	<tab/>
+	<grp id="gpo_2" bclr="236,240,243" fntClrBrdr="255,255,255" unfont="0" fntBrdr="Arial,18" hSpace="4" 
+		clrBrdr="0,58,112" dim="36,4,10,17" brdr="0,5" tit="Criterio de selecci&#243;n" fnt="Arial,16">
+		<sp/><txt>Marca:</txt>
+		<inp id="k_marca" dim="7,1" brdr="0,0" bclr="255,255,255" clr="64,64,64" clrBrdr="255,255,255" modify="Y" available="Y" fnt="Arial,0" 
+			type="capital" nc="5" OnF9="ObtenerMarca()" OnChange="BuscarMarca()" tooltip="Marca ( F9 b&#250;squeda )"/><sp/>
+        <inp id="k_desc_marca" dim="18,1" brdr="2,0" clr="64,64,64" bclr="255,255,255" type="capital" clrBrdr="255,255,255" available="N"/>
+		<sp n="3"/>	
+		<tab/><txt>Modelo:</txt>
+		<inp id="k_modelo" dim="7,1" brdr="0,0" bclr="255,255,255" clr="64,64,64" clrBrdr="255,255,255" modify="Y" available="Y" fnt="Arial,0" 
+			type="capital" nc="10" available="Y" OnF9="ObtenerModelo()" OnChange="BuscarModelo()" tooltip="Modelo ( F9 b&#250;squeda )"/><sp/>
+        <inp id="k_desc_modelo" dim="18,1" brdr="2,0" clr="64,64,64" bclr="255,255,255" type="capital" clrBrdr="255,255,255" available="N"/>
+			
+		<tab/>
+		<img id="img_buscar" dim="20,20" bPx="1" brdr="0,1" available="Y" img="_20_Find.png" OnEnter="ObtenerPaquete()"/>		
+	</grp>
+	<br/><br/><tab/>
+	<grp id="gpo_2" bclr="236,240,243" fntClrBrdr="255,255,255" unfont="0" fntBrdr="Arial,18" hSpace="4" clrBrdr="0,58,112" 
+		dim="36,14,10,17" brdr="0,5" tit="Detalle de Precios" fnt="Arial,16">
+		<sp/>
+		<tbl id="k_mov" clr="64,64,64" clrBrdr="64,64,64" bclr="236,240,243" brdr="1,0" dim="70,10" modify="Y" Reorder="Y" nren="fijo" available="Y">
+			<col name="Clave" id="k_clave" modify="N" type="capital" nc="5" visible="Y"/>
+			<col name="Descripci&#243;n" id="k_descripcion" modify="N" type="capital" nc="50" visible="Y"/>
+			<col name="Cargos Varios" id="k_varios" modify="Y" type="number" nc="15" nd="2" visible="Y"/>
+				<col name="Horas" id="k_horas" modify="Y" type="number" nc="10" nd="5" visible="Y"/>
+			<col name="Precio" id="k_precio" modify="Y" type="number" nc="15" visible="Y" nd="2"/>
+		</tbl>
+		<br/><sp/>
+		<bot id="k_btn_cons" dim="10,10" brdr="5" text="Guardar" hk="K" default="0" step="0"  OnEnter="Guardar()" fnt="Arial,16"/>
+	</grp>
+</grp>
+<script>
+	InstallDriver("KDB75");
+	class Main {
+		var frn,frP,kdb,sys,suc_usuario,perfil_usuario,rol_usuario,asterisco, externo, cuboXml;
+		var tipoOper,consPlantilla, accion; //Variables relacionadas con parametros (colsulta , eliminar, baja)
+		var strTitulo, strQuery, strColValor, strCtrlSet, strMostrarLlave, strRenglon, strColumna, clave, modelo, clave_2,resVal ; 
+		var cmdQuery, cuboQuery, ok, mensajeError;
+		fun Main(){
+			frn=new FRNT;
+			kdb=new KDB;
+			frP=new FRNTP;
+			sys=new SYS;
+			kdb.connect();
+			
+			tipoOper = frn.param(0);
+			clave = frn.param(1);
+			ConfiguraUI();
+			Inicializa();
+		}
+            	
+		fun ResetDetalle(){
+			frn.rst("k_mov");
+		}
+		
+		fun ObtenerPaquete(){
+			var xmlPantalla,no_partidas;
+			var tmpStr, contDet, xmlCurDet, xmlDetConv,xmlDetalle;;
+			ResetDetalle();			
+			
+			setXml(xmlPantalla,"k_marca",frn.get("k_marca"));
+			setXml(xmlPantalla,"k_modelo",frn.get("k_modelo"));
+			frn.lib("libGeneral.kpl","FileSave",xmlPantalla,"C:\Basura\xmlPrecioXmodelo");
+			
+			cmdQuery = "select * from keplersc.ser_precios_xmodelo_sel('<document>" & getXmlStr(xmlPantalla,"EOF:13_10") & "</document>')";
+			rstXml(cuboQuery);
+			cuboQuery = frn.lib("libGeneral.kpl","EjecutarSqlSel",cmdQuery,"cat_preciosxmodelo_crud.ObtenerPaquete");
+			frn.lib("libGeneral.kpl","FileSave",cuboQuery,"C:\Basura\xmlPrecioXmodelo_sel");
+			ok=getXmlAtt(cuboQuery,"ok");
+			if(ok &! "" && !ok){
+				mensajeError = getXmlAtt(cuboQuery,"native3");
+				mensajeError = frn.lib("libGeneral.kpl","ErrorBD",mensajeError);
+				frn.message(mensajeError,"Error","Aceptar");
+				return;
+			}
+
+			//Datos Detalle
+			rstXml(xmlDetConv);
+			tmpStr=getXmlAtt(cuboQuery,"r0","detpartidas");
+			rstXml(xmlDetalle);
+			tmpStr=delScpScn(tmpStr);
+			setXmlStr(xmlDetalle,tmpStr);
+			contDet=nXml(xmlDetalle);
+			for(var y=0; y< contDet; y++){
+				rstXml(xmlCurDet);
+				xmlCurDet= getXmlX(xmlDetalle,3,y);						
+				setXml(xmlDetConv,"k_mov","r"&y,xmlCurDet);
+			}
+			frn.setX(xmlDetConv);
+			no_partidas=frn.N("k_mov");
+			if (no_partidas==0) {
+				frn.message("No se encontraron registros","Mensaje","Aceptar");
+				return;
+			}
+		}
+		
+		fun Guardar(){
+			var xmlPantalla,no_partidas,resultado,mensaje,adicionales;
+			//Validaciones
+			no_partidas=frn.N("k_mov");
+			if (no_partidas==0) {
+				frn.message("Error, no se tiene registros ","Error","Aceptar");
+				return;
+			}
+			xmlPantalla = getXml(frn.dataPag()); //Obtener el xml de la pantalla;
+			
+			setXml(xmlPantalla ,"k_partidas","no_partidas",no_partidas);			
+			frn.lib("libGeneral.kpl","FileSave",xmlPantalla,"C:\Basura\xmlPantallaLineas");
+			cmdQuery="select * from keplersc.ser_precios_xmodelo_crud('<document>" & getXmlStr(xmlPantalla,"EOF:13_10") & "</document>')";			
+			kdb.rst(cuboQuery);
+			cuboQuery = frn.lib("libGeneral.kpl","EjecutarSql",cmdQuery,"carga_refacciones.Alta");
+			resultado= getXml(cuboQuery,"resultado");
+			mensaje= getXml(cuboQuery,"mensaje");
+				
+			if(resultado &= "0"){
+				frn.message(mensaje,"Error","Aceptar");
+				return;
+			}
+			ObtenerPaquete();
+			frn.message("Precios actualizados","Mensaje","Aceptar");
+		}
+		
+		fun ConfiguraUI(){
+			if (frn.nParam() == 0){
+				frn.message("Acción no permitida.","Error","&Aceptar");
+//				frn.open("redirect",2);
+				return;
+			}
+		}		
+
+		fun Inicializa(){
+			frn.rst("gpo_2");
+		}
+           
+		fun ObtenerMarca(){
+			frn.set("k_modelo","");  
+			frn.set("k_desc_modelo",""); 
+			ResetDetalle();	   
+            cmdQuery = "select c1 as clave, c2 as marca from keplersc.kdmarcas";
+            frn.dialog("genlistafiltrosel","Marca",cmdQuery,"clave","k_marca","0","0","N","S");						   
+         }
+
+         fun BuscarMarca(){
+			var marca_id;
+			frn.set("k_modelo","");  
+			frn.set("k_desc_modelo",""); 
+			ResetDetalle();	 
+			marca_id=frn.get("k_marca");
+			cmdQuery = "select c2 as descripcion from keplersc.kdmarcas " &
+					"where c1='" & marca_id & "'";
+							
+			rstXml(cuboQuery);
+			cuboQuery = frn.lib("libGeneral.kpl","EjecutarSqlSel",cmdQuery,"cat_preciosxmodelo_crud.BuscarMarca()");
+			ok=getXmlAtt(cuboQuery,"ok");
+			if(ok &! "" && !ok){
+				mensajeError = getXmlAtt(cuboQuery,"native3");
+				mensajeError = frn.lib("libGeneral.kpl","ErrorBD",mensajeError);
+				frn.message(mensajeError,"Error","Aceptar");
+				return;	
+			}
+			if((nXml(cuboQuery) == 0) && (marca_id &! "")) {
+				frn.setPos("k_marca");
+				frn.message("La marca no existe","Error","Aceptar");
+				resVal = 0;
+				return;
+            } else{
+			    frn.set("k_desc_marca",getXmlAtt(cuboQuery,"r0","descripcion"));	    
+			}		
+        }
+        
+		fun ObtenerModelo(){
+			var marca_id;
+			ResetDetalle();	 
+			marca_id=frn.get("k_marca"); 
+			if (marca_id &=""){
+				frn.setPos("k_marca");
+				frn.message("Debe seleccionar una marca","Error","Aceptar");
+				return;
+			}   
+               cmdQuery = "select c2 as clave, c3 as modelo from keplersc.kdmodelos " &
+						"where c1='" & marca_id & "'";			
+               frn.dialog("genlistafiltrosel","Modelos",cmdQuery,"clave","k_modelo","0","0","N","S");						   
+        }
+
+        fun BuscarModelo(){
+			var marca_id, modelo_id;
+			ResetDetalle();	 
+			marca_id=frn.get("k_marca");
+			modelo_id=frn.get("k_modelo");
+			if (marca_id &=""){
+				frn.setPos("k_marca");
+				frn.message("Debe seleccionar una marca","Error","Aceptar");
+				return;
+			}	
+			cmdQuery = "select c3 as descripcion from keplersc.kdmodelos " &
+					"where c1='" & marca_id & "' and c2='" & modelo_id & "'";
+							
+			rstXml(cuboQuery);
+			cuboQuery = frn.lib("libGeneral.kpl","EjecutarSqlSel",cmdQuery,"cat_preciosxmodelo_crud.BuscarModelo()");
+			ok=getXmlAtt(cuboQuery,"ok");
+			if(ok &! "" && !ok){
+				mensajeError = getXmlAtt(cuboQuery,"native3");
+				mensajeError = frn.lib("libGeneral.kpl","ErrorBD",mensajeError);
+				frn.message(mensajeError,"Error","Aceptar");
+				return;	
+			}
+			if((nXml(cuboQuery) == 0) && (modelo_id &! "")) {
+				frn.setPos("k_modelo");
+				frn.message("El modelo no existe","Error","Aceptar");
+				resVal = 0;
+				return;
+            } else{
+			    frn.set("k_desc_modelo",getXmlAtt(cuboQuery,"r0","descripcion"));	    
+			}		
+        }		   
+				
+	}
+	
+		
+	</script>
+</pag>

@@ -1,0 +1,482 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pag xmlns="www.kepler.com.mx/2003/KSchema" roles="" tit="">
+	<grp dim="1,-1,7,11" brdr="0,0" clr="0,58,112" bclr="192,205,213" fnt="Arial,16" unfont="0" OnEnter="Exit()"><br/>
+		<tab/><inp id="k_titulo" dim="65,1" brdr="0,0" bclr="192,205,213" clr="0,0,0" clrBrdr="192,205,213"
+				type="string" modify="N" available="N" fnt="Arial,22"/>
+		<br/>
+		<br/>
+		<tab/><hLine clr="0,0,0"/>
+		<br/><br/>
+		<tab/>
+        <grp id="grupo_crud" dim="105,55,7,11" bclr="236,240,243" fntClrBrdr="236,240,243" fntBrdr="Arial,18" hSpace="4" clrBrdr="0,58,112" brdr="0,5" fntBrdr="Arial,18" tit="Nuevo" available="Y"><tab/>
+			<br/><tab/>
+            <txt>Clave :</txt><tab n="2"/>
+			<inp id="k_clave" dim="23,1" brdr="2,0" clr="64,64,64" bclr="255,255,255" clrBrdr="255,255,255" type="capital" nc="18" available="Y" tooltip="Clave del Veh&#237;culo" modify="Y"/><br/><sp/><tab/>
+			<txt>Descripci&#243;n :</txt><tab/>
+			<inp id="k_descripcion" dim="60,1" brdr="2,0" clr="64,64,64" bclr="255,255,255" clrBrdr="255,255,255" type="capital" nc="50" available="Y" tooltip="Descripci&#243;n del Veh&#237;culo" available="N"/><tab n="2"/>
+			<bot id="btn_paquete" text="Paquete" dim="12,0" brdr="5" OnEnter="EjecutaPaquetes()" available="N"/><tab/><br/><tab/><br/><tab/>
+			<txt>Clase : </txt>
+			<inp id="k_clase" dim="10,1" brdr="2,0" clr="64,64,64" bclr="255,255,255" type="capital" nc="5" clrBrdr="255,255,255" OnF9="ObtenerClase()" OnChange="BuscarClase()" tooltip="Clase (Automovil o Comercial) ( F9 b&#250;squeda )"/><sp n="1"/>
+			<inp id="k_desc_clase" dim="35,1" brdr="2,0" clr="64,64,64" bclr="255,255,255" type="capital" clrBrdr="255,255,255" available="N" tooltip="Clase (Automovil o Comercial)"/><tab n="3"/><br/><tab/>
+            <txt>Marca :</txt>
+			<inp id="k_marca" dim="10,1" brdr="2,0" clr="64,64,64" bclr="255,255,255" type="capital" nc="5" clrBrdr="255,255,255" OnF9="ObtenerMarca()" OnChange="BuscarMarca()" tooltip="Clave de la Marca ( F9 b&#250;squeda )"/><tab/>
+            <inp id="k_desc_marca" dim="25,1" brdr="2,0" clr="64,64,64" bclr="255,255,255" type="capital" clrBrdr="255,255,255" available="N" tooltip="Clase (Automovil o Comercial)"/><tab n="3"/><br/><tab/>
+			<txt>Tipo de Calc ISAN :  </txt>
+			<inp id="k_calc_isan" dim="10,1" brdr="2,0" clr="64,64,64" bclr="255,255,255" type="capital" nc="5" clrBrdr="255,255,255" OnF9="ObtenerCIsan()" OnChange="BuscarCIsan()" tooltip="Tipo de C&#225;lculo ( F9 b&#250;squeda )"/><sp n="1"/>
+			<inp id="k_desc_cisan" dim="25,1" brdr="2,0" clr="64,64,64" bclr="255,255,255" type="capital" clrBrdr="255,255,255" available="N" tooltip="Clase (Automovil o Comercial)"/><tab n="3"/><br/><tab/>
+			<txt>L&#237;nea : </txt>
+			<inp id="k_linea" dim="15,1" brdr="2,0" clr="64,64,64" bclr="255,255,255" type="capital" nc="10" clrBrdr="255,255,255" OnF9="ObtenerLinea()" OnChange="BuscarLinea()" tooltip="L&#237;nea de Veh&#237;culos ( F9 b&#250;squeda )"/><sp n="1"/>
+            <inp id="k_desc_linea" dim="35,1" brdr="2,0" clr="64,64,64" bclr="255,255,255" type="capital" clrBrdr="255,255,255" available="N" tooltip="Clase (Automovil o Comercial)"/><tab n="3"/><br/><tab/><br/><tab/>
+			<txt>Nuevo o Usado :</txt>
+			<inp id="k_nou" dim="3,1" brdr="2,0" clr="64,64,64" bclr="255,255,255" type="capital" nc="1" clrBrdr="255,255,255" OnMouseD="NoU()" OnChange="ValidaNoU()" tooltip="(N)uevo &#243; (U)sado (Doble Click para cambiar)"/><sp/><tab/><txt>(N)uevo &#243; (U)sado (Doble Click para cambiar)</txt>
+			<br/><br/><tab/>
+			<txt>Meses Promedio para Entrega :</txt>
+			<inp id="k_mesesprom" dim="10,1" brdr="2,0" clr="64,64,64" bclr="255,255,255" type="number" nd="2" clrBrdr="255,255,255" tooltip="Meses Promedio para Entrega" just="R"/><txt> Usar numeros negativos para Toyotas que lleguen en barco</txt><br/><sp/><tab/>
+			<txt>Veh&#237;culo todav&#237;a se produce :</txt><tab/>
+			<inp id="k_produce" dim="3,1" brdr="2,0" clr="64,64,64" bclr="255,255,255" type="capital" nc="1" clrBrdr="255,255,255" OnChange="ValidaSoN(k_produce)" OnMouseD="SoN(k_produce)" tooltip="Unidades todav&#237;a en producci&#243;n, S &#243; N (Doble Click para cambiar)"/>
+			<sp/><tab/><txt>S &#243; N (Doble Click para cambiar)</txt><br/><sp/><tab/><br/><tab/>
+			<txt>Precio de Lista :</txt><tab n="1"/>
+			<inp id="k_precio" dim="20,1" brdr="2,0" clr="64,64,64" bclr="255,255,255" type="number" nd="2" clrBrdr="255,255,255" tooltip="Precio de Lista del Veh&#237;culo" just="R"/><br/><sp/><tab/><br/><tab/>
+			<txt>Cilindros :</txt><tab/>
+			<inp id="k_cilindros" dim="10,1" brdr="2,0" clr="64,64,64" bclr="255,255,255" type="number" clrBrdr="255,255,255" tooltip="N&#250;mero de Cilindros"/><tab/><sp/><tab n="4"/>
+			<txt>Ocupantes :</txt><tab/>
+			<inp id="k_ocupantes" dim="10,1" brdr="2,0" clr="64,64,64" bclr="255,255,255" type="number" clrBrdr="255,255,255" tooltip="Capacidad de Ocupantes"/><br/><sp/><tab/>
+			<txt>Procedencia :</txt>
+			<inp id="k_procedencia" dim="15,1" brdr="2,0" clr="64,64,64" bclr="255,255,255" type="capital" nc="10" clrBrdr="255,255,255" tooltip="Procedencia"/><sp/><tab n="3"/>
+			<txt>Combustible :</txt>
+			<inp id="k_combustible" dim="15,1" brdr="2,0" clr="64,64,64" bclr="255,255,255" type="capital" nc="10" clrBrdr="255,255,255" tooltip="Combustible"/><br/><sp/><tab/>
+			<txt>No. Puertas :</txt><tab/>
+			<inp id="k_puertas" dim="10,1" brdr="2,0" clr="64,64,64" bclr="255,255,255" type="number" nc="5" clrBrdr="255,255,255" tooltip="N&#250;mero de Puertas"/><br/><sp/><tab/><br/><tab/>
+			<txt>Fecha de Inicio de Venta : </txt>
+			<edt id="k_inivta" dim="10,1" brdr="2,0" clr="64,64,64" bclr="255,255,255" type="date" clrBrdr="255,255,255" page="_ks_fecha,k_inivta" OnF9="Dialog(3,_ks_fecha,k_inivta)" tooltip="Fecha de Inicio de Venta" fmt="DD/MM/YY" nc="-1"/><br/><sp/><tab/>
+			<txt>Veh&#237;culo que Reemplaza : </txt>
+			<inp id="k_reemplaza" dim="23,1" brdr="2,0" clr="64,64,64" bclr="255,255,255" type="capital" nc="18" clrBrdr="255,255,255" tooltip="Clave del Veh&#237;culo que Reemplaza"/><br/><sp/><tab/>
+			<txt>No usar Regla 3 meses :   </txt>
+			<inp id="k_regla3" dim="3,1" brdr="2,0" clr="64,64,64" bclr="255,255,255" type="capital" nc="1" clrBrdr="255,255,255" OnChange="ValidaSoN(k_regla3)" OnMouseD="SoN(k_regla3)" tooltip="No usar regla de los 3 meses para este auto, S &#243; N (Doble Click para cambiar)"/>
+			<sp/><tab/><txt>S &#243; N (Doble Click para cambiar)</txt><br/><br/><sp/><tab/>
+			<txt>Codigo del SAT :</txt><tab n="1"/>
+			<inp id="k_codsat" dim="30,1" brdr="2,0" clr="64,64,64" bclr="255,255,255" type="capital" clrBrdr="255,255,255" OnF9="ObtenerCodSat()" OnChange="BuscarCodSat()" tooltip="Clave del SAT"/><sp/><tab/>
+			<br/>
+			<br/>
+				<inp id="input_crud" dim="10,1" brdr="2,0" clr="64,64,64" bclr="255,255,255" clrBrdr="255,255,255" visible="N"/>
+            <tab n="12"/><bot id="btn_aceptar" dim="12,0" brdr="5" text="Aceptar" OnEnter="Execute()" visible="Y" available="Y"/><br/>
+		<br/>
+		</grp><br/><br/>
+	</grp>
+	<script>
+		InstallDriver("KDB75");
+		class Main {
+			var frn,kdb,frP, accion,externo, clave_sel,descripcion,sucursal_id,resVal,straccion;
+            var cmdQuery,xmlRequest,ok,cuboResultados,cubo,mensajeError;
+			fun Main() {
+				frn=new FRNT;
+				frP=new FRNTP;
+				kdb=new KDB;
+				kdb.connect();
+				Inicializa();
+				ctlrs_off();
+				insertar_datos();
+				ctlrs_opcion();
+			}
+			
+			fun Inicializa(){
+				accion = frn.param(0);
+				frn.set("input_crud", accion);
+				frn.rst("grupo_crud");
+				externo	= frn.param(2);
+                if (accion &= "NUEVO"){
+                    straccion = "Nuevo" ;   
+                }else if (accion &= "CONSULTAR"){
+                    straccion = "Consultar";
+                }else if (accion &= "MODIFICAR"){
+                    straccion = "Modificar";
+                }else if (accion &= "ELIMINAR"){
+                    straccion = "Eliminar";
+                }     
+				
+				frn.setAtt("grupo_crud", "tit", straccion );
+				clave_sel = frn.param(1);
+				descripcion = frn.param(3);
+			    sucursal_id = frn.param(4);
+				if (accion &! "NUEVO"){
+					frn.set("k_clave", clave_sel);
+					frn.set("k_descripcion", descripcion);
+				}	
+			}
+			
+			fun ctlrs_off(){
+				frn.setAtt("btn_aceptar", "available", "N" );
+				frn.setAtt("btn_aceptar", "visible", "N" );
+			}
+				
+			fun ctlrs_opcion(){
+				if (accion &= "NUEVO"){
+					frn.setAtt("k_clave","available","Y");
+					frn.setAtt("k_clave", "modify", "Y" );
+					frn.setAtt("k_descripcion", "available", "Y" );
+					frn.setAtt("btn_paquete", "available", "N" );
+                    frn.set("k_titulo","Catalogo de Vehiculos");
+				
+				}else { 
+					frn.setAtt("k_clave", "available", "Y" );
+                    frn.setAtt("k_clave", "modify", "N" );
+					if (accion &= "MODIFICAR") {
+                        frn.setAtt("grupo_crud", "available","Y");
+						frn.setAtt("k_nou", "available","N");
+						frn.setAtt("k_descripcion", "available", "Y" );
+						frn.setAtt("btn_paquete", "available", "Y" );
+                    }else{
+                        frn.setAtt("k_clave", "available","Y");
+                        frn.setAtt("k_clave", "modify", "N" );
+                        frn.setAtt("k_descripcion", "available","N");
+						frn.setAtt("k_clase", "available","N");
+					    frn.setAtt("k_marca", "available","N");
+                        frn.setAtt("k_calc_isan", "available", "N" );						
+						frn.setAtt("k_linea", "available","N");
+						frn.setAtt("k_nou", "available","N");
+					    frn.setAtt("k_mesesprom", "available","N");
+						frn.setAtt("k_produce", "available","N");
+						frn.setAtt("k_precio", "available","N");
+					    frn.setAtt("k_cilindros", "available","N");
+                        frn.setAtt("k_ocupantes", "available", "N" );						
+						frn.setAtt("k_procedencia", "available","N");
+						frn.setAtt("k_combustible", "available","N");
+					    frn.setAtt("k_puertas", "available","N");
+						frn.setAtt("k_inivta", "available", "N" );						
+						frn.setAtt("k_reemplaza", "available","N");
+						frn.setAtt("k_regla3", "available","N");
+					    frn.setAtt("k_codsat", "available","N");
+                        frn.setAtt("btn_aceptar", "visible", "N" );
+						frn.setAtt("btn_paquete", "available", "Y" );					
+                    }
+					
+				}
+				if (accion &! "CONSULTAR"){
+					frn.setAtt("btn_aceptar", "available", "Y" );
+					frn.setAtt("btn_aceptar", "visible", "Y" );
+				}
+			}
+
+
+			fun insertar_datos(){	
+				if (accion &= "MODIFICAR"){
+					//llamada externa(padre)
+					if (externo &= "s"){
+						if (clave_sel &= ""){
+							frn.message("selecciona una clave con F9 para modificar","Error","Aceptar");
+							frn.setAtt("btn_aceptar", "visible", "N" );
+							return;
+						}
+					}
+				}
+				if (accion &! "NUEVO") {
+					cmdQuery="select veh.c2 as k_descripcion,veh.c4 as k_clase,clas.c2 as k_desc_clase,veh.c5 as k_marca,mar.c2 as k_desc_marca," &
+							"veh.c6 as k_calc_isan,isan.c2 as k_desc_cisan,veh.c7 as k_linea,lin.c2 as k_desc_linea,veh.c8 as k_nou,veh.c10 as k_mesesprom," &
+							"veh.c11 as k_produce,veh.c14 as k_precio,veh.c50 as k_cilindros,veh.c51 as k_ocupantes,veh.c52 as k_procedencia, " &
+							"veh.c53 as k_combustible,veh.c54 as k_puertas,veh.c26 as k_inivta,veh.c27 as k_reemplaza,veh.c28 as k_regla3,veh.c30 as k_codsat " &
+							"from keplersc.kdiv veh " &
+							"left join keplersc.kdic clas on clas.c1=veh.c4 " &
+							"left join keplersc.kdmarca mar on mar.c1=veh.c5 " &
+							"left join keplersc.kdtisan isan on isan.c1=veh.c6 " &
+							"left join keplersc.kdivl lin on lin.c1=veh.c7 " &
+							"where veh.c1='" & clave_sel & "'"; 
+					rstXml(cuboResultados);		
+					cuboResultados = frn.lib("libGeneral.kpl","EjecutarSqlSel",cmdQuery,"cat_notacargo_crud.insertar_datos()");
+				
+					frn.lib("libGeneral.kpl","FileSave",cuboResultados,"C:\Basura\cuboResultados");
+					
+					ok=getXmlAtt(cuboResultados,"ok");
+					if(ok &! "" && !ok){
+						mensajeError = getXmlAtt(cuboResultados,"native3");
+						frn.message(mensajeError,"Error","Aceptar");
+						return;
+					}	
+					rstXml(xmlRequest);
+					xmlRequest=frn.lib("libGeneral.kpl","CreaXmlDesdeAtt",cuboResultados,"r0");
+					frn.setX(xmlRequest);
+                }else{
+                    frn.setAtt("grupo_crud", "available","Y");
+                    frn.setPos("k_clave");    
+				}
+			}
+
+            fun ValidarDatos(){
+				if (frn.get("k_clave") &= "") {						
+					frn.setPos("k_clave");
+					resVal=0;
+					frn.message("Debe especificar la clave, verificar","Error","Aceptar");	
+				} 
+				if (frn.get("k_descripcion") &= "") {						
+					frn.setPos("k_descripcion");
+					resVal=0;
+					frn.message("Debe especificar la descripcion, verificar","Error","Aceptar");
+				}
+				if (frn.get("k_clase") &= "") {						
+					frn.setPos("k_clase");
+					resVal=0;
+					frn.message("Debe especificar la clase, verificar","Error","Aceptar");
+				}else{
+					BuscarClase();	
+				}
+                if (frn.get("k_marca") &= "") {						
+					frn.setPos("k_marca");
+					resVal=0;
+					frn.message("Debe especificar la marca, verificar","Error","Aceptar");
+				}else{
+					BuscarMarca();		
+				}
+				if (frn.get("k_calc_isan") &= "") {						
+					frn.setPos("k_calc_isan");
+					resVal=0;
+					frn.message("Debe especificar el tipo de calculo ISAN, verificar","Error","Aceptar");
+				}else{
+					BuscarCIsan();		
+				}
+				if (frn.get("k_linea") &= "") {						
+					frn.setPos("k_linea");
+					resVal=0;
+					frn.message("Debe especificar la linea, verificar","Error","Aceptar");
+				}else{
+					BuscarLinea();					
+				}
+				if (frn.get("k_codsat") &! "") {						
+					BuscarCodSat();
+				}
+			}
+
+		
+			fun Execute() {
+                resVal = 1;
+				ValidarDatos();
+				if(resVal == 0){
+					return;
+				}
+				var resultado_confirmacion = frn.message("Desea continuar?","Mensaje de Confirmacion", 2);
+				if (resultado_confirmacion &! 1)  {
+					return;
+				}
+		
+				xmlRequest = getXml(frn.dataPag());	
+					frn.lib("libGeneral.kpl","FileSave",xmlRequest ,"C:\Basura\xmlRequest ");
+		
+				cmdQuery="SELECT * FROM keplersc.cat_vehiculo_crud('<document>" & getXmlStr(xmlRequest ,"EOF:13_10") & "</document>')";
+				cubo = frn.lib("libGeneral.kpl","EjecutarSql",cmdQuery,"cat_notacargo_crud.Execute()");	
+				frn.lib("libGeneral.kpl","FileSave",cubo ,"C:\Basura\cuboResultados");					
+				var resultado=getXml(cubo ,"resultado");
+				
+				if(resultado &= "0"){
+					mensajeError = getXml(cubo ,"mensaje");
+					frn.message(mensajeError,"Error","Aceptar");
+					return;
+				}
+				frP.script("Inicia_Forma()");
+				if (accion &= "NUEVO" || accion &= "MODIFICAR") {	
+					var sms =  "";
+					if (accion &= "NUEVO"){
+						sms = "Registro guardado";
+					}else {
+						sms = "Registro modificado";
+					}
+                    accion="CONSULTAR";
+					ctlrs_opcion();
+					frn.setAtt("btn_paquete", "available", "N" );
+					frn.message(sms ,"Mensaje","Aceptar");
+					frn.exit();	
+				}
+				if (accion &= "ELIMINAR"){
+					frn.message("Registro eliminado","Mensaje","Aceptar");
+					frn.exit();			
+				}
+			}
+
+            fun ObtenerClase(){    
+                cmdQuery = "select c1 as clave, c2 as clase from keplersc.kdic";
+                frn.dialog("genlistafiltrosel","Clases",cmdQuery,"clave","k_clase","0","0","N","S");						   
+            }
+
+            fun BuscarClase(){
+				var clase_id;
+				clase_id=frn.get("k_clase");
+				cmdQuery = "select c2 as descripcion from keplersc.kdic " &
+						"where c1='" & clase_id & "'";
+							
+				rstXml(cubo);
+				cubo = frn.lib("libGeneral.kpl","EjecutarSqlSel",cmdQuery,"cat_vehiculo_crud.BuscarClase()");
+				ok=getXmlAtt(cubo,"ok");
+				if(ok &! "" && !ok){
+					mensajeError = getXmlAtt(cubo,"native3");
+					mensajeError = frn.lib("libGeneral.kpl","ErrorBD",mensajeError);
+					frn.message(mensajeError,"Error","Aceptar");
+					return;	
+				}
+				if((nXml(cubo) == 0) && (clase_id &! "")) {
+					frn.setPos("k_clase");
+					frn.message("La clase no existe","Error","Aceptar");
+					resVal = 0;
+					return;
+                } else{
+				    frn.set("k_desc_clase",getXmlAtt(cubo,"r0","descripcion"));	    
+				}
+            }    
+
+            fun ObtenerMarca(){    
+                cmdQuery = "select c1 as clave, c2 as marca from keplersc.kdmarca";
+                frn.dialog("genlistafiltrosel","Marca",cmdQuery,"clave","k_marca","0","0","N","S");						   
+            }
+
+            fun BuscarMarca(){
+				var marca_id;
+				marca_id=frn.get("k_marca");
+				cmdQuery = "select c2 as descripcion from keplersc.kdmarca " &
+						"where c1='" & marca_id & "'";
+							
+				rstXml(cubo);
+				cubo = frn.lib("libGeneral.kpl","EjecutarSqlSel",cmdQuery,"cat_vehiculo_crud.BuscarMarca()");
+				ok=getXmlAtt(cubo,"ok");
+				if(ok &! "" && !ok){
+					mensajeError = getXmlAtt(cubo,"native3");
+					mensajeError = frn.lib("libGeneral.kpl","ErrorBD",mensajeError);
+					frn.message(mensajeError,"Error","Aceptar");
+					return;	
+				}
+				if((nXml(cubo) == 0) && (marca_id &! "")) {
+					frn.setPos("k_marca");
+					frn.message("La marca no existe","Error","Aceptar");
+					resVal = 0;
+					return;
+                 } else{
+				    frn.set("k_desc_marca",getXmlAtt(cubo,"r0","descripcion"));	    
+				}		
+            }
+
+            fun ObtenerCIsan(){    
+                cmdQuery = "select c1 as clave, c2 as calculo_isan from keplersc.kdtisan";
+                frn.dialog("genlistafiltrosel","Tipos de calculo ISAN",cmdQuery,"clave","k_calc_isan","0","0","N","S");						   
+            }
+
+            fun BuscarCIsan(){
+				var cisan_id;
+				cisan_id=frn.get("k_calc_isan");
+				cmdQuery = "select c2 as descripcion from keplersc.kdtisan " &
+						"where c1='" & cisan_id & "'";
+							
+				rstXml(cubo);
+				cubo = frn.lib("libGeneral.kpl","EjecutarSqlSel",cmdQuery,"cat_vehiculo_crud.BuscarCIsan()");
+				ok=getXmlAtt(cubo,"ok");
+				if(ok &! "" && !ok){
+					mensajeError = getXmlAtt(cubo,"native3");
+					mensajeError = frn.lib("libGeneral.kpl","ErrorBD",mensajeError);
+					frn.message(mensajeError,"Error","Aceptar");
+					return;	
+				}
+				if((nXml(cubo) == 0) && (cisan_id &! "")) {
+					frn.setPos("k_calc_isan");
+					frn.message("El tipo de calculo ISAN no existe","Error","Aceptar");
+					resVal = 0;
+					return;
+                 } else{
+				    frn.set("k_desc_cisan",getXmlAtt(cubo,"r0","descripcion"));	    
+				}		
+            }
+
+            fun ObtenerLinea(){    
+                cmdQuery = "select c1 as clave, c2 as linea from keplersc.kdivl";
+                frn.dialog("genlistafiltrosel","Lineas de Vehiculos",cmdQuery,"clave","k_linea","0","0","N","S");						   
+            }
+
+            fun BuscarLinea(){
+				var linea_id;
+				linea_id=frn.get("k_linea");
+				cmdQuery = "select c2 as descripcion from keplersc.kdivl " &
+						"where c1='" & linea_id & "'";
+							
+				rstXml(cubo);
+				cubo = frn.lib("libGeneral.kpl","EjecutarSqlSel",cmdQuery,"cat_vehiculo_crud.BuscarLinea()");
+				ok=getXmlAtt(cubo,"ok");
+				if(ok &! "" && !ok){
+					mensajeError = getXmlAtt(cubo,"native3");
+					mensajeError = frn.lib("libGeneral.kpl","ErrorBD",mensajeError);
+					frn.message(mensajeError,"Error","Aceptar");
+					return;	
+				}
+				if((nXml(cubo) == 0) && (linea_id &! "")) {
+					frn.setPos("k_linea");
+					frn.message("La linea del vehiculo no existe","Error","Aceptar");
+					resVal = 0;
+					return;
+                 } else{
+				    frn.set("k_desc_linea",getXmlAtt(cubo,"r0","descripcion"));	    
+				}		
+            }
+
+            fun ObtenerCodSat(){    
+                cmdQuery = "select c1 as clave, c2 as producto_servicio from keplersc.kdf3ps";
+                frn.dialog("genlistafiltrosel","Productos y Servicios SAT",cmdQuery,"clave","k_codsat","0","0","N","N");						   
+            }
+
+			fun BuscarCodSat(){
+				var codsat_id;
+				codsat_id=frn.get("k_codsat");
+				cmdQuery = "select c2 as producto_servicio from keplersc.kdf3ps " &
+						"where c1='" & codsat_id & "'";
+							
+				rstXml(cubo);
+				cubo = frn.lib("libGeneral.kpl","EjecutarSqlSel",cmdQuery,"cat_vehiculo_crud.BuscarCodSat()");
+				ok=getXmlAtt(cubo,"ok");
+				if(ok &! "" && !ok){
+					mensajeError = getXmlAtt(cubo,"native3");
+					mensajeError = frn.lib("libGeneral.kpl","ErrorBD",mensajeError);
+					frn.message(mensajeError,"Error","Aceptar");
+					return;	
+				}
+				if((nXml(cubo) == 0) && (codsat_id &! "")) {
+					frn.setPos("k_codsat");
+					frn.message("El codigo SAT no existe","Error","Aceptar");
+					resVal = 0;
+					return;
+                 }		
+            }
+
+            fun NoU() {
+                if (frn.get("k_nou") &= "N") {
+                    frn.set("k_nou","U");
+                } else {
+                    frn.set("k_nou","N");
+                }
+            }    
+
+            fun ValidaNoU(){
+                if (frn.get("k_nou") &! "N" && frn.get("k_nou") &! "U"){
+                    frn.setPos("k_nou");
+                    frn.message("Solo puede ser N o U","Error","&Aceptar");
+                    return;
+                }  
+            }
+
+			fun SoN(campo) {
+                if (frn.get(campo) &= "S") {
+                    frn.set(campo,"N");
+                } else {
+                    frn.set(campo,"S");
+                }
+            }    
+
+            fun ValidaSoN(campo){
+                if (frn.get(campo) &! "S" && frn.get(campo) &! "N"){
+                    frn.setPos(campo);
+                    frn.message("Solo puede ser S o N","Error","&Aceptar");
+                    return;
+                }  
+            }    
+
+			fun EjecutaPaquetes() {	
+				if (accion &! "NUEVO"){		
+					if ( strlen(frn.get("k_clave")) != 0 ) {
+						frn.dialog("cat_vehiculopaquetes_crud",accion, clave_sel,"n");
+						
+					}
+				}
+			}
+		}
+	</script>
+</pag>
