@@ -124,4 +124,5 @@ COMMENT ON COLUMN keplersc.kdctasser.c12 IS 'Fecha de cita';
 COMMENT ON COLUMN keplersc.kdctasser.c11 IS 'Kilometraje';
 COMMENT ON COLUMN keplersc.kdctasser.c10 IS 'Anio modelo';
 COMMENT ON COLUMN keplersc.kdctasser.c1 IS 'Sucursal';
+CREATE TRIGGER kdctasser_notif AFTER INSERT OR DELETE OR UPDATE ON keplersc.kdctasser FOR EACH ROW EXECUTE FUNCTION keplersc.notif_registrar_movto();
 

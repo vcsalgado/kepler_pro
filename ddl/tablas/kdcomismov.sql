@@ -63,4 +63,5 @@ COMMENT ON COLUMN keplersc.kdcomismov.c12 IS 'Modelo';
 COMMENT ON COLUMN keplersc.kdcomismov.c11 IS 'Tipo de Operacion';
 COMMENT ON COLUMN keplersc.kdcomismov.c10 IS 'Tipo 0 Alta; Tipo 1 Baja';
 COMMENT ON COLUMN keplersc.kdcomismov.c1 IS 'Sucursal';
+CREATE TRIGGER kdcomismov_notif AFTER INSERT OR DELETE OR UPDATE ON keplersc.kdcomismov FOR EACH ROW EXECUTE FUNCTION keplersc.notif_registrar_movto();
 
