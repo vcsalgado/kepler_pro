@@ -1,13 +1,13 @@
 CREATE  TABLE keplersc.kdspaqm (
   c1 character varying(5) NOT NULL DEFAULT ''::character varying,
   c2 character varying(10) NOT NULL DEFAULT ''::character varying,
-  c3 character varying(1) NOT NULL DEFAULT ''::character varying,
+  c3 character varying(4) NOT NULL DEFAULT ''::character varying,
   c4 character varying(5) NOT NULL DEFAULT ''::character varying,
   c5 character varying(1) NOT NULL DEFAULT ''::character varying,
   c6 character varying(20) NOT NULL DEFAULT ''::character varying,
   c7 numeric(10,2) NOT NULL DEFAULT 0
 ) TABLESPACE pg_default;
-ALTER TABLE ONLY keplersc.kdspaqm ADD CONSTRAINT pk_kdspaqm PRIMARY KEY (c1, c2, c4, c6);
+CREATE UNIQUE INDEX IF NOT EXISTS pk_kdspaqm ON keplersc.kdspaqm USING btree (c1, c2, c3, c4, c6) TABLESPACE pg_default;
 COMMENT ON COLUMN keplersc.kdspaqm.c7 IS 'Cantidad';
 COMMENT ON COLUMN keplersc.kdspaqm.c6 IS 'Clave';
 COMMENT ON COLUMN keplersc.kdspaqm.c4 IS 'Clave paquete';

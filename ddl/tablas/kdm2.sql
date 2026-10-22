@@ -50,7 +50,7 @@ COMMENT ON COLUMN keplersc.kdm2.c8 IS 'Clave producto';
 COMMENT ON COLUMN keplersc.kdm2.c7 IS 'Numero partida';
 COMMENT ON COLUMN keplersc.kdm2.c6 IS 'Folio';
 COMMENT ON COLUMN keplersc.kdm2.c5 IS 'Tipo';
-COMMENT ON COLUMN keplersc.kdm2.c40 IS 'Concepto';
+COMMENT ON COLUMN keplersc.kdm2.c40 IS 'Concepto o Clave producto paquete';
 COMMENT ON COLUMN keplersc.kdm2.c4 IS 'Grupo';
 COMMENT ON COLUMN keplersc.kdm2.c39 IS 'Orden de trabajo';
 COMMENT ON COLUMN keplersc.kdm2.c38 IS 'Venta En moneda';
