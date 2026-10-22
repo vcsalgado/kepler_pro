@@ -31,7 +31,7 @@ BEGIN
         FROM keplersc.ifz_parts_shipper_embarque ipse
         JOIN keplersc.ifz_parts_shipper_piezas pz ON ipse.id = pz.shipment_id
         LEFT outer JOIN keplersc.kdini ini ON ini.c1 = pz.item_id
-        WHERE ipse.documento_id = %L
+        WHERE ipse.documento_id = %L and pz.shipped_quantity > 0 
     $f$, sucursal, sucursal, sucursal, k_embarque);  -- 👈 Aquí inyectamos sucursal y k_embarque
 
     RAISE NOTICE 'SQL ejecutado: %', _xml;

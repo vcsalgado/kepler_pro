@@ -46,6 +46,8 @@ declare
 	no_partida_tx text;
 	entradaSalida text = '';
 
+	flag_schema text = ''; --VCSS 26/Julio/2027, Validacion de backorder para compras toyota
+
 	--Variables de retorno
 	resultado text;
 	mensaje text;
@@ -70,6 +72,8 @@ begin
 
 	referencia := coalesce((xpath('//document/k_refer/text()', dataxml))[1]::text,'')::text;
 	clave_cteprov := coalesce((xpath('//document/k_clave/text()', dataxml))[1]::text,'0')::text;
+
+	flag_schema := coalesce((xpath('//document/ambiente/schema/text()', dataxml))[1]::text,'')::text;
 
 	monto_total := coalesce((xpath('//document/k_monto/text()',dataxml))[1]::text,'0')::text;
 
@@ -115,11 +119,13 @@ begin
 
 	
 		clave_producto := coalesce((xpath('//document/k_mov/r' ||intCont||'/k_parte/text()',dataxml))[1],'');
-	
-		if upper(entradaSalida) = 'E' and deccantidad_partida <= 0 then
-			msg_err := msg_err || 'Partida [' || numero_partida::text || '] Producto ' || clave_producto || ' [ERR] Cantidad <= 0 ;';	
+
+		if upper(flag_schema) <> upper('partshipper') then --Se omite la validacion cuando es partshipper		
+			if upper(entradaSalida) = 'E' and deccantidad_partida <= 0 then
+				msg_err := msg_err || 'Partida [' || numero_partida::text || '] Producto ' || clave_producto || ' [ERR] Cantidad <= 0 ;';	
+			end if;
 		end if;
-	
+
 		clave_producto := btrim(clave_producto);
 		if length(clave_producto) = 0 then
 			msg_err := msg_err || 'Partida [' || numero_partida::text || '] , ' || ' [ERR] Sin Producto ;';

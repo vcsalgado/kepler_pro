@@ -10,6 +10,8 @@ declare
 --Bitacora de cambios
 --24/02/2025 Miriam Santana: Incluir el motivo de cancelacion de la anulacion por sustitucion
 --23/05/2025 Miriam Santana: Incluir el movimiento de sustitucion(nuevo) en una anulacion por sustitucion
+--13/08/2026 Miriam Santana: Incluir linea nueva DOCSRELATION para enviar datos de los anticipos seleccionados
+
 	--Variables para xml 
 	sucursal_id text;
 	genero text;
@@ -37,6 +39,7 @@ declare
 	strComplemento text;
 	strAdenda text;
 	strExtras text;
+	strAnticipos text;	--MSS 13082026 Anticipos seleccionados
 	dat_cfdi text = '';	--Pantalla validacion cfdi
 	rec record;
 
@@ -91,6 +94,12 @@ begin
 --raise notice '%','Inicia adenda';
 	--CALL CFD_ADENDA    
 	select * into resultado, mensaje, adicionales from keplersc.cfd_adenda(dataxml,xmlkdm1,xmlkdmm,cons_cfdi); 
+	if resultado = '0' then
+		raise exception '%',mensaje;
+	end if; 
+--raise notice '%','Inicia anticipos_sel';
+	--CALL CFD_ANTICIPOS_SELECCIONADOS							--MSS 13082026 Anticipos seleccionados
+	select * into resultado, mensaje, adicionales from keplersc.cfd_anticipos_seleccionados(dataxml,xmlkdm1,xmlkdmm,cons_cfdi); 
 	if resultado = '0' then
 		raise exception '%',mensaje;
 	end if; 
@@ -225,7 +234,20 @@ begin
 	strExtras := concat(strExtras,'|.');
 	insert into tmpResultados (cfdi)
 		values(strExtras);
-
+--raise notice '%','Termina extras';
+	--MSS 13082026 Anticipos seleccionados
+--Arma cadena de Anticipos
+	for rec in select * from keplersc.kdf3anticipos
+		where c1=sucursal_id and c2=genero and c3=naturaleza and c4=grupo::integer and c5=tipo::integer and c6=folio_operacion and c7=cons_cfdi::integer		
+	loop				
+	--	strAnticipos := concat('DOCSRELATION|',rec.c9,'|',rec.c10,'-',rec.c11,rec.c12,lpad(rec.c13::text,2,'0'),lpad(rec.c14::text,3,'0'),'-',rec.c15,'|',rec.c16,'|',rec.c17,'|',rec.c18,'|',rec.c19,'|.');
+	strAnticipos := concat('DOCSRELATION|',rec.c11,'|',rec.c12,'|',rec.c13,'|',rec.c14,'|',rec.c15,'|',rec.c9,'|.');
+		insert into tmpResultados (cfdi)
+		 	values(strAnticipos);			 
+	end loop;
+--raise notice '%','Termina anticipos';	
+--raise exception '%',strAnticipos;	
+	
 	expSql:= format('copy (select * from tmpresultados) to %1$L',nombre_archivo);
 	execute expSql;
 

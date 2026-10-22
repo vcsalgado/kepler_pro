@@ -26,6 +26,11 @@ declare
 	resultado text;
 	mensaje text;
 	adicionales text;
+
+	get_resultado text;
+	get_mensaje text; 
+	get_adicionales text;
+	varXml xml;
 begin
 	paquete_id := (xpath('//document/k_paquete/text()', dataxml))[1];
 	marca_id := (xpath('//document/k_marca/text()', dataxml))[1];
@@ -53,7 +58,19 @@ begin
 			where c1=marca_id and c2=modelo_id and c4=paquete_id;
 		end if;
 	end loop;
-
+/*
+	select xmlforest(usuario_movto as usuario, current_date as fecha, TO_CHAR(NOW(), 'HH24:MI:SS') as hora, 
+			'00' as sucursal, ' ' as genero, ' ' as naturaleza, 0 as grupo, 0 as tipo, 'X' as folio,
+			'ACTUALIZACION DE PAQUETE PRECIOS X PAQUETE' as tipo_movto, marca || '-' || modelo || '-' || paquete as detalle_movto) :: text into strValor;
+		
+	select '<document>'||strValor||'</document>' into strValor;
+	varXml := strValor::xml;
+					
+	select * into get_resultado, get_mensaje, get_adicionales from keplersc.usr_kdusraccess_alta(varXml);
+	if get_resultado = '0' then
+		raise exception '%',get_mensaje;
+	end if;
+*/
 	resultado := 1;
 	mensaje := '';
 	adicionales := '';

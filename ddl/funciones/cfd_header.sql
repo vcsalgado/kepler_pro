@@ -352,7 +352,7 @@ begin
 			--raise notice '%','si entro a if DE HEADER COMPLEMENT';
 				for importe_orig,importe_tm,cve_vehic_tm,marca_tm,modelo_tm,anio_tm,num_motor_tm,
 					vin_tm,val_libro_tm,num_importa_tm,fec_import_tm,niv_tm,aduana_tm
-					in select c9,c10,c4,c16,c5,c6,c11,c7,c17,c12,c13,c8,c14
+					in select c9,c10,c4,c16,c5,c6,left(c11,17),c7,c17,c12,c13,c8,c14
 					from keplersc.kdtomas 
 				where c1=sucursal_id and c2=cve_inventario
 					

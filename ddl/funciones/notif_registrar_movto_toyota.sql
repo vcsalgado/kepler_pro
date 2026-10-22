@@ -5,7 +5,7 @@ AS $function$
 DECLARE
     sucursal_id text;
     agencia text;
-	folio text; --RHFC Se incluye para la obtención delfolio en kdm1
+	folio text; --RHFC Se incluye para la obtenci  n delfolio en kdm1
 
 	intTransaction int;
 	expSql text;
@@ -25,15 +25,17 @@ BEGIN
     IF p_entidad='KDVNTALL' THEN
         sucursal_id := p_new.c1;
         IF p_operacion='INSERT' AND p_new.c5=0 THEN
-            procesar:='S';
-			interfaz:='DDOA';
-            api_id := 'DDOA_ROR';
-            datos_interfaz := jsonb_build_object(
-                'sucursal',sucursal_id,
-                'tipo_orden',p_new.c2,
-                'orden',p_new.c3,
-               	'agencia',agencia
-                );
+			IF (SELECT * FROM keplersc.ifz_habilita(sucursal_id, 'TOY_RepairOrder')) = 'S' THEN
+	            procesar:='S';
+				interfaz:='DDOA';
+	            api_id := 'DDOA_ROR';
+	            datos_interfaz := jsonb_build_object(
+	                'sucursal',sucursal_id,
+	                'tipo_orden',p_new.c2,
+	                'orden',p_new.c3,
+	               	'agencia',agencia
+	                );
+			END IF;
         END IF;
     END IF;
 
@@ -71,13 +73,15 @@ BEGIN
 			sucursal_id := p_new.c1;
 			folio := p_new.c8;
         	IF p_operacion='INSERT' THEN
-            	procesar:='S';
-				interfaz:='DDOA';
-            	api_id := 'DDOA_VIAI';
-            	datos_interfaz := jsonb_build_object(
-                	'agencia',agencia,
-                	'inventario',p_new.c2
-            	);
+				IF (SELECT * FROM keplersc.ifz_habilita(sucursal_id, 'TOY_CompraVehiculosNuevos')) = 'S' THEN
+	            	procesar:='S';
+					interfaz:='DDOA';
+	            	api_id := 'DDOA_VIAI';
+	            	datos_interfaz := jsonb_build_object(
+	                	'agencia',agencia,
+	                	'inventario',p_new.c2
+	            	);
+				END IF;
         	END IF;
 		END IF;	
 	END IF;
@@ -97,15 +101,17 @@ BEGIN
 		and c11 = p_new.c2 --Referencia del Pedido Sugerido
 		LIMIT 1;
         IF p_operacion='UPDATE' AND p_new.c4=20 THEN
-            procesar:='S';
-			interfaz:='DDOA';
-            api_id := 'DDOA_PO';
-            datos_interfaz := jsonb_build_object(
-                'sucursal',sucursal_id,
-                'tipo',1,
-                'pedido',folio,
-                'agencia',agencia
-            );
+			IF (SELECT * FROM keplersc.ifz_habilita(sucursal_id, 'TOY_PartsOrder')) = 'S' THEN
+	            procesar:='S';
+				interfaz:='DDOA';
+	            api_id := 'DDOA_PO';
+	            datos_interfaz := jsonb_build_object(
+	                'sucursal',sucursal_id,
+	                'tipo',1,
+	                'pedido',folio,
+	                'agencia',agencia
+	            );
+			END IF;
         END IF;
     END IF;
 
@@ -131,25 +137,30 @@ BEGIN
 	
 				if p_operacion='INSERT' then
 					if p_new.c9='A' then
-						procesar:='S';
-						interfaz:='CRM';
-						api_id := 'ifz_toy_bp/get_ty_orden_crear_od/';
-					--elsif p_new.c9 = 'M' and p_new.c8 = 50 then --OJO NUNCA VA ENTRAR
-						--procesar:='S';
-						
+						IF (SELECT * FROM keplersc.ifz_habilita(sucursal_id, 'TOY_CrearOrden')) = 'S' THEN
+							procesar:='S';
+							interfaz:='CRM';
+--							api_id := 'ifz_toy_bp/get_ty_orden_crear_od/';
+							api_id := 'CRM_WEB_TYT_ORDEN_CREAR_WF';
+						--elsif p_new.c9 = 'M' and p_new.c8 = 50 then --OJO NUNCA VA ENTRAR
+							--procesar:='S';
+						END IF;
 					end if;
 				end if;
 				if p_operacion='UPDATE' then
 					if (p_new.c9 = 'A' or p_new.c9 = 'M') and p_new.c8 = 50 then
-						procesar:='S';
-						interfaz:='CRM';
-						api_id := 'ifz_toy_bp/get_ty_orden_cerrar_od/';
+						IF (SELECT * FROM keplersc.ifz_habilita(sucursal_id, 'TOY_CerrarOrden')) = 'S' THEN
+							procesar:='S';
+							interfaz:='CRM';
+--							api_id := 'ifz_toy_bp/get_ty_orden_cerrar_od/';
+							api_id := 'CRM_WEB_TYT_ORDEN_CERRAR_WF';
+						END IF;
 					end if;
 				end if;
 		end if;
 		
 		--Crear cadena con datos de registro de orden
-		datos_interfaz:=concat('{"sucursal":"',sucursal_id,'",','"tipo_orden":"',p_new.c2,'",','"orden":"',p_new.c3,'",','"agencia":"',agencia,'"}');
+		datos_interfaz:=concat('{"sucursal":"',sucursal_id,'",','"tipo_orden":"',p_new.c2,'",','"folio_orden":"',p_new.c3,'",','"agencia":"',agencia,'"}');
 	end if;
 
 	--Se procesan las ordenes para evitar conflictos en caso de que se elimine la factura y la orden regrese al estado 40.
@@ -166,24 +177,33 @@ BEGIN
 				if p_operacion='INSERT' then
 					if p_new.c5 = 10 then
 						--Se elimina la orden en el sistema de bp
-						api_id := 'ifz_toy_bp/delete_ty_orden_eliminar_od/';
-						datos_interfaz:=concat('{"sucursal":"',sucursal_id,'",','"tipo_orden":"',p_new.c2,'",','"orden":"',p_new.c3,'",','"agencia":"',agencia,'"}');
-						select coalesce(max(id_transaccion),0) + 1 into intTransaction from keplersc.notif_api_control_envios;
-						insert into keplersc.notif_api_control_envios (id_transaccion,api_id,datos_interfaz) values(intTransaction,api_id,datos_interfaz);
-						--Execute sin CIRDAN
-						expSql := format('notify interfaces_toyota, ''%s''', intTransaction);
-	        			EXECUTE expSql;
-						RAISE NOTICE 'notify interfaces_toyota enviado: %', intTransaction;
+						IF (SELECT * FROM keplersc.ifz_habilita(sucursal_id, 'TOY_EliminarOrden')) = 'S' THEN
+--							api_id := 'ifz_toy_bp/delete_ty_orden_eliminar_od/';
+							api_id := 'CRM_WEB_TYT_ORDEN_ELIMINAR_WF';
+							datos_interfaz:=concat('{"sucursal":"',sucursal_id,'",','"tipo_orden":"',p_new.c2,'",','"folio_orden":"',p_new.c3,'",','"agencia":"',agencia,'"}');
+--							select coalesce(max(id_transaccion),0) + 1 into intTransaction from keplersc.notif_api_control_envios;
+							select id_notif into intTransaction from keplersc.obtener_folio_notif();
 
+							insert into keplersc.notif_api_control_envios (id_transaccion,api_id,datos_interfaz) values(intTransaction,api_id,datos_interfaz);
+							--Execute sin CIRDAN
+							expSql := format('notify interfaces_toyota, ''%s''', intTransaction);
+		        			EXECUTE expSql;
+							RAISE NOTICE 'notify interfaces_toyota enviado: %', intTransaction;
+						END IF;
 						--Se vuelve a crear la orden en el sistema de bp
-						api_id := 'ifz_toy_bp/get_ty_orden_crear_od/';
-						datos_interfaz:=concat('{"sucursal":"',sucursal_id,'",','"tipo_orden":"',p_new.c2,'",','"orden":"',p_new.c3,'",','"agencia":"',agencia,'"}');
-						select coalesce(max(id_transaccion),0) + 1 into intTransaction from keplersc.notif_api_control_envios;
-						insert into keplersc.notif_api_control_envios (id_transaccion,api_id,datos_interfaz) values(intTransaction,api_id,datos_interfaz);
-						--Execute sin CIRDAN
-						expSql := format('notify interfaces_toyota, ''%s''', intTransaction);
-	        			EXECUTE expSql;
-						RAISE NOTICE 'notify interfaces_toyota enviado: %', intTransaction;
+						IF (SELECT * FROM keplersc.ifz_habilita(sucursal_id, 'TOY_CrearOrden')) = 'S' THEN
+--							api_id := 'ifz_toy_bp/get_ty_orden_crear_od/';
+							api_id := 'CRM_WEB_TYT_ORDEN_ELIMINAR_WF';
+							datos_interfaz:=concat('{"sucursal":"',sucursal_id,'",','"tipo_orden":"',p_new.c2,'",','"folio_orden":"',p_new.c3,'",','"agencia":"',agencia,'"}');
+
+--							select coalesce(max(id_transaccion),0) + 1 into intTransaction from keplersc.notif_api_control_envios;
+							select id_notif into intTransaction from keplersc.obtener_folio_notif();
+							insert into keplersc.notif_api_control_envios (id_transaccion,api_id,datos_interfaz) values(intTransaction,api_id,datos_interfaz);
+							--Execute sin CIRDAN
+							expSql := format('notify interfaces_toyota, ''%s''', intTransaction);
+		        			EXECUTE expSql;
+							RAISE NOTICE 'notify interfaces_toyota enviado: %', intTransaction;
+						END IF;
 					end if;
 				end if;
 		end if;
@@ -200,13 +220,16 @@ BEGIN
 			) then
 
 			if p_operacion='INSERT' then
-				procesar:='S';
-				interfaz:='CRM';
-				api_id := 'ifz_toy_bp/delete_ty_orden_eliminar_od/';
+				IF (SELECT * FROM keplersc.ifz_habilita(sucursal_id, 'TOY_EliminarOrden')) = 'S' THEN
+					procesar:='S';
+					interfaz:='CRM';
+--					api_id := 'ifz_toy_bp/delete_ty_orden_eliminar_od/';
+					api_id := 'CRM_WEB_TYT_ORDEN_ELIMINAR_WF';
+				END IF;
 			end if;
 		
 			--Crear cadena con datos de registro de orden eliminada
-			datos_interfaz:=concat('{"sucursal":"',sucursal_id,'",','"tipo_orden":"',p_new.c2,'",','"orden":"',p_new.c3,'",','"agencia":"',agencia,'"}');
+			datos_interfaz:=concat('{"sucursal":"',sucursal_id,'",','"tipo_orden":"',p_new.c2,'",','"folio_orden":"',p_new.c3,'",','"agencia":"',agencia,'"}');
 
 		end if;
 	end if;
@@ -229,33 +252,47 @@ BEGIN
 				if p_operacion='INSERT' and p_new.origen = 'K80' then
 					if p_new.c20 = 0 and p_new.c19 = 'A' then
 					-- Pendiente
-						procesar:='S';
-						interfaz:='CRM';
-						api_id := 'ifz_toy_bp/get_ty_cita_crear_od/';
+						IF (SELECT * FROM keplersc.ifz_habilita(sucursal_id, 'TOY_CrearCita')) = 'S' THEN
+							procesar:='S';
+							interfaz:='CRM';
+--							api_id := 'ifz_toy_bp/get_ty_cita_crear_od/';
+							api_id := 'CRM_WEB_TYT_CITA_CREAR_WF';
+						END IF;
 					elsif p_new.c19 = 'M'	then
-						procesar := 'S';
-						interfaz:='CRM';
-						api_id := 'ifz_toy_bp/get_ty_cita_crear_od/'; --Checar con Pepe
+						IF (SELECT * FROM keplersc.ifz_habilita(sucursal_id, 'TOY_CrearCita')) = 'S' THEN
+							procesar := 'S';
+							interfaz:='CRM';
+--							api_id := 'ifz_toy_bp/get_ty_cita_crear_od/'; --Checar con Pepe
+							api_id := 'CRM_WEB_TYT_CITA_CREAR_WF';
+						END IF;
 					end if;
 				end if;
 				
 				if p_operacion = 'UPDATE' then
 					if p_new.c20 in (30,40) then
 					--Eliminada
-						procesar:='S';
-						interfaz:='CRM';
-						api_id := 'ifz_toy_bp/delete_ty_cita_eliminar_od/';
+						IF (SELECT * FROM keplersc.ifz_habilita(sucursal_id, 'TOY_EliminarCita')) = 'S' THEN
+							procesar:='S';
+							interfaz:='CRM';
+--							api_id := 'ifz_toy_bp/delete_ty_cita_eliminar_od/';
+							api_id := 'CRM_WEB_TYT_CITA_ELIMINAR_WF';
+						END IF;
 					elsif p_new.c20 = 20 then
 					-- Realizada
-						procesar:='S';
-						interfaz:='CRM';
-						api_id := 'ifz_toy_bp/get_ty_cita_realizada_od/';
-					
+						IF (SELECT * FROM keplersc.ifz_habilita(sucursal_id, 'TOY_CitaRealizada')) = 'S' THEN
+							procesar:='S';
+							interfaz:='CRM';
+--							api_id := 'ifz_toy_bp/get_ty_cita_realizada_od/';
+							api_id := 'CRM_WEB_TYT_CITA_REALIZADA_WF';
+						END IF;
 					elsif p_new.c20 = 50 then
 					--No show
-						procesar:='S';
-						interfaz:='CRM';
-						api_id := 'ifz_toy_bp/get_ty_cita_norealizada_od/';
+						IF (SELECT * FROM keplersc.ifz_habilita(sucursal_id, 'TOY_CitaNoRealizada')) = 'S' THEN
+							procesar:='S';
+							interfaz:='CRM';
+--							api_id := 'ifz_toy_bp/get_ty_cita_norealizada_od/';
+							api_id := 'CRM_WEB_TYT_CITA_NO_REALIZADA_WF';
+						END IF;
 					end if;
 				end if;
 		end if;		

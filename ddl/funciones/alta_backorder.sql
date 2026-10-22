@@ -57,6 +57,8 @@ declare
     cant_d decimal = 0.00;
 	pu_d decimal = 0.00;
 	monto_d decimal = 0.00;
+
+	flag_schema text = ''; --VCSS 26/Julio/2027, Validacion de backorder para compras toyota
    
 	--Variables de retorno
 	resultado text;
@@ -72,6 +74,8 @@ begin
 	tipo := (xpath('//document/k_tipon/r4/text()', dataxml))[1];
 
 	refer := (xpath('//document/k_refer/text()', dataxml))[1];
+
+	flag_schema := coalesce((xpath('//document/ambiente/schema/text()', dataxml))[1]::text,'')::text;
 
     folio := p_folio_operacion; 
     
@@ -127,16 +131,28 @@ begin
 			mensaje := 'Partidas con datos incompletos ...';
 			raise exception '%', mensaje;	
 		end if;
-	
+
+		--VCSS manejo de reemplazo, manejar refaccion original en back order. 30 Marzo 2026
+		SELECT coalesce(clave_original,'') into strValor FROM keplersc.prod_consulta_lista(suc, parte, 'CLAVE') LIMIT 1;
+
+		if strValor <> '' then
+			parte := strValor;
+		end if;
+
 		if no_vacios > 0 then
 			-- Validar datos de catalogos ...
 		
 			totReg := 0;
 			select count(c1) into totReg from keplersc.kdini where c1 = parte;
 			if totReg = 0 then
-				mensaje := 'No se encontro el Registro en la Tabla Kdini [Productos], [' || parte || ']';
-				raise exception '%', mensaje;
+				select count(c1) into totReg from keplersc.kdinr where c1 = parte; --VCSS Validacion reemplazo 30 Marzo 2026
+				if totReg = 0 then
+					mensaje := 'No se encontro el Registro de la refacción ' || parte || ' como original o reemplazo. ';
+					raise exception '%', mensaje;
+				end if;
 			end if;	
+
+
 	
 			/*
 			 *  ESTA SECCION RESUELVE VERIFY_BACKORDER_ALTA 
@@ -146,15 +162,17 @@ begin
 			existencias := 0;
 			select (c3 - c4) into cantReg from keplersc.kdbol 
 			where c1 = suc and c2 = parte;
-			existencias/*cantReg*/ := coalesce(cantReg, -1);
-			if existencias/*cantReg*/ < 0 or cantReg is null then
+			existencias := coalesce(cantReg, -1);
+			if existencias < 0 or cantReg is null then
 				if nat = 'A' then
-					if cantReg is null then 
-						mensaje := 'No existe registro en el backorder, item [' || parte || ']';
-					else
-						mensaje := 'No puede manejar existencias negativas, item [' || parte || ']';
+					if upper(flag_schema) <> upper('partshipper') then --Se omite la validacion de backorder
+						if cantReg is null then 
+							mensaje := 'No existe registro en el backorder, item [' || parte || ']';
+						else
+							mensaje := 'No puede manejar existencias negativas, item [' || parte || ']';
+						end if;
+						raise exception '%', mensaje;
 					end if;
-					raise exception '%', mensaje;
 				end if;
 			else
 				existencias := cantReg;
@@ -163,17 +181,17 @@ begin
 			cant_d := cant::decimal;
 		
 			if gen = 'X' then
-			
-				if existencias <= 0 then
-					mensaje := 'La refaccion no ha sido solicitada, item [' || parte || ']';
-					raise exception '%', mensaje;
+				if upper(flag_schema) <> upper('partshipper') then --Se omite la validacion de backorder
+					if existencias <= 0 then
+						mensaje := 'La refaccion no ha sido solicitada, item [' || parte || ']';
+						raise exception '%', mensaje;
+					end if;
+				
+					if existencias < cant_d then
+						mensaje := 'Unicamente se espera la compra de ' || existencias::text || 'VS. ' || cant || ' para el item [' || parte || ']';
+						raise exception '%', mensaje;
+					end if;
 				end if;
-			
-				if existencias < cant_d then
-					mensaje := 'Unicamente se espera la compra de ' || existencias::text || 'VS. ' || cant || ' para el item [' || parte || ']';
-					raise exception '%', mensaje;
-				end if;
-			
 			else
 			
 				if gen = 'N' and nat = 'A' then
@@ -219,7 +237,13 @@ begin
 		cant_d := cant::decimal;
 		pu_d := pu::decimal;
 		monto_d := monto::decimal;
-		 
+
+		--VCSS manejo de reemplazo, manejar refaccion original en back order. 30 Marzo 2026
+		SELECT coalesce(clave_original,'') into strValor FROM keplersc.prod_consulta_lista(suc, parte, 'CLAVE') LIMIT 1;
+		if strValor <> '' then
+			parte := strValor;
+		end if;
+
 		-- Cantidad debe ser > 0  
 		if cant_d <= 0 then 
 			mensaje := 'Cantidad debe ser > 0 , [' || parte || ']';
@@ -287,8 +311,10 @@ begin
 					values ( suc, parte, 0, cant_d );
 					*/
 					-- No debe permitir Salidas sino existen registros previos de Entrada
-					mensaje := 'No existen registros del item [' || parte || '] , No se puede registrar la salida.';
-					raise exception '%', mensaje; 	 
+					if upper(flag_schema) <> upper('partshipper') then --Se omite la validacion de backorder
+						mensaje := 'No existen registros del item [' || parte || '] , No se puede registrar la salida.';
+						raise exception '%', mensaje; 	
+					end if; 
 				end if;
 			else
 				if nat <> 'A' then
@@ -302,8 +328,10 @@ begin
 					where c1 = suc and c2 = parte;
 					cantReg := coalesce(cantReg, -1);
 					if cantReg < 0 or cant_d > cantReg then
-						mensaje := 'No puede manejar existencias negativas, item [' || parte || ']';
-						raise exception '%', mensaje; 	
+						if upper(flag_schema) <> upper('partshipper') then --Se omite la validacion de backorder, simplemente no se registra
+							mensaje := 'No puede manejar existencias negativas, item [' || parte || ']';
+							raise exception '%', mensaje;
+						end if; 	
 					else
 						update keplersc.kdbol  
 						set 

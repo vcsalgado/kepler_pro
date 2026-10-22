@@ -1,17 +1,10 @@
-CREATE OR REPLACE FUNCTION keplersc.verify_cuenta_ult_nivel(cuenta text, anio text)
- RETURNS TABLE(resultado text, mensaje text, adicionales text)
+CREATE OR REPLACE FUNCTION keplersc.verify_cuenta_ult_nivel(cuenta text, anio integer)
+ RETURNS boolean
  LANGUAGE plpgsql
 AS $function$
 declare
-	--Descripcion: Verifica que la cuenta proporcionada sea de ultimo nivel
-	--Autor: Victor Salgado
-	--Fecha: 23 Ago 2022
-
-	--Variables de retorno
-	resultado text;
-	mensaje text;
-	adicionales text;
-
+  --Clon de verify_cuenta_ult_nivel
+  --Ajustada para funcionar directamente en un query
 	--variables de uso general
 	tabla_cuentas text = '';
 	intValor int = 0;
@@ -24,7 +17,7 @@ begin
 
 	execute expSql into intValor;
 	if intValor = 0 then --La cuenta no existe
-		raise exception 'La cuenta % no existe.',cuenta;
+		return false;
 	end if;	
 
 	--Validar que la cuenta es de último nivel
@@ -32,20 +25,9 @@ begin
 
 	execute expSql into intValor;
 	if intValor > 1 then --no es cuenta del mas bajo nivel
-		raise exception 'La cuenta % no es de último nivel.',cuenta;
+		return false;
 	end if;	
 
-
-	resultado := 1;
-	mensaje := '';
-	adicionales := '';
-	return query select resultado, mensaje, adicionales;	
-
-exception
-	when others then
-		resultado := 0;
-		mensaje := sqlerrm;
-		adicionales := '';
-		return query select resultado, mensaje, adicionales;	
+	return true;
 end;
 $function$
