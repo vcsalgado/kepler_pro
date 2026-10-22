@@ -14,9 +14,9 @@ declare
 --13/03/2025 Miriam Santana: Agregar configuracion para las aplicaciones de anticipos flag_cobros=APLICA_ANTICIPO
 --23/05/2025 Miriam Santana: Incluir el movimiento de sustitucion(nuevo) en una anulacion por sustitucion
 --16/10/2025 Miriam Santana: Modificar la configuracion para las aplicaciones de anticipos flag_cobros=APLICA_ANTICIPO se manejen igual que las notas de credito en la linea 1
---08/01/2026 Miriam Santana: Relacionar el anticipo seleccionado con la factura y enviarlo como se manejen las notas de credito en la linea 1
 --18/02/2026 Miriam Santana: La Nota de Credito UD61 de una Nota de descto debe ser EGRESO
 --23/02/2026 Miriam Santana: Los anticipos sin IVA que aplican a facturas de unidades seminuevas les envie tasa de impto = 0
+--12/08/2026 Miriam Santana: La relacion del anticipo seleccionado no se envie en la linea 1, se enviaran en una linea nueva DOCSRELATION 
 
 	--Variables para xml 
 	sucursal_id text;
@@ -352,7 +352,7 @@ begin
 			--raise notice '%','si entro a if DE HEADER COMPLEMENT';
 				for importe_orig,importe_tm,cve_vehic_tm,marca_tm,modelo_tm,anio_tm,num_motor_tm,
 					vin_tm,val_libro_tm,num_importa_tm,fec_import_tm,niv_tm,aduana_tm
-					in select c9,c10,c4,c16,c5,c6,c11,c7,c17,c12,c13,c8,c14
+					in select c9,c10,c4,c16,c5,c6,left(c11,17),c7,c17,c12,c13,c8,c14
 					from keplersc.kdtomas 
 				where c1=sucursal_id and c2=cve_inventario
 					
@@ -471,20 +471,6 @@ begin
 					tipo_rel_notcred := '07';						--Tipo de Relacion para Aplicacion de anticipos debe se 07
 				else
 					tipo_rel_notcred := '01';						--Tipo de Relacion Nota de Credito
-					
-					--MSS 08012026 Relacionar el anticipo seleccionado en KDF3NCANT con la factura 
-					if naturaleza = 'D' then
-						select count(*) into totReg	from keplersc.kdf3ncant
-							where c1=sucursal_id and tipo_relacion='07' and genero_doctorel=genero and naturaleza_doctorel=naturaleza and grupo_doctorel=grupo::integer and tipo_doctorel=tipo::integer and folio_relacionado=folio_operacion; 
-	
-						if totReg>0 then
-							select c2,c3,c4,c5,c6,tipo_relacion 
-								into gen_docto_anx,nat_docto_anx,gpo_docto_anx,tip_docto_anx,folio_docto_anx,tipo_rel_notcred 
-								from keplersc.kdf3ncant
-								where c1=sucursal_id and tipo_relacion='07' and genero_doctorel=genero and naturaleza_doctorel=naturaleza and grupo_doctorel=grupo::integer and tipo_doctorel=tipo::integer and folio_relacionado=folio_operacion; 
-						end if;
-					end if;
-				
 				end if;
 			end if;
 		end if;
@@ -501,6 +487,7 @@ begin
 		--MSS 24/09/2024 Escapar & y '
 		razon_social := regexp_replace(razon_social,'&AMP;','&','gi');
 		razon_social:=regexp_replace(razon_social,'\\''','''','gi');
+		
 		insert into keplersc.kdf3header (
 			c1,c2,c3,c4,c5,
 			c6,c7,c8,c9,c10,

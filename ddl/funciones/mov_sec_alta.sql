@@ -162,7 +162,8 @@ begin
 		
 			costo_moneda := coalesce((xpath('//document/r' ||cont||'/k_costomoneda/text()', dataxml))[1]::text,'0')::text;
 			venta_moneda := coalesce((xpath('//document/r' ||cont||'/k_venta/text()', dataxml))[1]::text,'0')::text;
-			concepto := coalesce((xpath('//document/r' ||cont||'/k_concepto/text()', dataxml))[1]::text,'')::text;	
+			concepto := coalesce((xpath('//document/r' ||cont||'/k_concepto/text()', dataxml))[1],
+								 (xpath('//document/k_mov/r' ||cont||'/k_refacc_paq/text()',dataxml))[1]);					
 	
 			insert into keplersc.kdm2 (
 				c1,c2,c3,c4,c5,
@@ -180,7 +181,7 @@ begin
 				tipo_docant::integer,folio_docant,partida_docant::integer,saldo_unid_part::decimal,cve_cliente,
 				costo_venta_partida::decimal,codigo_requisicion,clave_original,cve_almacen::integer,num_cargos::integer,			
 				cant_rest_docant::decimal,to_date(fecha_part,'YYYY-MM-DD'),monto_costo::decimal,exist_prev_unid::decimal,exist_prev_pesos::decimal,
-				moneda,costo_moneda::decimal,venta_moneda::decimal,orden_trabajo,concepto);
+				moneda,costo_moneda::decimal,venta_moneda::decimal,orden_trabajo,coalesce(concepto,''));
 			
 		end if; --if deccantidad_partida > 0 
 		

@@ -49,7 +49,7 @@ v_oc7 text = '';
 v_oc8 text = '';
 v_pc4 text = '';
 v_pc6 text = '';
-
+v_oc10 text = '';
 /*
 v_qc7 numeric = 0;
 c_n1 numeric = 0;
@@ -302,7 +302,7 @@ begin
 			
 				c_n6 = 0;			
 			
-				for v_oc2, v_oc7, v_oc8 in select c2,c7,c8 from keplersc.KDCTASSER where c1 = v_sucursal_id and c20 = 10 and to_date(c12::text,'YYYY-MM-DD')/*c12*/ > current_date  
+				for v_oc2, v_oc7, v_oc8, v_oc10 in select c2,c7,c8,c10 from keplersc.KDCTASSER where c1 = v_sucursal_id and c20 = 10 and to_date(c12::text,'YYYY-MM-DD')/*c12*/ > current_date  
 				loop 
 					
 					for v_pc4, v_pc6 in select c4,c6 from keplersc.KDCTASSERMOV where c1 = v_sucursal_id and c2 = v_oc2
@@ -310,7 +310,7 @@ begin
 						
 						if v_pc4 = 'S' then
 						
-							for v_qc7 in select c7 from	keplersc.KDSPAQM where c1 = v_oc7 and c2 = v_oc8 and c4 = v_pc6 and c6 = v_fc2 
+							for v_qc7 in select c7 from	keplersc.KDSPAQM where c1 = v_oc7 and c2 = v_oc8 and c3 = v_oc10 and c4 = v_pc6 and c6 = v_fc2 
 							loop 
 								c_n6 = c_n6 + coalesce(v_qc7,0);
 							end loop; 		

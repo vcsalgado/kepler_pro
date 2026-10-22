@@ -29,10 +29,15 @@ begin
     where c1 = sucursal_id;
 	
 	datos_interfaz := '{}'::jsonb;
-	api_id := 'DDOA_SSC';	 
+	api_id := 'DDOA_SSC';	
+
+/* 
  	select coalesce(max(id_transaccion),0)+1
     	into intTransaction
     	from keplersc.notif_api_control_envios;
+*/
+
+	select id_notif into intTransaction from keplersc.obtener_folio_notif();
 
 	datos_interfaz := jsonb_build_object(
                 'DealerID', dealer,'Vin',vin

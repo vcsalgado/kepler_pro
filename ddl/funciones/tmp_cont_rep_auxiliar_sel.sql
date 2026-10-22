@@ -1,4 +1,4 @@
-CREATE OR REPLACE FUNCTION keplersc.tmp_cont_rep_auxiliar_sel(cuenta_inicial text, cuenta_final text, fecha_inicial date, fecha_final date, id_job uuid)
+CREATE OR REPLACE FUNCTION keplersc.tmp_cont_rep_auxiliar_sel(cuenta_inicial text, cuenta_final text, fecha_inicial timestamp without time zone, fecha_final timestamp without time zone, id_job uuid)
  RETURNS numeric
  LANGUAGE plpgsql
 AS $function$
@@ -60,10 +60,10 @@ declare
 	--variables de retorno
 	xmlAuxiliar xml;
 begin	
-	fecha_ini := fecha_inicial::text;
-	fecha_fin := fecha_final::text;
-	cuenta_ini := cuenta_inicial;
-	cuenta_fin := cuenta_final;
+	fecha_ini := (xpath('//document/fecha_ini/text()', dataxml))[1]; --aaaa-mm-dd
+	fecha_fin := (xpath('//document/fecha_fin/text()', dataxml))[1]; --aaaa-mm-dd
+	cuenta_ini := coalesce((xpath('//document/cta_ini/text()', dataxml))[1],'0');
+	cuenta_fin := coalesce((xpath('//document/cta_fin/text()', dataxml))[1],'Z');
 
 	str_anio := substring(fecha_ini, 3, 2);
 	str_mes_ini = substring(fecha_ini, 6, 2);
@@ -102,9 +102,7 @@ begin
 
 	-- crear tabla temporal a partir de kdc2, sin registros
 	delete from keplersc.tmp_cont_rep_auxiliar 
-	where fecha_ejecucion < current_date;
-
-	drop table if exists tmpkdc2;
+	where to_date(fecha, 'yyyy-mm-dd') < current_date;
 	create temp table tmpkdc2 as select * from keplersc.kdc2;
 
 	create index tmpKdc2_1_idx on tmpkdc2 (c1,c2);
@@ -212,7 +210,7 @@ raise notice 'Cuenta:% Poliza:% SI:% C:% A:% SF:%',
 	end loop;
 
 	INSERT INTO keplersc.tmp_cont_rep_auxiliar
-	(cuenta, desc_cuenta, tipo_poliza, poliza, referencia, fecha_poliza, sucursal, documento, desc_documento, usuario, desc_poliza, cargo, abono, saldo, saldo_inicial, id_consulta, fecha_ejecucion, orden)
+	(cuenta, desc_cuenta, tipo_poliza, poliza, referencia, fecha, sucursal, documento, desc_documento, usuario, desc_poliza, cargo, abono, saldo, saldo_inicial, id_consulta, fecha_ejecucion, orden)
 	select 
 		c3, 
 		desc_cuenta, 
@@ -221,8 +219,8 @@ raise notice 'Cuenta:% Poliza:% SI:% C:% A:% SF:%',
 		c7,
 		c2,
 		c14,
-		c15||c16||to_char(c17, 'fm00')||to_char(c18, 'fm000')||c19,
-		desc_movto,
+		c15||c16||to_char(c17, 'fm00')||to_char(c18, 'fm000')||c19, c10,
+		desc_mvto,
 		usuario,
 		c6,
 		cargos,

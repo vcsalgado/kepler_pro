@@ -71,13 +71,18 @@ begin
 				else
 					update keplersc.kdf3ncant set
 						folio_relacionado = cve_seleccion				
-						where c1=sucursal_id and c2=genero and c3=naturaleza and c4=grupo::integer and c5=tipo::integer and c6=folio;
+						where c1=sucursal_id and c2=genero 
+							and c3=naturaleza and c4=grupo::integer 
+							and c5=tipo::integer and c6=folio;
 				end if; 	
 			else
 				update keplersc.kdf3ncant set
 					folio_relacionado = ''				
-					where c1=sucursal_id and c2=genero and c3=naturaleza and c4=grupo::integer and c5=tipo::integer and c6=folio;
-			
+					where c1=sucursal_id and c2=genero 
+						and c3=naturaleza and c4=grupo::integer 
+						and c5=tipo::integer and c6=folio
+						and folio_relacionado=cve_seleccion;
+ 			
 			end if;
 		end loop;
 	end if;

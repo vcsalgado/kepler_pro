@@ -90,6 +90,7 @@ v_DiasVenBus_A4 numeric=0;
 v_DelayTraslado_A5 numeric =0;
 v_Formula_A7 text ='';
 v_InvVirtual_A11 text = '';
+v_oc10_anio text ='';
 BEGIN
 
 	--crear tablas temporales
@@ -410,12 +411,12 @@ raise notice 'Backorder salidas:%',c_n4_backorder_salidas;
 
 					if v_InvVirtual_A11 = 'S' then 
 						c_n6_total_cantidad_paquetes = 0;			
-						for v_oc2_folcita, v_oc7_marca, v_oc8_modelo in select c2,c7,c8 from keplersc.KDCTASSER where c1 = v_sucursal_id and c20 = 10 and to_date(c12::text,'YYYY-MM-DD')/*c12*/ > current_date  
+						for v_oc2_folcita, v_oc7_marca, v_oc8_modelo, v_oc10_anio in select c2,c7,c8,c10 from keplersc.KDCTASSER where c1 = v_sucursal_id and c20 = 10 and to_date(c12::text,'YYYY-MM-DD')/*c12*/ > current_date  
 						loop 
 							for v_pc4_Cita_autorizada, v_pc6_Paquete in select c4,c6 from keplersc.KDCTASSERMOV where c1 = v_sucursal_id and c2 = v_oc2_folcita
 							loop 
 								if v_pc4_Cita_autorizada = 'S' then
-									for v_qc7_cantidad_paquete in select c7 from	keplersc.KDSPAQM where c1 = v_oc7_marca and c2 = v_oc8_modelo and c4 = v_pc6_Paquete and c6 = v_C1_Refaccion 
+									for v_qc7_cantidad_paquete in select c7 from keplersc.KDSPAQM where c1 = v_oc7_marca and c2 = v_oc8_modelo and c3 = v_oc10_anio and c4 = v_pc6_Paquete and c6 = v_C1_Refaccion 
 									loop 
 										c_n6_total_cantidad_paquetes = c_n6_total_cantidad_paquetes + coalesce(v_qc7_cantidad_paquete,0);
 									end loop; 		

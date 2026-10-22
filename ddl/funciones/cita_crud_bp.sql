@@ -165,13 +165,18 @@ declare
     adicionales text = '';
    
    	tipo_crud text; 
+	interfazorigen text=''; --CRM o Interfaz ASP
+
+	nombre text = '';
+
 	
+
 begin 
 	
-	sucursal_id := (xpath('//document/k_sucN/r1/text()', dataxml))[1]; 
+	sucursal_id := coalesce((xpath('//document/k_sucN/r1/text()', dataxml))[1]::text,'')::text;
 	fol_cita_modificar:= coalesce((xpath('//document/folio_cita/text()', dataxml))[1]::text,'')::text;
 	Asesor_TMKT :=  coalesce((xpath('//document/Cve_TMKT/r1/text()', dataxml))[1]::text,'')::text; 
-	clave_cliente := (xpath('//document/cliente_id/text()', dataxml))[1]; 
+	clave_cliente := coalesce((xpath('//document/cliente_id/text()', dataxml))[1]::text,'')::text; 
 
 	fecha_captura_cita := ((xpath('//document/fecha_captura/text()', dataxml))[1]::text)::date; 
 	hora_captura_cita := ((xpath('//document/hora_captura_cita/text()', dataxml))[1]::text)::time;
@@ -180,7 +185,7 @@ begin
 	hora_cita :=  ((xpath('//document/hora_cita/text()', dataxml))[1]::text)::time; 
 	fecha_promesa_entrega := ((xpath('//document/fecha_entrega/text()', dataxml))[1]::text)::date;  
 	hora_promesa_entrega := ((xpath('//document/hora_entrega/text()', dataxml))[1]::text)::time; 
-	recepcionista := (xpath('//document/recepcionista/r1/text()', dataxml))[1]; 
+	recepcionista := coalesce((xpath('//document/recepcionista/r1/text()', dataxml))[1]::text,'')::text; 
 
 	posible_fecha_entrega := ((xpath('//document/posible_fecha_entrega/text()', dataxml))[1]::text)::date;  
 	posible_hora_entrega := ((xpath('//document/posible_hora_entrega/text()', dataxml))[1]::text)::time; 
@@ -189,36 +194,36 @@ begin
 
 	vin := coalesce((xpath('//document/vin/text()', dataxml))[1]::text,'')::text; 
 	placas := coalesce((xpath('//document/placas/text()', dataxml))[1]::text,'')::text; 
- 	marca := (xpath('//document/marca/text()', dataxml))[1];
-	modelo := (xpath('//document/modelo/text()', dataxml))[1];
+ 	marca := coalesce((xpath('//document/marca/text()', dataxml))[1]::text,'')::text;
+	modelo := coalesce((xpath('//document/modelo/text()', dataxml))[1]::text,'')::text;
 	serie := coalesce((xpath('//document/serie/text()', dataxml))[1]::text,'')::text; 
 	anio := coalesce((xpath('//document/anio/text()', dataxml))[1]::text,'')::text; 
 	kms := coalesce((xpath('//document/kms/text()', dataxml))[1]::text,'0.00')::text; 
 	
 	observaciones := coalesce((xpath('//document/observaciones/text()', dataxml))[1]::text,'')::text; 
 	codigo := coalesce((xpath('//document/codigo/text()', dataxml))[1]::text,'')::text; 
-	tipo_cita := (xpath('//document/tipo_cita/r1/text()', dataxml))[1]; 
-	puntos := (xpath('//document/tabla_puntos/text()', dataxml))[1];
+	tipo_cita := coalesce((xpath('//document/tipo_cita/r1/text()', dataxml))[1]::text,'')::text; 
+	puntos := coalesce((xpath('//document/tabla_puntos/text()', dataxml))[1]::text,'')::text;
 	usuario := coalesce((xpath('//document/usuario/text()', dataxml))[1]::text,'')::text;
- 	tipo_operacion := ((xpath('//document/tipo_operacion/text()', dataxml))[1]::text)::integer; 
+ 	tipo_operacion := coalesce((xpath('//document/tipo_operacion/text()', dataxml))[1]::text,'0')::integer; 
  	no_show := coalesce((xpath('//document/no_show/text()', dataxml))[1]::text,'no')::text;
 
- 	tipo_serv := (xpath('//document/cmb_tipo_servicio/r1/text()', dataxml))[1];
-	ubicacion_serv := (xpath('//document/cmb_ubica_servicio/r1/text()', dataxml))[1];
-	calle_rec := (xpath('//document/calle_recoleccion/text()', dataxml))[1];
-	num_ext_rec := (xpath('//document/num_ext_recoleccion/text()', dataxml))[1];
-	num_int_rec := (xpath('//document/num_int_recoleccion/text()', dataxml))[1];
-	colonia_rec := (xpath('//document/colonia_recoleccion/text()', dataxml))[1];
-	poblacion_rec := (xpath('//document/poblacion_recoleccion/text()', dataxml))[1];
-	municipio_rec := (xpath('//document/municipio_recoleccion/text()', dataxml))[1];
-	estado_rec := (xpath('//document/estado_recoleccion/text()', dataxml))[1];
-	cp_rec := (xpath('//document/cp_recoleccion/text()', dataxml))[1];
-	contacto_rec := (xpath('//document/contacto_recoleccion/text()', dataxml))[1];
-	fecha_rec := (xpath('//document/fecha_recoleccion/text()', dataxml))[1];
-	hora_rec := (xpath('//document/horario_recoleccion/text()', dataxml))[1];
-	regresa_domicilio := (xpath('//document/regresa_domicilio/text()', dataxml))[1];
-	observaciones_rec := (xpath('//document/observaciones_recoleccion/text()', dataxml))[1];
-	promocion := (xpath('//document/cmb_promocion/r1/text()', dataxml))[1];
+ 	tipo_serv := coalesce((xpath('//document/cmb_tipo_servicio/r1/text()', dataxml))[1]::text,'')::text;
+	ubicacion_serv := coalesce((xpath('//document/cmb_ubica_servicio/r1/text()', dataxml))[1]::text,'')::text;
+	calle_rec := coalesce((xpath('//document/calle_recoleccion/text()', dataxml))[1]::text,'')::text;
+	num_ext_rec := coalesce((xpath('//document/num_ext_recoleccion/text()', dataxml))[1]::text,'')::text;
+	num_int_rec := coalesce((xpath('//document/num_int_recoleccion/text()', dataxml))[1]::text,'')::text;
+	colonia_rec := coalesce((xpath('//document/colonia_recoleccion/text()', dataxml))[1]::text,'')::text;
+	poblacion_rec := coalesce((xpath('//document/poblacion_recoleccion/text()', dataxml))[1]::text,'')::text;
+	municipio_rec := coalesce((xpath('//document/municipio_recoleccion/text()', dataxml))[1]::text,'')::text;
+	estado_rec := coalesce((xpath('//document/estado_recoleccion/text()', dataxml))[1]::text,'')::text;
+	cp_rec := coalesce((xpath('//document/cp_recoleccion/text()', dataxml))[1]::text,'')::text;
+	contacto_rec := coalesce((xpath('//document/contacto_recoleccion/text()', dataxml))[1]::text,'')::text;
+	fecha_rec := coalesce((xpath('//document/fecha_recoleccion/text()', dataxml))[1]::text,'1900-01-01 00:00:00')::text;
+	hora_rec := coalesce((xpath('//document/horario_recoleccion/text()', dataxml))[1]::text,'')::text;
+	regresa_domicilio := coalesce((xpath('//document/regresa_domicilio/text()', dataxml))[1]::text,'')::text;
+	observaciones_rec := coalesce((xpath('//document/observaciones_recoleccion/text()', dataxml))[1]::text,'')::text;
+	promocion := coalesce((xpath('//document/cmb_promocion/r1/text()', dataxml))[1]::text,'')::text;
 
  	--LGLG 15/01/24 modulo citas en linea
  	alimento := coalesce((xpath('//document/alimento/text()', dataxml))[1]::text,'')::text;  
@@ -233,7 +238,8 @@ begin
   	observaciones5 := coalesce((xpath('//document/observaciones5/text()', dataxml))[1]::text,'')::text;
   	observaciones6 := coalesce((xpath('//document/observaciones6/text()', dataxml))[1]::text,'')::text;
   	origen := coalesce((xpath('//document/origen/text()', dataxml))[1]::text,'')::text;
-  
+
+raise notice 'cita_crud_dp Origen:% ',origen;
   
   	-- JMM 05/26/2025 interface BP (Business Pro) - WebHook , Si no hay origen asigna el default K80
   	if origen <> 'BPR' then
@@ -251,17 +257,24 @@ begin
 		usuario = 'ASP';
 	end if;
 
+	if Asesor_TMKT='CITASASP' then
+		interfazorigen = 'Interfaz ASP';
+	else
+		interfazorigen = 'CRM';
+	end if;
+
+
 	--Recepcionista.
 	--Este dato deberia de venir es cualqier caso, la UI externa lo valida
---	if recepcionista is null then
---		raise exception 'Falta recepcionista por llenar';
---	end if;
+	if recepcionista is null then
+		raise exception 'Falta recepcionista por llenar';
+	end if;
 
 	--Fecha y hora de cita
 	--Este dato deberia de venir es cualqier caso, la UI externa lo valida
---	if fecha_cita is null or hora_cita is null then
---		raise exception 'Debe llenar fecha y hora de la cita';
---	end if;
+	if fecha_cita is null or hora_cita is null then
+		raise exception 'No se proporciono fecha y hora de la cita';
+	end if;
 
 	--Fecha y hora de entrega
 	--Este dato se complementa en la orden
@@ -280,22 +293,42 @@ begin
 	--Clave del cliente
 	--Asegurar que corresponde al de la serie del auto, de no tener la serie en el sistema, ******ANALIZAR si se utiliza una serie por default ************
 
-	if vin <> '' then
-		select c9 into clave_cliente from keplersc.kdserie where c1=vin;
-		if not found then
-			clave_cliente = '';
+	if interfazorigen = 'Interfaz ASP' then
+		if tipo_operacion = 0 or tipo_operacion=1 then --Crear, modificar
+			--En la variabla clave_cliente se tiene el conductor, no el propietario, 
+			--cambiar la clave por la que se tiene en kdserie y actualizar el dato 
+			--del conductor en kdserie 
+			select c3 into nombre from keplersc.kdud where c2=clave_cliente;
+			if found then
+				update keplersc.kdserie set c20=nombre,c24='', c25='' where c1=vin;
+			end if;
+			
+			select c9 into strValor from keplersc.kdserie where c1=vin;
+			if found then
+				clave_cliente = strValor;
+			end if;
 		end if;
 	end if;
+
+--	if vin <> '' then
+--		select c9 into clave_cliente from keplersc.kdserie where c1=vin;
+--		if not found then
+--			clave_cliente = '';
+--		end if;
+--	end if;
+
+raise notice 'Clave cliente:% ',clave_cliente;
 
 	if clave_cliente = '' then
 		raise exception 'La serie y/o cliente no son validos %/%',  vin, clave_cliente; 
 	end if;
 
 	--Puntos
-	if puntos is null then
-		raise exception 'La cita no tiene puntos de trabajo y al menos uno es obligatorio.';
+	if interfazorigen <> 'Interfaz ASP' then
+		if puntos is null then
+			raise exception 'La cita no tiene puntos de trabajo y al menos uno es obligatorio.';
+		end if;
 	end if;
-
 
 	--Si es un alta o modificacion
 	if tipo_operacion <> 2 then
@@ -401,55 +434,56 @@ begin
 			end if;
 
 		end if;
-	
-		--Registro de puntos --***** ANALIZAR. Se omite el control de de tipo de punto vs tipo de orden
-		strValor := (xpath('//document/ctd_puntos/text()',dataxml))[1];
-		no_puntos := strValor::integer;	
-		ctd_puntos = no_puntos;
-	
-		--guardar puntos
-		for cont in 0..no_puntos - 1 loop
-			numero_punto := cont + 1;
+
+		if interfazorigen <> 'Interfaz ASP' then	
+			--Registro de puntos --***** ANALIZAR. Se omite el control de de tipo de punto vs tipo de orden
+			strValor := (xpath('//document/ctd_puntos/text()',dataxml))[1];
+			no_puntos := strValor::integer;	
+			ctd_puntos = no_puntos;
 		
-			tipo_punto := coalesce((xpath('//document/tabla_puntos/r' ||cont||'/tipo_punto/text()',dataxml))[1]::text,'');
-			tipo_operario := coalesce((xpath('//document/tabla_puntos/r' ||cont||'/tipo_operario/text()',dataxml))[1]::text,'');
-			clave_paquete := coalesce((xpath('//document/tabla_puntos/r' ||cont||'/clave_paquete/text()',dataxml))[1]::text,'');
-			trabajo_a_realizar := coalesce((xpath('//document/tabla_puntos/r' ||cont||'/trabajo_a_realizar/text()',dataxml))[1]::text,'');
-			horas := coalesce((xpath('//document/tabla_puntos/r' ||cont||'/horas/text()',dataxml))[1]::text,'0');
-			clave_campana := coalesce((xpath('//document/tabla_puntos/r' ||cont||'/clave_campana/text()',dataxml))[1]::text,'');
-			precio_punto := coalesce((xpath('//document/tabla_puntos/r' ||cont||'/precio_punto/text()',dataxml))[1]::text,'0');
-			clave_operario := coalesce((xpath('//document/tabla_puntos/r' ||cont||'/clave_operario/text()',dataxml))[1]::text,'');
-			horario_inicio := coalesce((xpath('//document/tabla_puntos/r' ||cont||'/horario_inicio/text()',dataxml))[1]::text,'');
-			horario_fin := coalesce((xpath('//document/tabla_puntos/r' ||cont||'/horario_fin/text()',dataxml))[1]::text,'');
-
-			if tipo_punto = '' and tipo_operario = '' and clave_paquete = '' and trabajo_a_realizar = '' 
-			and horas = ''  and precio_punto = ''  and clave_operario = '' then  
-				ctd_puntos = ctd_puntos - 1;
-			else 
-				if tipo_punto = '' or tipo_operario = '' or trabajo_a_realizar = '' or clave_operario = '' then  
-					raise exception '%', format('Faltan datos por llenar para el punto numero %1$L.', numero_punto);
+			--guardar puntos
+			for cont in 0..no_puntos - 1 loop
+				numero_punto := cont + 1;
+			
+				tipo_punto := coalesce((xpath('//document/tabla_puntos/r' ||cont||'/tipo_punto/text()',dataxml))[1]::text,'');
+				tipo_operario := coalesce((xpath('//document/tabla_puntos/r' ||cont||'/tipo_operario/text()',dataxml))[1]::text,'');
+				clave_paquete := coalesce((xpath('//document/tabla_puntos/r' ||cont||'/clave_paquete/text()',dataxml))[1]::text,'');
+				trabajo_a_realizar := coalesce((xpath('//document/tabla_puntos/r' ||cont||'/trabajo_a_realizar/text()',dataxml))[1]::text,'');
+				horas := coalesce((xpath('//document/tabla_puntos/r' ||cont||'/horas/text()',dataxml))[1]::text,'0');
+				clave_campana := coalesce((xpath('//document/tabla_puntos/r' ||cont||'/clave_campana/text()',dataxml))[1]::text,'');
+				precio_punto := coalesce((xpath('//document/tabla_puntos/r' ||cont||'/precio_punto/text()',dataxml))[1]::text,'0');
+				clave_operario := coalesce((xpath('//document/tabla_puntos/r' ||cont||'/clave_operario/text()',dataxml))[1]::text,'');
+				horario_inicio := coalesce((xpath('//document/tabla_puntos/r' ||cont||'/horario_inicio/text()',dataxml))[1]::text,'');
+				horario_fin := coalesce((xpath('//document/tabla_puntos/r' ||cont||'/horario_fin/text()',dataxml))[1]::text,'');
+	
+				if tipo_punto = '' and tipo_operario = '' and clave_paquete = '' and trabajo_a_realizar = '' 
+				and horas = ''  and precio_punto = ''  and clave_operario = '' then  
+					ctd_puntos = ctd_puntos - 1;
+				else 
+					if tipo_punto = '' or tipo_operario = '' or trabajo_a_realizar = '' or clave_operario = '' then  
+						raise exception '%', format('Faltan datos por llenar para el punto numero %1$L.', numero_punto);
+					end if;
+	
+					--Completar informacion del paquete, temporal mientras se corrige BP
+					select c9, c10 into horas, precio_punto from keplersc.kdspaq where c1=  marca  and c2= modelo and c4 = clave_paquete;
+				
+					insert into keplersc.kdctassermov (c1,c2,c3,c4,c5,c6,c7,c8,c9,c10,c11,c12,c13)
+					values(sucursal_id,folio_cita,numero_punto,tipo_punto,tipo_operario,
+					clave_paquete,trabajo_a_realizar,precio_punto::decimal,horas::numeric,
+					clave_operario,clave_campana, horario_inicio, horario_fin );
+					--TODO Prepicking
+				
+					for clave_ref,cantidad_ref,ctd_entradas,ctd_salidas in select paq.c6, paq.c7, movs.c5, movs.c6
+					from keplersc.kdspaqm as paq inner join keplersc.kdinl as movs on movs.c2=paq.c6 
+					where paq.c1=marca  and paq.c2=modelo and paq.c4=clave_paquete and movs.c1=sucursal_id
+					loop 
+						--existencia := ctd_entradas-ctd_salidas;
+						insert into keplersc.prepicking (c1,c2,c3,c4,c5)
+						values(sucursal_id,folio_cita,clave_ref,cantidad_ref::numeric, estatus_cita::numeric);
+					end loop;
 				end if;
-
-				--Completar informacion del paquete, temporal mientras se corrige BP
-				select c9, c10 into horas, precio_punto from keplersc.kdspaq where c1=  marca  and c2= modelo and c4 = clave_paquete;
-			
-				insert into keplersc.kdctassermov (c1,c2,c3,c4,c5,c6,c7,c8,c9,c10,c11,c12,c13)
-				values(sucursal_id,folio_cita,numero_punto,tipo_punto,tipo_operario,
-				clave_paquete,trabajo_a_realizar,precio_punto::decimal,horas::numeric,
-				clave_operario,clave_campana, horario_inicio, horario_fin );
-				--TODO Prepicking
-			
-				for clave_ref,cantidad_ref,ctd_entradas,ctd_salidas in select paq.c6, paq.c7, movs.c5, movs.c6
-				from keplersc.kdspaqm as paq inner join keplersc.kdinl as movs on movs.c2=paq.c6 
-				where paq.c1=marca  and paq.c2=modelo and paq.c4=clave_paquete and movs.c1=sucursal_id
-				loop 
-					--existencia := ctd_entradas-ctd_salidas;
-					insert into keplersc.prepicking (c1,c2,c3,c4,c5)
-					values(sucursal_id,folio_cita,clave_ref,cantidad_ref::numeric, estatus_cita::numeric);
-				end loop;
-			end if;
-		end loop ;
-
+			end loop ;
+		end if;
 		--***ANALIZAR SINTOMAS
 /*	
 		strValor := coalesce((xpath('//document/ctd_sintomas/text()',dataxml))[1], '0');
@@ -648,12 +682,12 @@ begin
 	adicionales := folio_cita;
 	return query select resultado, mensaje, adicionales;	
 
-exception
+/*exception
 	when others then
 		resultado := 0;
 		mensaje := 'cita_crud_bp() ' || '['|| sqlstate || '] ' || sqlerrm ;		
 		adicionales := '';
-		return query select resultado, mensaje, adicionales;	
+		return query select resultado, mensaje, adicionales;	*/
 	
 end;
 $function$

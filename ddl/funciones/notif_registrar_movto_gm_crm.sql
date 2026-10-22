@@ -72,8 +72,10 @@ BEGIN
 						--Se elimina la orden en el sistema de bp
 						if (SELECT * FROM keplersc.ifz_habilita(sucursal_id, 'GM_EliminarOrden')) = 'S' then
 							api_id := 'ifz_gm_bp/delete_gm_orden_eliminar_od/';
-							datos_interfaz:=concat('{"sucursal":"',sucursal_id,'",','"tipo_orden":"',p_new.c2,'",','"folio_orden":"',p_new.c3,'",','"agencia":"',agencia,'"}');
-							select coalesce(max(id_transaccion),0) + 1 into intTransaction from keplersc.notif_api_control_envios;
+							--datos_interfaz:=concat('{"sucursal":"',sucursal_id,'",','"tipo_orden":"',p_new.c2,'",','"folio_orden":"',p_new.c3,'",','"agencia":"',agencia,'"}');
+							--select coalesce(max(id_transaccion),0) + 1 into intTransaction from keplersc.notif_api_control_envios;
+							select id_notif into intTransaction from keplersc.obtener_folio_notif();
+
 							insert into keplersc.notif_api_control_envios (id_transaccion,api_id,datos_interfaz) values(intTransaction,api_id,datos_interfaz);
 							--Execute sin CIRDAN
 							expSql := format('notify gm, ''%s''', intTransaction);
@@ -84,7 +86,9 @@ BEGIN
 						if (SELECT * FROM keplersc.ifz_habilita(sucursal_id, 'GM_CrearOrden')) = 'S' then
 							api_id := 'ifz_gm_bp/get_gm_orden_crear_od/';
 							datos_interfaz:=concat('{"sucursal":"',sucursal_id,'",','"tipo_orden":"',p_new.c2,'",','"folio_orden":"',p_new.c3,'",','"agencia":"',agencia,'"}');
-							select coalesce(max(id_transaccion),0) + 1 into intTransaction from keplersc.notif_api_control_envios;
+							--select coalesce(max(id_transaccion),0) + 1 into intTransaction from keplersc.notif_api_control_envios;
+							select id_notif into intTransaction from keplersc.obtener_folio_notif();
+
 							insert into keplersc.notif_api_control_envios (id_transaccion,api_id,datos_interfaz) values(intTransaction,api_id,datos_interfaz);
 							--Execute sin CIRDAN
 							expSql := format('notify gm, ''%s''', intTransaction);

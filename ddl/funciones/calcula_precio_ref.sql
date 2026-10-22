@@ -1,4 +1,4 @@
-CREATE OR REPLACE FUNCTION keplersc.calcula_precio_ref(clave_refaccion text, catalogo integer, metodo_calculo integer, utilidad_base numeric, iva numeric, existencia integer, ult_costo numeric, monto_entradas numeric, monto_salidas numeric)
+CREATE OR REPLACE FUNCTION keplersc.calcula_precio_ref(clave_refaccion text, catalogo integer, metodo_calculo integer, utilidad_base numeric, iva numeric, ult_costo numeric, costo_prom numeric)
  RETURNS TABLE(precio numeric)
  LANGUAGE plpgsql
 AS $function$
@@ -7,8 +7,6 @@ AS $function$
 --Fecha: 26/05/2022
 --Bitacora de cambios
 declare 
-	--Variables generales
-	costo_prom  decimal = 0.00;
 	precio_con_iva decimal = 0.00;
 	costo_distribuidor decimal = 0.00;
 	unidad_de_empaque int = 0;
@@ -22,7 +20,6 @@ begin
 	--SUB CALCULA_PRECIO_PAQ_GM
 	if catalogo = 1 then
 		if metodo_calculo = 1 or metodo_calculo = 2 then
-			costo_prom :=  (monto_entradas-monto_salidas)/ existencia;
 			precio := costo_prom * (1+utilidad_base/100);
 		end if;
 		if  metodo_calculo = 3 then
@@ -30,7 +27,6 @@ begin
 			if found then
 				precio := precio_con_iva/(1+iva/100);
 			else
-				costo_prom :=  (monto_entradas-monto_salidas)/ existencia;
 				precio := costo_prom * (1+utilidad_base/100);
 			end if;
 		end if;
@@ -40,7 +36,6 @@ begin
 			if found then
 				precio := (costo_distribuidor/unidad_de_empaque)*(1+utilidad_base/100);
 			else
-				costo_prom :=  (monto_entradas-monto_salidas)/ existencia;
 				precio := costo_prom * (1+utilidad_base/100);
 			end if;
 		end if;	
@@ -52,7 +47,6 @@ begin
 			precio := ult_costo * (1+utilidad_base/100);
 		end if;
 		if metodo_calculo = 2 then
-			costo_prom :=  (monto_entradas-monto_salidas)/ existencia;
 			precio := costo_prom * (1+utilidad_base/100);
 		end if;
 		if metodo_calculo = 3 then
@@ -80,6 +74,23 @@ begin
 			end if;
 		end if;
 	end if; 
+
+
+	--LGLG 27/06/24 GWM precios
+	if catalogo = 4 then
+	
+		if metodo_calculo = 1 then
+		
+			select c11 into precio_publico from keplersc.kdini where c1=clave_refaccion;
+			if found then
+				precio := precio_publico;
+			else			
+				precio := costo_prom * (1+utilidad_base/100);
+			end if;
+		
+		end if ;
+	
+	end if;
 	
 	precio := round(precio::decimal,2);
 	return query select precio;

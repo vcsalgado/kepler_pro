@@ -19,6 +19,8 @@ declare
 	cve_seleccion text;
 
 	folio_docto text = '';
+	totalAnticipos decimal = 0.00;
+	montoFactura decimal = 0.00;
 
 	--Variables de retorno
 	resultado text='';
@@ -38,14 +40,37 @@ begin
 	
 	if naturaleza = 'D' then --ALTA
 		--raise exception 'suc:%, cve_seleccion:%, g:%, n:%, gp:%, tp:%, folio:%',sucursal_id, cve_seleccion, genero, naturaleza, grupo, tipo, folio_operacion;	
-		update keplersc.kdf3ncant set
+		
+		update keplersc.kdf3ncant ant 
+		set
 			tipo_relacion ='07',
 			genero_doctorel = genero,
 			naturaleza_doctorel = naturaleza,
 			grupo_doctorel = grupo::integer,
 			tipo_doctorel = tipo::integer,
-			folio_relacionado = folio_operacion				
-			where c1=sucursal_id and c2='U' and c3='D' and c4=79 and folio_relacionado = cve_seleccion;
+			folio_relacionado = folio_operacion
+			where ant.c1=sucursal_id 
+				and ant.c2='U' 
+				and ant.c3='D' 
+				and ant.c4=79 
+				and ant.folio_relacionado = cve_seleccion
+				and exists (
+			        select 1
+			        from keplersc.kdm1 m1a
+			        join keplersc.kdm1 m1b
+			          on m1a.c10 = m1b.c10
+			        where m1a.c1 = ant.c1
+			          and m1a.c2 = ant.c2
+			          and m1a.c3 = ant.c3
+			          and m1a.c4 = ant.c4
+			          and m1a.c5 = ant.c5
+			          and m1a.c6 = ant.c6
+			          and m1b.c1 = sucursal_id
+			          and m1b.c2 = genero
+			          and m1b.c3 = naturaleza
+			          and m1b.c4 = grupo::integer
+			          and m1b.c5 = tipo::integer
+			          and m1b.c6 = folio_operacion);
 
 	else					--BAJA
 		update keplersc.kdf3ncant set
@@ -58,7 +83,21 @@ begin
 			where c1=sucursal_id and c2='U' and c3='D' and c4=79 and folio_relacionado = folio_docto;
 	
 	end if;
+	--Valida la suma de los anticipos vs. el monto de la fatura
+	select coalesce(sum(dm1.c16),0) into totalAnticipos from keplersc.kdf3ncant nca
+		inner join keplersc.kdm1 dm1 on nca.c1=dm1.c1 and nca.c2=dm1.c2 and nca.c3=dm1.c3 and nca.c4=dm1.c4 and nca.c5=dm1.c5 and nca.c6=dm1.c6  
+		where nca.c1 = sucursal_id and nca.c8=0 
+			and nca.tipo_relacion ='07' and nca.genero_doctorel = genero
+			and nca.naturaleza_doctorel = naturaleza and nca.grupo_doctorel = grupo::integer
+			and nca.tipo_doctorel = tipo::integer and nca.folio_relacionado = folio_operacion;
 	
+	select c16 into montoFactura from keplersc.kdm1
+		where c1 = sucursal_id and c2 = genero and c3 = naturaleza and c4 = grupo::integer and c5 = tipo::integer and c6 = folio_operacion;
+	
+	if totalAnticipos > montoFactura then
+		raise exception 'La suma de los anticipos seleccionados: % es mayor al total de la factura: %',totalAnticipos,montoFactura;
+	end if;
+
 	resultado := 1;
 	mensaje := '';
 	adicionales := '';

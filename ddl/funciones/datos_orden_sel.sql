@@ -14,6 +14,7 @@ declare
 	vin text;
 	placas text;
 	clave_cliente text = '';
+	tip_ope text = '';-- RHFC 24/03/2026 Se adiciona tip_ope
 
 	sql_datos_orden text = '';
 	sql_datos_puntos text = '';
@@ -30,8 +31,10 @@ begin
 	clave_cliente := coalesce((xpath('//document/clave_cliente/text()', dataxml))[1]::text,'')::text; 
 	vin := coalesce((xpath('//document/vin/text()', dataxml))[1]::text,'')::text; 
 	placas := coalesce((xpath('//document/placas/text()', dataxml))[1]::text,'')::text; 
+-- RHFC 24/03/2026 Se extrae tip_ope del xml
+	tip_ope := coalesce((xpath('//document/tip_ope/text()', dataxml))[1]::text,'')::text; 
 
-	sql_datos_orden := format('select ord.c2 as tipo_orden, ord.c2 as tipo_orden_bus ,
+	sql_datos_orden := format('select concat(ord.c1,'' '',suc.c2) as sucursal, ord.c2 as tipo_orden, ord.c2 as tipo_orden_bus ,
 	ord.c3 as folio_orden, ord.c3 as folio_orden_bus, ord.c7 as flujo_admon, 
 	ord.c22 as recepcionista, ord.c4 as fecha_captura_orden, ord.c5 as hora_captura_orden,
 	ord.c6 as vin, ord.c6 as vin_bus, ord.c10 as clave_cliente, ord.c10 as clave_cliente_bus, ord.c19 as bonete,
@@ -44,8 +47,9 @@ begin
 	ord.poblacion_rec as poblacion_recoleccion, ord.municipio_rec as municipio_recoleccion, ord.estado_rec as estado_recoleccion,
 	ord.cp_rec as cp_recoleccion, ord.contacto_rec as contacto_recoleccion, ord.fecha_rec as fecha_recoleccion, ord.hora_rec as horario_recoleccion,
 	ord.regresa_domicilio, ord.observaciones_rec as observaciones_recoleccion, ord.promocion as cmb_promocion
-	from keplersc.kdord as ord left outer join keplersc.kdordent as ent
-	on ent.c1=ord.c1 and ent.c2=ord.c2 and ent.c3=ord.c3
+	from keplersc.kdord as ord 
+	inner join keplersc.kdms suc on suc.c1=ord.c1
+	left outer join keplersc.kdordent as ent on ent.c1=ord.c1 and ent.c2=ord.c2 and ent.c3=ord.c3
 	left outer join keplersc.kdctasser as cit on cit.c1=ord.c1 and cit.c21=ord.c2 and cit.c22=ord.c3
 	where ord.c1=%1$L and ord.c2=%2$L', sucursal_id,tipo_orden); 
  	if folio_orden <> '' then 
@@ -91,8 +95,9 @@ begin
 	clave_cliente := (xpath('//row/clave_cliente/text()', datos_orden))[1];
 	vin := (xpath('//row/vin/text()', datos_orden))[1];
 	placas := (xpath('//row/placas/text()', datos_orden))[1];
+	--RHFC 23/04/2026 Se adiciona tip_ope a los parametros
 	params := format('<document>%1$s</document>',xmlforest(sucursal_id as sucursal_id,
-	clave_cliente as clave_cliente, vin as vin, placas as placas));
+	clave_cliente as clave_cliente, vin as vin, placas as placas, tip_ope as tip_ope));
 
 	select datos into datos_cli_vin from keplersc.cli_vin_sel(params);
 

@@ -3,10 +3,15 @@ CREATE OR REPLACE FUNCTION keplersc.cfd_crea_archivo(dataxml xml, xmlkdm1 xml, x
  LANGUAGE plpgsql
 AS $function$
 declare
---Descripcion: Obtiene información para generar el archivo para el CFD 
+--Descripcion: Obtiene informacion para generar el archivo para el CFD 
 --			   Resuelve CFD_CREA_ARCHIVO
 --Autor: Miriam Santana
 --Fecha: 18/10/2022
+--Bitacora de cambios
+--24/02/2025 Miriam Santana: Incluir el motivo de cancelacion de la anulacion por sustitucion
+--23/05/2025 Miriam Santana: Incluir el movimiento de sustitucion(nuevo) en una anulacion por sustitucion
+--13/08/2026 Miriam Santana: Incluir linea nueva DOCSRELATION para enviar datos de los anticipos seleccionados
+
 	--Variables para xml 
 	sucursal_id text;
 	genero text;
@@ -34,6 +39,7 @@ declare
 	strComplemento text;
 	strAdenda text;
 	strExtras text;
+	strAnticipos text;	--MSS 13082026 Anticipos seleccionados
 	dat_cfdi text = '';	--Pantalla validacion cfdi
 	rec record;
 
@@ -53,10 +59,10 @@ begin
 /***********Se comenta hasta que se ponga el dato <datcfdi> a todas las pantallas que kdmm.c80='S'(generen CFDI)**********	
 	--Pantalla validacion cfdi
 	if xpath_exists('//document/datcfdi', dataxml) = false then 
-		raise exception 'No tiene pantalla de validacion, avisar al área de sistemas';
+		raise exception 'No tiene pantalla de validacion, avisar al area de sistemas';
 	else 
 		if dat_cfdi='N' then 
-			raise exception 'No se ha Validado la información del cfdi';
+			raise exception 'No se ha Validado la informacion del cfdi';
 		end if;
 	end if;
 	--
@@ -91,6 +97,12 @@ begin
 	if resultado = '0' then
 		raise exception '%',mensaje;
 	end if; 
+--raise notice '%','Inicia anticipos_sel';
+	--CALL CFD_ANTICIPOS_SELECCIONADOS							--MSS 13082026 Anticipos seleccionados
+	select * into resultado, mensaje, adicionales from keplersc.cfd_anticipos_seleccionados(dataxml,xmlkdm1,xmlkdmm,cons_cfdi); 
+	if resultado = '0' then
+		raise exception '%',mensaje;
+	end if; 
 --raise notice '%','Inicia armado cadenas';
 	--Nombre de archivo
 --trim(cf.c3) tiene  Ruta del servidor en lugar de 'c:\k80_data\cfd\' 
@@ -115,7 +127,7 @@ begin
 	insert into tmpResultados (cfdi)
 		values(strDocumento);
 --raise notice '%','Termina Documento';	
-	--Arma cadena de Vehículo
+	--Arma cadena de Vehiculo
 	strVehiculo := 'VEHICULO|';
 	select concat(strVehiculo,c27,'|',c28,'|',c29,'|',c30,'|',c31,'|',c32,'|',c33,'|',c34,'|',c35,'|',
 			c36,'|',c37,'|',c38,'|',c39,'|',c40,'|',c41,'|',c42,'|',c43,'|',c44,'|',c45,'|',c46,'|',
@@ -216,12 +228,26 @@ begin
 		where c1=sucursal_id and c2=genero and c3=naturaleza and c4=grupo::integer and c5=tipo::integer and c6=folio_operacion and c7=cons_cfdi::integer
 	loop
 		strExtras := 'EXTRAS|';
-		strExtras := concat(strExtras,rec.c8,'|',rec.c9,'|',rec.c10,'|',rec.c11,'|',rec.c12,'|',rec.c13,'|',rec.c14,'|',rec.c15,'|',rec.c16,'|',rec.c17,'|',rec.c18,'|',rec.c19,'|',rec.c20,'|'); 
+		strExtras := concat(strExtras,rec.c8,'|',rec.c9,'|',rec.c10,'|',rec.c11,'|',rec.c12,'|',rec.c13,'|',rec.c14,'|',rec.c15,'|',rec.c16,'|',rec.c17,'|',rec.c18,'|',rec.c19,'|',
+					rec.c20,'|',rec.motivo_cancelacion,'|',concat(rec.c1,'-',rec.movto_sustitucion));
 	end loop;
 	strExtras := concat(strExtras,'|.');
 	insert into tmpResultados (cfdi)
 		values(strExtras);
-
+--raise notice '%','Termina extras';
+	--MSS 13082026 Anticipos seleccionados
+--Arma cadena de Anticipos
+	for rec in select * from keplersc.kdf3anticipos
+		where c1=sucursal_id and c2=genero and c3=naturaleza and c4=grupo::integer and c5=tipo::integer and c6=folio_operacion and c7=cons_cfdi::integer		
+	loop				
+	--	strAnticipos := concat('DOCSRELATION|',rec.c9,'|',rec.c10,'-',rec.c11,rec.c12,lpad(rec.c13::text,2,'0'),lpad(rec.c14::text,3,'0'),'-',rec.c15,'|',rec.c16,'|',rec.c17,'|',rec.c18,'|',rec.c19,'|.');
+	strAnticipos := concat('DOCSRELATION|',rec.c11,'|',rec.c12,'|',rec.c13,'|',rec.c14,'|',rec.c15,'|',rec.c9,'|.');
+		insert into tmpResultados (cfdi)
+		 	values(strAnticipos);			 
+	end loop;
+--raise notice '%','Termina anticipos';	
+--raise exception '%',strAnticipos;	
+	
 	expSql:= format('copy (select * from tmpresultados) to %1$L',nombre_archivo);
 	execute expSql;
 

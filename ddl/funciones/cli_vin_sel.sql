@@ -7,12 +7,12 @@ AS $function$
 --Fecha: 16/06/2022
 --Bitacora de cambios
 declare
-
 	sucursal_id text = '';
 	vin text;
 	placas text;
 	clave_cliente text;
 	sql_datos text = '';
+	tip_ope text = '';-- RHFC 24/03/2026 Se adiciona tip_ope
 
 begin
 
@@ -20,6 +20,8 @@ begin
 	clave_cliente := coalesce((xpath('//document/clave_cliente/text()', dataxml))[1]::text,'')::text; 
 	vin := coalesce((xpath('//document/vin/text()', dataxml))[1]::text,'')::text; 
 	placas := coalesce((xpath('//document/placas/text()', dataxml))[1]::text,'')::text; 
+	-- RHFC 24/03/2026 Se extrae tip_ope del xml
+	tip_ope := coalesce((xpath('//document/tip_ope/text()', dataxml))[1]::text,'')::text; 
 
 	sql_datos := 'select ud.c2 as cliente_id, ud.c3 as cliente_nombre, 
 	ud.c4 as cliente_calle, ud.c45 as cliente_ext, ud.c46 as cliente_int, ud.c5 as cliente_colonia, 
@@ -29,25 +31,29 @@ begin
 	ser.c3 as modelo, ser.c8 as placas , ser.c10 as color ,ser.c11 as anio,
 	ser.c12 as kms, ser.c4 as serie, ser.c17 as codigo from keplersc.kdud as ud 
 	left outer join keplersc.kdserie as ser on ser.c9=ud.c2'; 
-	if clave_cliente <> '' then 
-		sql_datos := concat(sql_datos, format(' where ud.c2=%1$L', clave_cliente));
-	end if;
-	if vin <> '' then 
-		if clave_cliente = '' then
+	
+	raise notice 'sucursal_id:% clave_cliente:% vin:% placas:% tip_ope:%', sucursal_id, clave_cliente, vin, placas, tip_ope;
+	-- RHFC 24/03/2026 tip_ope=2 (consulta) solamente toma en cuenta el vin para que mustre la informacion del cliente en la opcion de Lista ordenes
+	if tip_ope = '2' then
+		if vin <> '' then 
 			sql_datos := concat(sql_datos, format(' where ser.c1=%1$L', right(vin,8)));
-		else
-			sql_datos := concat(sql_datos, format(' and ser.c1=%1$L', right(vin,8)));
+		end if;
+	else
+		if clave_cliente <> '' then 
+			sql_datos := concat(sql_datos, format(' where ud.c2=%1$L', clave_cliente));
+		end if;
+		
+		if vin <> '' then 
+			if clave_cliente = '' then
+				sql_datos := concat(sql_datos, format(' where ser.c1=%1$L', right(vin,8)));
+			else
+				sql_datos := concat(sql_datos, format(' and ser.c1=%1$L', right(vin,8)));
+			end if;
 		end if;
 	end if;
-	if placas <> '' then 
-		if clave_cliente = '' and vin = '' then
-			sql_datos := concat(sql_datos, format(' where ser.c8=%1$L', placas));
-		else 
-			sql_datos := concat(sql_datos, format(' and ser.c8=%1$L', placas));
-		end if;
-	end if;
+
 	sql_datos := concat(sql_datos, ' order by ser.c13 desc limit 1');
-raise notice '%',sql_datos;
+	raise notice 'sql_datos:%', sql_datos;
 	select query_to_xml(sql_datos, false, true, '' ) :: xml into datos;
 	
 	return query
@@ -56,5 +62,6 @@ raise notice '%',sql_datos;
 exception
 	when others then
 		raise exception '%', 'Sin Resultados';
+		
 end;
 $function$

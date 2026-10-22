@@ -8,7 +8,6 @@ declare
 --Fecha: 05/02/2026
 --Bitacora de Cambios
 
-
 	--Variables para xml 
 	sucursal_id text;
 	genero text;
@@ -40,7 +39,7 @@ begin
 			in select dm1.c16 monto, nca.* from keplersc.kdf3ncant nca
 			inner join keplersc.kdm1 dm1 on dm1.c1=nca.c1 and dm1.c2=nca.c2 and dm1.c3=nca.c3 and dm1.c4=nca.c4 and dm1.c5=nca.c5 and dm1.c6=nca.c6
 			where nca.c1=sucursal_id and nca.genero_doctorel=genero and nca.naturaleza_doctorel=naturaleza and nca.grupo_doctorel=grupo::integer and nca.tipo_doctorel=tipo::integer and nca.folio_relacionado=folio_operacion
-		loop	
+		loop
 			insert into keplersc.kdf3anticipos (
 			   	c1,c2,c3,c4,c5,
 				c6,c7,c8,c9,c10,

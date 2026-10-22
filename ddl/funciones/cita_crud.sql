@@ -803,7 +803,7 @@ else -- origen = 'BPR'
 			
 				for clave_ref,cantidad_ref,ctd_entradas,ctd_salidas in select paq.c6, paq.c7, movs.c5, movs.c6
 				from keplersc.kdspaqm as paq inner join keplersc.kdinl as movs on movs.c2=paq.c6 
-				where paq.c1=marca  and paq.c2=modelo and paq.c4=clave_paquete and movs.c1=sucursal_id
+				where paq.c1=marca  and paq.c2=modelo and paq.c3=anio and paq.c4=clave_paquete and movs.c1=sucursal_id		--MSS 30092026 Se agrego la columna de anio en el where
 					loop 
 						--existencia := ctd_entradas-ctd_salidas;
 					

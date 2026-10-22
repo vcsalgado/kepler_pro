@@ -10,6 +10,7 @@ AS $function$
 declare
 	marca text;
 	modelo text;
+	anio text;
 	paquete text;
 	descr text;
 	mano_obra numeric;
@@ -28,20 +29,16 @@ declare
 	no_partidas int = 0;
 	strValor text = '';
 	intValor int = 0;
-	varXml xml;
 
 	--Variables de retorno
 	resultado text;
 	mensaje text;
 	adicionales text;
-
-	get_resultado text;
-	get_mensaje text; 
-	get_adicionales text;
 begin
 	
 	marca:=coalesce((xpath('//document/marca/text()', dataxml))[1],'');
 	modelo:=coalesce((xpath('//document/modelo/text()', dataxml))[1],'');
+	anio:=coalesce((xpath('//document/anio/text()', dataxml))[1],'');
 	paquete:=coalesce((xpath('//document/paquete/text()', dataxml))[1],'');
 	descr:=coalesce((xpath('//document/descripcion/text()', dataxml))[1],'');
 	mano_obra :=coalesce((xpath('//document/mano_obra/text()', dataxml))[1],'0');
@@ -69,21 +66,14 @@ begin
 	end if;
 
 	if mano_obra/horas < min_mano_obra_horas then
-		select count(*) into intValor from keplersc.param_oper where sucursal='00' and parametro='Validar MO menor en paquete';
-		if intValor = 0 then
-			raise exception 'No se tiene configurado el parametro Validar MO menor en paquete';
-		end if;
-		select count(*) into intValor from keplersc.param_oper where sucursal='00' and parametro='Validar MO menor en paquete' and valor='S';
-		if intValor > 0 then
-			select count(*) into intValor from keplersc.param_opc_usr_sec where sucursal='00' and opcion='Autoriza mano de obra menor' and usuario=usuario_movto;
-			if intValor=0 then
-				raise exception 'El precio minimo valido por hora de venta al publico es de % pesos',min_mano_obra_horas;
-			end if;
+		select count(*) into intValor from keplersc.param_opc_usr_sec where sucursal='00' and opcion='Autoriza mano de obra menor' and usuario=usuario_movto;
+		if intValor=0 then
+			raise exception 'El precio minimo valido por hora de venta al publico es de % pesos',min_mano_obra_horas;
 		end if;
 	end if;
 
 	delete from keplersc.kdspaq where c1=marca and c2=modelo and c4=paquete;
-	delete from keplersc.kdspaqm where c1=marca and c2=modelo and c4=paquete;
+	delete from keplersc.kdspaqm where c1=marca and c2=modelo and c3=anio and c4=paquete;
 
 	insert into keplersc.kdspaq(c1,c2,c4,c5,c6, c7, c8, c9, c10,c11)
 	values (marca, modelo, paquete, descr, mano_obra, refacciones,
@@ -108,22 +98,10 @@ begin
 		end if;
 		
 	
-		insert into keplersc.kdspaqm(c1,c2,c4,c6, c7)
-		values (marca, modelo, paquete,parte, cantidad );
+		insert into keplersc.kdspaqm(c1,c2,c3,c4,c6, c7)
+		values (marca, modelo, anio, paquete,parte, cantidad );
 	
 	end loop;
-
-	select xmlforest(usuario_movto as usuario, current_date as fecha, TO_CHAR(NOW(), 'HH24:MI:SS') as hora, 
-			'00' as sucursal, ' ' as genero, ' ' as naturaleza, 0 as grupo, 0 as tipo, 'X' as folio,
-			'ACTUALIZACION DE PAQUETE' as tipo_movto, marca || '-' || modelo || '-' || paquete as detalle_movto) :: text into strValor;
-		
-	select '<document>'||strValor||'</document>' into strValor;
-	varXml := strValor::xml;
-					
-	select * into get_resultado, get_mensaje, get_adicionales from keplersc.usr_kdusraccess_alta(varXml);
-	if get_resultado = '0' then
-		raise exception '%',get_mensaje;
-	end if;
 
 	resultado := 1;
 	mensaje := '';

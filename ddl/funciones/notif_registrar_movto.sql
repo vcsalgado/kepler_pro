@@ -47,9 +47,13 @@ BEGIN
     END IF;
    
     IF resultado.procesar = 'S' THEN
+
+/*
         SELECT coalesce(max(id_transaccion),0)+1
           INTO intTransaction
           FROM keplersc.notif_api_control_envios;
+*/
+		select id_notif into intTransaction from keplersc.obtener_folio_notif();
 
         --Json para cirdan (global)
         json_notif := jsonb_build_object(

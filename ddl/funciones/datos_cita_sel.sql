@@ -14,6 +14,7 @@ declare
 	clave_cliente text;
 	vin text;
 	placas text;
+	tip_ope text = '';-- RHFC 24/03/2026 Se adiciona tip_ope
 
 	sql_datos_cita text = '';
 	sql_datos_puntos text = '';
@@ -29,6 +30,8 @@ begin
 	clave_cliente := coalesce((xpath('//document/clave_cliente/text()', dataxml))[1]::text,'')::text; 
 	vin := coalesce((xpath('//document/vin/text()', dataxml))[1]::text,'')::text; 
 	placas := coalesce((xpath('//document/placas/text()', dataxml))[1]::text,'')::text; 
+-- RHFC 24/03/2026 Se extrae tip_ope del xml
+	tip_ope := coalesce((xpath('//document/tip_ope/text()', dataxml))[1]::text,'')::text;
 
 	sql_datos_cita := format('select c2 as folio_cita, c2 as fol_cita, c3 as cve_tmkt, c4 as clave_cliente,
 	c5 as placas_bus,c5 as placas, c11 as kms, right(c9,8) as vin , c37 as tipo_cita, c37 as tipo_cita_bus,
@@ -86,10 +89,11 @@ begin
 	
 	clave_cliente := (xpath('//row/clave_cliente/text()', datos_cita))[1];
 	vin := (xpath('//row/vin/text()', datos_cita))[1];
-	--TODO, checar intgeracion de datos 
+ 
 	--placas := (xpath('//row/placas/text()', datos_cita))[1];
+	--RHFC 23/04/2026 Se adiciona tip_ope a los parametros
 	params := format('<document>%1$s</document>',xmlforest(sucursal_id as sucursal_id,
-	clave_cliente as clave_cliente, vin as vin, placas as placas));
+	clave_cliente as clave_cliente, vin as vin, placas as placas, tip_ope as tip_ope));
 raise notice 'Params:%',params;
 	select datos into datos_cli_vin from keplersc.cli_vin_sel(params);
 	

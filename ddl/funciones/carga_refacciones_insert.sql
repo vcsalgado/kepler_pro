@@ -63,6 +63,15 @@ declare
 	--MSS 30122025 Registro en bitacora movimientos con cambios en las refacciones del paquete
 	mod_refacc_paquete text = '';
 	tipo_mod_paquete text = '';
+
+	--MSS 04082026 Modificacion refacciones paquete identificando refacc sustituida del paquete
+	refacc_paquete text = '';
+	cve_marca text = '';
+	cve_modelo text = '';
+	num_anio text = '';
+	cve_kit text = '';
+	tipo_punto text = '';
+	posxref text = '';
 	
 begin 
 
@@ -83,9 +92,15 @@ begin
 	--cfdi no calculos 
 		--Obtiene %Iva
 		select c11 into iva_default from keplersc.kdmargen where c1=tipo_orden;
-	--
-		for Codigo_requisicion,partida,producto,descr,cantidad,unidad,unitario,importe 
-		in select c27,c7,c8,c10,c9,c11,c12,c13 from keplersc.kdm2 where c1=sucursal_id and c2=genero 
+
+		--Obtiene datos del vehiculo				--MSS 18092026 Nueva gestion seleccion de refacciones de paquete
+		select ser.c2,ser.c3,ser.c11 into cve_marca,cve_modelo,num_anio from keplersc.kdord ord
+			 inner join keplersc.kdserie ser on ser.c1=ord.c6
+			  where ord.c1=sucursal_id and ord.c2=tipo_orden and ord.c3=orden;
+
+
+		for Codigo_requisicion,partida,producto,descr,cantidad,unidad,unitario,importe,refacc_paquete
+		in select c27,c7,c8,c10,c9,c11,c12,c13,c40 from keplersc.kdm2 where c1=sucursal_id and c2=genero 
 		and c3=naturaleza and c4=grupo and c5=tipo and c6=folio_operacion
 		loop
 								
@@ -107,10 +122,23 @@ begin
 			total_cte := importe + iva_cte;
 		--En el insert c21,c22			
 			insert into keplersc.kdref (c1,c2,c3,c4,c5,c6,c7,c8,c9,c10,c11,c12,c13,c14,c15,
-			c16,c17,c18,c19,c20,c21,c22) values(sucursal_id,tipo_orden, orden,Codigo_requisicion,genero,
+			c16,c17,c18,c19,c20,c21,c22,refacc_paq) values(sucursal_id,tipo_orden, orden,Codigo_requisicion,genero,
 			naturaleza,grupo,tipo,folio_operacion,partida,producto,descr,cantidad,unidad,unitario,
-			importe,0.00,'I',monto,to_date(fecha_mov,'YYYY-MM-DD'),iva_cte,total_cte);
+			importe,0.00,'I',monto,to_date(fecha_mov,'YYYY-MM-DD'),iva_cte,total_cte,refacc_paquete);
 		
+			--MSS 18092026 Nueva gestion seleccion de refacciones de paquete
+			select c5,c6 into cve_kit,tipo_punto from keplersc.kdpun where c1=sucursal_id and c2=tipo_orden and c3=orden and c4=Codigo_requisicion;  
+			if tipo_punto='S' and refacc_paquete <> '' then 
+				select posible_refacc into posxref from keplersc.kdspaq_posxref
+			 		where marca=cve_marca and modelo=cve_modelo and anio=num_anio and paquete=cve_kit and refaccion=refacc_paquete and posible_refacc=producto;
+			 	if not found then
+			 		insert into keplersc.kdspaq_posxref (
+						marca,modelo,anio,paquete,refaccion,posible_refacc)
+					values(
+						cve_marca,cve_modelo,num_anio,cve_kit,refacc_paquete,producto);
+			 	end if;
+			end if;
+
 		end loop;
 
 		--MSS 080824 

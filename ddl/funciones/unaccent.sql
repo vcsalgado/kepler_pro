@@ -1,4 +1,4 @@
-CREATE OR REPLACE FUNCTION keplersc.unaccent(regdictionary, text)
+CREATE OR REPLACE FUNCTION keplersc.unaccent(text)
  RETURNS text
  LANGUAGE c
  STABLE PARALLEL SAFE STRICT

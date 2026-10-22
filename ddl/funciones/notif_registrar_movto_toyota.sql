@@ -181,7 +181,9 @@ BEGIN
 --							api_id := 'ifz_toy_bp/delete_ty_orden_eliminar_od/';
 							api_id := 'CRM_WEB_TYT_ORDEN_ELIMINAR_WF';
 							datos_interfaz:=concat('{"sucursal":"',sucursal_id,'",','"tipo_orden":"',p_new.c2,'",','"folio_orden":"',p_new.c3,'",','"agencia":"',agencia,'"}');
-							select coalesce(max(id_transaccion),0) + 1 into intTransaction from keplersc.notif_api_control_envios;
+							--select coalesce(max(id_transaccion),0) + 1 into intTransaction from keplersc.notif_api_control_envios;
+							select id_notif into intTransaction from keplersc.obtener_folio_notif();
+
 							insert into keplersc.notif_api_control_envios (id_transaccion,api_id,datos_interfaz) values(intTransaction,api_id,datos_interfaz);
 							--Execute sin CIRDAN
 							expSql := format('notify interfaces_toyota, ''%s''', intTransaction);
@@ -193,7 +195,9 @@ BEGIN
 --							api_id := 'ifz_toy_bp/get_ty_orden_crear_od/';
 							api_id := 'CRM_WEB_TYT_ORDEN_ELIMINAR_WF';
 							datos_interfaz:=concat('{"sucursal":"',sucursal_id,'",','"tipo_orden":"',p_new.c2,'",','"folio_orden":"',p_new.c3,'",','"agencia":"',agencia,'"}');
-							select coalesce(max(id_transaccion),0) + 1 into intTransaction from keplersc.notif_api_control_envios;
+							--select coalesce(max(id_transaccion),0) + 1 into intTransaction from keplersc.notif_api_control_envios;
+							select id_notif into intTransaction from keplersc.obtener_folio_notif();
+
 							insert into keplersc.notif_api_control_envios (id_transaccion,api_id,datos_interfaz) values(intTransaction,api_id,datos_interfaz);
 							--Execute sin CIRDAN
 							expSql := format('notify interfaces_toyota, ''%s''', intTransaction);

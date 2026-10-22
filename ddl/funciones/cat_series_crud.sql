@@ -75,6 +75,7 @@ declare
 	isidentificadornumeric bool;
 	valInt int;
 
+  	datatxt text ='';
 	totReg integer = 0;
 	resultado text = '';
 	mensaje text = '0';
@@ -82,6 +83,11 @@ declare
 	
 begin 
 	
+	datatxt := dataxml::text;
+	datatxt := replace(datatxt,'\&quot;','"');
+
+	dataxml:=datatxt::xml;
+
 	Marca := upper((xpath('//document/input_marca/text()', dataxml))[1]::text);
 	Modelo := upper((xpath('//document/input_modelo/text()', dataxml))[1]::text);
 	Serie := upper((xpath('//document/input_serie/text()', dataxml))[1]::text);

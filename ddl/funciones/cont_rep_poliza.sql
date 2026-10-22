@@ -38,6 +38,9 @@ declare
 	 refer text = '';
 	 poliza_pasada text = '';
 	 desc_mov text = '';
+	partida int = 0;
+	uuid text = '';
+	config text = '';
 	 poliza_repetida_num int = 0;
 	 desc_cuenta text = '';
 	 status_movto text='';
@@ -70,7 +73,7 @@ begin
 	tabla_2 := concat('kdc1',lpad(anio,2,'0'));
 
 	select c2 into suc_desc from keplersc.kdms where c1 =sucursal_id;
-
+/*
 	expSql:=format('select cnt.c1,cnt.c2,cnt.c3,cnt.c4,cnt.c5,cnt.c6,cnt.c7,cnt.c15,cnt.c16,cnt.c17,cnt.c18,cnt.c19,
 		km.c9, mm.c5,dc.c2,coalesce(km.c43,%7$L) 
 		from keplersc.%1$s as cnt 
@@ -80,18 +83,26 @@ begin
 		where cnt.c8=%3$L and cnt.c1 between %4$L::numeric and %5$L::numeric and cnt.c14=%6$L 
 		order by cnt.c14,cnt.c8,cnt.c1'
 		,tabla,tabla_2,tipo_poliza,poliza_inicial,poliza_final,sucursal_id,'');
+*/
 
-raise notice 'expSql:% ',expSql;
-	for poliza,fecha_pol,cuenta,cargo_abono,monto,descripcion,refer,genero,naturaleza,grupo,tipo,folio, fecha_mov ,desc_mov,desc_cuenta,status_movto
-		in execute format('select cnt.c1,cnt.c2,cnt.c3,cnt.c4,cnt.c5,cnt.c6,cnt.c7,cnt.c15,cnt.c16,cnt.c17,cnt.c18,cnt.c19,
-		km.c9, mm.c5,dc.c2,coalesce(km.c43,%7$L) 
+
+	expSql:= format('select cnt.c1,cnt.c2,cnt.c3,cnt.c4,cnt.c5,cnt.c6,cnt.c7,cnt.c15,cnt.c16,cnt.c17,cnt.c18,cnt.c19,
+		km.c9, mm.c5,dc.c2,coalesce(km.c43,%7$L),
+		cnt.c10 as partida, m6.referencia as uuid, m1ref.concepto_factura as config
 		from keplersc.%1$s as cnt 
 		left outer join keplersc.%2$s as dc on dc.c1=cnt.c3
 		inner join keplersc.kdm1 as km on km.c1=cnt.c14 and km.c2=cnt.c15 and km.c3=cnt.c16 and km.c4=cnt.c17 and km.c5=cnt.c18 and km.c6=cnt.c19
  		inner join keplersc.kdmm as mm on col_sucursal=cnt.c14 and mm.c1=cnt.c15 and mm.c2=cnt.c16 and mm.c3=cnt.c17 and mm.c4=cnt.c18
+ 		left outer join keplersc.kdm6 m6 on m6.c1=cnt.c14 and m6.c2=cnt.c15 and m6.c3=cnt.c16 and m6.c4=cnt.c17 and m6.c5=cnt.c18 and m6.c6=cnt.c19 and m6.c7=cnt.c10
+ 		left outer join keplersc.kdm1 m1ref on m1ref.c11=m6.referencia and m1ref.c1=cnt.c14 and m1ref.c2=%9$L and m1ref.c3=%10$L and m1ref.c4=%11$L and m1ref.c43<>%8$L
 		where cnt.c8=%3$L and cnt.c1 between %4$L::numeric and %5$L::numeric and cnt.c14=%6$L 
 		order by cnt.c14,cnt.c8,cnt.c1'
-		,tabla,tabla_2,tipo_poliza,poliza_inicial,poliza_final,sucursal_id,'') 
+		,tabla,tabla_2,tipo_poliza,poliza_inicial,poliza_final,sucursal_id,'','C','X','A',12);
+
+raise notice 'expSql:% ',expSql;
+
+	for poliza,fecha_pol,cuenta,cargo_abono,monto,descripcion,refer,genero,naturaleza,grupo,tipo,folio, fecha_mov ,desc_mov,desc_cuenta,status_movto, partida,uuid, config
+		in execute expSql  
 		loop
 --raise notice 'Poliza:%; cuenta:% ',poliza,cuenta;		
 			if poliza <> poliza_pasada then 
@@ -110,7 +121,7 @@ raise notice 'expSql:% ',expSql;
 				xmlResultado :=  concat(xmlResultado,format('<r%1$s><tipo_poliza>%2$s</tipo_poliza><poliza>%3$s</poliza>
 				<fecha_pol>%4$s</fecha_pol><fecha_mov>%5$s</fecha_mov><sucursal_id>%6$s</sucursal_id>
 				<suc_desc>%7$s</suc_desc><doc>%8$s</doc><desc_mov>%9$s</desc_mov><status_movto>%10$s</status_movto><polizas>', 
-				intValor,tipo_poliza,poliza,fecha_pol,fecha_mov,sucursal_id,suc_desc,doc,desc_mov,status_movto ));
+				intValor,tipo_poliza,poliza,fecha_pol,fecha_mov,sucursal_id,suc_desc,doc,desc_mov,status_movto));
 			
 				intValor := intValor + 1;
 				poliza_repetida_num := 0;
@@ -126,14 +137,15 @@ raise notice 'expSql:% ',expSql;
 			end if;
 			
 			xmlResultado :=  concat(xmlResultado,format('<r%1$s><cuenta>%2$s</cuenta><desc_cuenta>%3$s</desc_cuenta>
-			<descripcion>%4$s</descripcion><refer>%5$s</refer><cargo_abono>%6$s</cargo_abono><monto>%7$s</monto></r%1$s>', 
-			poliza_repetida_num,cuenta, desc_cuenta,descripcion, refer,cargo_abono, monto));
+			<descripcion>%4$s</descripcion><refer>%5$s</refer><cargo_abono>%6$s</cargo_abono><monto>%7$s</monto><uuid>%8$s</uuid><config>%9$s</config></r%1$s>', 
+			poliza_repetida_num,cuenta, desc_cuenta,descripcion, refer,cargo_abono, monto,uuid,config));
 			
 			poliza_pasada := poliza;
 			
 		end loop;
 	
 		xmlResultado := concat('<document>',xmlResultado, format('</polizas></r%1$s></document>', intValor - 1));
+raise notice 'xml:% ',xmlResultado;
 		
 		return xmlResultado;
 
